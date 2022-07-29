@@ -1,0 +1,20 @@
+httpd.conf
+----------
+<Directory />
+    Options Indexes FollowSymLinks
+    AllowOverride All
+</Directory>
+
+# Virtual hosts
+Include /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
+
+==========================================
+
+httpd-vhosts.conf
+-----------------
+
+<VirtualHost *:80>
+		DocumentRoot /Volumes/untitled/FlutterProjects/67b30e82-a005-75a88993-c0e3fe49d08d/php
+    ServerName gauc.local
+		ServerAlias gauc.local
+</VirtualHost>
