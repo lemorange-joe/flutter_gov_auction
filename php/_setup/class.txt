@@ -1,0 +1,67 @@
+https://data.gov.hk/tc-data/dataset/hk-gld-suppmgmt2-auction-list
+https://data.gov.hk/tc-data/dataset/hk-gld-suppmgmt3-auction-result
+
+================================================================
+Class:
+
+AuctionListPdf {
+	string type;
+	Map<string> url {
+		string en,
+		string tc,
+		string sc
+	}
+}
+
+AuctionItem {
+	int id;
+	string icon;
+	Map<string> description {
+		string en,
+		string tc,
+		string sc
+	};
+	string quantity;
+	Map<string> unit {
+		string en,
+		string tc,
+		string sc
+	};
+}
+
+AuctionLot {
+	int id;
+	string type
+	string icon;
+	string photoUrl;
+	bool photoReal;
+	string transactionCurrency;
+	double transactionPrice;
+	string transactionStatus;
+	List<AuctionItem> items;
+	string status;
+	datetime lastUpdate;
+}
+
+
+Auction {
+	int id;
+	datetime auctionDate;
+	string num;
+	Map<string> location {
+		string en,
+		string tc,
+		string sc
+	};
+	List<AuctionListPdf> auctionList;
+	Map<string> resultPdf {
+		string en,
+		string tc,
+		string sc
+	};
+	List<AuctionLot> lots;
+	string auctionStatus;
+	string status;
+	datetime lastUpdate;
+}
+
