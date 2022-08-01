@@ -40,6 +40,9 @@ class DataController {
 
 // ========================================================================
 
+// getAuctionList
+// getAuctionDetails
+
 if ($controller == "data") {
   $data = new DataController();
 

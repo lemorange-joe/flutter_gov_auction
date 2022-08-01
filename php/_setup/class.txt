@@ -46,8 +46,8 @@ AuctionLot {
 
 Auction {
 	int id;
-	datetime auctionDate;
 	string num;
+	datetime startTime;
 	Map<string> location {
 		string en,
 		string tc,
@@ -61,6 +61,7 @@ Auction {
 	};
 	List<AuctionLot> lots;
 	string auctionStatus;
+	string version;
 	string status;
 	datetime lastUpdate;
 }
