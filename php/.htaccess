@@ -3,7 +3,7 @@ Options -Indexes
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  RewriteRule ^api/(.*)$ api/index.php?req=$1 [QSA,L]
+  RewriteRule ^(.{2})/api/(.*)$ api/index.php?lang=$1&req=$2 [QSA,L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

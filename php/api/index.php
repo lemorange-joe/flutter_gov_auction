@@ -20,17 +20,22 @@ $request = explode('-', $_REQUEST['req']);
 $strController = preg_replace('/[^a-z0-9_]+/i', '', array_shift($request));
 $strMethod = preg_replace('/[^a-z0-9_]+/i', '', array_shift($request));
 $param = $request;
+$lang = "tc";
+if (strtolower($_REQUEST['lang']) == "en") {
+  $lang = "en";
+} else if (strtolower($_REQUEST['lang']) == "sc") {
+  $lang = "sc";
+}
 
 $conn = new stdClass();
-
 // ========================================================================
-// define classes
+// define controllers
 
 class AuctionController {
   function list($param) {
     // quick api to return the list of available auctions
     // main purpose is to compare version
-    global $conn;
+    global $conn, $lang;
 
     //!!! CHECK STATUS !!!
     $selectSql = "SELECT
@@ -64,7 +69,7 @@ class AuctionController {
 
   function details($param) {
     // get the auction details and items by joining related tables
-    global $conn;
+    global $conn, $lang;
 
     //!!! CHECK STATUS !!!
     $auctionId = !empty($param) && is_array($param) ? intval($param[0]) : 0;
@@ -81,8 +86,16 @@ class AuctionController {
     echo json_encode($auction, JSON_UNESCAPED_UNICODE);
   }
 
+  function search($param) {
+    // $auctionId, $keyword
+  }
+
+  function related($param) {
+    // $itemId
+  }
+
   private function getAuction($auctionId) {
-    global $conn;
+    global $conn, $lang;
 
     //!!! CHECK STATUS !!!
     $selectSql = "SELECT
@@ -116,7 +129,7 @@ class AuctionController {
   }
 
   private function getAuctionLocation($auctionId) {
-    global $conn;
+    global $conn, $lang;
 
     $selectSql = "SELECT
                     L.address_en, L.address_tc, L.address_sc
@@ -144,7 +157,7 @@ class AuctionController {
   }
 
   private function getAuctionPdfList($auctionId) {
-    global $conn;
+    global $conn, $lang;
 
     $selectSql = "SELECT I.code, L.url_en, L.url_tc, L.url_sc
                   FROM Auction A
@@ -174,7 +187,7 @@ class AuctionController {
   }
 
   private function getAuctionLotList($auctionId) {
-    global $conn;
+    global $conn, $lang;
 
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.last_update,
@@ -250,13 +263,16 @@ class DataController {
 
 // ========================================================================
 // main flow
+$headers = getallheaders();
+Debug_var_dump($headers["gauc-id"]);
+echo "lang: $lang";
+echo "<hr>";
 
 $controller = new stdClass();
 
 if ($strController == "auction") {
   $controller = new AuctionController();
-}
-else if ($strController == "data") {  
+} else if ($strController == "data") {  
   $controller = new DataController();
 }
 

@@ -69,8 +69,9 @@ class AuctionLot implements JsonSerializable{
   private $transactionStatus;
   private $status;
   private $lastUpdate;
+  private $v;
 
-  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $transactionCurrency, $transactionPrice, $transactionStatus, $lastUpdate) {
+  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $transactionCurrency, $transactionPrice, $transactionStatus, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -82,6 +83,7 @@ class AuctionLot implements JsonSerializable{
     $this->transactionPrice = $transactionPrice;
     $this->transactionStatus = $transactionStatus;
     $this->lastUpdate = $lastUpdate;
+    $this->v = $v;
   }
 
   public function __get($property) {
@@ -112,8 +114,9 @@ class AuctionItem implements JsonSerializable{
   private $description;
   private $quantity;
   private $unit;
+  private $v;
 
-  public function __construct($id, $icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc) {
+  public function __construct($id, $icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc, $v) {
     $this->id = $id;
     $this->icon = $icon;
     $this->description = array(
@@ -127,6 +130,65 @@ class AuctionItem implements JsonSerializable{
       "tc" => $unitTc,
       "sc" => $unitSc,
     );
+    $this->v = $v;
+  }
+
+  public function __get($property) {
+    if (property_exists($this, $property)) {
+      return $this->$property;
+    }
+  }
+
+  public function __set($property, $value) {
+    if (property_exists($this, $property)) {
+        $this->$property = $value;
+    }
+
+    return $this;
+  }
+
+  public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
+}
+
+class RelatedAuctionLot implements JsonSerializable{
+  private $auctionId;
+  private $lotId;
+  private $startTime;
+  private $itemPdfList;
+  private $resultPdfList;
+  private $auctionStatus;
+  private $type;
+  private $lotNum;
+  private $icon;
+  private $photoUrl;
+  private $photoReal;
+  private $itemList;
+  private $transactionCurrency;
+  private $transactionPrice;
+  private $transactionStatus;
+  private $status;
+  private $lastUpdate;
+  private $v;
+
+  public function __construct($icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc, $v) {
+    $this->icon = $icon;
+    $this->description = array(
+      "en" => $descriptionEn,
+      "tc" => $descriptionTc,
+      "sc" => $descriptionSc,
+    );
+    $this->quantity = $quantity;
+    $this->unit = array(
+      "en" => $unitEn,
+      "tc" => $unitTc,
+      "sc" => $unitSc,
+    );
+    $this->v = $v;
   }
 
   public function __get($property) {
