@@ -62,7 +62,7 @@ class AuctionController {
       );
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function details($param) {
@@ -79,7 +79,7 @@ class AuctionController {
       $auction->lotList = $this->getAuctionLotList($auctionId);
     }
 
-    echo json_encode($auction, JSON_UNESCAPED_UNICODE);
+    echo json_change_key(json_encode($auction, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function search($param) {

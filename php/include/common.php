@@ -199,6 +199,14 @@ function AES_256_Encrypt($text, $password)
 	return bin2hex(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $password, $text, MCRYPT_MODE_ECB, $iv));
 }
 
+function json_change_key($strJson, $mapping) {
+  foreach ($mapping as $oldkey => $newkey) {
+    $strJson = str_replace('"'.$oldkey.'":', '"'.$newkey.'":', $strJson);
+  }
+
+  return $strJson;
+}
+
 //Ref: http://board.phpbuilder.com/showthread.php?10360595-TUTORIAL-Converting-from-MySQL-to-MySQLi
 if (!function_exists('mysqli_result')) {
 	function mysqli_result($result, $pos, $field)

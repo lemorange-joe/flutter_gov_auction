@@ -1,5 +1,40 @@
 <?php
-class Auction implements JsonSerializable{
+$auctionJsonFieldMapping = array(
+  // Auction
+  "num" => "n",
+  "startTime" => "st",
+  "location" => "l",
+  "auctionPdf" => "ap",
+  "resultPdf" => "rp",
+  "itemPdfList" => "ipl",
+  "lotList" => "ll",
+  "auctionStatus" => "as",
+  "version" => "v",
+  "status" => "s",
+  "lastUpdate" => "lu",
+  // ------
+  // AuctionLot
+  "type" => "t",
+  "lotNum" => "ln",
+  "icon" => "ic",
+  "photoUrl" => "pu",
+  "photoReal" => "pr",
+  "itemList" => "il",
+  "tranCurrency" => "tc",
+  "tranPrice" => "tp",
+  "tranStatus" => "ts",
+  // "status" => "s",
+  // "lastUpdate" => "lu",
+  // ------
+  // Auction Item
+  // "icon" => "ic",
+  // "description" => "d",
+  "quantity" => "q",
+  "unit" => "u",
+);
+
+
+class Auction implements JsonSerializable {
   private $id;
   private $num;
   private $startTime;
@@ -42,15 +77,13 @@ class Auction implements JsonSerializable{
     return $this;
   }
 
-  public function jsonSerialize()
-    {
-        $vars = get_object_vars($this);
-
-        return $vars;
-    }
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
+    return $vars;
+  }
 }
 
-class AuctionLot implements JsonSerializable{
+class AuctionLot implements JsonSerializable {
   private $id;
   private $type;
   private $lotNum;
@@ -58,14 +91,14 @@ class AuctionLot implements JsonSerializable{
   private $photoUrl;
   private $photoReal;
   private $itemList;
-  private $tc;    //transactionCurrency
-  private $tp;    //transactionPrice
-  private $ts;    //transactionStatus
+  private $tranCurrency;
+  private $tranPrice;
+  private $tranStatus;
   private $status;
   private $lastUpdate;
   private $v;
 
-  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $transactionCurrency, $transactionPrice, $transactionStatus, $lastUpdate, $v) {
+  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -73,9 +106,9 @@ class AuctionLot implements JsonSerializable{
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
     $this->itemList = array();
-    $this->tc = $transactionCurrency;
-    $this->tp = $transactionPrice;
-    $this->ts = $transactionStatus;
+    $this->tranCurrency = $tranCurrency;
+    $this->tranPrice = $tranPrice;
+    $this->tranStatus = $tranStatus;
     $this->lastUpdate = $lastUpdate;
     $this->v = $v;
   }
@@ -94,28 +127,27 @@ class AuctionLot implements JsonSerializable{
     return $this;
   }
 
-  public function jsonSerialize()
-    {
-        $vars = get_object_vars($this);
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
 
-        return $vars;
-    }
+    return $vars;
+  }
 }
 
-class AuctionItem implements JsonSerializable{
+class AuctionItem implements JsonSerializable {
   private $id;
-  private $ic;  //icon
-  private $d;   //description
-  private $q;   //quantity
-  private $u;   //unit
+  private $icon;
+  private $description;
+  private $quantity;
+  private $unit;
   private $v;
 
   public function __construct($id, $icon, $description, $quantity, $unit, $v) {
     $this->id = $id;
-    $this->ic = $icon;
-    $this->d = $description;
-    $this->q = $quantity;
-    $this->u = $unit;
+    $this->icon = $icon;
+    $this->description = $description;
+    $this->quantity = $quantity;
+    $this->unit = $unit;
     $this->v = $v;
   }
 
@@ -133,15 +165,13 @@ class AuctionItem implements JsonSerializable{
     return $this;
   }
 
-  public function jsonSerialize()
-    {
-        $vars = get_object_vars($this);
-
-        return $vars;
-    }
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
+    return $vars;
+  }
 }
 
-class RelatedAuctionLot implements JsonSerializable{
+class RelatedAuctionLot implements JsonSerializable {
   private $auctionId;
   private $lotId;
   private $startTime;
@@ -154,14 +184,14 @@ class RelatedAuctionLot implements JsonSerializable{
   private $photoUrl;
   private $photoReal;
   private $itemList;
-  private $transactionCurrency;
-  private $transactionPrice;
-  private $transactionStatus;
+  private $tranCurrency;
+  private $tranPrice;
+  private $tranStatus;
   private $status;
   private $lastUpdate;
   private $v;
 
-  public function __construct($icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc, $v) {
+  public function __construct($icon, $description, $quantity, $unit, $v) {
     $this->icon = $icon;
     $this->description;
     $this->quantity = $quantity;
@@ -183,11 +213,9 @@ class RelatedAuctionLot implements JsonSerializable{
     return $this;
   }
 
-  public function jsonSerialize()
-    {
-        $vars = get_object_vars($this);
-
-        return $vars;
-    }
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
+    return $vars;
+  }
 }
 ?>
