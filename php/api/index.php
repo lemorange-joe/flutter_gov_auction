@@ -31,6 +31,10 @@ $conn = new stdClass();
 // ========================================================================
 // define controllers
 
+class AdminController {
+
+}
+
 class AuctionController {
   function list($param) {
     // quick api to return the list of available auctions
@@ -46,6 +50,7 @@ class AuctionController {
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
     $rowNum = count($result);
+
     $output = array();
     for($i = 0; $i < $rowNum; ++$i) {
       $output[] = new Auction(
@@ -83,11 +88,100 @@ class AuctionController {
   }
 
   function search($param) {
-    // $auctionId, $keyword
+    // pre: $auctionId, $keyword, $type
+    // use $keyword to search the auction lot and items within the auction id
+    global $conn, $lang;
+
+    if (count($param) < 2 || empty($param[1])) {
+      echo "[]";
+      return;
+    }
+
+    list($auctionId, $keyword, $type) = array_pad($param, 3, "");
+    $selectSql = "SELECT
+                    A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                    I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                  FROM Auction A
+                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                  INNER JOIN ItemType T ON L.type_id = T.type_id
+                  WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
+                  ORDER BY L.seq, I.seq";
+
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+    $rowNum = count($result);
+
+    $output = array();
+    for($i = 0; $i < $rowNum; ++$i) {
+      $output[] = new AuctionSearch(
+        intval($result[$i]["auction_id"]),
+        $result[$i]["start_time"],
+        $result[$i]["auction_status"],
+        intval($result[$i]["lot_id"]),
+        $result[$i]["code"],
+        $result[$i]["photo_url"],
+        $result[$i]["photo_real"],
+        $result[$i]["transaction_currency"],
+        $result[$i]["transaction_price"],
+        $result[$i]["transaction_status"],
+        $result[$i]["icon"],
+        $result[$i]["description"],
+        $result[$i]["quantity"],
+        $result[$i]["unit"],
+        0
+      );
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function related($param) {
-    // $itemId
+    // pre: $itemId
+    // use $itemId to search related items in other lots or auctions
+    global $conn, $lang;
+
+    $itemId = array_shift($param);
+    
+    $selectSql = "SELECT
+                    A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                    I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                  FROM Auction A
+                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                  INNER JOIN ItemType T ON L.type_id = T.type_id
+                  WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
+                    SELECT 1 
+                    FROM AuctionItem I0
+                    INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
+                    WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
+                  )
+                  ORDER BY A.start_time DESC, L.seq, I.seq";
+
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
+    $rowNum = count($result);
+
+    $output = array();
+    for($i = 0; $i < $rowNum; ++$i) {
+      $output[] = new AuctionSearch(
+        intval($result[$i]["auction_id"]),
+        $result[$i]["start_time"],
+        $result[$i]["auction_status"],
+        intval($result[$i]["lot_id"]),
+        $result[$i]["code"],
+        $result[$i]["photo_url"],
+        $result[$i]["photo_real"],
+        $result[$i]["transaction_currency"],
+        $result[$i]["transaction_price"],
+        $result[$i]["transaction_status"],
+        $result[$i]["icon"],
+        $result[$i]["description"],
+        $result[$i]["quantity"],
+        $result[$i]["unit"],
+        0
+      );
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   private function getAuction($auctionId) {
@@ -133,8 +227,8 @@ class AuctionController {
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
     $rowNum = count($result);
-    $output = array();
 
+    $output = array();
     for($i = 0; $i < $rowNum; ++$i) {
       $pdfUrl = new StdClass();
       $pdfUrl->type = $result[$i]["code"];
@@ -150,7 +244,7 @@ class AuctionController {
     global $conn, $lang;
 
     $selectSql = "SELECT
-                    L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.last_update,
+                    L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -161,8 +255,8 @@ class AuctionController {
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active))->GetRows();
     $rowNum = count($result);
-    $output = array();
 
+    $output = array();
     $curLotNum = "";
     $curLot = null;
     $curItemList = array();
@@ -186,6 +280,7 @@ class AuctionController {
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],
+          $result[$i]["status"],
           $result[$i]["last_update"],
           0,
         );

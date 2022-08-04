@@ -28,9 +28,13 @@ $auctionJsonFieldMapping = array(
   // ------
   // Auction Item
   // "icon" => "ic",
-  // "description" => "d",
+  "description" => "d",
   "quantity" => "q",
   "unit" => "u",
+  // ------
+  // Auction Search
+  "auctionId" => "aid",
+  "lotId" => "lid",
 );
 
 
@@ -98,7 +102,7 @@ class AuctionLot implements JsonSerializable {
   private $lastUpdate;
   private $v;
 
-  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $lastUpdate, $v) {
+  public function __construct($id, $type, $lotNum, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -109,6 +113,7 @@ class AuctionLot implements JsonSerializable {
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;
     $this->tranStatus = $tranStatus;
+    $this->status = $status;
     $this->lastUpdate = $lastUpdate;
     $this->v = $v;
   }
@@ -129,7 +134,6 @@ class AuctionLot implements JsonSerializable {
 
   public function jsonSerialize() {
     $vars = get_object_vars($this);
-
     return $vars;
   }
 }
@@ -171,31 +175,38 @@ class AuctionItem implements JsonSerializable {
   }
 }
 
-class RelatedAuctionLot implements JsonSerializable {
+class AuctionSearch implements JsonSerializable {
   private $auctionId;
-  private $lotId;
   private $startTime;
-  private $itemPdfList;
-  private $resultPdfList;
   private $auctionStatus;
+  private $lotId;
   private $type;
-  private $lotNum;
-  private $icon;
   private $photoUrl;
   private $photoReal;
-  private $itemList;
   private $tranCurrency;
   private $tranPrice;
   private $tranStatus;
-  private $status;
-  private $lastUpdate;
+  private $icon;
+  private $description;
+  private $quantity;
+  private $unit;
   private $v;
 
-  public function __construct($icon, $description, $quantity, $unit, $v) {
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
+    $this->auctionId = $auction_id;
+    $this->startTime = $start_time;
+    $this->auctionStatus = $auction_status;
+    $this->lotId = $lot_id;
+    $this->type = $type;
+    $this->photoUrl = $photoUrl;
+    $this->photoReal = $photoReal;
+    $this->tranCurrency = $tranCurrency;
+    $this->tranPrice = $tranPrice;
+    $this->tranStatus = $tranStatus;
     $this->icon = $icon;
-    $this->description;
+    $this->description = $description;
     $this->quantity = $quantity;
-    $this->unit;
+    $this->unit = $unit;
     $this->v = $v;
   }
 
