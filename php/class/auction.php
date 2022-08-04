@@ -4,29 +4,23 @@ class Auction implements JsonSerializable{
   private $num;
   private $startTime;
   private $location;
+  private $auctionPdf;
+  private $resultPdf;
   private $itemPdfList;
-  private $resultPdfList;
   private $lotList;
   private $auctionStatus;
   private $version;
   private $status;
   private $lastUpdate;
 
-  public function __construct($id, $num, $startTime, $itemPdfEn, $itemPdfTc, $itemPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, $auctionStatus, $version, $status, $lastUpdate) {
+  public function __construct($id, $num, $startTime, $location, $auctionPdf, $resultPdf, $auctionStatus, $version, $status, $lastUpdate) {
     $this->id = $id;
     $this->num = $num;
     $this->startTime = $startTime;
-    $this->location = array(
-      "en" => "",
-      "tc" => "",
-      "sc" => "",
-    );
+    $this->location = $location;
+    $this->auctionPdf = $auctionPdf;
+    $this->resultPdf = $resultPdf;
     $this->itemPdfList = array();
-    $this->resultPdfList = array(
-      "en" => $resultPdfEn,
-      "tc" => $resultPdfTc,
-      "sc" => $resultPdfSc,
-    );
     $this->lotList = array();
     $this->auctionStatus = $auctionStatus;
     $this->version = $version;
@@ -64,9 +58,9 @@ class AuctionLot implements JsonSerializable{
   private $photoUrl;
   private $photoReal;
   private $itemList;
-  private $transactionCurrency;
-  private $transactionPrice;
-  private $transactionStatus;
+  private $tc;    //transactionCurrency
+  private $tp;    //transactionPrice
+  private $ts;    //transactionStatus
   private $status;
   private $lastUpdate;
   private $v;
@@ -79,9 +73,9 @@ class AuctionLot implements JsonSerializable{
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
     $this->itemList = array();
-    $this->transactionCurrency = $transactionCurrency;
-    $this->transactionPrice = $transactionPrice;
-    $this->transactionStatus = $transactionStatus;
+    $this->tc = $transactionCurrency;
+    $this->tp = $transactionPrice;
+    $this->ts = $transactionStatus;
     $this->lastUpdate = $lastUpdate;
     $this->v = $v;
   }
@@ -110,26 +104,18 @@ class AuctionLot implements JsonSerializable{
 
 class AuctionItem implements JsonSerializable{
   private $id;
-  private $icon;
-  private $description;
-  private $quantity;
-  private $unit;
+  private $ic;  //icon
+  private $d;   //description
+  private $q;   //quantity
+  private $u;   //unit
   private $v;
 
-  public function __construct($id, $icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc, $v) {
+  public function __construct($id, $icon, $description, $quantity, $unit, $v) {
     $this->id = $id;
-    $this->icon = $icon;
-    $this->description = array(
-      "en" => $descriptionEn,
-      "tc" => $descriptionTc,
-      "sc" => $descriptionSc,
-    );
-    $this->quantity = $quantity;
-    $this->unit = array(
-      "en" => $unitEn,
-      "tc" => $unitTc,
-      "sc" => $unitSc,
-    );
+    $this->ic = $icon;
+    $this->d = $description;
+    $this->q = $quantity;
+    $this->u = $unit;
     $this->v = $v;
   }
 
@@ -177,17 +163,9 @@ class RelatedAuctionLot implements JsonSerializable{
 
   public function __construct($icon, $descriptionEn, $descriptionTc, $descriptionSc, $quantity, $unitEn, $unitTc, $unitSc, $v) {
     $this->icon = $icon;
-    $this->description = array(
-      "en" => $descriptionEn,
-      "tc" => $descriptionTc,
-      "sc" => $descriptionSc,
-    );
+    $this->description;
     $this->quantity = $quantity;
-    $this->unit = array(
-      "en" => $unitEn,
-      "tc" => $unitTc,
-      "sc" => $unitSc,
-    );
+    $this->unit;
     $this->v = $v;
   }
 

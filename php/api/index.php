@@ -37,13 +37,14 @@ class AuctionController {
     // main purpose is to compare version
     global $conn, $lang;
 
-    //!!! CHECK STATUS !!!
     $selectSql = "SELECT
-                    auction_id, auction_num, start_time, item_list_pdf_en, item_list_pdf_tc, item_list_pdf_sc, 
-                    result_pdf_en, result_pdf_tc, result_pdf_sc, auction_status, version, status, last_update 
-                  FROM Auction";
+                    auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
+                    result_pdf_$lang as 'result_pdf', auction_status, version, status, last_update 
+                  FROM Auction
+                  WHERE status = ?
+                  ORDER BY start_time DESC";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
     $rowNum = count($result);
     $output = array();
     for($i = 0; $i < $rowNum; ++$i) {
@@ -51,12 +52,9 @@ class AuctionController {
         intval($result[$i]["auction_id"]),
         $result[$i]["auction_num"],
         $result[$i]["start_time"],
-        $result[$i]["item_list_pdf_en"],
-        $result[$i]["item_list_pdf_tc"],
-        $result[$i]["item_list_pdf_sc"],
-        $result[$i]["result_pdf_en"],
-        $result[$i]["result_pdf_tc"],
-        $result[$i]["result_pdf_sc"],
+        "",
+        $result[$i]["auction_pdf"],
+        $result[$i]["result_pdf"],
         $result[$i]["auction_status"],
         $result[$i]["version"],
         $result[$i]["status"],
@@ -71,14 +69,12 @@ class AuctionController {
     // get the auction details and items by joining related tables
     global $conn, $lang;
 
-    //!!! CHECK STATUS !!!
     $auctionId = !empty($param) && is_array($param) ? intval($param[0]) : 0;
     if ($auctionId == 0) return;
 
     $auctionId = intval($param[0]);
     $auction = $this->getAuction($auctionId);
     if ($auction != null) {
-      $auction->location = $this->getAuctionLocation($auctionId);
       $auction->itemPdfList = $this->getAuctionPdfList($auctionId);
       $auction->lotList = $this->getAuctionLotList($auctionId);
     }
@@ -97,11 +93,11 @@ class AuctionController {
   private function getAuction($auctionId) {
     global $conn, $lang;
 
-    //!!! CHECK STATUS !!!
     $selectSql = "SELECT
-                    auction_id, auction_num, start_time, item_list_pdf_en, item_list_pdf_tc, item_list_pdf_sc, 
-                    result_pdf_en, result_pdf_tc, result_pdf_sc, auction_status, version, status, last_update 
-                  FROM Auction
+                    A.auction_id, A.auction_num, A.start_time, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
+                    A.result_pdf_$lang as 'result_pdf', A.auction_status, version, status, last_update 
+                  FROM Auction A
+                  INNER JOIN Location L ON A.location_id = L.location_id
                   WHERE auction_id = ?";
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
@@ -112,12 +108,9 @@ class AuctionController {
         intval($result[0]["auction_id"]),
         $result[0]["auction_num"],
         $result[0]["start_time"],
-        $result[0]["item_list_pdf_en"],
-        $result[0]["item_list_pdf_tc"],
-        $result[0]["item_list_pdf_sc"],
-        $result[0]["result_pdf_en"],
-        $result[0]["result_pdf_tc"],
-        $result[0]["result_pdf_sc"],
+        $result[0]["address"],
+        $result[0]["auction_pdf"],
+        $result[0]["result_pdf"],
         $result[0]["auction_status"],
         $result[0]["version"],
         $result[0]["status"],
@@ -128,42 +121,14 @@ class AuctionController {
     return $output;
   }
 
-  private function getAuctionLocation($auctionId) {
-    global $conn, $lang;
-
-    $selectSql = "SELECT
-                    L.address_en, L.address_tc, L.address_sc
-                  FROM Auction A
-                  INNER JOIN Location L ON A.location_id = L.location_id
-                  WHERE auction_id = ?";
-
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
-
-    $output = array(
-      "en" => "",
-      "tc" => "",
-      "sc" => "",
-    );
-
-    if (count($result) > 0) {
-      $output = array(
-        "en" => $result[0]["address_en"],
-        "tc" => $result[0]["address_tc"],
-        "sc" => $result[0]["address_sc"],
-      );
-    }
-
-    return $output;
-  }
-
   private function getAuctionPdfList($auctionId) {
     global $conn, $lang;
 
-    $selectSql = "SELECT I.code, L.url_en, L.url_tc, L.url_sc
+    $selectSql = "SELECT I.code, L.url_$lang as 'url'
                   FROM Auction A
-                  INNER JOIN AuctionListPdf L ON A.auction_id = L.auction_id
+                  INNER JOIN ItemListPdf L ON A.auction_id = L.auction_id
                   INNER JOIN ItemType I ON L.type_id = I.type_id
-                  WHERE A.auction_id = 1=?
+                  WHERE A.auction_id = ?
                   ORDER BY I.seq";
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
@@ -172,13 +137,8 @@ class AuctionController {
 
     for($i = 0; $i < $rowNum; ++$i) {
       $pdfUrl = new StdClass();
-
       $pdfUrl->type = $result[$i]["code"];
-      $pdfUrl->url = array(
-        "en" => $result[$i]["url_en"],
-        "tc" => $result[$i]["url_tc"],
-        "sc" => $result[$i]["url_sc"],
-      );
+      $pdfUrl->url = $result[$i]["url"];
 
       $output[] = $pdfUrl;
     }
@@ -191,15 +151,15 @@ class AuctionController {
 
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.last_update,
-                    I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc, I.quantity, I.unit_en, I.unit_tc, I.unit_sc
+                    I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE A.auction_id = ?
+                  WHERE A.auction_id = ? AND L.status = ?
                   ORDER BY L.seq, I.seq";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active))->GetRows();
     $rowNum = count($result);
     $output = array();
 
@@ -227,6 +187,7 @@ class AuctionController {
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],
           $result[$i]["last_update"],
+          0,
         );
         $curItemList = array();
       }
@@ -234,13 +195,10 @@ class AuctionController {
       $curItemList[] = new AuctionItem(
         $result[$i]["item_id"],
         $result[$i]["item_icon"],
-        $result[$i]["description_en"],
-        $result[$i]["description_tc"],
-        $result[$i]["description_sc"],
+        $result[$i]["description"],
         $result[$i]["quantity"],
-        $result[$i]["unit_en"],
-        $result[$i]["unit_tc"],
-        $result[$i]["unit_sc"],
+        $result[$i]["unit"],
+        0,
       );
     }
 
