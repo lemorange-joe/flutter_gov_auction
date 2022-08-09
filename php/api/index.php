@@ -33,9 +33,8 @@ if (strtolower($_REQUEST['lang']) == "en") {
 // ========================================================================
 // main flow
 $headers = getallheaders();
-Debug_var_dump($headers["gauc-id"]);
-echo "lang: $lang";
-echo "<hr>";
+$gaucId = $headers["gauc-id"];
+echo "gaucId: $gaucId, lang: $lang <hr>";
 
 $controller = new stdClass();
 

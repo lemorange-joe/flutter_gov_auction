@@ -1,15 +1,15 @@
 <?php
-include_once ('../include/demo_data.php');
+include_once ('../include/demo_data_ms.php');
 include_once ('../include/enum.php');
 
 class AdminController {
-  public $regSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)/';
+  public $regSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)|(- E N D -)/';
 
   function parseData() {
     $txt = $GLOBALS['DEMO_AUCTION_PDF'];
     $strAuctionList = $this->splitAuctionListText($txt);
     foreach($strAuctionList as $strAuction) {
-      $this->processAuctionListText($strAuction, ItemType::UnclaimedProperties);
+      $this->processAuctionListText($strAuction, ItemType::SurplusServiceableStores);
     }
   }
 
@@ -78,7 +78,7 @@ class AdminController {
   function processAuctionListText($strAuction, $itemType) {
     $matchValues = array();
     $patterns = array(
-      "lotNum" => '/\n' . $itemType . '-((\d)+) 1\./i',
+      "lotNum" => '/\n' . $itemType . '-((\d)+)[\s|\n]1\./i',
       "gldFileRef" => '/\(GLD File Ref.*:\s*(.*)\)/i',
       "reference" => '/Reference\s*:\s*(.*)/i',
       "departmentEn" => '/Department\s*:\s*(.*)/i',
@@ -86,7 +86,7 @@ class AdminController {
       "contactPersonEn" => '/Contact Person\s*:\s*(.*)\s*on\s*/i',
       "contactPersonTc" => '/聯絡人\s*:\s*(.*)\s*電話\s*:/i',
       "contactNumberEn" => '/Contact Person\s*:\s*.*\s*on\s*(.*)/i',
-      "contactNumberTc" => '/聯絡人\s*:.*電話\s*:\s*(.*)/i',
+      "contactNumberTc" => '/聯絡人[\n|\s]*:\n*.*電話\s*:\s*(.*)/i',
       "locationEn" => '/Location\s*:\s*((.|\n)*)Contact Person\s*:/i',
       "locationTc" => '/地點\s*:\s*((.|\n)*)聯絡人\s*:/i',
       "remarksEn" => '/Remarks.*:((.|\n)*)注意事項/i',
@@ -115,7 +115,7 @@ class AdminController {
     foreach(array_keys($matchValues) as $key) {
       echo "$key: " . $matchValues[$key] . "<br>";
     }
-    echo "<textarea style='width: 800px; height: 300px'>$strAuction</textarea> <br />";
+    echo "<textarea style='width: 1200px; height: 300px'>$strAuction</textarea> <br />";
   }
 }
 ?>
