@@ -1,6 +1,6 @@
 <?php
 include_once ('../include/enum.php');
-$testingItemType = ItemType::UnserviceableStores;
+$testingItemType = ItemType::SurplusServiceableStores;
 include_once ('../include/demo_data_'.strtolower($testingItemType).'.php');
 
 class AdminController {
@@ -11,8 +11,8 @@ class AdminController {
 
     $txt = $GLOBALS['DEMO_AUCTION_PDF'];
     $strAuctionList = $this->splitAuctionListText($txt, $testingItemType);
-    foreach($strAuctionList as $strAuction) {
-      $this->extractAuctionListText($strAuction, $testingItemType);
+    for ($lotIndex = 0; $lotIndex < Count($strAuctionList); ++$lotIndex) {
+      $this->extractAuctionListText($strAuctionList[$lotIndex], $testingItemType, $lotIndex);
     }
   }
 
@@ -98,7 +98,7 @@ class AdminController {
     return $output;
   }
 
-  function extractAuctionListText($strAuction, $itemType) {
+  function extractAuctionListText($strAuction, $itemType, $lotIndex) {
     $matchValues = array();
     $patterns = array(
       "lotNum" => '/^' . $itemType . '-(\d+)[\s|\n]1\./im',
@@ -139,20 +139,49 @@ class AdminController {
       $matchValues["items"] = "1." . $matchValues["items"];
     }
 
-    // for debug
-    // foreach(array_keys($matchValues) as $key) {
-    //   echo "$key: " . $matchValues[$key] . "<br>";
-    // }
-    // echo "<textarea style='width: 1200px; height: 300px'>$strAuction</textarea> <br />";    
-    echo $matchValues["lotNum"] . "<br /><textarea style='width: 1200px; height: 300px'>" . $matchValues["items"] . "</textarea><br />";
-    $this->extractItems($matchValues["items"]);
+    
+    $colWidth = "100";
+    $colWidth2 = "800";
+    $separatorHeight = "8";
+    echo "<div style='display:inline-block;width:".$colWidth."px'>Lot Num:</div><input id='tbLotNum_$lotIndex' value='".str_replace("'", '"', $matchValues["lotNum"])."'>";
+    echo "<div style='height:".$separatorHeight."px'></div>";
+    echo "<div style='display:flex;width:1800px'>";
+      echo "<div style='width:900px'>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>GLD Ref</div><input id='tbGldRef_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['gldFileRef'])."'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Ref</div><input id='tbRef_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['reference'])."'></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Dept</div><input id='tbDeptEn_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['departmentEn'])."'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>部門</div><input id='tbDeptTc_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['departmentTc'])."'></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Contact</div><input id='tbContactEn_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['contactPersonEn'])."'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>聯絡人</div><input id='tbContactTc_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['contactPersonTc'])."'></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Number</div><input id='tbNumberEn_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['contactNumberEn'])."'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>電話</div><input id='tbNumberTc_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['contactNumberTc'])."'></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Location</div><input id='tbLocationEn_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['locationEn'])."'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>地點</div><input id='tbLocationTc_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['locationTc'])."'></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Remarks</div>";
+        echo "<textarea id='tbRemarksEn_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['remarksEn']."</textarea></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>注意</div>";
+        echo "<textarea id='tbRemarksTc_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['remarksTc']."</textarea></div>";
+      echo "</div>";
+      echo "<div style='width:600px'>";
+        echo "<textarea style='width:600px;height:374px;white-space:pre;overflow-wrap:normal;overflow-x:scroll' disabled='disabled'>$strAuction</textarea>";    
+      echo "</div>";
+    echo "</div>";
+    echo "<br style='clear: both' />";
+    echo "<div style='width:1500px'>";
+        $this->extractItems($matchValues["items"], $lotIndex);
+    echo "</div>";
     echo "<hr />";
   }
 
   //pre: 1.Handwriting Board 手寫板 48 Nos. (塊) 2. Barcode Reader (Model: MS9540) 條碼讀取器 2 Nos. (個)
   // split item text from the input first
   // then parse to the next method to build items
-  function extractItems($strItems) {
+  function extractItems($strItems, $lotIndex) {
     $output = array();
     // $strItemList = preg_split("/\d+\./", $strItems);
 
@@ -174,19 +203,19 @@ class AdminController {
       }
     }
   
-    for ($i = 0; $i < Count($strItemList); ++$i) {
-      $this->buildItems($strItemList[$i], $i+1);
+    for ($itemIndex = 0; $itemIndex < Count($strItemList); ++$itemIndex) {
+      $this->buildItems($strItemList[$itemIndex], $lotIndex, $itemIndex);
     }
 
     return $output;
   }
 
   //pre: 2. Barcode Reader (Model: MS9540) 條碼讀取器 2 Nos. (個)
-  function buildItems($strItem, $num) {
+  function buildItems($strItem, $lotIndex, $itemIndex) {
     $itemPropertyList = array_filter(explode("\n", $strItem));
 
-    $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/300x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/300x100/f88/666.png&text=++++++{i}")';
-    echo "<textarea style='width:300px;height:100px;white-space:pre;overflow-wrap:normal;overflow-x:scroll;background-image:" . str_replace('{i}', $num, $bgImage) . "'>";
+    $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
+    echo "<textarea id='tbItem_$lotIndex"."_$itemIndex' style='width:250px;height:100px;white-space:pre;overflow-wrap:normal;overflow-x:scroll;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "'>";
     // var_dump($itemPropertyList);
     echo $strItem;
     echo "</textarea>";
