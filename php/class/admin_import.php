@@ -1,5 +1,6 @@
 <?php
 include_once ('../include/enum.php');
+include_once ('../include/common.php');
 
 class AdminImport {
   public $regSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)|(- E N D -)/';
@@ -229,6 +230,42 @@ class AdminImport {
       "unitEn" => $unitEn,
       "unitTc" => $unitTc,
     );
+  }
+
+  function parseResultData($importText) {
+    $lotNumRegEx = '/^([a-zA-Z]+-\d+)$/i';
+    $lines = preg_split("/((\r?\n)|(\r\n?))/", $importText);
+    
+    $lotList = array();
+    $i = 0;
+    while ($i < Count($lines)) {
+      $line = trim($lines[$i]);
+
+      if (preg_match($lotNumRegEx, $line, $matches))
+      {
+        $lotNum = "";
+        if (count($matches) > 1) {
+          $lotNum = $matches[1];
+        }
+
+        $price = str_replace(",", "", str_replace("$", "", trim($lines[++$i])));
+        $lotList[$lotNum] = $price;
+
+      }
+
+      ++$i;
+    }
+    
+    ksort($lotList);
+    $keys = array_keys($lotList);
+    for ($j = 0; $j < Count($lotList); ++$j) {
+      echo "<div>";
+      echo "<span style='display:inline-block;width:40px'>".($j+1).".</span>";
+      echo "<input id='tbLotNum_".$j."' type='text' style='width: 100px' value='".str_replace("'", '"', $keys[$j])."'>&nbsp;&nbsp;";
+      echo "<input id='tbPrice_".$j."' type='text' style='width: 200px' value='".str_replace("'", '"', $lotList[$keys[$j]])."'>";
+      echo "</div>\n";
+    }
+        
   }
 }
 ?>

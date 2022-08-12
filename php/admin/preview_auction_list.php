@@ -24,7 +24,13 @@ Missing data!
 <?php
 } else {
 ?>
-  Item type: <?=$_POST["item_type"]?> | Num: <?=$_POST["auction_num"]?>&nbsp;&nbsp;&nbsp;&nbsp;<a href="input_auction_list.php">Cancel</a>
+  <div style="width:400px;display:flex;justify-content:space-between">
+    <div>
+    <span style="display:inline-block;width:100px">Item type:</span><input id="tbItemType" value="<?=$_POST["item_type"]?>" style="width:60px" />
+    <br /><span style="display:inline-block;width:100px">Num:</span><input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>" style="width:60px" />
+    </div>
+    <a href="input_auction_list.php">Cancel</a>
+  </div>
   <hr />
   <?php
     $itemType = $_POST["item_type"];
@@ -77,6 +83,9 @@ Missing data!
         
         ++i;
       }
+
+      console.log(document.getElementById("tbItemType").value);
+      console.log(document.getElementById("tbAuctionNum").value);
     }
   </script>
 <?php
