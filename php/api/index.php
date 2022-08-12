@@ -35,7 +35,7 @@ if (strtolower($_REQUEST['lang']) == "en") {
 // main flow
 $headers = getallheaders();
 $gaucId = $headers["gauc-id"];
-echo "gaucId: $gaucId, lang: $lang <hr>";
+// echo "gaucId: $gaucId, lang: $lang <hr>";
 
 $controller = new stdClass();
 
@@ -47,8 +47,20 @@ if ($strController == "auction") {
   $controller = new AdminController();
 }
 
-if ($strController == "admin" && strtolower($strMethod) == "parsedata") {
-  $controller->parseData();
+if ($strController == "admin") {
+  if (!isset($_SESSION["admin_user"])) {
+    echo "ERROR!";
+    exit;
+  }
+
+  $conn = new stdClass();
+  $conn = ADONewConnection('mysqli');
+  $conn->PConnect($GLOBALS['DB_HOST'], $GLOBALS['DB_USERNAME'] , $GLOBALS['DB_PASSWORD'], $GLOBALS['DB_NAME']);
+  $conn->Execute("SET NAMES UTF8");
+
+  $controller->$strMethod($param);
+
+  $conn->close();
 } else {
   if (method_exists($controller, $strMethod)) {
     $conn = new stdClass();

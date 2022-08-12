@@ -19,6 +19,8 @@
   ?>
     <div style="text-align:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
     <hr />
+    <a href="manage_auction.php">Manage Auction</a>
+    <br /><br />
     <a href="input_auction_list.php">Input Auction List</a>
     <br /><br />
     <a href="input_auction_result.php">Input Auction Result</a>
