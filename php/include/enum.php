@@ -15,10 +15,10 @@ abstract class FetchStatus
 
 abstract class ItemType
 {
-    const ConfiscatedGoods = "C";
-    const UnclaimedProperties = "UP";
-    const UnserviceableStores = "M";
-    const SurplusServiceableStores = "MS";
+    const ConfiscatedGoods = "C";           // 充公物品
+    const UnclaimedProperties = "UP";       // 無人認領物品
+    const UnserviceableStores = "M";        // 廢棄物品及剩餘物品
+    const SurplusServiceableStores = "MS";  // 仍可使用之廢棄物品及剩餘物品
 }
 
 abstract class PushStatus
