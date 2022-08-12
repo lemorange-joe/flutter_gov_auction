@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once ('../include/common.php');
 include_once ('../include/enum.php');
 include_once ('../include/config.php');
