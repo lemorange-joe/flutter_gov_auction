@@ -94,7 +94,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
     
-    echo json_encode($output);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
 
   function createAuction() {
@@ -143,7 +143,139 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function importAuction() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["auction_num"]) || empty($data["auction_num"])) {
+        throw new Exception("Auction no. missing!");  
+      }
+
+      if (!isset($data["type"]) || empty($data["type"])) {
+        throw new Exception("Type missing!");  
+      }
+
+      if (!isset($data["lots"]) || empty($data["lots"])) {
+        throw new Exception("Lot data missing!");  
+      }
+
+      $auctionId = 0;
+      $typeId = 0;
+      $auctionNum = trim($data["auction_num"]);
+      $type = trim($data["type"]);
+      $lots = $data["lots"];
+
+      $selectSql = "SELECT A.auction_id, I.type_id FROM Auction A, ItemType I WHERE A.auction_num = ? AND I.code = ?";
+      $result = $conn->Execute($selectSql, array($auctionNum, $type))->GetRows();
+      if (count($result)) {
+        $auctionId = intval($result[0]["auction_id"]);
+        $typeId = intval($result[0]["type_id"]);
+      }
+
+      if ($auctionId == 0 || $typeId == 0) {
+        throw new Exception("Auction no.: $auctionNum or type: $type not exists!");
+      }
+
+      echo "auction id: $auctionId \n";
+
+      for ($i = 0; $i < Count($lots); ++$i){
+        $curLot = $lots[$i];
+        $lotNum = trim($curLot["lot_num"]);
+        $gldFileRef = trim($curLot["gld_file_ref"]);
+        $ref = trim($curLot["ref"]);
+        $deptEn = trim($curLot["dept_en"]);
+        $deptTc = trim($curLot["dept_tc"]);
+        $deptSc = trim($curLot["dept_tc"]);
+        $contactEn = trim($curLot["contact_en"]);
+        $contactTc = trim($curLot["contact_tc"]);
+        $contactSc = trim($curLot["contact_tc"]);
+        $numberEn = trim($curLot["number_en"]);
+        $numberTc = trim($curLot["number_tc"]);
+        $numberSc = trim($curLot["number_tc"]);
+        $locationEn = trim($curLot["location_en"]);
+        $locationTc = trim($curLot["location_tc"]);
+        $locationSc = trim($curLot["location_tc"]);
+        $remarksEn = trim($curLot["remarks_en"]);
+        $remarksTc = trim($curLot["remarks_tc"]);
+        $remarksSc = trim($curLot["remarks_tc"]);
+        $items = $curLot["items"];
+
+        $insertSql = "INSERT INTO AuctionLot (
+                        auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
+                        contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc, 
+                        location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc, 
+                        icon, photo_url, photo_real,
+                        transaction_currency, transaction_price, transaction_status,
+                        status, last_update
+                      )
+                      SELECT
+                        ?, ?, ?, COUNT(*) + 1, ?, ?, ?, ?, ?, 
+                        ?, ?, ?, ?, ?, ?, 
+                        ?, ?, ?, ?, ?, ?, 
+                        'fontawesome.box', '', 0,
+                        '', 0, ?,
+                        ?, now()
+                      FROM AuctionLot
+                      WHERE auction_id = ?";
+        
+        $result = $conn->Execute($insertSql, array(
+          $auctionId, $typeId, $lotNum, $gldFileRef, $ref, $deptEn, $deptTc, $deptSc,
+          $contactEn, $contactTc, $contactSc, $numberEn, $numberTc, $numberSc,
+          $locationEn, $locationTc, $locationSc, $remarksEn, $remarksTc, $remarksSc,
+          TransactionStatus::NotSold,
+          Status::Active,
+          $auctionId
+        ));
+        $lastId = $conn->insert_Id();
+
+        $this->importLotItems($lastId, $items);
+      }
+
+      $output->data = new StdClass();
+      $output->data->id = $auctionId;
+      $output->data->type = $type;
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function importLotItems($lotId, $lots) {
+    global $conn;
+
+    for ($i = 0; $i < Count($lots); ++$i) {
+      $curLot = $lots[$i];
+
+      $descriptionEn = trim($curLot["description_en"]);
+      $descriptionTc = trim($curLot["description_tc"]);
+      $descriptionSc = trim($curLot["description_tc"]);
+      $quantity = trim($curLot["quantity"]);
+      $unitEn = trim($curLot["unit_en"]);
+      $unitTc = trim($curLot["unit_tc"]);
+      $unitSc = trim($curLot["unit_tc"]);
+      $insertSql = "INSERT INTO AuctionItem (
+                      lot_id, seq, icon, description_en, description_tc, description_sc, 
+                      quantity, unit_en, unit_tc, unit_sc
+                    ) VALUES (
+                      ?, ?, 'fontawesome.box', ?, ?, ?,
+                      ?, ?, ?, ?
+                    );";
+      
+      $result = $conn->Execute($insertSql, array(
+        $lotId, $i+1, $descriptionEn, $descriptionTc, $descriptionSc, 
+        $quantity, $unitEn, $unitTc, $unitSc 
+      ));
+    }
   }
 }
 ?>

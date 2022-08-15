@@ -276,7 +276,7 @@ if (!isset($_SESSION["admin_user"])) {
 
               var link = document.createElement('a');
               link.appendChild(document.createTextNode(curAuction.id));
-              link.href = "manage_auction.php?id="+curAuction.id;
+              link.href = "auction_details.php?id="+curAuction.id;
 
               var row = tblAuction.insertRow();
               row.setAttribute("data-index", i);

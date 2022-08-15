@@ -29,7 +29,7 @@ include_once ("../class/admin_import.php");
   ?>
     Missing data!
     <br /><br />
-    <a href="input_auction_list.php">Back</a>
+    <a href="import_auction_list.php">Back</a>
   <?php
   } else {
   ?>
@@ -38,7 +38,7 @@ include_once ("../class/admin_import.php");
       <span style="display:inline-block;width:100px">Item type:</span><input id="tbItemType" value="<?=$_POST["item_type"]?>" style="width:60px" />
       <br /><span style="display:inline-block;width:100px">Num:</span><input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>" style="width:60px" />
       </div>
-      <a href="input_auction_list.php">Cancel</a>
+      <a href="import_auction_list.php">Cancel</a>
     </div>
     <hr />
     <?php
@@ -48,11 +48,15 @@ include_once ("../class/admin_import.php");
       $adminImport = new AdminImport();
       $adminImport->parseData($itemType, $importText);
     ?>
-    <button onclick="ImportData()">Import</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="input_auction_list.php">Cancel</a>
+    <button onclick="ImportData()">Import</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="import_auction_list.php">Cancel</a>
     <script>
       function ImportData() {
         var i = 0;
-        var output = "";
+        var auctionData = {
+          "type": document.getElementById("tbItemType").value,
+          "auction_num": document.getElementById("tbAuctionNum").value,
+          "lots": [],
+        };
 
         while (document.getElementById("tbLotNum_"+i)) {
           var j = 0;
@@ -88,13 +92,31 @@ include_once ("../class/admin_import.php");
             "items": itemList,
           };
 
-          console.log(curLot);
+          auctionData.lots.push(curLot);
           
           ++i;
         }
 
-        console.log(document.getElementById("tbItemType").value);
-        console.log(document.getElementById("tbAuctionNum").value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../en/api/admin-importAuction");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              if (jsonData.status == "success") {
+                window.location = "auction_details.php?id=" + jsonData.data.id + "&type=" + jsonData.data.type;
+              } else {
+                alert("Update failed: " + jsonData.error);  
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(auctionData));
       }
     </script>
   <?php

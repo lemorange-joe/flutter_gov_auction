@@ -29,11 +29,11 @@ include_once ("../class/admin_import.php");
   ?>
     Missing data!
     <br /><br />
-    <a href="input_auction_result.php">Back</a>
+    <a href="import_auction_result.php">Back</a>
   <?php
   } else {
   ?>
-    Auction Num: <input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>">&nbsp;&nbsp;&nbsp;&nbsp;<a href="input_auction_result.php">Cancel</a>
+    Auction Num: <input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>">&nbsp;&nbsp;&nbsp;&nbsp;<a href="import_auction_result.php">Cancel</a>
     <hr />
     <?php
       $importText = $_POST["import_text"];
@@ -41,7 +41,7 @@ include_once ("../class/admin_import.php");
       $adminImport = new AdminImport();
       $adminImport->parseResultData($importText);
     ?>
-    <button onclick="ImportData()">Import</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="input_auction_result.php">Cancel</a>
+    <button onclick="ImportData()">Import</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="import_auction_result.php">Cancel</a>
     <script>
       function ImportData() {
         var i = 0;

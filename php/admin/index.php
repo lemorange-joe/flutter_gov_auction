@@ -21,9 +21,9 @@
     <hr />
     <a href="auction_list.php">Auction List</a>
     <br /><br />
-    <a href="input_auction_list.php">Input Auction List</a>
+    <a href="import_auction_list.php">Import Auction List</a>
     <br /><br />
-    <a href="input_auction_result.php">Input Auction Result</a>
+    <a href="import_auction_result.php">Import Auction Result</a>
   <?php
   } else {
   ?>
