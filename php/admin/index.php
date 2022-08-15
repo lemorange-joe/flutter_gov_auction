@@ -19,7 +19,7 @@
   ?>
     <div style="text-align:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
     <hr />
-    <a href="manage_auction.php">Manage Auction</a>
+    <a href="auction_list.php">Auction List</a>
     <br /><br />
     <a href="input_auction_list.php">Input Auction List</a>
     <br /><br />
@@ -28,7 +28,7 @@
   } else {
   ?>
     <form method="post">
-      Username: <input name="username" />
+      Username: <input name="username" autofocus />
       <br />Password: <input type="password" name="password" />
       <br /><button type="submit">Submit</button>
     </form>
