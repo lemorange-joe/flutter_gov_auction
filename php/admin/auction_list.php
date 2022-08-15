@@ -15,6 +15,14 @@ if (!isset($_SESSION["admin_user"])) {
       border-collapse: collapse;
     }
 
+    #tblAuction tr:hover {
+      background-color: #ddd;
+    }
+
+    #tblAuction td {
+      text-align: center;
+    }
+
     .form-row {
       display: flex;
     }
@@ -33,6 +41,16 @@ if (!isset($_SESSION["admin_user"])) {
 
     #newForm input.long {
       width: 550px;
+    }
+
+    .highlight-text {
+      animation: highlight-fade 5s 1;
+    }
+
+    @keyframes highlight-fade {
+      0% { background-color: rgba(255,255,255,0); }
+      20% { background-color: rgba(255,255,128,.9); }  
+      1000% { background-color: rgba(255,255,255,0); }
     }
   </style>
 </head>
@@ -57,7 +75,7 @@ if (!isset($_SESSION["admin_user"])) {
     </tbody>
   </table>
   <hr />
-  <span style="text-decoration: underline">New</span>
+  <div style="margin:10px 0;text-decoration:underline">New</div>
   <div id="newForm">
     <div class="form-row">
       <div>Auction No.</div>
@@ -112,7 +130,10 @@ if (!isset($_SESSION["admin_user"])) {
       </div>
     </div>
   </div>
-  <button onclick="CreateAuction()">Create</button>
+  <div style="margin-top: 10px">
+    <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="ResetAuction()">Reset</button>
+  </div>
   <script>
     function GetDdl(id, selectedValue, type) {
       var select = document.createElement("select");
@@ -158,6 +179,29 @@ if (!isset($_SESSION["admin_user"])) {
       return input;
     }
 
+    function PostAuctionData(url, auctionData, highlightId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            const jsonData = JSON.parse(this.responseText);
+
+            if (jsonData.status == "success") {
+              GetData(highlightId);
+            } else {
+              alert("Update failed: " + jsonData.error);  
+            }
+          } else {
+            alert("Error: " + this.responseText);
+          }
+        }
+      };
+
+      xhr.send(JSON.stringify(auctionData));
+    }
+
     function CreateAuction() {
       var auctionData = {
         "auction_num": document.getElementById("tbNewAuctionNum").value,
@@ -172,7 +216,7 @@ if (!isset($_SESSION["admin_user"])) {
         "status": document.getElementById("ddlNewStatus").value,
       };
 
-      console.log(auctionData);
+      PostAuctionData("../en/api/admin-createAuction", auctionData);
     }
 
     function UpdateAuction(i) {
@@ -198,20 +242,34 @@ if (!isset($_SESSION["admin_user"])) {
         "status": document.getElementById("ddlStatus_"+i).value,
       };
 
-      console.log(auctionData);
+      PostAuctionData("../en/api/admin-updateAuction", auctionData, "spnLastUpdate_"+i);
     }
 
-    function GetData() {
-      var apiUrl = '/en/api/admin-listAuction';
+    function ResetAuction() {
+      document.getElementById("tbNewAuctionNum").value = "";
+      document.getElementById("tbNewStartTime").value = "";
+      document.getElementById("tbNewAuctionPdfEn").value = "";
+      document.getElementById("tbNewAuctionPdfTc").value = "";
+      document.getElementById("tbNewAuctionPdfSc").value = "";
+      document.getElementById("tbNewResultPdfEn").value = "";
+      document.getElementById("tbNewResultPdfTc").value = "";
+      document.getElementById("tbNewResultPdfSc").value = "";
+      document.getElementById("ddlNewAuctionStatus").value = "P";
+      document.getElementById("ddlNewStatus").value = "I";
+    }
+
+    function GetData(highlightId) {
+      var apiUrl = '../en/api/admin-listAuction';
       var xhr = new XMLHttpRequest();
       
-      xhr.open("GET", apiUrl, true);
+      xhr.open("GET", apiUrl);
       xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           const jsonData = JSON.parse(this.responseText);
           
           if (Array.isArray(jsonData)) {
             var tblAuction = document.getElementById("tblAuction");
+            tblAuction.innerHTML = "";
             
             for (var i = 0; i < jsonData.length; ++i) {
               const curAuction = jsonData[i];
@@ -247,8 +305,15 @@ if (!isset($_SESSION["admin_user"])) {
               var row2 = tblAuction.insertRow();
               var cell = row2.insertCell(0);
               cell.setAttribute("colspan", 8);
-              cell.setAttribute("style", "height: 30px;vertical-align: top");
-              cell.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
+              cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
+              var span = document.createElement("span");
+              span.setAttribute("id", "spnLastUpdate_"+i);
+              span.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
+              cell.appendChild(span);
+            }
+
+            if (highlightId) {
+              document.getElementById(highlightId).classList.add("highlight-text");
             }
           }
         }

@@ -2,12 +2,11 @@
 class AuctionController {
   function list($param) {
     // quick api to return the list of available auctions
-    // main purpose is to compare version
     global $conn, $lang;
 
     $selectSql = "SELECT
                     auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
-                    result_pdf_$lang as 'result_pdf', auction_status, version, status, last_update 
+                    result_pdf_$lang as 'result_pdf', auction_status, status, last_update 
                   FROM Auction
                   WHERE status = ?
                   ORDER BY start_time DESC";
@@ -25,7 +24,6 @@ class AuctionController {
         $result[$i]["auction_pdf"],
         $result[$i]["result_pdf"],
         $result[$i]["auction_status"],
-        $result[$i]["version"],
         $result[$i]["status"],
         $result[$i]["last_update"],
       );
@@ -153,7 +151,7 @@ class AuctionController {
 
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
-                    A.result_pdf_$lang as 'result_pdf', A.auction_status, version, status, last_update 
+                    A.result_pdf_$lang as 'result_pdf', A.auction_status, status, last_update 
                   FROM Auction A
                   INNER JOIN Location L ON A.location_id = L.location_id
                   WHERE auction_id = ?";
@@ -170,7 +168,6 @@ class AuctionController {
         $result[0]["auction_pdf"],
         $result[0]["result_pdf"],
         $result[0]["auction_status"],
-        $result[0]["version"],
         $result[0]["status"],
         $result[0]["last_update"],
       );
