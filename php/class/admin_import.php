@@ -258,14 +258,16 @@ class AdminImport {
     
     ksort($lotList);
     $keys = array_keys($lotList);
-    for ($j = 0; $j < Count($lotList); ++$j) {
+    $total = Count($lotList);
+    for ($j = 0; $j < $total; ++$j) {
       echo "<div>";
       echo "<span style='display:inline-block;width:40px'>".($j+1).".</span>";
       echo "<input id='tbLotNum_".$j."' type='text' style='width: 100px' value='".str_replace("'", '"', $keys[$j])."'>&nbsp;&nbsp;";
       echo "<input id='tbPrice_".$j."' type='text' style='width: 200px' value='".str_replace("'", '"', $lotList[$keys[$j]])."'>";
       echo "</div>\n";
     }
-        
+    
+    return $total;
   }
 }
 ?>

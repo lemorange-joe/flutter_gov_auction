@@ -184,8 +184,6 @@ class AdminController {
         throw new Exception("Auction no.: $auctionNum or type: $type not exists!");
       }
 
-      echo "auction id: $auctionId \n";
-
       for ($i = 0; $i < Count($lots); ++$i){
         $curLot = $lots[$i];
         $lotNum = trim($curLot["lot_num"]);
@@ -193,19 +191,19 @@ class AdminController {
         $ref = trim($curLot["ref"]);
         $deptEn = trim($curLot["dept_en"]);
         $deptTc = trim($curLot["dept_tc"]);
-        $deptSc = trim($curLot["dept_tc"]);
+        $deptSc = str_chinese_simp(trim($curLot["dept_tc"]));
         $contactEn = trim($curLot["contact_en"]);
         $contactTc = trim($curLot["contact_tc"]);
-        $contactSc = trim($curLot["contact_tc"]);
+        $contactSc = str_chinese_simp(trim($curLot["contact_tc"]));
         $numberEn = trim($curLot["number_en"]);
         $numberTc = trim($curLot["number_tc"]);
-        $numberSc = trim($curLot["number_tc"]);
+        $numberSc = str_chinese_simp(trim($curLot["number_tc"]));
         $locationEn = trim($curLot["location_en"]);
         $locationTc = trim($curLot["location_tc"]);
-        $locationSc = trim($curLot["location_tc"]);
+        $locationSc = str_chinese_simp(trim($curLot["location_tc"]));
         $remarksEn = trim($curLot["remarks_en"]);
         $remarksTc = trim($curLot["remarks_tc"]);
-        $remarksSc = trim($curLot["remarks_tc"]);
+        $remarksSc = str_chinese_simp(trim($curLot["remarks_tc"]));
         $items = $curLot["items"];
 
         $insertSql = "INSERT INTO AuctionLot (
@@ -258,11 +256,11 @@ class AdminController {
 
       $descriptionEn = trim($curLot["description_en"]);
       $descriptionTc = trim($curLot["description_tc"]);
-      $descriptionSc = trim($curLot["description_tc"]);
+      $descriptionSc = str_chinese_simp(trim($curLot["description_tc"]));
       $quantity = trim($curLot["quantity"]);
       $unitEn = trim($curLot["unit_en"]);
       $unitTc = trim($curLot["unit_tc"]);
-      $unitSc = trim($curLot["unit_tc"]);
+      $unitSc = str_chinese_simp(trim($curLot["unit_tc"]));
       $insertSql = "INSERT INTO AuctionItem (
                       lot_id, seq, icon, description_en, description_tc, description_sc, 
                       quantity, unit_en, unit_tc, unit_sc
@@ -276,6 +274,62 @@ class AdminController {
         $quantity, $unitEn, $unitTc, $unitSc 
       ));
     }
+  }
+
+  function importResult() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["auction_num"]) || empty($data["auction_num"])) {
+        throw new Exception("Auction no. missing!");  
+      }
+
+      if (!isset($data["lots"]) || empty($data["lots"])) {
+        throw new Exception("Lot data missing!");  
+      }
+
+      $auctionId = 0;
+      $auctionNum = trim($data["auction_num"]);
+      $lots = $data["lots"];
+
+      $selectSql = "SELECT A.auction_id FROM Auction A WHERE A.auction_num = ?";
+      $result = $conn->Execute($selectSql, array($auctionNum))->GetRows();
+      if (count($result)) {
+        $auctionId = intval($result[0]["auction_id"]);
+      }
+
+      if ($auctionId == 0) {
+        throw new Exception("Auction no.: $auctionNum not exists!");
+      }
+
+      for ($i = 0; $i < Count($lots); ++$i){
+        $lotNum = trim($lots[$i]["lot_num"]);
+        $price = floatval($lots[$i]["price"]);
+
+        $updateSql = "UPDATE AuctionLot SET
+                        transaction_currency = ?,
+                        transaction_price = ?,
+                        transaction_status = ?
+                      WHERE auction_id = ? AND lot_num = ? ";
+        
+        $result = $conn->Execute($updateSql, array(
+          "HKD", $price, TransactionStatus::Sold, $auctionId, $lotNum
+        ));
+      }
+
+      $output->data = new StdClass();
+      $output->data->id = $auctionId;
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
 }
 ?>

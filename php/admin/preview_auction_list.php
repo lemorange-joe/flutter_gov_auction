@@ -48,9 +48,17 @@ include_once ("../class/admin_import.php");
       $adminImport = new AdminImport();
       $adminImport->parseData($itemType, $importText);
     ?>
-    <button onclick="ImportData()">Import</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href="import_auction_list.php">Cancel</a>
+    <div style="display: flex; justify-content: space-between; width: 150px; margin-top: 10px">
+      <button id="btnImport" onclick="ImportData()">Import</button>
+      <a href="import_auction_list.php">Cancel</a>
+    </div>
     <script>
       function ImportData() {
+        document.getElementById("btnImport").setAttribute("disabled", "disabled");
+        setTimeout(function() {
+          document.getElementById("btnImport").removeAttribute("disabled");
+        }, 5000);
+
         var i = 0;
         var auctionData = {
           "type": document.getElementById("tbItemType").value,
@@ -106,7 +114,7 @@ include_once ("../class/admin_import.php");
               const jsonData = JSON.parse(this.responseText);
 
               if (jsonData.status == "success") {
-                window.location = "auction_details.php?id=" + jsonData.data.id + "&type=" + jsonData.data.type;
+                window.location = "auction_details.php?id=" + jsonData.data.id;
               } else {
                 alert("Update failed: " + jsonData.error);  
               }

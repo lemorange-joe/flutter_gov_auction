@@ -1,4 +1,6 @@
 <?php
+include_once ('str_chinese.php');
+
 function Debug_var_dump($var)
 {
 	echo "<pre>";
