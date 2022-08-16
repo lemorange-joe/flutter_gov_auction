@@ -53,6 +53,16 @@ include_once ("../class/admin_import.php");
       <a href="import_auction_list.php">Cancel</a>
     </div>
     <script>
+      function AddItem(lotIndex) {
+        var btnAdd = document.getElementById("btnAddItem_" + lotIndex);
+        var itemIndex = parseInt(btnAdd.getAttribute("data-total"));
+        var bgImage = 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++' + (itemIndex + 1) + '")';
+        var textareaHtml = "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' style='width:250px;height:100px;background-image:" + bgImage + "'></textarea>";
+        document.getElementById("divItems_"+lotIndex).insertAdjacentHTML("beforeend", textareaHtml);
+
+        btnAdd.setAttribute("data-total", itemIndex+1);
+      }
+
       function ImportData() {
         document.getElementById("btnImport").setAttribute("disabled", "disabled");
         setTimeout(function() {
@@ -70,15 +80,18 @@ include_once ("../class/admin_import.php");
           var j = 0;
           var itemList = [];
           while (document.getElementById("tbItem_"+i+"_"+j)) {
-            var itemLines = document.getElementById("tbItem_"+i+"_"+j).value.split("\n");
-            
-            itemList.push({
-              "description_en": itemLines.length > 0 ? itemLines[0] : "",
-              "description_tc": itemLines.length > 1 ? itemLines[1] : "",
-              "quantity": itemLines.length > 2 ? itemLines[2] : "",
-              "unit_en": itemLines.length > 3 ? itemLines[3] : "",
-              "unit_tc": itemLines.length > 4 ? itemLines[4] : "",
-            });
+            var itemContent = document.getElementById("tbItem_"+i+"_"+j).value.trim();
+            if (itemContent != "") {
+              var itemLines = itemContent.split("\n");
+              
+              itemList.push({
+                "description_en": itemLines.length > 0 ? itemLines[0] : "",
+                "description_tc": itemLines.length > 1 ? itemLines[1] : "",
+                "quantity": itemLines.length > 2 ? itemLines[2] : "",
+                "unit_en": itemLines.length > 3 ? itemLines[3] : "",
+                "unit_tc": itemLines.length > 4 ? itemLines[4] : "",
+              });
+            }
 
             ++j;
           }

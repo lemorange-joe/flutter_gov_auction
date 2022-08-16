@@ -168,9 +168,10 @@ class AdminImport {
       echo "</div>";
     echo "</div>";
     echo "<br style='clear: both' />";
-    echo "<div style='width:1500px'>";
-        $this->extractItems($matchValues["items"], $lotIndex);
+    echo "<div id='divItems_$lotIndex' style='width:1500px'>";
+        $total = $this->extractItems($matchValues["items"], $lotIndex);
     echo "</div>";
+    echo "<button id='btnAddItem_$lotIndex' data-total='$total' onclick='AddItem($lotIndex)'>+</button>";
     echo "<hr />";
   }
 
@@ -178,9 +179,6 @@ class AdminImport {
   // split item text from the input first
   // then parse to the next method to build items
   function extractItems($strItems, $lotIndex) {
-    $output = array();
-    // $strItemList = preg_split("/\d+\./", $strItems);
-
     $strItemList = array();
     $reachEnd = false;
     $curItemNum = 1;
@@ -199,11 +197,12 @@ class AdminImport {
       }
     }
   
-    for ($itemIndex = 0; $itemIndex < Count($strItemList); ++$itemIndex) {
+    $total = Count($strItemList);
+    for ($itemIndex = 0; $itemIndex < $total; ++$itemIndex) {
       $this->buildItems($strItemList[$itemIndex], $lotIndex, $itemIndex);
     }
 
-    return $output;
+    return $total;
   }
 
   //pre: 2. Barcode Reader (Model: MS9540) 條碼讀取器 2 Nos. (個)
