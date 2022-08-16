@@ -232,7 +232,7 @@ class AuctionController {
         // prepare to start next lot
         $curLotNum = $result[$i]["lot_num"];
         $curLot = new AuctionLot(
-          $result[$i]["lot_id"],
+          intval($result[$i]["lot_id"]),
           $result[$i]["code"],
           $result[$i]["lot_num"],
           $result[$i]["lot_icon"],
@@ -249,7 +249,7 @@ class AuctionController {
       }
 
       $curItemList[] = new AuctionItem(
-        $result[$i]["item_id"],
+        intval($result[$i]["item_id"]),
         $result[$i]["item_icon"],
         $result[$i]["description"],
         $result[$i]["quantity"],

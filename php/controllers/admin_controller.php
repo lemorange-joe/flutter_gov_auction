@@ -38,6 +38,134 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
 
+  function getAuction() {
+    global $conn;
+
+    $auctionId = $_GET["id"];
+    $itemType = $_GET["type"];
+    $output = new stdClass();
+
+    // ------ 1. get auction ------
+    $selectSql = "SELECT
+                    A.auction_id, A.auction_num, A.start_time, L.address_en, L.address_tc, L.address_sc,
+                    A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
+                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.auction_status, status, last_update
+                  FROM Auction A
+                  INNER JOIN Location L ON A.location_id = L.location_id
+                  WHERE auction_id = ?";
+
+    $result = $conn->Execute($selectSql, array($auctionId))->GetRows();
+
+    if (count($result) > 0) {
+      $output->auction_id = intval($result[0]["auction_id"]);
+      $output->auction_num = $result[0]["auction_num"];
+
+      $output->start_time = $result[0]["start_time"];
+      $output->address_en = $result[0]["address_en"];
+      $output->address_tc = $result[0]["address_tc"];
+      $output->address_sc = $result[0]["address_sc"];
+      $output->auction_pdf_en = $result[0]["auction_pdf_en"];
+      $output->auction_pdf_tc = $result[0]["auction_pdf_tc"];
+      $output->auction_pdf_sc = $result[0]["auction_pdf_sc"];
+      $output->result_pdf_en = $result[0]["result_pdf_en"];
+      $output->result_pdf_tc = $result[0]["result_pdf_tc"];
+      $output->result_pdf_sc = $result[0]["result_pdf_sc"];
+      $output->auction_status = $result[0]["auction_status"];
+      $output->status = $result[0]["status"];
+      $output->last_update = $result[0]["last_update"];
+      $output->item_pdf_list = array();
+      $output->lot_list = array();
+    }
+
+    // ------ 2. get item pdf list ------
+    $selectSql = "SELECT I.code, L.url_en, L.url_tc, L.url_sc
+                  FROM Auction A
+                  INNER JOIN ItemListPdf L ON A.auction_id = L.auction_id
+                  INNER JOIN ItemType I ON L.type_id = I.type_id
+                  WHERE A.auction_id = ?
+                  ORDER BY I.seq";
+
+    $result = $conn->Execute($selectSql, array($auctionId))->GetRows();
+    $rowNum = count($result);
+
+    for($i = 0; $i < $rowNum; ++$i) {
+      $pdfUrl = new StdClass();
+      $pdfUrl->type = $result[$i]["code"];
+      $pdfUrl->url_en = $result[$i]["url_en"];
+      $pdfUrl->url_tc = $result[$i]["url_tc"];
+      $pdfUrl->url_sc = $result[$i]["url_sc"];
+
+      $output->item_pdf_list[] = $pdfUrl;
+    }
+
+    // ------ 3. get lot list ------
+    $selectSql = "SELECT
+                    L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real,
+                    L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
+                    I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc, I.quantity, 
+                    I.unit_en, I.unit_tc, I.unit_sc
+                  FROM Auction A
+                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                  INNER JOIN ItemType T ON L.type_id = T.type_id
+                  WHERE A.auction_id = ? AND (T.code = ? OR ? = '')
+                  ORDER BY L.seq, I.seq";
+
+    $result = $conn->Execute($selectSql, array($auctionId, $itemType, $itemType))->GetRows();
+    $rowNum = count($result);
+
+    $curLotNum = "";
+    $curLotOutput = new stdClass();
+    $curItemList = array();
+    for($i = 0; $i < $rowNum; ++$i) {
+      if ($curLotNum != $result[$i]["lot_num"]) {
+        if ($i > 0) {
+          // add existing to the current lot first
+          $curLotOutput->itemList = $curItemList;
+          $output->lot_list[] = $curLotOutput;
+        }
+
+        // prepare to start next lot
+        $curLotNum = $result[$i]["lot_num"];
+        $curLotOutput = new stdClass();
+        $curLotOutput->lot_id = intval($result[$i]["lot_id"]);
+        $curLotOutput->code = $result[$i]["code"];
+        $curLotOutput->lot_num = $result[$i]["lot_num"];
+        $curLotOutput->lot_icon = $result[$i]["lot_icon"];
+        $curLotOutput->photo_url = $result[$i]["photo_url"];
+        $curLotOutput->photo_real = $result[$i]["photo_real"];
+        $curLotOutput->transaction_currency = $result[$i]["transaction_currency"];
+        $curLotOutput->transaction_price = $result[$i]["transaction_price"];
+        $curLotOutput->transaction_status = $result[$i]["transaction_status"];
+        $curLotOutput->status = $result[$i]["status"];
+        $curLotOutput->last_update = $result[$i]["last_update"];
+
+        $curItemList = array();
+      }
+
+      $curItem = new stdClass();
+      $curItem->item_id = intval($result[$i]["item_id"]);
+      $curItem->item_icon = $result[$i]["item_icon"];
+      $curItem->description_en = $result[$i]["description_en"];
+      $curItem->description_tc = $result[$i]["description_tc"];
+      $curItem->description_sc = $result[$i]["description_sc"];
+      $curItem->quantity = $result[$i]["quantity"];
+      $curItem->unit_en = $result[$i]["unit_en"];
+      $curItem->unit_tc = $result[$i]["unit_tc"];
+      $curItem->unit_sc = $result[$i]["unit_sc"];
+
+      $curItemList[] = $curItem;
+    }
+
+    // add the last item
+    if ($curLotNum != "") {
+      $curLotOutput->itemList = $curItemList;
+      $output->lot_list[] = $curLotOutput;
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
   function updateAuction() {
     global $conn;
 
