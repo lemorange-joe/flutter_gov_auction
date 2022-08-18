@@ -100,7 +100,11 @@ class AdminController {
 
     // ------ 3. get lot list ------
     $selectSql = "SELECT
-                    L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real,
+                    L.lot_id, T.code, L.lot_num,
+                    gld_file_ref, reference, department_en, department_tc, department_sc,
+                    contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
+                    location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
+                    L.icon as 'lot_icon', L.photo_url, L.photo_real,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc, I.quantity, 
                     I.unit_en, I.unit_tc, I.unit_sc
@@ -121,7 +125,7 @@ class AdminController {
       if ($curLotNum != $result[$i]["lot_num"]) {
         if ($i > 0) {
           // add existing to the current lot first
-          $curLotOutput->itemList = $curItemList;
+          $curLotOutput->item_list = $curItemList;
           $output->lot_list[] = $curLotOutput;
         }
 
@@ -131,6 +135,25 @@ class AdminController {
         $curLotOutput->lot_id = intval($result[$i]["lot_id"]);
         $curLotOutput->code = $result[$i]["code"];
         $curLotOutput->lot_num = $result[$i]["lot_num"];
+        $curLotOutput->gld_file_ref = $result[$i]["gld_file_ref"];
+        $curLotOutput->reference = $result[$i]["reference"];
+
+        $curLotOutput->department_en = $result[$i]["department_en"];
+        $curLotOutput->department_tc = $result[$i]["department_tc"];
+        $curLotOutput->department_sc = $result[$i]["department_sc"];
+        $curLotOutput->contact_en = $result[$i]["contact_en"];
+        $curLotOutput->contact_tc = $result[$i]["contact_tc"];
+        $curLotOutput->contact_sc = $result[$i]["contact_sc"];
+        $curLotOutput->number_en = $result[$i]["number_en"];
+        $curLotOutput->number_tc = $result[$i]["number_tc"];
+        $curLotOutput->number_sc = $result[$i]["number_sc"];
+        $curLotOutput->location_en = $result[$i]["location_en"];
+        $curLotOutput->location_tc = $result[$i]["location_tc"];
+        $curLotOutput->location_sc = $result[$i]["location_sc"];
+        $curLotOutput->remarks_en = $result[$i]["remarks_en"];
+        $curLotOutput->remarks_tc = $result[$i]["remarks_tc"];
+        $curLotOutput->remarks_sc = $result[$i]["remarks_sc"];
+
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
         $curLotOutput->photo_url = $result[$i]["photo_url"];
         $curLotOutput->photo_real = $result[$i]["photo_real"];
@@ -159,7 +182,7 @@ class AdminController {
 
     // add the last item
     if ($curLotNum != "") {
-      $curLotOutput->itemList = $curItemList;
+      $curLotOutput->item_list = $curItemList;
       $output->lot_list[] = $curLotOutput;
     }
 
@@ -373,6 +396,45 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function updateAuctionItemPdf() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["id"]) || empty($data["id"]) || !ctype_digit($data["id"])) {
+        throw new Exception("ID missing!");  
+      }
+      
+      $auctionId = intval($data["id"]);
+      $itemPdfList = ($data["item_pdf_list"]);
+
+      $deleteSql = "DELETE FROM ItemListPdf WHERE auction_id = ?;";
+      $result = $conn->Execute($deleteSql, array($auctionId));
+
+      for ($i = 0; $i < Count($itemPdfList); ++$i) {
+        $type = $itemPdfList[$i]["type"];
+        $urlEn = $itemPdfList[$i]["url_en"];
+        $urlTc = $itemPdfList[$i]["url_tc"];
+        $urlSc = $itemPdfList[$i]["url_sc"];
+        $insertSql = "INSERT INTO ItemListPdf (auction_id, type_id, url_en, url_tc, url_sc)
+                      SELECT ?, I.type_id, ?, ?, ?
+                      FROM ItemType I
+                      WHERE I.code = ?;";
+        $result = $conn->Execute($insertSql, array($auctionId, $urlEn, $urlTc, $urlSc, $type));
+      }
+      
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+    
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
 
