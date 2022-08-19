@@ -87,6 +87,13 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
   </div>
 
   <script>
+    function TempDisableButton(id) {
+      document.getElementById(id).setAttribute("disabled", "disabled");
+      setTimeout(function() {
+        document.getElementById(id).removeAttribute("disabled");
+      }, 5000);
+    }
+
     function GetDdl(id, selectedValue, type) {
       var select = document.createElement("select");
       var option;
@@ -101,6 +108,13 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         values = {
           "A": "Active",
           "I": "Inactive",
+        };
+      } else if (type == "ItemType") {
+        values = {
+          "<?=ItemType::ConfiscatedGoods?>": "[<?=ItemType::ConfiscatedGoods?>] 充公物品",
+          "<?=ItemType::UnclaimedProperties?>": "[<?=ItemType::UnclaimedProperties?>] 無人認領物品",
+          "<?=ItemType::UnserviceableStores?>": "[<?=ItemType::UnserviceableStores?>] 廢棄物品及剩餘物品",
+          "<?=ItemType::SurplusServiceableStores?>": "[<?=ItemType::SurplusServiceableStores?>] 仍可使用之廢棄物品及剩餘物品",
         };
       }
       
@@ -192,10 +206,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         item_pdf_list: itemPdfList
       }
 
-      document.getElementById("btnSaveItemPdf").setAttribute("disabled", "disabled");
-      setTimeout(function() {
-        document.getElementById("btnSaveItemPdf").removeAttribute("disabled");
-      }, 5000);
+      TempDisableButton("btnSaveItemPdf");
       PostData("../en/api/admin-updateAuctionItemPdf", postData);
     }
 
@@ -229,8 +240,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     }
 
     function SaveLot(lotIndex) {
+      var auctionId = document.getElementById("tbAuctionId").value;
       var lotId = document.getElementById("tbLotId_"+lotIndex).value;
+      var itemCode = document.getElementById("ddlItemType_"+lotIndex).value;
       var lotNum = document.getElementById("tbLotNum_"+lotIndex).value;
+      var seq = document.getElementById("tbSeq_"+lotIndex).value;
       var gldFileRef = document.getElementById("tbGldRef_"+lotIndex).value;
       var reference = document.getElementById("tbRef_"+lotIndex).value;
       var departmentEn = document.getElementById("tbDeptEn_"+lotIndex).value;
@@ -286,10 +300,13 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       }
 
       var lotData = {
+        auction_id: auctionId,
         lot_id: lotId,
+        item_code: itemCode,
         lot_num: lotNum,
+        seq: seq,
         gld_file_ref: gldFileRef,
-        refrence: reference,
+        reference: reference,
         department_en: departmentEn,
         department_tc: departmentTc,
         department_sc: departmentSc,
@@ -316,23 +333,16 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       };
 
       console.log(lotData);
-
-      // var postData = {
-      //   id: document.getElementById("tbAuctionId").value,
-      //   item_pdf_list: itemPdfList
-      // }
-
-      // document.getElementById("btnSaveItemPdf").setAttribute("disabled", "disabled");
-      // setTimeout(function() {
-      //   document.getElementById("btnSaveItemPdf").removeAttribute("disabled");
-      // }, 5000);
-      // PostData("../en/api/admin-updateAuctionItemPdf", postData);
+      
+      TempDisableButton("btnSaveLot_"+lotIndex);
+      PostData("../en/api/admin-updateAuctionLot", lotData);
     }
 
     function BuildLotDiv(i, lotData) {
       var lotId = 0;
       var itemType = "";
       var lotNum = "";
+      var seq = i+1;
       var gldFileRef = "";
       var reference = "";
 
@@ -366,6 +376,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         lotId = lotData["lot_id"];
         itemType = lotData["item_type"];
         lotNum = lotData["lot_num"];
+        seq = lotData["seq"];
         gldFileRef = lotData["gld_file_ref"];
         reference = lotData["reference"];
 
@@ -399,8 +410,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       var divHtml = "<div>";
       
       divHtml += "<div style='width:900px; float: left'>";
-        divHtml += "<div style='display:flex'><div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px' disabled='disabled' value='" + lotId + "'></div>";
+        divHtml += "<div style='display:flex'><div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px; margin-right: 60px' disabled='disabled' value='" + lotId + "'>";
+        divHtml += GetDdl("ddlItemType_"+i, itemType, "ItemType");
+        divHtml += "</div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
+        divHtml += "<div style='display:flex'><div style='width:100px'>Seq</div><input id='tbSeq_" + i + "' style='width:100px' value='" + seq + "'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>GLD Ref</div><input id='tbGldRef_" + i + "' style='width:200px' value='" + gldFileRef.replace("'", '"') + "'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Ref</div><input id='tbRef_" + i + "' style='width:200px' value='" + reference.replace("'", '"') + "'></div>";
         divHtml += "<div style='height:10px'></div>";
@@ -410,7 +424,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "<div style='height:10px'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Contact</div><input id='tbContactEn_" + i + "' style='width:750px' value='" + contactEn.replace("'", '"') + "'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>聯絡人</div><input id='tbContactTc_" + i + "' style='width:750px' value='" + contactTc.replace("'", '"') + "'></div>";
-        divHtml += "<div style='display:flex'><div style='width:100px'>聯絡人</div><input id='tbContactSc_" + i + "' style='width:750px' value='" + contactSc.replace("'", '"') + "'></div>";
+        divHtml += "<div style='display:flex'><div style='width:100px'>联络人</div><input id='tbContactSc_" + i + "' style='width:750px' value='" + contactSc.replace("'", '"') + "'></div>";
         divHtml += "<div style='height:10px'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Number</div><input id='tbNumberEn_" + i + "' style='width:750px' value='" + numberEn.replace("'", '"') + "'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>電話</div><input id='tbNumberTc_" + i + "' style='width:750px' value='" + numberTc.replace("'", '"') + "'></div>";
@@ -450,7 +464,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       divHtml += "</div>"
 
       divHtml += "<div><button id='btnAddItem_" + i + "' data-lot-index='" + i + "' data-total='" + itemList.length + "' onclick='AddItem(" + i + ")'>+ Item</button></div>";
-      divHtml += "<div><button onclick='SaveLot(" + i + ")' style='width: 80px;height: 30px;margin-top: 15px'>Save Lot</button></div>";
+      divHtml += "<div><button id='btnSaveLot_" + i + "' onclick='SaveLot(" + i + ")' style='width: 80px;height: 30px;margin-top: 15px'>Save Lot</button></div>";
 
       divHtml += "</div>";
       divHtml += "<br style='clear: both' /><hr />";
@@ -491,7 +505,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
       return textareaHtml
     }
-
 
     function BuildDetails(jsonData) {
       document.getElementById("tbAuctionId").value = jsonData["auction_id"];
