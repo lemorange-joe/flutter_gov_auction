@@ -6,10 +6,19 @@ class AdminController {
     global $conn, $lang;
 
     $selectSql = "SELECT
-                    auction_id, auction_num, start_time, auction_pdf_en, auction_pdf_tc, auction_pdf_sc,
-                    result_pdf_en, result_pdf_tc, result_pdf_sc, auction_status, status, last_update 
-                  FROM Auction
-                  ORDER BY auction_id DESC";
+                    A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
+                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.auction_status, A.status, A.last_update,
+                    GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
+                  FROM Auction A
+                  LEFT JOIN (
+                    SELECT L.auction_id, I.seq, concat(I.code, ': ',  COUNT(*)) as 'total'
+                    FROM AuctionLot L
+                    INNER JOIN ItemType I ON L.type_id = I.type_id
+                    WHERE L.status = 'A'
+                    GROUP BY L.auction_id, I.seq, I.code
+                  ) as C ON A.auction_id = C.auction_id
+                  GROUP BY A.auction_id
+                  ORDER BY A.auction_id DESC";
 
     $result = $conn->Execute($selectSql)->GetRows();
     $rowNum = count($result);
@@ -29,8 +38,7 @@ class AdminController {
       $auction->auction_status = $result[$i]["auction_status"];
       $auction->status = $result[$i]["status"];
       $auction->last_update = $result[$i]["last_update"];
-
-
+      $auction->lot_count = $result[$i]["lot_count"];
 
       $output[] = $auction;
     }

@@ -185,7 +185,17 @@ class AdminImport {
     $curStrItems = $strItems;
     while (!$reachEnd) {
       $nextItemNum = $curItemNum + 1;
-      $endPos = strrpos($curStrItems, "\n".$nextItemNum.".");
+      // try different search pattern for the number bullet, e.g.:
+      // 1.
+      // 1. xxx
+      // MS301 1. xxx
+      $endPos = strrpos($curStrItems, "\n".$nextItemNum.".\n");
+      if ($endPos === false) {
+        $endPos = strrpos($curStrItems, "\n".$nextItemNum.". ");
+      } else if ($endPos === false) {
+        $endPos = strrpos($curStrItems, " ".$nextItemNum.". ");
+      }
+
 
       if ($endPos === false) {
         $reachEnd = true;
@@ -208,9 +218,9 @@ class AdminImport {
   //pre: 2. Barcode Reader (Model: MS9540) 條碼讀取器 2 Nos. (個)
   function buildItems($strItem, $lotIndex, $itemIndex) {
     $itemPropertyList = array_filter(explode("\n", $strItem));
-
+    $id = "tbItem_$lotIndex"."_$itemIndex";
     $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
-    echo "<textarea id='tbItem_$lotIndex"."_$itemIndex' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "'>";
+    echo "<textarea id='$id' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
     // var_dump($itemPropertyList);
     echo $strItem;
     echo "</textarea>";

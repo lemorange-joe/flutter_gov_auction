@@ -36,7 +36,7 @@ if (!isset($_SESSION["admin_user"])) {
     }
 
     #newForm input {
-      width: 100px;
+      width: 130px;
     }
 
     #newForm input.long {
@@ -83,7 +83,7 @@ if (!isset($_SESSION["admin_user"])) {
     </div>
     <div class="form-row">
       <div>Start Time</div>
-      <div><input id="tbNewStartTime" /></div>
+      <div><input id="tbNewStartTime" placeholder="2022-08-11 10:30:00"/></div>
     </div>
     <div class="form-row separate">
       <div>Auction PDF (EN)</div>
@@ -134,6 +134,7 @@ if (!isset($_SESSION["admin_user"])) {
     <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
     <button onclick="ResetAuction()">Reset</button>
   </div>
+  <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
   <script>
     function GetDdl(id, selectedValue, type) {
       var select = document.createElement("select");
@@ -242,7 +243,7 @@ if (!isset($_SESSION["admin_user"])) {
         "status": document.getElementById("ddlStatus_"+i).value,
       };
 
-      PostAuctionData("../en/api/admin-updateAuction", auctionData, "spnLastUpdate_"+i);
+      PostAuctionData("../en/api/admin-updateAuction", auctionData, "divLastUpdate_"+i);
     }
 
     function ResetAuction() {
@@ -306,10 +307,31 @@ if (!isset($_SESSION["admin_user"])) {
               var cell = row2.insertCell(0);
               cell.setAttribute("colspan", 8);
               cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
-              var span = document.createElement("span");
-              span.setAttribute("id", "spnLastUpdate_"+i);
-              span.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
-              cell.appendChild(span);
+
+                var divCount = document.createElement("div");
+                divCount.style.height = "30px";
+                divCount.appendChild(document.createTextNode("Count - " + curAuction.lot_count));
+
+                var divLastUpdate = document.createElement("div");
+                divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
+                divLastUpdate.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
+
+                var importItemLink = document.createElement('a');
+                importItemLink.appendChild(document.createTextNode("Import Items"));
+                importItemLink.href = "import_auction_list.php?auction_num=" + encodeURIComponent(curAuction.num);
+
+                var importResultLink = document.createElement('a');
+                importResultLink.appendChild(document.createTextNode("Import Result"));
+                importResultLink.href = "import_auction_result.php?auction_num=" + encodeURIComponent(curAuction.num);
+
+                var divLinks = document.createElement("div");
+                divLinks.appendChild(importItemLink);
+                divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
+                divLinks.appendChild(importResultLink);
+              
+              cell.appendChild(divCount);
+              cell.appendChild(divLastUpdate);
+              cell.appendChild(divLinks);
             }
 
             if (highlightId) {

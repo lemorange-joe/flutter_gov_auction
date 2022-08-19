@@ -52,7 +52,18 @@ include_once ("../class/admin_import.php");
       <button id="btnImport" onclick="ImportData()">Import</button>
       <a href="import_auction_list.php">Cancel</a>
     </div>
+    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
     <script>
+      
+      function CheckTextarea(id) {
+        var itemNum = parseInt(id.substr(-1)) + 1;
+        if (document.getElementById(id).value.split("\n").length != 5) {
+          document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/f88/666.png&text=++++++" + itemNum + "')";
+        } else {
+          document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/fff/888.png&text=++++++" + itemNum + "')";
+        }
+      }
+
       function AddItem(lotIndex) {
         var btnAdd = document.getElementById("btnAddItem_" + lotIndex);
         var itemIndex = parseInt(btnAdd.getAttribute("data-total"));

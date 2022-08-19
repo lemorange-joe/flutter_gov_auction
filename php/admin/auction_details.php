@@ -86,6 +86,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <button id="btnAddLot" data-lot-count="0" onclick="AddLot()">+ Lot</button>
   </div>
 
+  <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+
   <script>
     function TempDisableButton(id) {
       document.getElementById(id).setAttribute("disabled", "disabled");
@@ -440,7 +442,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       divHtml += "<div style='width:700px;float: right;'>";
         divHtml += "<div style='height:20px'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
-        divHtml += "<div style='display:flex'><div style='width:100px'>Photo URL</div><input id='tbPhotoUrl_" + i + "' style='width:600px' value='" + photoUrl.replace("'", '"') + "'></div>";
+        divHtml += "<div style='display:flex'><div style='width:100px'>Photo URL</div><input id='tbPhotoUrl_" + i + "' style='width:590px' value='" + photoUrl.replace("'", '"') + "'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Photo Real</div><input id='chkPhotoReal_" + i + "' type='checkbox' " + (photoReal ? "checked" : "") + "></div>";
         divHtml += "<div style='height:10px'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Currency</div><input id='tbTranCurrency" + i + "' value='" + transactionCurrency.replace("'", '"') + "'></div>";
@@ -448,11 +450,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "<div style='display:flex'><div style='width:100px'>T. Status</div>" + GetDdl("ddlTranStatus_"+i, transactionStatus, "TransactionStatus") + "</div>";
         divHtml += "<div style='height:10px'></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>Remarks</div>";
-        divHtml += "<textarea id='tbRemarksEn_" + i + "' style='width:700px;height:60px'>" + remarksEn + "</textarea></div>";
+        divHtml += "<textarea id='tbRemarksEn_" + i + "' style='width:600px;height:60px'>" + remarksEn + "</textarea></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>注意</div>";
-        divHtml += "<textarea id='tbRemarksTc_" + i + "' style='width:700px;height:60px'>" + remarksTc + "</textarea></div>";
+        divHtml += "<textarea id='tbRemarksTc_" + i + "' style='width:600px;height:60px'>" + remarksTc + "</textarea></div>";
         divHtml += "<div style='display:flex'><div style='width:100px'>注意 (SC)</div>";
-        divHtml += "<textarea id='tbRemarksSc_" + i + "' style='width:700px;height:60px'>" + remarksSc + "</textarea></div>";
+        divHtml += "<textarea id='tbRemarksSc_" + i + "' style='width:600px;height:60px'>" + remarksSc + "</textarea></div>";
       divHtml += "</div>";
       
       divHtml += "<br style='clear: both' />";
