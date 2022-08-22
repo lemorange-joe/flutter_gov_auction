@@ -643,5 +643,73 @@ class AdminController {
 
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
+
+  function listPush() {
+    global $conn;
+
+    $output = new stdClass();
+    
+    try {
+      $selectSql = "SELECT push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status FROM PushHistory ORDER BY push_id DESC";
+
+      $result = $conn->Execute($selectSql)->GetRows();
+      $rowNum = count($result);
+
+      $output = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $push = new stdClass();
+        $push->id = $result[$i]["push_id"];
+        $push->title_en = $result[$i]["title_en"];
+        $push->title_tc = $result[$i]["title_tc"];
+        $push->title_sc = $result[$i]["title_sc"];
+        $push->body_en = $result[$i]["body_en"];
+        $push->body_tc = $result[$i]["body_tc"];
+        $push->body_sc = $result[$i]["body_sc"];
+        $push->push_date = $result[$i]["push_date"];
+        $push->status = $result[$i]["status"];
+
+        $output[] = $push;
+      }
+    } catch (Exception $e) {
+      $output->status = "failed";
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function sendPush() {
+    global $conn;
+
+    //for testing only!!!
+    sleep(2);
+
+    $output = new stdClass();
+    $output->status = "failed";
+    
+    try{
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      $titleEn = trim($data["title_en"]);
+      $titleTc = trim($data["title_tc"]);
+      $titleSc = trim($data["title_sc"]);
+      $bodyEn = trim($data["body_en"]);
+      $bodyTc = trim($data["body_tc"]);
+      $bodySc = trim($data["body_sc"]);
+
+      $insertSql = "INSERT INTO PushHistory (title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status) 
+                    VALUES (
+                      ?, ?, ?, ?, ?, ?, now(), ?
+                    );";
+
+      $result = $conn->Execute($insertSql, array($titleEn, $titleTc, $titleSc, $bodyEn, $bodyTc, $bodySc, PushStatus::Sending));
+
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
 }
 ?>

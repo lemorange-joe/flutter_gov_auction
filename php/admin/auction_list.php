@@ -59,7 +59,6 @@ if (!isset($_SESSION["admin_user"])) {
   <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
   <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   <hr style="clear: both"/>
-  <hr />
   <table>
     <thead>
       <tr>

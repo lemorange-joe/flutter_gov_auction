@@ -20,7 +20,6 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
   <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
   <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   <hr style="clear: both"/>
-  <hr />
   <form id="import_form" action="preview_auction_list.php" method="POST">
     <div style="width:1500px;display:flex;justify-content:space-between">
       <div>
