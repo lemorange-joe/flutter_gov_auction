@@ -1,4 +1,5 @@
 <?php
+include_once ('../class/push_manager.php');
 include_once ('../include/enum.php');
 
 class AdminController {
@@ -681,28 +682,48 @@ class AdminController {
   function sendPush() {
     global $conn;
 
-    //for testing only!!!
-    sleep(2);
-
     $output = new stdClass();
     $output->status = "failed";
     
     try{
       $data = json_decode(file_get_contents('php://input'), true);
 
-      $titleEn = trim($data["title_en"]);
-      $titleTc = trim($data["title_tc"]);
-      $titleSc = trim($data["title_sc"]);
-      $bodyEn = trim($data["body_en"]);
-      $bodyTc = trim($data["body_tc"]);
-      $bodySc = trim($data["body_sc"]);
+      if (!isset($data["title_en"]) || trim($data["title_en"]) == "" || 
+          !isset($data["title_tc"]) || trim($data["title_tc"]) == "" || 
+          !isset($data["title_sc"]) || trim($data["title_sc"]) == "" || 
+          !isset($data["body_en"]) || trim($data["body_en"]) == "" || 
+          !isset($data["body_tc"]) || trim($data["body_tc"]) == "" || 
+          !isset($data["body_sc"]) || trim($data["body_sc"]) == "") {
+            throw new Exception("Data is empty");
+          }
+
+      $pushData = new PushData(
+        trim($data["title_en"]), trim($data["title_tc"]), trim($data["title_sc"]), 
+        trim($data["body_en"]), trim($data["body_tc"]), trim($data["body_sc"])
+      );
 
       $insertSql = "INSERT INTO PushHistory (title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status) 
                     VALUES (
                       ?, ?, ?, ?, ?, ?, now(), ?
                     );";
 
-      $result = $conn->Execute($insertSql, array($titleEn, $titleTc, $titleSc, $bodyEn, $bodyTc, $bodySc, PushStatus::Sending));
+      $result = $conn->Execute($insertSql, array(
+        $pushData->titleEn, $pushData->titleTc, $pushData->titleSc,
+        $pushData->bodyEn, $pushData->bodyTc, $pushData->bodySc, PushStatus::Sending
+      ));
+
+      $pushId = $conn->insert_Id();
+
+      if ($pushId > 0) {
+        $pushManager = new PushManager();
+
+        $result = $pushManager->send($pushData);
+
+        $updateSql = "UPDATE PushHistory SET status = ? WHERE push_id = ?";
+        $result = $conn->Execute($updateSql, array(
+          $result ? PushStatus::Sent : PushStatus::Failed, $pushId
+        ));
+      }
 
       $output->status = "success";
     } catch (Exception $e) {

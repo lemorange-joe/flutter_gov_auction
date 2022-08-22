@@ -56,296 +56,300 @@ if (!isset($_SESSION["admin_user"])) {
   </style>
 </head>
 <body>
-  <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
-  <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
-  <hr style="clear: both"/>
-  <table>
-    <thead>
-      <tr>
-        <th style="width: 50px">ID</th>
-        <th style="width: 100px">Auction No.</th>
-        <th style="width: 100px">Start Time</th>
-        <th style="width: 300px">Auction PDF</th>
-        <th style="width: 300px">Result PDF</th>
-        <th style="width: 150px">Auction Status</th>
-        <th style="width: 80px">Status</th>
-        <th style="width: 100px"></th>
-      </tr>
-    </thead>
-    <tbody id="tblAuction">
-    </tbody>
-  </table>
-  <hr />
-  <div style="margin:10px 0;text-decoration:underline">New</div>
-  <div id="newForm">
-    <div class="form-row">
-      <div>Auction No.</div>
-      <div><input id="tbNewAuctionNum" /></div>
-    </div>
-    <div class="form-row">
-      <div>Start Time</div>
-      <div><input id="tbNewStartTime" placeholder="2022-08-11 10:30:00"/></div>
-    </div>
-    <div class="form-row separate">
-      <div>Auction PDF (EN)</div>
-      <div><input id="tbNewAuctionPdfEn" class="long" /></div>
-    </div>
-    <div class="form-row">
-      <div>Auction PDF (TC)</div>
-      <div><input id="tbNewAuctionPdfTc" class="long" /></div>
-    </div>
-    <div class="form-row">
-      <div>Auction PDF (SC)</div>
-      <div><input id="tbNewAuctionPdfSc" class="long" /></div>
-    </div>
-    <div class="form-row separate">
-      <div>Result PDF (EN)</div>
-      <div><input id="tbNewResultPdfEn" class="long" /></div>
-    </div>
-    <div class="form-row">
-      <div>Result PDF (TC)</div>
-      <div><input id="tbNewResultPdfTc" class="long" /></div>
-    </div>
-    <div class="form-row">
-      <div>Result PDF (SC)</div>
-      <div><input id="tbNewResultPdfSc" class="long" /></div>
-    </div>
-    <div class="form-row separate">
-      <div>Auction Status</div>
-      <div>
-        <select id="ddlNewAuctionStatus">
-        <option value="P" selected>Pending</option>
-        <option value="C">Confirmed</option>
-        <option value="X">Cancelled</option>
-        <option value="F">Finished</option>
-        </select>
+  <div class="header bgBlue">
+    <div><h2><a href="index.php">« Admin Index</a></h2></div>
+    <div class="title">Auction List</div>
+    <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+  </div>
+  <div class="body">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px">ID</th>
+          <th style="width: 100px">Auction No.</th>
+          <th style="width: 100px">Start Time</th>
+          <th style="width: 300px">Auction PDF</th>
+          <th style="width: 300px">Result PDF</th>
+          <th style="width: 150px">Auction Status</th>
+          <th style="width: 80px">Status</th>
+          <th style="width: 100px"></th>
+        </tr>
+      </thead>
+      <tbody id="tblAuction">
+      </tbody>
+    </table>
+    <hr />
+    <div style="margin:10px 0;text-decoration:underline">New</div>
+    <div id="newForm">
+      <div class="form-row">
+        <div>Auction No.</div>
+        <div><input id="tbNewAuctionNum" /></div>
+      </div>
+      <div class="form-row">
+        <div>Start Time</div>
+        <div><input id="tbNewStartTime" placeholder="2022-08-11 10:30:00"/></div>
+      </div>
+      <div class="form-row separate">
+        <div>Auction PDF (EN)</div>
+        <div><input id="tbNewAuctionPdfEn" class="long" /></div>
+      </div>
+      <div class="form-row">
+        <div>Auction PDF (TC)</div>
+        <div><input id="tbNewAuctionPdfTc" class="long" /></div>
+      </div>
+      <div class="form-row">
+        <div>Auction PDF (SC)</div>
+        <div><input id="tbNewAuctionPdfSc" class="long" /></div>
+      </div>
+      <div class="form-row separate">
+        <div>Result PDF (EN)</div>
+        <div><input id="tbNewResultPdfEn" class="long" /></div>
+      </div>
+      <div class="form-row">
+        <div>Result PDF (TC)</div>
+        <div><input id="tbNewResultPdfTc" class="long" /></div>
+      </div>
+      <div class="form-row">
+        <div>Result PDF (SC)</div>
+        <div><input id="tbNewResultPdfSc" class="long" /></div>
+      </div>
+      <div class="form-row separate">
+        <div>Auction Status</div>
+        <div>
+          <select id="ddlNewAuctionStatus">
+          <option value="P" selected>Pending</option>
+          <option value="C">Confirmed</option>
+          <option value="X">Cancelled</option>
+          <option value="F">Finished</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>Status</div>
+        <div>
+          <select id="ddlNewStatus">
+            <option value="A">Active</option>
+            <option value="I" selected>Inactive</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="form-row">
-      <div>Status</div>
-      <div>
-        <select id="ddlNewStatus">
-          <option value="A">Active</option>
-          <option value="I" selected>Inactive</option>
-        </select>
-      </div>
+    <div style="margin-top: 10px">
+      <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button onclick="ResetAuction()">Reset</button>
     </div>
-  </div>
-  <div style="margin-top: 10px">
-    <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
-    <button onclick="ResetAuction()">Reset</button>
-  </div>
-  <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
-  <script>
-    function GetDdl(id, selectedValue, type) {
-      var select = document.createElement("select");
-      var option;
-      var values;
+    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+    <script>
+      function GetDdl(id, selectedValue, type) {
+        var select = document.createElement("select");
+        var option;
+        var values;
 
-      if (type == "AuctionStatus") {
-        values = {
-          "P": "Pending",
-          "C": "Confirmed",
-          "X": "Cancelled",
-          "F": "Finished",
-        };
-      } else if (type == "Status") {
-        values = {
-          "A": "Active",
-          "I": "Inactive",
-        };
-      }
-      
-      select.setAttribute("id", id);
-      Object.keys(values).forEach(function(k) {
-        var option = document.createElement("option");
-        option.value = k;
-        option.textContent = values[k];
-        if (selectedValue == k) {
-          option.setAttribute("selected", "selected");
+        if (type == "AuctionStatus") {
+          values = {
+            "P": "Pending",
+            "C": "Confirmed",
+            "X": "Cancelled",
+            "F": "Finished",
+          };
+        } else if (type == "Status") {
+          values = {
+            "A": "Active",
+            "I": "Inactive",
+          };
         }
-        select.appendChild(option);
-      });
+        
+        select.setAttribute("id", id);
+        Object.keys(values).forEach(function(k) {
+          var option = document.createElement("option");
+          option.value = k;
+          option.textContent = values[k];
+          if (selectedValue == k) {
+            option.setAttribute("selected", "selected");
+          }
+          select.appendChild(option);
+        });
 
-      return select;
-    }
-
-    function GetTextBox(id, value, type, width) {
-      var input = document.createElement("input");
-      input.setAttribute("id", id);
-      input.setAttribute("type", type);
-      input.setAttribute("value", value);
-      if (width) {
-        input.style.width = width+"px";
+        return select;
       }
-      return input;
-    }
 
-    function PostAuctionData(url, auctionData, highlightId) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", url);
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-            const jsonData = JSON.parse(this.responseText);
+      function GetTextBox(id, value, type, width) {
+        var input = document.createElement("input");
+        input.setAttribute("id", id);
+        input.setAttribute("type", type);
+        input.setAttribute("value", value);
+        if (width) {
+          input.style.width = width+"px";
+        }
+        return input;
+      }
 
-            if (jsonData.status == "success") {
-              GetData(highlightId);
+      function PostAuctionData(url, auctionData, highlightId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              if (jsonData.status == "success") {
+                GetData(highlightId);
+              } else {
+                alert("Update failed: " + jsonData.error);  
+              }
             } else {
-              alert("Update failed: " + jsonData.error);  
+              alert("Error: " + this.responseText);
             }
-          } else {
-            alert("Error: " + this.responseText);
           }
-        }
-      };
+        };
 
-      xhr.send(JSON.stringify(auctionData));
-    }
-
-    function CreateAuction() {
-      var auctionData = {
-        "auction_num": document.getElementById("tbNewAuctionNum").value,
-        "start_time": document.getElementById("tbNewStartTime").value,
-        "auction_pdf_en": document.getElementById("tbNewAuctionPdfEn").value,
-        "auction_pdf_tc": document.getElementById("tbNewAuctionPdfTc").value,
-        "auction_pdf_sc": document.getElementById("tbNewAuctionPdfSc").value,
-        "result_pdf_en": document.getElementById("tbNewResultPdfEn").value,
-        "result_pdf_tc": document.getElementById("tbNewResultPdfTc").value,
-        "result_pdf_sc": document.getElementById("tbNewResultPdfSc").value,
-        "auction_status": document.getElementById("ddlNewAuctionStatus").value,
-        "status": document.getElementById("ddlNewStatus").value,
-      };
-
-      PostAuctionData("../en/api/admin-createAuction", auctionData);
-    }
-
-    function UpdateAuction(i) {
-      var tr = document.getElementById("tblAuction").getElementsByTagName("tr")[i];
-      var i = tr.getAttribute("data-index");
-
-      if (!i) {
-        alert('Index not found!');
-        return;
+        xhr.send(JSON.stringify(auctionData));
       }
 
-      var auctionData = {
-        "id": document.getElementById("tbAuctionId_"+i).value,
-        "auction_num": document.getElementById("tbAuctionNum_"+i).value,
-        "start_time": document.getElementById("tbAuctionStartTime_"+i).value,
-        "auction_pdf_en": document.getElementById("tbAuctionPdfEn_"+i).value,
-        "auction_pdf_tc": document.getElementById("tbAuctionPdfTc_"+i).value,
-        "auction_pdf_sc": document.getElementById("tbAuctionPdfSc_"+i).value,
-        "result_pdf_en": document.getElementById("tbResultPdfEn_"+i).value,
-        "result_pdf_tc": document.getElementById("tbResultPdfTc_"+i).value,
-        "result_pdf_sc": document.getElementById("tbResultPdfSc_"+i).value,
-        "auction_status": document.getElementById("ddlAuctionStatus_"+i).value,
-        "status": document.getElementById("ddlStatus_"+i).value,
-      };
+      function CreateAuction() {
+        var auctionData = {
+          "auction_num": document.getElementById("tbNewAuctionNum").value,
+          "start_time": document.getElementById("tbNewStartTime").value,
+          "auction_pdf_en": document.getElementById("tbNewAuctionPdfEn").value,
+          "auction_pdf_tc": document.getElementById("tbNewAuctionPdfTc").value,
+          "auction_pdf_sc": document.getElementById("tbNewAuctionPdfSc").value,
+          "result_pdf_en": document.getElementById("tbNewResultPdfEn").value,
+          "result_pdf_tc": document.getElementById("tbNewResultPdfTc").value,
+          "result_pdf_sc": document.getElementById("tbNewResultPdfSc").value,
+          "auction_status": document.getElementById("ddlNewAuctionStatus").value,
+          "status": document.getElementById("ddlNewStatus").value,
+        };
 
-      PostAuctionData("../en/api/admin-updateAuction", auctionData, "divLastUpdate_"+i);
-    }
+        PostAuctionData("../en/api/admin-createAuction", auctionData);
+      }
 
-    function ResetAuction() {
-      document.getElementById("tbNewAuctionNum").value = "";
-      document.getElementById("tbNewStartTime").value = "";
-      document.getElementById("tbNewAuctionPdfEn").value = "";
-      document.getElementById("tbNewAuctionPdfTc").value = "";
-      document.getElementById("tbNewAuctionPdfSc").value = "";
-      document.getElementById("tbNewResultPdfEn").value = "";
-      document.getElementById("tbNewResultPdfTc").value = "";
-      document.getElementById("tbNewResultPdfSc").value = "";
-      document.getElementById("ddlNewAuctionStatus").value = "P";
-      document.getElementById("ddlNewStatus").value = "I";
-    }
+      function UpdateAuction(i) {
+        var tr = document.getElementById("tblAuction").getElementsByTagName("tr")[i];
+        var i = tr.getAttribute("data-index");
 
-    function GetData(highlightId) {
-      var apiUrl = '../en/api/admin-listAuction';
-      var xhr = new XMLHttpRequest();
-      
-      xhr.open("GET", apiUrl);
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          const jsonData = JSON.parse(this.responseText);
-          
-          if (Array.isArray(jsonData)) {
-            var tblAuction = document.getElementById("tblAuction");
-            tblAuction.innerHTML = "";
+        if (!i) {
+          alert('Index not found!');
+          return;
+        }
+
+        var auctionData = {
+          "id": document.getElementById("tbAuctionId_"+i).value,
+          "auction_num": document.getElementById("tbAuctionNum_"+i).value,
+          "start_time": document.getElementById("tbAuctionStartTime_"+i).value,
+          "auction_pdf_en": document.getElementById("tbAuctionPdfEn_"+i).value,
+          "auction_pdf_tc": document.getElementById("tbAuctionPdfTc_"+i).value,
+          "auction_pdf_sc": document.getElementById("tbAuctionPdfSc_"+i).value,
+          "result_pdf_en": document.getElementById("tbResultPdfEn_"+i).value,
+          "result_pdf_tc": document.getElementById("tbResultPdfTc_"+i).value,
+          "result_pdf_sc": document.getElementById("tbResultPdfSc_"+i).value,
+          "auction_status": document.getElementById("ddlAuctionStatus_"+i).value,
+          "status": document.getElementById("ddlStatus_"+i).value,
+        };
+
+        PostAuctionData("../en/api/admin-updateAuction", auctionData, "divLastUpdate_"+i);
+      }
+
+      function ResetAuction() {
+        document.getElementById("tbNewAuctionNum").value = "";
+        document.getElementById("tbNewStartTime").value = "";
+        document.getElementById("tbNewAuctionPdfEn").value = "";
+        document.getElementById("tbNewAuctionPdfTc").value = "";
+        document.getElementById("tbNewAuctionPdfSc").value = "";
+        document.getElementById("tbNewResultPdfEn").value = "";
+        document.getElementById("tbNewResultPdfTc").value = "";
+        document.getElementById("tbNewResultPdfSc").value = "";
+        document.getElementById("ddlNewAuctionStatus").value = "P";
+        document.getElementById("ddlNewStatus").value = "I";
+      }
+
+      function GetData(highlightId) {
+        var apiUrl = '../en/api/admin-listAuction';
+        var xhr = new XMLHttpRequest();
+        
+        xhr.open("GET", apiUrl);
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            const jsonData = JSON.parse(this.responseText);
             
-            for (var i = 0; i < jsonData.length; ++i) {
-              const curAuction = jsonData[i];
-
-              var link = document.createElement('a');
-              link.appendChild(document.createTextNode(curAuction.id));
-              link.href = "auction_details.php?id="+curAuction.id;
-
-              var row = tblAuction.insertRow();
-              row.setAttribute("data-index", i);
-              var td0 = row.insertCell(0)
-              td0.appendChild(link);
-              td0.appendChild(GetTextBox("tbAuctionId_"+i, curAuction.id, "hidden"));
-              row.insertCell(1).appendChild(GetTextBox("tbAuctionNum_"+i, curAuction.num, "text", 60));
-              row.insertCell(2).appendChild(GetTextBox("tbAuctionStartTime_"+i, curAuction.start_time, "text", 130));              
-              var td3 = row.insertCell(3);
-              td3.appendChild(GetTextBox("tbAuctionPdfEn_"+i, curAuction.auction_pdf_en, "text", 550));
-              td3.appendChild(GetTextBox("tbAuctionPdfTc_"+i, curAuction.auction_pdf_tc, "text", 550));
-              td3.appendChild(GetTextBox("tbAuctionPdfSc_"+i, curAuction.auction_pdf_sc, "text", 550));
-              var td4 = row.insertCell(4);
-              td4.appendChild(GetTextBox("tbResultPdfEn_"+i, curAuction.result_pdf_en, "text", 550));
-              td4.appendChild(GetTextBox("tbResultPdfTc_"+i, curAuction.result_pdf_tc, "text", 550));
-              td4.appendChild(GetTextBox("tbResultPdfSc_"+i, curAuction.result_pdf_sc, "text", 550));
-              row.insertCell(5).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
-              row.insertCell(6).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
-              var btnUpdate = document.createElement("button");
-              btnUpdate.innerHTML = "Update";
-              btnUpdate.onclick = function () {
-                UpdateAuction(this.parentNode.parentNode.rowIndex - 1);
-              };
-              row.insertCell(7).appendChild(btnUpdate);
-
-              var row2 = tblAuction.insertRow();
-              var cell = row2.insertCell(0);
-              cell.setAttribute("colspan", 8);
-              cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
-
-                var divCount = document.createElement("div");
-                divCount.style.height = "30px";
-                divCount.appendChild(document.createTextNode("Count - " + curAuction.lot_count));
-
-                var divLastUpdate = document.createElement("div");
-                divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
-                divLastUpdate.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
-
-                var importItemLink = document.createElement('a');
-                importItemLink.appendChild(document.createTextNode("Import Items"));
-                importItemLink.href = "import_auction_list.php?auction_num=" + encodeURIComponent(curAuction.num);
-
-                var importResultLink = document.createElement('a');
-                importResultLink.appendChild(document.createTextNode("Import Result"));
-                importResultLink.href = "import_auction_result.php?auction_num=" + encodeURIComponent(curAuction.num);
-
-                var divLinks = document.createElement("div");
-                divLinks.appendChild(importItemLink);
-                divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
-                divLinks.appendChild(importResultLink);
+            if (Array.isArray(jsonData)) {
+              var tblAuction = document.getElementById("tblAuction");
+              tblAuction.innerHTML = "";
               
-              cell.appendChild(divCount);
-              cell.appendChild(divLastUpdate);
-              cell.appendChild(divLinks);
-            }
+              for (var i = 0; i < jsonData.length; ++i) {
+                const curAuction = jsonData[i];
 
-            if (highlightId) {
-              document.getElementById(highlightId).classList.add("highlight-text");
+                var link = document.createElement('a');
+                link.appendChild(document.createTextNode(curAuction.id));
+                link.href = "auction_details.php?id="+curAuction.id;
+
+                var row = tblAuction.insertRow();
+                row.setAttribute("data-index", i);
+                var td0 = row.insertCell(0)
+                td0.appendChild(link);
+                td0.appendChild(GetTextBox("tbAuctionId_"+i, curAuction.id, "hidden"));
+                row.insertCell(1).appendChild(GetTextBox("tbAuctionNum_"+i, curAuction.num, "text", 60));
+                row.insertCell(2).appendChild(GetTextBox("tbAuctionStartTime_"+i, curAuction.start_time, "text", 130));              
+                var td3 = row.insertCell(3);
+                td3.appendChild(GetTextBox("tbAuctionPdfEn_"+i, curAuction.auction_pdf_en, "text", 550));
+                td3.appendChild(GetTextBox("tbAuctionPdfTc_"+i, curAuction.auction_pdf_tc, "text", 550));
+                td3.appendChild(GetTextBox("tbAuctionPdfSc_"+i, curAuction.auction_pdf_sc, "text", 550));
+                var td4 = row.insertCell(4);
+                td4.appendChild(GetTextBox("tbResultPdfEn_"+i, curAuction.result_pdf_en, "text", 550));
+                td4.appendChild(GetTextBox("tbResultPdfTc_"+i, curAuction.result_pdf_tc, "text", 550));
+                td4.appendChild(GetTextBox("tbResultPdfSc_"+i, curAuction.result_pdf_sc, "text", 550));
+                row.insertCell(5).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
+                row.insertCell(6).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
+                var btnUpdate = document.createElement("button");
+                btnUpdate.innerHTML = "Update";
+                btnUpdate.onclick = function () {
+                  UpdateAuction(this.parentNode.parentNode.rowIndex - 1);
+                };
+                row.insertCell(7).appendChild(btnUpdate);
+
+                var row2 = tblAuction.insertRow();
+                var cell = row2.insertCell(0);
+                cell.setAttribute("colspan", 8);
+                cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
+
+                  var divCount = document.createElement("div");
+                  divCount.style.height = "30px";
+                  divCount.appendChild(document.createTextNode("Count - " + curAuction.lot_count));
+
+                  var divLastUpdate = document.createElement("div");
+                  divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
+                  divLastUpdate.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
+
+                  var importItemLink = document.createElement('a');
+                  importItemLink.appendChild(document.createTextNode("Import Items"));
+                  importItemLink.href = "import_auction_list.php?auction_num=" + encodeURIComponent(curAuction.num);
+
+                  var importResultLink = document.createElement('a');
+                  importResultLink.appendChild(document.createTextNode("Import Result"));
+                  importResultLink.href = "import_auction_result.php?auction_num=" + encodeURIComponent(curAuction.num);
+
+                  var divLinks = document.createElement("div");
+                  divLinks.appendChild(importItemLink);
+                  divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
+                  divLinks.appendChild(importResultLink);
+                
+                cell.appendChild(divCount);
+                cell.appendChild(divLastUpdate);
+                cell.appendChild(divLinks);
+              }
+
+              if (highlightId) {
+                document.getElementById(highlightId).classList.add("highlight-text");
+              }
             }
           }
         }
+        
+        xhr.send();
       }
-      
-      xhr.send();
-    }
 
-    GetData();
-  </script>
+      GetData();
+    </script>
+  </div>
 </body>
 </html>
