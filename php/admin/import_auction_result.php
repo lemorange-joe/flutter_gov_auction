@@ -14,25 +14,20 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
 <html>
 <head>
   <title>Admin - Input Auction Result</title>
-  <style>
-    textarea {
-      white-space: pre;
-      overflow-wrap: normal;
-      overflow-x: scroll;
-    }
-  </style>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <a href="index.php" style="float:left;text-decoration:none">< Index</a>
-  <div style="text-align:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
-  <hr />
+  <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
+  <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+  <hr style="clear: both"/>
   <form id="import_form" action="preview_auction_result.php" method="POST">
     <div style="width:500px;display:flex;justify-content:space-between">
-    <div>
-      Auction Num: <input name="auction_num" style="width: 100px" value="<?=$auctionNum?>"/>
+      <div>
+        Auction Num: <input name="auction_num" style="width: 100px" value="<?=$auctionNum?>"/>
+      </div>
+      <button type="submit" form="import_form" value="Submit">Submit</button>
     </div>
-    <button type="submit" form="import_form" value="Submit">Submit</button>
-    </div>
+    <br />
     <textarea name="import_text" style="width: 500px; height: 600px"></textarea>  
   </form>
 </body>

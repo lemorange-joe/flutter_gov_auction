@@ -9,6 +9,7 @@ if (!isset($_SESSION["admin_user"])) {
 <html>
 <head>
   <title>Admin - XXX</title>
+  <link rel="stylesheet" href="css/main.css">
   <style></style>
 </head>
 <body>

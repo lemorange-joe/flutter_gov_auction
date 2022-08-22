@@ -9,6 +9,7 @@ if (!isset($_SESSION["admin_user"])) {
 <html>
 <head>
   <title>Admin - Manage Auction</title>
+  <link rel="stylesheet" href="css/main.css">
   <style>
     table, th, td {
       border: 1px solid;
@@ -55,8 +56,9 @@ if (!isset($_SESSION["admin_user"])) {
   </style>
 </head>
 <body>
-  <a href="index.php" style="float:left;text-decoration:none">< Index</a>
-  <div style="text-align:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+  <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
+  <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+  <hr style="clear: both"/>
   <hr />
   <table>
     <thead>

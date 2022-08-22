@@ -37,7 +37,10 @@ class AuctionController {
     global $conn, $lang;
 
     $auctionId = !empty($param) && is_array($param) ? intval($param[0]) : 0;
-    if ($auctionId == 0) return;
+    if ($auctionId == 0) {
+      echo "{}";
+      return;
+    }
 
     $auctionId = intval($param[0]);
     $auction = $this->getAuction($auctionId);

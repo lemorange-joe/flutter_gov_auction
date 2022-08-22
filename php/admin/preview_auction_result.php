@@ -12,18 +12,12 @@ include_once ("../class/admin_import.php");
 <html>
 <head>
   <title>Admin - Preview Auction List</title>
-  <style>
-    textarea {
-      white-space: pre;
-      overflow-wrap: normal;
-      overflow-x: scroll;
-    }
-  </style>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <a href="index.php" style="float:left;text-decoration:none">< Index</a>
-  <div style="text-align:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
-  <hr />
+  <div style="float: left"><h2><a href="index.php">« Admin Index</a></h2></div>
+  <div style="float:right"><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+  <hr style="clear: both"/>
   <?php
   if (!isset($_POST["auction_num"]) || empty($_POST["auction_num"])) {
   ?>
