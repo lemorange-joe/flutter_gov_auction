@@ -45,7 +45,7 @@ include_once ("../class/admin_import.php");
         <button id="btnImport" onclick="ImportData()">Import</button>
         <a href="import_auction_result.php">Cancel</a>
       </div>
-      <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+      <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
       <script>
         function AddDataRow() {
           var rowNum = parseInt(document.getElementById("btnAdd").getAttribute("data-row"));

@@ -138,7 +138,7 @@ if (!isset($_SESSION["admin_user"])) {
       <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
       <button onclick="ResetAuction()">Reset</button>
     </div>
-    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
     <script>
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");

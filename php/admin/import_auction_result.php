@@ -34,6 +34,6 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
       <textarea name="import_text" style="width: 500px; height: 600px"></textarea>  
     </form>
   </div>
-  <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+  <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
 </body>
 </html>

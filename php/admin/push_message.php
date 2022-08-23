@@ -103,7 +103,7 @@ if (!isset($_SESSION["admin_user"])) {
       </thead>
       <tbody id="tblPush"></tbody>
     </table>
-    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">▲</button>
+    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
     <script>
       var pushList = [];
       var confirmTimeout;
