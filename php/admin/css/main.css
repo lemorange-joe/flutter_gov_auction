@@ -61,14 +61,15 @@ textarea {
   padding: 10px;
 }
 
-.bgBlue {
-  /* background-color: #eef8ff; */
+/* for prod */
+/* .bgBlue {
+  background-color: #eef8ff;
 }
 
 .bgGreen {
-  /* background-color: #eefff8; */
+  background-color: #eefff8;
 }
 
 .bgYellow {
-  /* background-color: #ffe; */
-}
+  background-color: #ffe;
+} */

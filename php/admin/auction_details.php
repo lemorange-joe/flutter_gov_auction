@@ -122,6 +122,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           var option = document.createElement("option");
           option.value = k;
           option.textContent = values[k];
+
           if (selectedValue == k) {
             option.setAttribute("selected", "selected");
           }
@@ -261,6 +262,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var remarksEn = document.getElementById("tbRemarksEn_"+lotIndex).value;
         var remarksTc = document.getElementById("tbRemarksTc_"+lotIndex).value;
         var remarksSc = document.getElementById("tbRemarksSc_"+lotIndex).value;
+        var itemConditionEn = document.getElementById("tbItemConditionEn_"+lotIndex).value;
+        var itemConditionTc = document.getElementById("tbItemConditionTc_"+lotIndex).value;
+        var itemConditionSc = document.getElementById("tbItemConditionSc_"+lotIndex).value;
         var lotIcon = document.getElementById("tbLotIcon_"+lotIndex).value;
         var photoUrl = document.getElementById("tbPhotoUrl_"+lotIndex).value;
         var photoReal = document.getElementById("chkPhotoReal_"+lotIndex).checked ? 1 : 0;
@@ -321,6 +325,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           remarks_en: remarksEn,
           remarks_tc: remarksTc,
           remarks_sc: remarksSc,
+          item_condition_en: itemConditionEn,
+          item_condition_tc: itemConditionTc,
+          item_condition_sc: itemConditionSc,
           lot_icon: lotIcon,
           photo_url: photoUrl,
           photo_real: photoReal,
@@ -330,8 +337,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           status: status,
           item_list: itemList
         };
-
-        console.log(lotData);
         
         TempDisableButton("btnSaveLot_"+lotIndex);
         PostData("../en/api/admin-updateAuctionLot", lotData);
@@ -360,6 +365,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var remarksEn = "";
         var remarksTc = "";
         var remarksSc = "";
+        var itemConditionEn = "";
+        var itemConditionTc = "";
+        var itemConditionSc = "";
 
         var lotIcon = "fontawesome.box";
         var photoUrl = "";
@@ -373,7 +381,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         if (lotData){
           lotId = lotData["lot_id"];
-          itemType = lotData["item_type"];
+          itemCode = lotData["item_code"];
           lotNum = lotData["lot_num"];
           seq = lotData["seq"];
           gldFileRef = lotData["gld_file_ref"];
@@ -394,6 +402,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           remarksEn = lotData["remarks_en"];
           remarksTc = lotData["remarks_tc"];
           remarksSc = lotData["remarks_sc"];
+          itemConditionEn = lotData["item_condition_en"];
+          itemConditionTc = lotData["item_condition_tc"];
+          itemConditionSc = lotData["item_condition_sc"];
 
           lotIcon = lotData["lot_icon"];
           photoUrl = lotData["photo_url"];
@@ -410,7 +421,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         
         divHtml += "<div style='width:900px; float: left'>";
           divHtml += "<div style='display:flex'><div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px; margin-right: 60px' disabled='disabled' value='" + lotId + "'>";
-          divHtml += GetDdl("ddlItemType_"+i, itemType, "ItemType");
+          divHtml += GetDdl("ddlItemType_"+i, itemCode, "ItemType");
           divHtml += "</div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Seq</div><input id='tbSeq_" + i + "' style='width:100px' value='" + seq + "'></div>";
@@ -447,11 +458,18 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='display:flex'><div style='width:100px'>T. Status</div>" + GetDdl("ddlTranStatus_"+i, transactionStatus, "TransactionStatus") + "</div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Remarks</div>";
-          divHtml += "<textarea id='tbRemarksEn_" + i + "' style='width:600px;height:60px'>" + remarksEn + "</textarea></div>";
+          divHtml += "<textarea id='tbRemarksEn_" + i + "' style='width:600px;height:48px'>" + remarksEn + "</textarea></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>注意</div>";
-          divHtml += "<textarea id='tbRemarksTc_" + i + "' style='width:600px;height:60px'>" + remarksTc + "</textarea></div>";
+          divHtml += "<textarea id='tbRemarksTc_" + i + "' style='width:600px;height:48px'>" + remarksTc + "</textarea></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>注意 (SC)</div>";
-          divHtml += "<textarea id='tbRemarksSc_" + i + "' style='width:600px;height:60px'>" + remarksSc + "</textarea></div>";
+          divHtml += "<textarea id='tbRemarksSc_" + i + "' style='width:600px;height:48px'>" + remarksSc + "</textarea></div>";
+          divHtml += "<div style='height:10px'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Conditions</div>";
+          divHtml += "<textarea id='tbItemConditionEn_" + i + "' style='width:600px;height:48px'>" + itemConditionEn + "</textarea></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>狀態</div>";
+          divHtml += "<textarea id='tbItemConditionTc_" + i + "' style='width:600px;height:48px'>" + itemConditionTc + "</textarea></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>状态</div>";
+          divHtml += "<textarea id='tbItemConditionSc_" + i + "' style='width:600px;height:48px'>" + itemConditionSc + "</textarea></div>";
         divHtml += "</div>";
         
         divHtml += "<br style='clear: both' />";

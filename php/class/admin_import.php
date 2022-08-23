@@ -11,12 +11,45 @@ include_once ('../include/common.php');
 
 class AdminImport {
   public $regexSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)|(- E N D -)/';
-  public $regexItemCondition = '/^(May be Unserviceable\/May Not Function Properly\/May be Damaged)|(May be Damaged)|(Unserviceable)|(Abandoned Regulated Electrical Equipment)|(Empty Toner\/Ink Cartridges)/';
-  // May be Unserviceable/May Not Function Properly/May be Damaged (或不能再用/或不能正常操作/或已有損壞)
-  // May be Damaged (或許已有損壞)
-  // Unserviceable (不能再用)
-  // Abandoned Regulated Electrical Equipment (被棄置受管制電器)
-  // Empty Toner/Ink Cartridges (已用完的空碳粉匣)
+
+  public $itemConditionKeywords = array(
+    array("Serviceable But May Not Function Properly/May be Damaged", "仍可使用但或許不能正常操作或已有損壞"),
+    array("May be Unserviceable/May Not Function Properly/May be Damaged", "或不能再用/或不能正常操作/或已有損壞"),
+    array("Abandoned Regulated Electrical Equipment", "被棄置受管制電器"),
+    array("Empty Toner/Ink Cartridges", "已用完的空碳粉匣"),
+    array("May be Damaged", "或許已有損壞"),
+    array("Unserviceable", "不能再用"),
+  );
+
+  function getRegexItemCondition($lang) {
+    $outputRegex = '';
+    
+    if ($lang == "en") {
+      $outputRegex = '/(?:';
+      for ($i = 0; $i < count($this->itemConditionKeywords); ++$i) {
+        $outputRegex .= '(' . str_replace('/', '\/', $this->itemConditionKeywords[$i][0]) . ')|';
+      }
+      $outputRegex = rtrim($outputRegex, '|');
+      $outputRegex .= ')/i';
+    } else if ($lang == "tc"){
+      $outputRegex = '/(';
+
+      for ($i = 0; $i < count($this->itemConditionKeywords); ++$i) {
+        $outputRegex .= '(?:';
+          $outputRegex .= str_replace('/', '\/', $this->itemConditionKeywords[$i][0]);  // starts with English condition
+          $outputRegex .= '\s*';  // maybe a space between the English and Chinese condition
+          $outputRegex .= '\(';   // the starting bracket of the Chinese condition in PDF
+            $outputRegex .= '(' . str_replace('/', '\/', $this->itemConditionKeywords[$i][1]) . ')';  // the regex matching bracket
+          $outputRegex .= '\)';
+        $outputRegex .= ')|';
+      }
+
+      $outputRegex = rtrim($outputRegex, '|');
+      $outputRegex .= ')/i';
+    }
+
+    return $outputRegex;
+  }
 
   function parseData($itemType, $importText) {
     $strAuctionList = $this->splitAuctionListText($importText, $itemType);
@@ -122,15 +155,34 @@ class AdminImport {
       "locationTc" => '/地點\s*:\s*((.|\n)*)聯絡人\s*:/i',
       "remarksEn" => '/Remarks.*:((.|\n)*)注意事項/i',
       "remarksTc" => '/注意事項.*:((.|\n)*)。\n[a-zA-Z]+/i',
+      "itemConditionEn" => $this->getRegexItemCondition("en"),
+      "itemConditionTc" => $this->getRegexItemCondition("tc"),
       "items" => '/^' . $itemType . '-\d+[\s|\n]1\.((.|\n)*)/im',
     );
 
     // loop through the patterns and assign the matched values into $matchValues
     foreach(array_keys($regexDataPatterns) as $key) {
-      preg_match($regexDataPatterns[$key], $strAuction, $matches);
+      preg_match_all($regexDataPatterns[$key], $strAuction, $matches);
 
-      if (count($matches) > 1) {
-        $matchValues[$key] = $matches[1];
+      if (count($matches) > 1 && count($matches[1]) > 0) {
+        if ($key == "itemConditionEn") {
+          $matchValues[$key] = implode("\n", array_unique($matches[0]));
+        } else if ($key == "itemConditionTc") {
+          // itemConditionTc cannot fully function now, extra English keywords are also matched, need manual handle
+          // can fix getRegexItemCondition("tc") later when available
+          $tempConditions = array();
+          for ($i = 0; $i < count($matches[1]); ++$i) {
+            for ($j = 0; $j < count($this->itemConditionKeywords); ++$j) {
+              if (strpos($matches[1][$i], $this->itemConditionKeywords[$j][1]) !== false) {
+                $tempConditions[] = $this->itemConditionKeywords[$j][1];
+                break;
+              }
+            } 
+          }
+          $matchValues[$key] = implode("\n", array_unique($tempConditions));
+        } else {
+          $matchValues[$key] = $matches[1][0];
+        }
       } else {
         $matchValues[$key] = "";
       }
@@ -173,9 +225,14 @@ class AdminImport {
         echo "<textarea id='tbRemarksEn_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['remarksEn']."</textarea></div>";
         echo "<div style='display:flex'><div style='width:".$colWidth."px'>注意</div>";
         echo "<textarea id='tbRemarksTc_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['remarksTc']."</textarea></div>";
+        echo "<div style='height:".$separatorHeight."px'></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>Conditions</div>";
+        echo "<textarea id='tbItemConditionEn_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['itemConditionEn']."</textarea></div>";
+        echo "<div style='display:flex'><div style='width:".$colWidth."px'>狀態</div>";
+        echo "<textarea id='tbItemConditionTc_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['itemConditionTc']."</textarea></div>";
       echo "</div>";
       echo "<div style='width:600px'>";
-        echo "<textarea style='width:600px;height:380px' disabled='disabled'>$strAuction</textarea>";    
+        echo "<textarea style='width:600px;height:515px' disabled='disabled'>$strAuction</textarea>";    
       echo "</div>";
     echo "</div>";
     echo "<br style='clear: both' />";
@@ -219,8 +276,18 @@ class AdminImport {
     }
   
     $total = Count($strItemList);
+    $regexSkipItemCondition = $this->getRegexItemCondition("tc");
     for ($itemIndex = 0; $itemIndex < $total; ++$itemIndex) {
-      $this->buildItems($strItemList[$itemIndex], $lotIndex, $itemIndex);
+      $textList = explode("\n", $strItemList[$itemIndex]);
+      $outputList = array();
+      
+      for ($i = 0; $i < count($textList); ++$i) {
+        if (!preg_match($regexSkipItemCondition, $textList[$i])){
+          $outputList[] = $textList[$i];
+        }
+      }
+      
+      $this->buildItems(implode("\n", $outputList), $lotIndex, $itemIndex);
     }
 
     return $total;

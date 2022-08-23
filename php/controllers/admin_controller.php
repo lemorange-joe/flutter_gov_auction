@@ -113,6 +113,7 @@ class AdminController {
                     gld_file_ref, reference, department_en, department_tc, department_sc,
                     contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                     location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
+                    item_condition_en, item_condition_tc, item_condition_sc,
                     L.icon as 'lot_icon', L.photo_url, L.photo_real,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc, I.quantity, 
@@ -142,7 +143,7 @@ class AdminController {
         $curLotNum = $result[$i]["lot_num"];
         $curLotOutput = new stdClass();
         $curLotOutput->lot_id = intval($result[$i]["lot_id"]);
-        $curLotOutput->code = $result[$i]["code"];
+        $curLotOutput->item_code = $result[$i]["code"];
         $curLotOutput->lot_num = $result[$i]["lot_num"];
         $curLotOutput->seq = $result[$i]["seq"];
         $curLotOutput->gld_file_ref = $result[$i]["gld_file_ref"];
@@ -163,6 +164,9 @@ class AdminController {
         $curLotOutput->remarks_en = $result[$i]["remarks_en"];
         $curLotOutput->remarks_tc = $result[$i]["remarks_tc"];
         $curLotOutput->remarks_sc = $result[$i]["remarks_sc"];
+        $curLotOutput->item_condition_en = $result[$i]["item_condition_en"];
+        $curLotOutput->item_condition_tc = $result[$i]["item_condition_tc"];
+        $curLotOutput->item_condition_sc = $result[$i]["item_condition_sc"];
 
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
         $curLotOutput->photo_url = $result[$i]["photo_url"];
@@ -365,12 +369,16 @@ class AdminController {
         $remarksEn = trim($curLot["remarks_en"]);
         $remarksTc = trim($curLot["remarks_tc"]);
         $remarksSc = str_chinese_simp(trim($curLot["remarks_tc"]));
+        $itemConditionEn = trim($curLot["item_condition_en"]);
+        $itemConditionTc = trim($curLot["item_condition_tc"]);
+        $itemConditionSc = str_chinese_simp(trim($curLot["item_condition_tc"]));
         $items = $curLot["items"];
 
         $insertSql = "INSERT INTO AuctionLot (
                         auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
-                        contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc, 
-                        location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc, 
+                        contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
+                        location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
+                        item_condition_en, item_condition_tc, item_condition_sc,
                         icon, photo_url, photo_real,
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
@@ -379,6 +387,7 @@ class AdminController {
                         ?, ?, ?, COUNT(*) + 1, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
+                        ?, ?, ?, 
                         'fontawesome.box', '', 0,
                         '', 0, ?,
                         ?, now()
@@ -389,6 +398,7 @@ class AdminController {
           $auctionId, $typeId, $lotNum, $gldFileRef, $ref, $deptEn, $deptTc, $deptSc,
           $contactEn, $contactTc, $contactSc, $numberEn, $numberTc, $numberSc,
           $locationEn, $locationTc, $locationSc, $remarksEn, $remarksTc, $remarksSc,
+          $itemConditionEn, $itemConditionTc, $itemConditionSc,
           TransactionStatus::NotSold,
           Status::Active,
           $auctionId
@@ -470,12 +480,14 @@ class AdminController {
                         auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
+                        item_condition_en, item_condition_tc, item_condition_sc,
                         icon, photo_url, photo_real, transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       )
                       SELECT ?, I.type_id, ?, ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, 
                       ?, ?, ?, ?, ?, ?,
                       ?, now()
                       FROM ItemType I
@@ -485,6 +497,7 @@ class AdminController {
           $data["auction_id"], $data["lot_num"], $data["seq"], trim($data["gld_file_ref"]), trim($data["reference"]), trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
+          trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
           trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]), trim($data["item_code"])
         ));
@@ -498,6 +511,7 @@ class AdminController {
                         number_en = ?, number_tc = ?, number_sc = ?,
                         location_en = ?, location_tc = ?, location_sc = ?,
                         remarks_en = ?, remarks_tc = ?, remarks_sc = ?,
+                        item_condition_en = ?, item_condition_tc = ?, item_condition_sc = ?,
                         icon = ?, photo_url = ?, photo_real = ?,
                         transaction_currency = ?, transaction_price = ?, transaction_status = ?,
                         status = ?, last_update = now()
@@ -511,6 +525,7 @@ class AdminController {
           trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]),
           trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
+          trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
           trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]),

@@ -208,7 +208,10 @@ class AuctionController {
     global $conn, $lang;
 
     $selectSql = "SELECT
-                    L.lot_id, T.code, L.lot_num, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
+                    L.lot_id, T.code, L.lot_num, 
+                    L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
+                    L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', 
+                    L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -238,6 +241,14 @@ class AuctionController {
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
           $result[$i]["lot_num"],
+          $result[$i]["gld_file_ref"],
+          $result[$i]["reference"],
+          $result[$i]["department"],
+          $result[$i]["contact"],
+          $result[$i]["number"],
+          $result[$i]["location"],
+          $result[$i]["remarks"],
+          $result[$i]["item_condition"],
           $result[$i]["lot_icon"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],

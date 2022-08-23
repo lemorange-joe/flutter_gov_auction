@@ -159,6 +159,8 @@ include_once ("../class/admin_import.php");
               "location_tc": document.getElementById("tbLocationTc_"+i).value,
               "remarks_en": document.getElementById("tbRemarksEn_"+i).value,
               "remarks_tc": document.getElementById("tbRemarksTc_"+i).value,
+              "item_condition_en": document.getElementById("tbItemConditionEn_"+i).value,
+              "item_condition_tc": document.getElementById("tbItemConditionTc_"+i).value,
               "items": itemList,
             };
 
