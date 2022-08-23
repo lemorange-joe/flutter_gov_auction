@@ -62,6 +62,46 @@ include_once ("../class/admin_import.php");
           }
         }
 
+        function FixTextarea(id, lang) {
+          var textarea = document.getElementById(id);
+          var contentList = textarea.value.split("\n");
+          var origContent = textarea.getAttribute("data-orig-content");
+          
+          if (lang == "undo") {
+            
+            if (!origContent) {
+              alert("The textarea was not edited, cannot undo!");
+              return;
+            }
+
+            textarea.value = origContent;
+            CheckTextarea(id);
+            return;
+          }
+
+          if (contentList.length <= 5) {
+            alert("Number of lines <= 5, cannot update!")
+            return;
+          }
+
+          if (!origContent) {
+            // original content is empty, set it in the data attribute for future undo
+            textarea.setAttribute("data-orig-content", textarea.value);
+          }
+
+          var line6 = contentList.splice(5, 1); // remove the 6th line
+
+          if (lang == "en") {
+            contentList[0] += " " + line6;
+          } else if (lang == "tc") {
+            contentList[1] += line6;
+          }
+
+          textarea.value = contentList.join("\n");
+          CheckTextarea(id);
+        }
+
+
         function AddItem(lotIndex) {
           var btnAdd = document.getElementById("btnAddItem_" + lotIndex);
           var itemIndex = parseInt(btnAdd.getAttribute("data-total"));

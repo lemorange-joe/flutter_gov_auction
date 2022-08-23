@@ -196,7 +196,6 @@ class AdminImport {
         $endPos = strrpos($curStrItems, " ".$nextItemNum.". ");
       }
 
-
       if ($endPos === false) {
         $reachEnd = true;
         $strItemList[] = preg_replace("/(\d+\.)/", "", trim($curStrItems));
@@ -220,11 +219,17 @@ class AdminImport {
     $itemPropertyList = array_filter(explode("\n", $strItem));
     $id = "tbItem_$lotIndex"."_$itemIndex";
     $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
-    echo "<textarea id='$id' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
-    // var_dump($itemPropertyList);
-    echo $strItem;
-    echo "</textarea>";
-    // echo "<textarea style='width: 300px; height: 200px'>" . $strItem . "</textarea>";
+    echo "<div style='display:inline-block;padding: 0 5px 5px 5px'>";
+      echo "<textarea id='$id' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
+      echo trim($strItem);
+      echo "</textarea>";
+      echo "<div style='display:flex;justify-content:space-around'>";
+      echo "<button style='width:50px;height:18px;font-size:12px' title='Move the 5th line and append to the English (1st) row (with space)' onclick='FixTextarea(\"".$id."\", \"en\")'>Fix En</button>";
+        echo "<button style='width:50px;height:18px;font-size:12px' title='Move the 5th line and append to the Chinese (2nd) row (without space)' onclick='FixTextarea(\"".$id."\", \"tc\")'>Fix Tc</button>";
+        echo "<button style='width:50px;height:18px;font-size:12px' title='Remove Move the 5th line' onclick='FixTextarea(\"".$id."\", \"\")'>−</button>";
+        echo "<button style='width:50px;height:18px;font-size:16px;line-height:12px' title='Rollback to the original content' onclick='FixTextarea(\"".$id."\", \"undo\")'>⟲</button>";
+      echo "</div>";
+    echo "</div>";
 
     $descriptionEn = "";
     $descriptionTc = "";
