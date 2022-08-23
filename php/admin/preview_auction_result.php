@@ -30,7 +30,7 @@ include_once ("../class/admin_import.php");
     <?php
     } else {
     ?>
-      Auction Num: <input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>">&nbsp;&nbsp;&nbsp;&nbsp;<a href="import_auction_result.php">Cancel</a>
+      Auction Num: <input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>"><a href="import_auction_result.php" style="margin-left:60px">Cancel</a>
       <hr />
       <div id="divData">
       <?php

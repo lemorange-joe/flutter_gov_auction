@@ -30,10 +30,10 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
           &nbsp;&nbsp;
           <select name="item_type">
             <option selected value="">-- Please Select --</option>
-            <option value="<?=ItemType::ConfiscatedGoods?>">[<?=ItemType::ConfiscatedGoods?>]充公物品</option>
-            <option value="<?=ItemType::UnclaimedProperties?>">[<?=ItemType::UnclaimedProperties?>]無人認領物品</option>
-            <option value="<?=ItemType::UnserviceableStores?>">[<?=ItemType::UnserviceableStores?>]廢棄物品及剩餘物品</option>
-            <option value="<?=ItemType::SurplusServiceableStores?>">[<?=ItemType::SurplusServiceableStores?>]仍可使用之廢棄物品及剩餘物品</option>
+            <option value="<?=ItemType::ConfiscatedGoods?>"><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
+            <option value="<?=ItemType::UnclaimedProperties?>"><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
+            <option value="<?=ItemType::UnserviceableStores?>"><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
+            <option value="<?=ItemType::SurplusServiceableStores?>"><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
           </select>
         </div>
         <button type="submit" form="import_form" value="Submit">Submit</button>

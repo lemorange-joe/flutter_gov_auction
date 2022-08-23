@@ -2,8 +2,21 @@
 include_once ('../include/enum.php');
 include_once ('../include/common.php');
 
+// ==============================================================
+// Notes
+// -----
+// 1. All data extractor regular expression starts with $regex
+// 
+// ==============================================================
+
 class AdminImport {
-  public $regSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)|(- E N D -)/';
+  public $regexSkipLine = '/(拍賣物品清單編號*)|(AUCTION LIST *)|(- \d* -$)|(Lot No. Item No. Description Quantity)|(批號 項目 物品詳情 數量)|(- E N D -)/';
+  public $regexItemCondition = '/^(May be Unserviceable\/May Not Function Properly\/May be Damaged)|(May be Damaged)|(Unserviceable)|(Abandoned Regulated Electrical Equipment)|(Empty Toner\/Ink Cartridges)/';
+  // May be Unserviceable/May Not Function Properly/May be Damaged (或不能再用/或不能正常操作/或已有損壞)
+  // May be Damaged (或許已有損壞)
+  // Unserviceable (不能再用)
+  // Abandoned Regulated Electrical Equipment (被棄置受管制電器)
+  // Empty Toner/Ink Cartridges (已用完的空碳粉匣)
 
   function parseData($itemType, $importText) {
     $strAuctionList = $this->splitAuctionListText($importText, $itemType);
@@ -15,7 +28,7 @@ class AdminImport {
   function splitAuctionListText($txt, $itemType) {
     // post: array of auction text, to be processed 1 by 1 in the next stage
     $output = array();
-    $lotNumRegEx = '/^' . $itemType . '-(\d+)$/i';
+    $regexLotNum = '/^' . $itemType . '-(\d+)$/i';
 
     $i = 0;
     $foundBeginning = false;
@@ -32,7 +45,7 @@ class AdminImport {
 
       $curLineIsGldFileRef = substr($line, 0, 14)  == "(GLD File Ref.";
       $curLineIsRemarks = substr($line, 0, 8)  == "Remarks ";
-      $curLineIsLotNum = preg_match($lotNumRegEx, $line);
+      $curLineIsLotNum = preg_match($regexLotNum, $line);
 
       if ($curLineIsGldFileRef || $curLineIsRemarks || $curLineIsLotNum) {
         $foundBeginning = true;
@@ -82,12 +95,11 @@ class AdminImport {
       }
       
       if ($foundBeginning) {
-        if (!preg_match($this->regSkipLine, $line)) {
+        if (!preg_match($this->regexSkipLine, $line)) {
           $curLines[] = $line;
         }
         ++$i;
       }
-      
     }
     $output[] = implode("\n", $curLines);
 
@@ -96,7 +108,7 @@ class AdminImport {
 
   function extractAuctionListText($strAuction, $itemType, $lotIndex) {
     $matchValues = array();
-    $patterns = array(
+    $regexDataPatterns = array(
       "lotNum" => '/^' . $itemType . '-(\d+)[\s|\n]1\./im',
       "gldFileRef" => '/\(GLD File Ref.*:\s*(.*)\)/i',
       "reference" => '/Reference\s*:\s*(.*)/i',
@@ -114,8 +126,8 @@ class AdminImport {
     );
 
     // loop through the patterns and assign the matched values into $matchValues
-    foreach(array_keys($patterns) as $key) {
-      preg_match($patterns[$key], $strAuction, $matches);
+    foreach(array_keys($regexDataPatterns) as $key) {
+      preg_match($regexDataPatterns[$key], $strAuction, $matches);
 
       if (count($matches) > 1) {
         $matchValues[$key] = $matches[1];
@@ -134,7 +146,6 @@ class AdminImport {
     if ($matchValues["items"] != "") {
       $matchValues["items"] = "1." . $matchValues["items"];
     }
-
     
     $colWidth = "100";
     $colWidth2 = "800";
@@ -183,6 +194,7 @@ class AdminImport {
     $reachEnd = false;
     $curItemNum = 1;
     $curStrItems = $strItems;
+    $regexNumberBullet = "/(\d+\.)/";
     while (!$reachEnd) {
       $nextItemNum = $curItemNum + 1;
       // try different search pattern for the number bullet, e.g.:
@@ -198,9 +210,9 @@ class AdminImport {
 
       if ($endPos === false) {
         $reachEnd = true;
-        $strItemList[] = preg_replace("/(\d+\.)/", "", trim($curStrItems));
+        $strItemList[] = preg_replace($regexNumberBullet, "", trim($curStrItems)); // remove the number bullets
       } else {
-        $strItemList[] = preg_replace("/(\d+\.)/", "", trim(substr($curStrItems, 0, $endPos)), 1);  // get the current item text from the current string
+        $strItemList[] = preg_replace($regexNumberBullet, "", trim(substr($curStrItems, 0, $endPos)), 1);  // get the current item text from the current string
         $curStrItems = substr($curStrItems, $endPos);       // then remove that item from the current string
         ++$curItemNum;
       }
@@ -247,7 +259,7 @@ class AdminImport {
   }
 
   function parseResultData($importText) {
-    $lotNumRegEx = '/^([a-zA-Z]+-\d+)$/i';
+    $regexLotNum = '/^([a-zA-Z]+-\d+)$/i';
     $lines = preg_split("/((\r?\n)|(\r\n?))/", $importText);
     
     $lotList = array();
@@ -255,7 +267,7 @@ class AdminImport {
     while ($i < Count($lines)) {
       $line = trim($lines[$i]);
 
-      if (preg_match($lotNumRegEx, $line, $matches))
+      if (preg_match($regexLotNum, $line, $matches))
       {
         $lotNum = "";
         if (count($matches) > 1) {
@@ -264,7 +276,6 @@ class AdminImport {
 
         $price = str_replace(",", "", str_replace("$", "", trim($lines[++$i])));
         $lotList[$lotNum] = $price;
-
       }
 
       ++$i;

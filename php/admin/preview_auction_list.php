@@ -35,7 +35,7 @@ include_once ("../class/admin_import.php");
         <span style="display:inline-block;width:100px">Item type:</span><input id="tbItemType" value="<?=$_POST["item_type"]?>" style="width:60px" />
         <br /><span style="display:inline-block;width:100px">Num:</span><input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>" style="width:60px" />
         </div>
-        <a href="import_auction_list.php">Cancel</a>
+        <a href="import_auction_list.php" style="line-height: 40px">Cancel</a>
       </div>
       <hr />
       <?php

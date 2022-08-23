@@ -25,10 +25,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
   <div class="body">
     <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
       <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
-      <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>>[<?=ItemType::ConfiscatedGoods?>] 充公物品</option>
-      <option value="<?=ItemType::UnclaimedProperties?>" <?=$type==ItemType::UnclaimedProperties ? "selected" : ""?>>[<?=ItemType::UnclaimedProperties?>] 無人認領物品</option>
-      <option value="<?=ItemType::UnserviceableStores?>" <?=$type==ItemType::UnserviceableStores ? "selected" : ""?>>[<?=ItemType::UnserviceableStores?>] 廢棄物品及剩餘物品</option>
-      <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>>[<?=ItemType::SurplusServiceableStores?>] 仍可使用之廢棄物品及剩餘物品</option>
+      <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
+      <option value="<?=ItemType::UnclaimedProperties?>" <?=$type==ItemType::UnclaimedProperties ? "selected" : ""?>><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
+      <option value="<?=ItemType::UnserviceableStores?>" <?=$type==ItemType::UnserviceableStores ? "selected" : ""?>><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
+      <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
     </select>
     <div style="width: 300px; display: flex; justify-content: space-between; border: solid 1px #000; margin-top: 10px; padding: 5px;">
       <div>ID: <input id="tbAuctionId" style="width: 30px" type="text" disabled="disabled"/></div>
@@ -110,10 +110,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           };
         } else if (type == "ItemType") {
           values = {
-            "<?=ItemType::ConfiscatedGoods?>": "[<?=ItemType::ConfiscatedGoods?>] 充公物品",
-            "<?=ItemType::UnclaimedProperties?>": "[<?=ItemType::UnclaimedProperties?>] 無人認領物品",
-            "<?=ItemType::UnserviceableStores?>": "[<?=ItemType::UnserviceableStores?>] 廢棄物品及剩餘物品",
-            "<?=ItemType::SurplusServiceableStores?>": "[<?=ItemType::SurplusServiceableStores?>] 仍可使用之廢棄物品及剩餘物品",
+            "<?=ItemType::ConfiscatedGoods?>": "<?=ItemType::ConfiscatedGoods?> - 充公物品",
+            "<?=ItemType::UnclaimedProperties?>": "<?=ItemType::UnclaimedProperties?> - 無人認領物品",
+            "<?=ItemType::UnserviceableStores?>": "<?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品",
+            "<?=ItemType::SurplusServiceableStores?>": "<?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品",
           };
         }
         
@@ -215,13 +215,13 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "<select id='ddlItemPdf_" + i + "' style='margin-bottom: 10px'>";
         divHtml += "<option value=''>-- Empty -- </option>";
           selected = (type == "<?=ItemType::ConfiscatedGoods?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::ConfiscatedGoods?>'" + selected + ">[<?=ItemType::ConfiscatedGoods?>] 充公物品</option>";
+          divHtml += "<option value='<?=ItemType::ConfiscatedGoods?>'" + selected + "><?=ItemType::ConfiscatedGoods?> - 充公物品</option>";
           selected = (type == "<?=ItemType::UnclaimedProperties?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::UnclaimedProperties?>'" + selected + ">[<?=ItemType::UnclaimedProperties?>] 無人認領物品</option>";
+          divHtml += "<option value='<?=ItemType::UnclaimedProperties?>'" + selected + "><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>";
           selected = (type == "<?=ItemType::UnserviceableStores?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::UnserviceableStores?>'" + selected + ">[<?=ItemType::UnserviceableStores?>] 廢棄物品及剩餘物品</option>";
+          divHtml += "<option value='<?=ItemType::UnserviceableStores?>'" + selected + "><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>";
           selected = (type == "<?=ItemType::SurplusServiceableStores?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::SurplusServiceableStores?>'" + selected + ">[<?=ItemType::SurplusServiceableStores?>] 仍可使用之廢棄物品及剩餘物品</option>";
+          divHtml += "<option value='<?=ItemType::SurplusServiceableStores?>'" + selected + "><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>";
         divHtml += "</select>";
         divHtml += "<div style='width: 550px'>EN: <input id='tbItemPdfEn_" + i + "' type='text' value='" + urlEn + "' style='width: 500px;'></div>";
         divHtml += "<div style='width: 550px'>TC: <input id='tbItemPdfTc_" + i + "' type='text' value='" + urlTc + "' style='width: 500px;'></div>";
