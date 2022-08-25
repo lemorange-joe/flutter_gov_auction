@@ -51,6 +51,21 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         <div>SC: <a id="lnkResultPdfSc" href="#" target="_blank"></a></div>
       </div>
     </div>
+    <div style="width: 1350px;">
+      Remarks
+      <div style="display: flex; justify-content: start">
+        <div style="width: 50px">EN</div>
+        <textarea id="txtRemarksEn" style="width:600px; height:45px" readonly></textarea>
+      </div>
+      <div style="display: flex; justify-content: start">
+        <div style="width: 50px">TC</div>
+        <textarea id="txtRemarksTc" style="width:600px; height:45px" readonly></textarea>
+      </div>
+      <div style="display: flex; justify-content: start">
+        <div style="width: 50px">SC</div>
+        <textarea id="txtRemarksSc" style="width:600px; height:45px" readonly></textarea>
+      </div>
+    </div>
 
     <div style="width: 1350px; display: flex; justify-content: space-between; margin-top: 10px;">
       <pre id="preAddressEn" style="flex-grow: 1; border: solid 1px #000"></pre>
@@ -552,6 +567,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("lnkResultPdfTc").innerHTML = jsonData["result_pdf_tc"];
         document.getElementById("lnkResultPdfSc").setAttribute("href", jsonData["result_pdf_sc"]);
         document.getElementById("lnkResultPdfSc").innerHTML = jsonData["result_pdf_sc"];
+        document.getElementById("txtRemarksEn").value = jsonData["remarks_en"];
+        document.getElementById("txtRemarksTc").value = jsonData["remarks_tc"];
+        document.getElementById("txtRemarksSc").value = jsonData["remarks_sc"];
         
         document.getElementById("preAddressEn").innerHTML = jsonData["address_en"];
         document.getElementById("preAddressTc").innerHTML = jsonData["address_tc"];

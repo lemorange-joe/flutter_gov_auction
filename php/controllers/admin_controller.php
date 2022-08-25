@@ -62,7 +62,9 @@ class AdminController {
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, L.address_en, L.address_tc, L.address_sc,
                     A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
-                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.auction_status, status, last_update
+                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, 
+                    A.remarks_en, A.remarks_tc, A.remarks_sc, 
+                    A.auction_status, status, last_update
                   FROM Auction A
                   INNER JOIN Location L ON A.location_id = L.location_id
                   WHERE auction_id = ?";
@@ -83,6 +85,9 @@ class AdminController {
       $output->result_pdf_en = $result[0]["result_pdf_en"];
       $output->result_pdf_tc = $result[0]["result_pdf_tc"];
       $output->result_pdf_sc = $result[0]["result_pdf_sc"];
+      $output->remarks_en = $result[0]["remarks_en"];
+      $output->remarks_tc = $result[0]["remarks_tc"];
+      $output->remarks_sc = $result[0]["remarks_sc"];
       $output->auction_status = $result[0]["auction_status"];
       $output->status = $result[0]["status"];
       $output->last_update = $result[0]["last_update"];
