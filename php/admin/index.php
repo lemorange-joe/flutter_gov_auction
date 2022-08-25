@@ -69,6 +69,10 @@
         <h3>Notification</h3>
         <a href="push_message.php">Push Message</a>
       </div>
+      <div class="admin-block bgPurple">
+        <h3>Supportive Administration</h3>
+        <a href="manage_keyword_image.php">Manage Keyword Image</a>
+      </div>
     </div>
   <?php
   } else {

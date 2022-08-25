@@ -4,7 +4,7 @@ include_once ('../include/enum.php');
 
 class AdminController {
   function listAuction() {
-    global $conn, $lang;
+    global $conn;
 
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
@@ -739,6 +739,110 @@ class AdminController {
           $result ? PushStatus::Sent : PushStatus::Failed, $pushId
         ));
       }
+
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function listKeywordImage($param) {
+    global $conn;
+
+    $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
+
+    $selectSql = "SELECT
+                    keyword_image_id, keyword_en, keyword_tc, image_url
+                  FROM KeywordImage
+                  WHERE ? = '' OR keyword_en LIKE ? OR keyword_tc LIKE ?";
+
+    $result = $conn->Execute($selectSql, array(
+      $keyword, "%".$keyword."%", "%".$keyword."%"
+    ))->GetRows();
+    $rowNum = count($result);
+
+    $output = array();
+    for($i = 0; $i < $rowNum; ++$i) {
+      $keywordImage = new stdClass();
+      $keywordImage->id = $result[$i]["keyword_image_id"];
+      $keywordImage->keyword_en = $result[$i]["keyword_en"];
+      $keywordImage->keyword_tc = $result[$i]["keyword_tc"];
+      $keywordImage->image_url = $result[$i]["image_url"];
+      
+      $output[] = $keywordImage;
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function getKeywordImageUrl($param) {
+    global $conn;
+
+    $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
+
+    $output = array();
+    if (!empty($keyword)) {
+      $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
+
+      $result = $conn->Execute($selectSql, array("%".$keyword."%", "%".$keyword."%"))->GetRows();
+      $rowNum = count($result);
+
+      for($i = 0; $i < $rowNum; ++$i) {
+        $output[] = $result[$i]["image_url"];
+      }
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function createKeywordImage() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["image_url"]) || empty($data["image_url"])) {
+        throw new Exception("Image URL missing!");  
+      }
+
+      $keywordEn = empty(trim($data["keyword_en"])) ? "-" : trim($data["keyword_en"]);
+      $keywordTc = empty(trim($data["keyword_tc"])) ? "-" : trim($data["keyword_tc"]);
+      $imageUrl = trim($data["image_url"]);
+
+      $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url) 
+                    VALUES (?, ?, ?)";
+      
+      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, $imageUrl));
+
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+  }
+
+  function deleteKeywordImage() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["id"]) || empty($data["id"])) {
+        throw new Exception("Image URL missing!");  
+      }
+
+      $id = trim($data["id"]);
+      $deleteSql = "DELETE FROM KeywordImage WHERE keyword_image_id = ?";
+      $result = $conn->Execute($deleteSql, array($id));
 
       $output->status = "success";
     } catch (Exception $e) {

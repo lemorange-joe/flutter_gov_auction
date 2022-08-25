@@ -226,7 +226,7 @@ if (!isset($_SESSION["admin_user"])) {
       }
 
       function GetData() {
-        var apiUrl = '../en/api/admin-listPush';
+        var apiUrl = "../en/api/admin-listPush";
         var xhr = new XMLHttpRequest();
         
         xhr.open("GET", apiUrl);
