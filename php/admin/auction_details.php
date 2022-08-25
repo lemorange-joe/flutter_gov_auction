@@ -476,7 +476,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "</div>";
         divHtml += "<div style='width:700px;float: right;'>";
           divHtml += "<div style='height:20px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'><button style='margin-left:50px;font-size:24px;padding:0 5px' onclick='GetLotImage("+i+")'>⊞</button></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Photo URL</div><input id='tbPhotoUrl_" + i + "' style='width:590px' value='" + photoUrl.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Photo Real</div><input id='chkPhotoReal_" + i + "' type='checkbox' " + (photoReal ? "checked" : "") + "></div>";
           divHtml += "<div style='height:10px'></div>";
@@ -597,6 +597,13 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         }
 
         document.getElementById("btnAddLot").setAttribute("data-lot-count", lotList.length);
+      }
+
+      function GetLotImage(i) {
+        var itemLines = document.getElementById("tbItem_"+i+"_0").value.split("\n");
+        var keywordEn = itemLines[0];
+        var keywordTc = itemLines[1];
+        console.log(keywordEn + " / " + keywordTc); //TBC!!!
       }
 
       GetData(<?=$id?>, "<?=$type?>");
