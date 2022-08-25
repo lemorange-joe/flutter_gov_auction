@@ -8,7 +8,8 @@ class AdminController {
 
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
-                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.auction_status, A.status, A.last_update,
+                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.remarks_en, A.remarks_tc, A.remarks_sc, 
+                    A.auction_status, A.status, A.last_update,
                     GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
                   FROM Auction A
                   LEFT JOIN (
@@ -36,6 +37,9 @@ class AdminController {
       $auction->result_pdf_en = $result[$i]["result_pdf_en"];
       $auction->result_pdf_tc = $result[$i]["result_pdf_tc"];
       $auction->result_pdf_sc = $result[$i]["result_pdf_sc"];
+      $auction->remarks_en = $result[$i]["remarks_en"];
+      $auction->remarks_tc = $result[$i]["remarks_tc"];
+      $auction->remarks_sc = $result[$i]["remarks_sc"];
       $auction->auction_status = $result[$i]["auction_status"];
       $auction->status = $result[$i]["status"];
       $auction->last_update = $result[$i]["last_update"];
@@ -112,12 +116,12 @@ class AdminController {
                     L.lot_id, T.code, L.lot_num, L.seq,
                     gld_file_ref, reference, department_en, department_tc, department_sc,
                     contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
-                    location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
+                    location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
                     item_condition_en, item_condition_tc, item_condition_sc,
                     L.icon as 'lot_icon', L.photo_url, L.photo_real,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
-                    I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc, I.quantity, 
-                    I.unit_en, I.unit_tc, I.unit_sc
+                    I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc,
+                    I.quantity, I.unit_en, I.unit_tc, I.unit_sc
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
@@ -233,6 +237,9 @@ class AdminController {
       $resultPdfEn = trim($data["result_pdf_en"]);
       $resultPdfTc = trim($data["result_pdf_tc"]);
       $resultPdfSc = trim($data["result_pdf_sc"]);
+      $remarksEn = trim($data["remarks_en"]);
+      $remarksTc = trim($data["remarks_tc"]);
+      $remarksSc = trim($data["remarks_sc"]);
       $auctionStatus = trim($data["auction_status"]);
       $status = trim($data["status"]);
 
@@ -245,13 +252,17 @@ class AdminController {
                       result_pdf_en = ?,
                       result_pdf_tc = ?,
                       result_pdf_sc = ?,
+                      remarks_en = ?,
+                      remarks_tc = ?,
+                      remarks_sc = ?,
                       auction_status = ?,
                       status = ?,
                       last_update = now()
                     WHERE auction_id = ?";
 
     $result = $conn->Execute($updateSql, array(
-      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, $auctionStatus, $status, $id
+      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, 
+      $remarksEn, $remarksTc, $remarksSc, $auctionStatus, $status, $id
     ));
 
       $output->status = "success";
@@ -288,19 +299,26 @@ class AdminController {
       $resultPdfEn = trim($data["result_pdf_en"]);
       $resultPdfTc = trim($data["result_pdf_tc"]);
       $resultPdfSc = trim($data["result_pdf_sc"]);
+      $remarksEn = trim($data["remarks_en"]);
+      $remarksTc = trim($data["remarks_tc"]);
+      $remarksSc = trim($data["remarks_sc"]);
       $auctionStatus = trim($data["auction_status"]);
       $status = trim($data["status"]);
 
       $insertSql = "INSERT INTO Auction (
                       auction_num, start_time, location_id, auction_pdf_en, auction_pdf_tc, auction_pdf_sc, 
-                      result_pdf_en, result_pdf_tc, result_pdf_sc, auction_status, status, last_update
+                      result_pdf_en, result_pdf_tc, result_pdf_sc, remarks_en, remarks_tc, remarks_sc, 
+                      auction_status, status, last_update
                     ) VALUES (
                       ?, ?, 1, ?, ?, ?, 
-                      ?, ?, ?, ?, ?, now()
+                      ?, ?, ?, ?, ?, ?, 
+                      ?, ?, now()
                     );";
 
     $result = $conn->Execute($insertSql, array(
-      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, $auctionStatus, $status
+      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, 
+      $resultPdfEn, $resultPdfTc, $resultPdfSc, $remarksEn, $remarksTc, $remarksSc, 
+      $auctionStatus, $status
     ));
 
       $output->status = "success";

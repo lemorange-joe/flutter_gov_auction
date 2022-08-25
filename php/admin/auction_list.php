@@ -32,7 +32,7 @@ if (!isset($_SESSION["admin_user"])) {
       width: 150px;
     }
 
-    .form-row .separate {
+    .form-row.separate {
       margin-top: 8px;
     }
 
@@ -114,6 +114,18 @@ if (!isset($_SESSION["admin_user"])) {
         <div><input id="tbNewResultPdfSc" class="long" /></div>
       </div>
       <div class="form-row separate">
+        <div>Remarks (EN)</div>
+        <div><textarea id="tbNewRemarksEn" style="width:550px;height:45px"></textarea></div>
+      </div>
+      <div class="form-row">
+        <div>Remarks (TC)</div>
+        <div><textarea id="tbNewRemarksTc" style="width:550px;height:45px"></textarea></div>
+      </div>
+      <div class="form-row">
+        <div>Remarks (SC)</div>
+        <div><textarea id="tbNewRemarksSc" style="width:550px;height:45px"></textarea></div>
+      </div>
+      <div class="form-row separate">
         <div>Auction Status</div>
         <div>
           <select id="ddlNewAuctionStatus">
@@ -135,11 +147,18 @@ if (!isset($_SESSION["admin_user"])) {
       </div>
     </div>
     <div style="margin-top: 10px">
-      <button onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button id="btnCreate" onclick="CreateAuction()">Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
       <button onclick="ResetAuction()">Reset</button>
     </div>
     <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
     <script>
+      function TempDisableButton(id) {
+        document.getElementById(id).setAttribute("disabled", "disabled");
+        setTimeout(function() {
+          document.getElementById(id).removeAttribute("disabled");
+        }, 5000);
+      }
+
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");
         var option;
@@ -195,6 +214,7 @@ if (!isset($_SESSION["admin_user"])) {
 
               if (jsonData.status == "success") {
                 GetData(highlightId);
+                ResetAuction();
               } else {
                 alert("Update failed: " + jsonData.error);  
               }
@@ -208,6 +228,8 @@ if (!isset($_SESSION["admin_user"])) {
       }
 
       function CreateAuction() {
+        TempDisableButton("btnCreate");
+
         var auctionData = {
           "auction_num": document.getElementById("tbNewAuctionNum").value,
           "start_time": document.getElementById("tbNewStartTime").value,
@@ -217,6 +239,9 @@ if (!isset($_SESSION["admin_user"])) {
           "result_pdf_en": document.getElementById("tbNewResultPdfEn").value,
           "result_pdf_tc": document.getElementById("tbNewResultPdfTc").value,
           "result_pdf_sc": document.getElementById("tbNewResultPdfSc").value,
+          "remarks_en": document.getElementById("tbNewRemarksEn").value,
+          "remarks_tc": document.getElementById("tbNewRemarksTc").value,
+          "remarks_sc": document.getElementById("tbNewRemarksSc").value,
           "auction_status": document.getElementById("ddlNewAuctionStatus").value,
           "status": document.getElementById("ddlNewStatus").value,
         };
@@ -243,6 +268,9 @@ if (!isset($_SESSION["admin_user"])) {
           "result_pdf_en": document.getElementById("tbResultPdfEn_"+i).value,
           "result_pdf_tc": document.getElementById("tbResultPdfTc_"+i).value,
           "result_pdf_sc": document.getElementById("tbResultPdfSc_"+i).value,
+          "remarks_en": document.getElementById("tbRemarksEn_"+i).value,
+          "remarks_tc": document.getElementById("tbRemarksTc_"+i).value,
+          "remarks_sc": document.getElementById("tbRemarksSc_"+i).value,
           "auction_status": document.getElementById("ddlAuctionStatus_"+i).value,
           "status": document.getElementById("ddlStatus_"+i).value,
         };
@@ -259,6 +287,9 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("tbNewResultPdfEn").value = "";
         document.getElementById("tbNewResultPdfTc").value = "";
         document.getElementById("tbNewResultPdfSc").value = "";
+        document.getElementById("tbNewRemarksEn").value = "";
+        document.getElementById("tbNewRemarksTc").value = "";
+        document.getElementById("tbNewRemarksSc").value = "";
         document.getElementById("ddlNewAuctionStatus").value = "P";
         document.getElementById("ddlNewStatus").value = "I";
       }
@@ -312,6 +343,44 @@ if (!isset($_SESSION["admin_user"])) {
                 cell.setAttribute("colspan", 8);
                 cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
 
+                  var divRemarks = document.createElement("div");
+                  divRemarks.setAttribute("style", "display:flex;");
+
+                    var divRemarksEn = document.createElement("div");
+                    var txtRemarksEn = document.createElement("textarea");
+                    txtRemarksEn.setAttribute("id", "tbRemarksEn_"+i);
+                    txtRemarksEn.value = curAuction.remarks_en;
+                    txtRemarksEn.style.width = "500px";
+                    txtRemarksEn.style.height = "45px";
+                    divRemarksEn.appendChild(document.createTextNode("Remarks EN"));
+                    divRemarksEn.appendChild(document.createElement("br"));
+                    divRemarksEn.appendChild(txtRemarksEn);
+
+                    var divRemarksTc = document.createElement("div");
+                    divRemarksTc.setAttribute("style", "margin:0 10px;");
+                    var txtRemarksTc = document.createElement("textarea");
+                    txtRemarksTc.setAttribute("id", "tbRemarksTc_"+i);
+                    txtRemarksTc.value = curAuction.remarks_tc;
+                    txtRemarksTc.style.width = "500px";
+                    txtRemarksTc.style.height = "45px";
+                    divRemarksTc.appendChild(document.createTextNode("Remarks TC"));
+                    divRemarksTc.appendChild(document.createElement("br"));
+                    divRemarksTc.appendChild(txtRemarksTc);
+
+                    var divRemarksSc = document.createElement("div");
+                    var txtRemarksSc = document.createElement("textarea");
+                    txtRemarksSc.setAttribute("id", "tbRemarksSc_"+i);
+                    txtRemarksSc.value = curAuction.remarks_sc;
+                    txtRemarksSc.style.width = "500px";
+                    txtRemarksSc.style.height = "45px";
+                    divRemarksSc.appendChild(document.createTextNode("Remarks SC"));
+                    divRemarksSc.appendChild(document.createElement("br"));
+                    divRemarksSc.appendChild(txtRemarksSc);
+
+                  divRemarks.appendChild(divRemarksEn);
+                  divRemarks.appendChild(divRemarksTc);
+                  divRemarks.appendChild(divRemarksSc);
+
                   var divCount = document.createElement("div");
                   divCount.style.height = "30px";
                   divCount.appendChild(document.createTextNode("Count - " + curAuction.lot_count));
@@ -333,6 +402,7 @@ if (!isset($_SESSION["admin_user"])) {
                   divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
                   divLinks.appendChild(importResultLink);
                 
+                cell.appendChild(divRemarks);
                 cell.appendChild(divCount);
                 cell.appendChild(divLastUpdate);
                 cell.appendChild(divLinks);
