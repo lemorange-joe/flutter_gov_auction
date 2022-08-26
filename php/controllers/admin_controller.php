@@ -51,11 +51,11 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE);
   }
 
-  function getAuction() {
+  function getAuction($param) {
     global $conn;
 
-    $auctionId = $_GET["id"];
-    $itemType = $_GET["type"];
+    $auctionId = $param[0];
+    $itemType = $param[1];
     $output = new stdClass();
 
     // ------ 1. get auction ------

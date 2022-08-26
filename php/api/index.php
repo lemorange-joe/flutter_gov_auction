@@ -49,7 +49,7 @@ if ($strController == "auction") {
 
 if ($strController == "admin") {
   if (!isset($_SESSION["admin_user"])) {
-    echo "ERROR!";
+    echo "Login error!";
     exit;
   }
 

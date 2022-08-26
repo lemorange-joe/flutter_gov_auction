@@ -78,9 +78,12 @@
   } else {
   ?>
     <form method="post">
-      Username: <input name="username" autofocus />
-      <br />Password: <input type="password" name="password" />
-      <br /><button type="submit">Submit</button>
+      <div style="width: 180px; margin: 150px auto; background-color: #f3f3f3; padding: 18px 30px">
+        <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px">Login</div>
+        <input name="username" style="display: block; width: 150px; margin-bottom: 5px" placeholder="Username" autofocus />
+        <input type="password" name="password" style="display: block; width: 150px; margin-bottom: 5px" placeholder="Password"/>        
+        <button type="submit" >Submit</button>
+      </div>
     </form>
   <?php
   }

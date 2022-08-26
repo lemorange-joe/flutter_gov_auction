@@ -383,11 +383,12 @@ if (!isset($_SESSION["admin_user"])) {
 
                   var divCount = document.createElement("div");
                   divCount.style.height = "30px";
-                  divCount.appendChild(document.createTextNode("Count - " + curAuction.lot_count));
+                  divCount.style.lineHeight = "30px";
+                  divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count));
 
                   var divLastUpdate = document.createElement("div");
                   divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
-                  divLastUpdate.appendChild(document.createTextNode("Last Update: " + curAuction.last_update));
+                  divLastUpdate.appendChild(document.createTextNode("🗓 " + curAuction.last_update));
 
                   var importItemLink = document.createElement('a');
                   importItemLink.appendChild(document.createTextNode("Import Items"));
@@ -398,6 +399,7 @@ if (!isset($_SESSION["admin_user"])) {
                   importResultLink.href = "import_auction_result.php?auction_num=" + encodeURIComponent(curAuction.num);
 
                   var divLinks = document.createElement("div");
+                  divLinks.style.lineHeight = "40px";
                   divLinks.appendChild(importItemLink);
                   divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
                   divLinks.appendChild(importResultLink);

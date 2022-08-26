@@ -51,19 +51,19 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         <div>SC: <a id="lnkResultPdfSc" href="#" target="_blank"></a></div>
       </div>
     </div>
-    <div style="width: 1350px;">
-      Remarks
+    <div style="width: 1350px; margin-top: 10px">      
+      <span style="text-decoration: underline">Remarks</span>
       <div style="display: flex; justify-content: start">
         <div style="width: 50px">EN</div>
-        <textarea id="txtRemarksEn" style="width:600px; height:45px" readonly></textarea>
+        <textarea id="txtRemarksEn" style="width:600px; height:45px; white-space: normal" readonly></textarea>
       </div>
       <div style="display: flex; justify-content: start">
         <div style="width: 50px">TC</div>
-        <textarea id="txtRemarksTc" style="width:600px; height:45px" readonly></textarea>
+        <textarea id="txtRemarksTc" style="width:600px; height:45px; white-space: normal" readonly></textarea>
       </div>
       <div style="display: flex; justify-content: start">
         <div style="width: 50px">SC</div>
-        <textarea id="txtRemarksSc" style="width:600px; height:45px" readonly></textarea>
+        <textarea id="txtRemarksSc" style="width:600px; height:45px; white-space: normal" readonly></textarea>
       </div>
     </div>
 
@@ -161,7 +161,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
       function GetData(auctionId, type)
       {
-        var apiUrl = '../en/api/admin-getAuction?id=' + auctionId + "&type=" + type;
+        var apiUrl = '../en/api/admin-getAuction-' + auctionId + "-" + type;
         var xhr = new XMLHttpRequest();
         
         xhr.open("GET", apiUrl);
@@ -472,12 +472,19 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='display:flex'><div style='width:100px'>地点</div><input id='tbLocationSc_" + i + "' style='width:750px' value='" + locationSc.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Status</div>" + GetDdl("ddlStatus_"+i, status, "Status") + "</div>";
+          divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Last Update:</div><div>" + lastUpdate + "</div></div>";
         divHtml += "</div>";
         divHtml += "<div style='width:700px;float: right;'>";
           divHtml += "<div style='height:20px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'><button style='margin-left:50px;font-size:24px;padding:0 5px' onclick='GetLotImage("+i+")'>⊞</button></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Photo URL</div><input id='tbPhotoUrl_" + i + "' style='width:590px' value='" + photoUrl.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'>";
+            divHtml += "<div style='width:100px'><a href='#' style='line-height: 32px;' onclick='window.open(document.getElementById(\"tbPhotoUrl_"+i+"\").value, \"_blank\");return false' title='View Photo'>Photo URL</a></div>";
+            divHtml += "<div>";
+              divHtml += "<button style='margin-right:5px;font-size:24px;padding:0 5px' onclick='GetLotImage("+i+")'>⊞</button>";
+              divHtml += "<input id='tbPhotoUrl_" + i + "' style='width:490px' value='" + photoUrl.replace("'", '"') + "'>";
+            divHtml += "</div>";
+          divHtml += "</div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Photo Real</div><input id='chkPhotoReal_" + i + "' type='checkbox' " + (photoReal ? "checked" : "") + "></div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Currency</div><input id='tbTranCurrency" + i + "' value='" + transactionCurrency.replace("'", '"') + "'></div>";
@@ -603,7 +610,24 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var itemLines = document.getElementById("tbItem_"+i+"_0").value.split("\n");
         var keywordEn = itemLines[0];
         var keywordTc = itemLines[1];
-        console.log(keywordEn + " / " + keywordTc); //TBC!!!
+        
+        var apiUrl = '../en/api/admin-getKeywordImageUrl-' + keywordTc;
+        var xhr = new XMLHttpRequest();
+        
+        xhr.open("GET", apiUrl);
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            const jsonData = JSON.parse(this.responseText);
+            if (jsonData && jsonData.length > 0) {
+              var rndIndex = Math.floor(Math.random() * jsonData.length);
+              document.getElementById("tbPhotoUrl_"+i).value = jsonData[rndIndex];
+            } else {
+              alert(keywordTc + " image not found!");
+            }
+          }
+        }
+
+        xhr.send();
       }
 
       GetData(<?=$id?>, "<?=$type?>");
