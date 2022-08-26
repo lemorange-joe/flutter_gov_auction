@@ -8,6 +8,7 @@ include_once ('../class/auction.php');
 include_once ('../controllers/admin_controller.php');
 include_once ('../controllers/auction_controller.php');
 include_once ('../controllers/data_controller.php');
+include_once ('../controllers/user_controller.php');
 
 if ($ENV == 'dev') {
   ini_set('display_errors', 'on');
@@ -45,9 +46,12 @@ if ($strController == "auction") {
   $controller = new DataController();
 } else if ($strController == "admin") {
   $controller = new AdminController();
+} else if ($strController == "user") {
+  $controller = new UserController();
 }
 
-if ($strController == "admin") {
+
+if ($strController == "admin" || $strController == "user") {
   if (!isset($_SESSION["admin_user"])) {
     echo "Login error!";
     exit;

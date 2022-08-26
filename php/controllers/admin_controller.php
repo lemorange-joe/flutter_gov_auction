@@ -718,7 +718,7 @@ class AdminController {
   }
 
   function sendPush() {
-    global $conn;
+    global $conn, $PUSH_PASSWORD_HASHED;
 
     $output = new stdClass();
     $output->status = "failed";
@@ -731,9 +731,16 @@ class AdminController {
           !isset($data["title_sc"]) || trim($data["title_sc"]) == "" || 
           !isset($data["body_en"]) || trim($data["body_en"]) == "" || 
           !isset($data["body_tc"]) || trim($data["body_tc"]) == "" || 
-          !isset($data["body_sc"]) || trim($data["body_sc"]) == "") {
-            throw new Exception("Data is empty");
+          !isset($data["body_sc"]) || trim($data["body_sc"]) == "" ||
+          !isset($data["push_password"]) || trim($data["push_password"]) == "") {
+            throw new Exception("Data is empty!");
           }
+
+      $push_password = md5($data["push_password"]);
+
+      if (strcmp($push_password, $PUSH_PASSWORD_HASHED) !== 0) {
+        throw new Exception("Wrong push password!");
+      }
 
       $pushData = new PushData(
         trim($data["title_en"]), trim($data["title_tc"]), trim($data["title_sc"]), 

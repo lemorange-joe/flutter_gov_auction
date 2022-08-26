@@ -1,12 +1,36 @@
 <?php
-  session_start();
+include_once ("../include/config.php");
+include_once ('../include/adodb5/adodb.inc.php');
+include_once ("../controllers/user_controller.php");
+date_default_timezone_set("Asia/Hong_Kong");
+session_start();
 
-  if (isset($_POST["username"]) && isset($_POST["password"])) {
-    $username = $_POST["username"];
+$loginError = "";
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+  if (empty($_POST["username"]) || empty($_POST["password"])) {
+    $loginError = "Username or password empty!";
+  } else {
+    $username = strtolower($_POST["username"]);
     $password = $_POST["password"];
+    
+    
+    $conn = new stdClass();
+    $conn = ADONewConnection('mysqli');
+    $conn->PConnect($GLOBALS['DB_HOST'], $GLOBALS['DB_USERNAME'] , $GLOBALS['DB_PASSWORD'], $GLOBALS['DB_NAME']);
+    $conn->Execute("SET NAMES UTF8");
 
-    $_SESSION["admin_user"] = $username;
+    $user = new UserController();
+    $validate = $user->validateLogin($username, $password);
+
+    $conn->close();
+
+    if ($validate) {
+      $_SESSION["admin_user"] = $username;
+    } else {
+      $loginError = "Wrong username or password!<br />" . Date("Y:m:d H:i:s") ;
+    }
   }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,7 +66,7 @@
     <div class="header"> 
       <div></div>
       <div><h2>Admin</h2></div>
-      <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
+      <div><?=$_SESSION["admin_user"]?> | <a href="#" onclick="OpenChangePassword()" style="text-decoration: none; color: #666; font-size: 24px; vertical-align: middle">⚙</a> | <a href="logout.php">Logout</a></div>
     </div>
     <div class="body">
       <div class="admin-block bgBlue" style="width: 400px">
@@ -74,15 +98,98 @@
         <a href="manage_keyword_image.php">Manage Keyword Image</a>
       </div>
     </div>
+    <div id="divChangePassword" style="display: none;position: absolute;right: 50px; top: 50px; width: 240px; height: 150px; padding: 10px 30px 20px 30px; background-color: #fff; border: solid 2px #444">
+      <div style="margin: 5px 0 15px 0; font-size: 16px; font-weight: bold">Change Password</div>
+      <input id="tbOldPassword" type="password" style="width: 180px; margin-bottom: 5px" placeholder="Old Password">
+      <input id="tbNewPassword" type="password" style="width: 180px; margin-bottom: 5px" placeholder="New Password">
+      <input id="tbConfirmPassword" type="password" style="width: 180px; margin-bottom: 20px" placeholder="Confirm Password">
+      <button id="btnSubmit" onclick="SubmitPassword()">Submit</button>
+    </div>
+    <script>
+      function TempDisableButton(id) {
+        document.getElementById(id).setAttribute("disabled", "disabled");
+        setTimeout(function() {
+          document.getElementById(id).removeAttribute("disabled");
+        }, 5000);
+      }
+
+      function OpenChangePassword() {
+        document.getElementById("tbOldPassword").value = "";
+        document.getElementById("tbNewPassword").value = "";
+        document.getElementById("tbConfirmPassword").value = "";
+        document.getElementById("divChangePassword").style.display = "block";
+      }
+
+      function SubmitPassword() {
+        TempDisableButton("btnSubmit");
+
+        var oldPassword = document.getElementById("tbOldPassword").value.trim();
+        var newPassword = document.getElementById("tbNewPassword").value.trim();
+        var confirmPassword = document.getElementById("tbConfirmPassword").value.trim();
+
+        if (oldPassword == "") {
+          alert("Please input old password!");
+          return;
+        }
+
+        if (newPassword == "") {
+          alert("Please input new password!");
+          return;
+        }
+
+        if (confirmPassword == "") {
+          alert("Please input confirm password!");
+          return;
+        }
+
+        if (newPassword != confirmPassword) {
+          alert("New password and confirm password do not match!");
+          return;
+        }
+        
+        var passwordData = {
+          old_password: oldPassword,
+          new_password: newPassword,
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../en/api/user-changePassword");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              if (jsonData.status == "success") {
+                document.getElementById("divChangePassword").style.display = "none";
+                alert("Change password succcess!");
+              } else {
+                alert("Change password failed: " + jsonData.error);  
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(passwordData));
+      }
+    </script>
   <?php
   } else {
   ?>
     <form method="post">
-      <div style="width: 180px; margin: 150px auto; background-color: #f3f3f3; padding: 18px 30px">
-        <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px">Login</div>
+      <div style="width: 250px; margin: 150px auto; background-color: #f3f3f3; padding: 18px 30px">
+        <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px">Admin</div>
         <input name="username" style="display: block; width: 150px; margin-bottom: 5px" placeholder="Username" autofocus />
         <input type="password" name="password" style="display: block; width: 150px; margin-bottom: 5px" placeholder="Password"/>        
-        <button type="submit" >Submit</button>
+        <?php
+          if (!empty($loginError))
+          {
+            echo "<div style='font-size: 14px;color: #f33'>$loginError</div>";
+          }
+        ?>
+        <button type="submit" style="margin-top: 15px">Login</button>
       </div>
     </form>
   <?php

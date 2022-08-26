@@ -88,7 +88,7 @@ if (!isset($_SESSION["admin_user"])) {
       <button id="btnConfirm" style="margin-right: 20px; display:none" onclick="ConfirmPush()">Confirm</button>
       <button onclick="ResetPush(true)">Reset</button>
     </div>
-    <hr style="width: 75%; margin-left: 0" />
+    <hr style="width: 1260px; margin-left: 0" />
     <table>
       <thead>
         <tr>
@@ -153,16 +153,17 @@ if (!isset($_SESSION["admin_user"])) {
 
       function ConfirmPush() {
         clearTimeout(confirmTimeout);
-
         document.getElementById("btnConfirm").disabled = true;
 
+        var push_password = prompt("Please enter password for push message:");
         var pushData = {
           "title_en": document.getElementById("tbTitleEn").value.trim(),
           "body_en": document.getElementById("txtBodyEn").value.trim(),
           "title_tc": document.getElementById("tbTitleTc").value.trim(),
           "body_tc": document.getElementById("txtBodyTc").value.trim(),
           "title_sc": document.getElementById("tbTitleSc").value.trim(),
-          "body_sc": document.getElementById("txtBodySc").value.trim()
+          "body_sc": document.getElementById("txtBodySc").value.trim(),
+          push_password: push_password,
         }
 
         var xhr = new XMLHttpRequest();

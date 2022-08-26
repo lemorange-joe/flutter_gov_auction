@@ -45,3 +45,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Web config files
+/php/include/config.test.php
+/php/include/config.prod.php
