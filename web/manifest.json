@@ -1,6 +1,6 @@
 {
-    "name": "government_auction",
-    "short_name": "government_auction",
+    "name": "gov_auction",
+    "short_name": "gov_auction",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

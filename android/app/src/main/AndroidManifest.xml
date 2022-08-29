@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.government_auction">
+    package="studio.lemorange.gov_auction">
    <application
-        android:label="government_auction"
+        android:label="gov_auction"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
