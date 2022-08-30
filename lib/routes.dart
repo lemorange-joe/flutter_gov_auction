@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
+import './class/auction.dart';
+import './pages/auction_details.dart';
+import './pages/auction_lot.dart';
 import './pages/home.dart';
 import './pages/settings.dart';
 
@@ -8,6 +11,14 @@ enum PageSlideDirection { up, down, left, right }
 class Routes {
   PageRoute<Widget> getRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case 'auction_details':
+        final dynamic args = settings.arguments;
+        final Auction auction = (args as Map<String, dynamic>)['auction'] as Auction;
+        return _buildRoute(settings, AuctionDetailsPage(auction));
+      case 'auction_lot':
+        final dynamic args = settings.arguments;
+        final AuctionLot auctionLot = (args as Map<String, dynamic>)['auctionLot'] as AuctionLot;
+        return _buildRoute(settings, AuctionLotPage(auctionLot));
       case 'home':
         return _buildRoute(settings, HomePage(FlutterConfig.get('VERSION') as String));
       case 'settings':
