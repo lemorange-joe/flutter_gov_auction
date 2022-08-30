@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="studio.lemorange.gov_auction">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
         android:label="gov_auction"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

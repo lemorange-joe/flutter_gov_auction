@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../generated/l10n.dart';
+import '../helpers/api_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(this.version, {Key? key}) : super(key: key);
@@ -14,10 +16,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  Future<void> _incrementCounter() async {
     setState(() {
       _counter++;
     });
+
+    final dynamic result = await ApiHelper().get(S.of(context).lang, 'auction', 'list', useDemoData: true);
+    Logger().d(result);
   }
 
   @override

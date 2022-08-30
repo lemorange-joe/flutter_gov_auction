@@ -57,7 +57,7 @@ class DebugPage extends StatelessWidget {
                 children: <Widget>[
                   Text('MODE: ${FlutterConfig.get("MODE")}', textAlign: TextAlign.start),
                   Text('VERSION: ${FlutterConfig.get("VERSION")}', textAlign: TextAlign.start),
-                  Text('API_ROOT_URL: ${FlutterConfig.get("API_ROOT_URL")}', textAlign: TextAlign.start),
+                  Text('API_URL: ${FlutterConfig.get("API_URL")}', textAlign: TextAlign.start),
                 ],
               )
             ],
