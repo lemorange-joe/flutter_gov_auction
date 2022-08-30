@@ -1,10 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
-import './pages/home.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import './generated/l10n.dart';
+import './helpers/hive_helper.dart';
+import './routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
+  final Directory appDocDir = await getApplicationDocumentsDirectory();
   await FlutterConfig.loadEnvVariables();
+  await HiveHelper().init(appDocDir.path);
 
   runApp(const MyApp());
 }
@@ -15,12 +24,42 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page (${FlutterConfig.get("VERSION")})'),
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]);
+    
+    return ValueListenableBuilder<Box<dynamic>>(
+      valueListenable: Hive.box<dynamic>('preferences').listenable(),
+      builder: (BuildContext context, _, __) {
+        final HiveHelper hiveHelper = HiveHelper();
+
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          locale: Locale(
+              hiveHelper.getLocaleCode().split('_')[0],
+              hiveHelper.getLocaleCode().split('_')[1],
+            ),
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          initialRoute: 'home',
+          onGenerateRoute: Routes().getRoutes,
+          builder: (BuildContext context, Widget? child) {
+            final MediaQueryData data = MediaQuery.of(context);
+            return MediaQuery(
+              data: data.copyWith(textScaleFactor: data.textScaleFactor * 1), // to be controlled by font size saved in hive
+              child: child!,
+            );
+          },
+        );
+      }
     );
   }
 }
