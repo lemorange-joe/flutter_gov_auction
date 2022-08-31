@@ -1,4 +1,7 @@
 {
     "appName": "APP Name",
-    "lang": "en"
+    "lang": "en",
+    "home": "Home",
+    "myFavourite": "My Favourite",
+    "settings": "Settings"
 }

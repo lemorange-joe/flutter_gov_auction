@@ -1,4 +1,7 @@
 {
     "appName": "APP Name (CN)",
-    "lang": "sc"
+    "lang": "sc",
+    "home": "主頁",
+    "myFavourite": "我的最爱",
+    "settings": "设定"
 }

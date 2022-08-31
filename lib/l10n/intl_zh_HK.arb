@@ -1,4 +1,7 @@
 {
     "appName": "APP Name (HK)",
-    "lang": "tc"
+    "lang": "tc",
+    "home": "主頁",
+    "myFavourite": "我的最愛",
+    "settings": "設定"
 }

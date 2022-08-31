@@ -4,7 +4,6 @@ import './class/auction.dart';
 import './pages/auction_details.dart';
 import './pages/auction_lot.dart';
 import './pages/home.dart';
-import './pages/settings.dart';
 
 enum PageSlideDirection { up, down, left, right }
 
@@ -21,8 +20,6 @@ class Routes {
         return _buildRoute(settings, AuctionLotPage(auctionLot));
       case 'home':
         return _buildRoute(settings, HomePage(FlutterConfig.get('VERSION') as String));
-      case 'settings':
-        return _buildRoute(settings, const SettingsPage());
     }
 
     throw Exception('Route not found!');
