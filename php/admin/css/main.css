@@ -61,6 +61,18 @@ textarea {
   padding: 10px;
 }
 
+.action-button {
+  background-color: #37f;
+  color: #fff;
+  border: none;
+  width: 75px;
+  height: 30px;
+}
+
+.action-button.disabled {
+  background-color: #888;
+}
+
 /* for prod */
 /* .bgBlue {
   background-color: #eef8ff;

@@ -298,8 +298,9 @@ class AdminImport {
     $itemPropertyList = array_filter(explode("\n", $strItem));
     $id = "tbItem_$lotIndex"."_$itemIndex";
     $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
+    $className = count($itemPropertyList) == 5 ? "item-textarea" : "item-textarea error";
     echo "<div style='display:inline-block;padding: 0 5px 5px 5px'>";
-      echo "<textarea id='$id' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
+      echo "<textarea id='$id' class='$className' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
       echo trim($strItem);
       echo "</textarea>";
       echo "<div style='display:flex;justify-content:space-around'>";

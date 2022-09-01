@@ -18,24 +18,20 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 </head>
 <body>
   <div class="header">
-    <div><h2><a href="index.php">« Admin Index</a></h2>&nbsp;&nbsp;<h2><a href="auction_list.php">« Auction List</a></h2></div>
+    <div><h2><a href="index.php">« Admin Index</a></h2>&nbsp;&nbsp;<h2><a href="auction_list.php">‹ Auction List</a></h2></div>
     <div class="title">Auction Details: <?=$id?></div>
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   </div>
   <div class="body">
-    <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
-      <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
-      <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
-      <option value="<?=ItemType::UnclaimedProperties?>" <?=$type==ItemType::UnclaimedProperties ? "selected" : ""?>><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
-      <option value="<?=ItemType::UnserviceableStores?>" <?=$type==ItemType::UnserviceableStores ? "selected" : ""?>><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
-      <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
-    </select>
-    <div style="width: 300px; display: flex; justify-content: space-between; border: solid 1px #000; margin-top: 10px; padding: 5px;">
-      <div>ID: <input id="tbAuctionId" style="width: 30px" type="text" disabled="disabled"/></div>
-      <div>|</div>
-      <div id="divAuctionNum" style="font-weight: bold"></div>
-      <div>|</div>
-      <div id="divStartTime" style="text-decoration: underline"></div>
+    <div style="display: flex; justify-content: space-between; width: 450px">
+      <div style="width: 300px; display: flex; justify-content: space-between; border: solid 1px #000; margin-top: 10px; padding: 5px;">
+        <div>ID: <input id="tbAuctionId" style="width: 30px" type="text" disabled="disabled"/></div>
+        <div>|</div>
+        <div id="divAuctionNum" style="font-weight: bold"></div>
+        <div>|</div>
+        <div id="divStartTime" style="text-decoration: underline"></div>
+      </div>
+      <a id="lnkImportNewLot" href="#" style="margin-top: 15px">Import New Lot</a>
     </div>
     <div style="width: 1350px; display: flex; justify-content: space-between; margin-top: 10px;">
       <div>
@@ -81,7 +77,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       Last Update: <span id="spnLastUpdate"></span>
     </div>
 
-    <hr />
+    <hr style="width: 1350px; margin-left: 0" />
     Item PDF:
     <div id="divItemPdfList" style="display: flex; flex-wrap: wrap; width: 1200px"></div>
     <div style="margin-top: 10px">
@@ -90,7 +86,19 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       <button id="btnSaveItemPdf" onclick="SaveItemPdf()">Save PDF</button>
     </div>
 
-    <hr />
+    <hr style="border-top: solid 3px #46f" />
+    
+    <div style="padding: 10px 0">
+      Show lots:
+      <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
+        <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
+        <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
+        <option value="<?=ItemType::UnclaimedProperties?>" <?=$type==ItemType::UnclaimedProperties ? "selected" : ""?>><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
+        <option value="<?=ItemType::UnserviceableStores?>" <?=$type==ItemType::UnserviceableStores ? "selected" : ""?>><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
+        <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
+      </select>
+    </div>
+    <hr style="width: 310px; margin: 5px 0 15px 0" />
 
     <div id="divLotList" style="width: 1600px"></div>
     <div style="margin-top: 10px">
@@ -101,25 +109,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
     <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
     <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
+    <script src="js/main.js"></script>
     <script>
-      var scrollTimeout;
-      function AutoScroll(d) {
-        window.scrollBy({top: d});
-        scrollTimeout = setTimeout(function() {
-          AutoScroll(d);
-        }, 25);
-      }
-      function StopScroll() {
-        clearTimeout(scrollTimeout);
-      }
-    
-      function TempDisableButton(id) {
-        document.getElementById(id).setAttribute("disabled", "disabled");
-        setTimeout(function() {
-          document.getElementById(id).removeAttribute("disabled");
-        }, 5000);
-      }
-
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");
         var option;
@@ -561,6 +552,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("tbAuctionId").value = jsonData["auction_id"];
         document.getElementById("divAuctionNum").innerHTML = jsonData["auction_num"];
         document.getElementById("divStartTime").innerHTML = jsonData["start_time"];
+        document.getElementById("lnkImportNewLot").setAttribute("href", "import_auction_list.php?auction_num="+encodeURIComponent(jsonData["auction_num"]));
         
         document.getElementById("lnkAuctionPdfEn").setAttribute("href", jsonData["auction_pdf_en"]);
         document.getElementById("lnkAuctionPdfEn").innerHTML = jsonData["auction_pdf_en"];

@@ -24,24 +24,6 @@ if (!isset($_SESSION["admin_user"])) {
   <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
   <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
   <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
-  <script>
-      var scrollTimeout;
-      function AutoScroll(d) {
-        window.scrollBy({top: d});
-        scrollTimeout = setTimeout(function() {
-          AutoScroll(d);
-        }, 25);
-      }
-      function StopScroll() {
-        clearTimeout(scrollTimeout);
-      }
-    
-      function TempDisableButton(id) {
-        document.getElementById(id).setAttribute("disabled", "disabled");
-        setTimeout(function() {
-          document.getElementById(id).removeAttribute("disabled");
-        }, 5000);
-      }
-    </script>
+  <script src="js/main.js"></script>
 </body>
 </html>

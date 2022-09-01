@@ -136,7 +136,7 @@ if (!isset($_SESSION["admin_user"])) {
           </select>
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-row separate">
         <div>Status</div>
         <div>
           <select id="ddlNewStatus">

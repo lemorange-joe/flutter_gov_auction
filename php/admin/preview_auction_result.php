@@ -42,10 +42,11 @@ include_once ("../class/admin_import.php");
       </div>
       <div style="display: flex; justify-content: space-between; width: 250px; margin-top: 10px">
         <button id="btnAdd" data-row="<?=$total?>" onclick="AddDataRow()">+</button>
-        <button id="btnImport" onclick="ImportData()">Import</button>
-        <a href="import_auction_result.php">Cancel</a>
+        <button id="btnImport" class="action-button" onclick="TempDisableButton('btnImport');ImportData()">Import</button>
+        <a href="import_auction_result.php" style="line-height: 28px">Cancel</a>
       </div>
       <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
+      <script src="js/main.js"></script>
       <script>
         function AddDataRow() {
           var rowNum = parseInt(document.getElementById("btnAdd").getAttribute("data-row"));

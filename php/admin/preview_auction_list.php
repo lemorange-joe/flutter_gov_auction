@@ -46,31 +46,34 @@ include_once ("../class/admin_import.php");
         $adminImport->parseData($itemType, $importText);
       ?>
       <div style="display: flex; justify-content: space-between; width: 150px; margin-top: 10px">
-        <button id="btnImport" onclick="ImportData()">Import</button>
-        <a href="import_auction_list.php">Cancel</a>
+        <button id="btnImport" class="action-button" onclick="ImportData()">Import</button>
+        <a href="import_auction_list.php" style="line-height: 28px">Cancel</a>
       </div>
+      <button id="btnNextErrorItem" style="position: fixed; right: 20px; bottom: 200px; width:36px; height: 36px; font-size: 18px; background-color: #f88; color: #fff; border: solid 1px #888" onclick="FindNextErrorItem()"  onmouseover="this.style.backgroundColor='#f99'" onmouseout="this.style.backgroundColor='#f88'">⮕</button>
       <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
       <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
       <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
       <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
+      <script src="js/main.js"></script>
       <script>
-        var scrollTimeout;
-        function AutoScroll(d) {
-          window.scrollBy({top: d});
-          scrollTimeout = setTimeout(function() {
-            AutoScroll(d);
-          }, 25);
+        function FindNextErrorItem() {
+          var total = document.getElementsByClassName("item-textarea error").length;
+          document.getElementById("btnNextErrorItem").innerHTML = total;
+          if (total > 0) {
+            document.getElementsByClassName("item-textarea error")[0].focus();
+          } else {
+            alert("No more error item!");
+          }
         }
-        function StopScroll() {
-          clearTimeout(scrollTimeout);
-        }
-        
+
         function CheckTextarea(id) {
           var itemNum = parseInt(id.substr(-1)) + 1;
           if (document.getElementById(id).value.split("\n").length != 5) {
             document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/f88/666.png&text=++++++" + itemNum + "')";
+            document.getElementById(id).classList.add("error");
           } else {
             document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/fff/888.png&text=++++++" + itemNum + "')";
+            document.getElementById(id).classList.remove("error");
           }
         }
 

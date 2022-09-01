@@ -44,3 +44,11 @@ Run the following commands:
 
 > flutter pub get
 > flutter pub run flutter_launcher_icons:main
+
+
+# Auction History
+1. 2022-06-16 10:30:00
+2. 2022-07-14 10:30:00
+3. 2022-08-11 10:30:00
+4. 2022-08-25 10:30:00
+5. 2022-09-08 10:30:00
