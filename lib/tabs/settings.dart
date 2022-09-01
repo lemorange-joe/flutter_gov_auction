@@ -41,12 +41,35 @@ class SettingsTab extends StatelessWidget {
           const SizedBox(height: 10.0),
           const Divider(),
           TextButton(
-            onPressed: () async {},
+            onPressed: () async {
+              await HiveHelper().writeTheme('light');
+            },
             child: const Text('Light'),
           ),
           TextButton(
-            onPressed: () async {},
+            onPressed: () async {
+              await HiveHelper().writeTheme('dark');
+            },
             child: const Text('Dark'),
+          ),
+          const Divider(),
+          TextButton(
+            onPressed: () async {
+              await HiveHelper().writeFontSize(75);
+            },
+            child: const Text('Small'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await HiveHelper().writeFontSize(100);
+            },
+            child: const Text('Mid'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await HiveHelper().writeFontSize(125);
+            },
+            child: const Text('Large'),
           ),
         ],
       ),

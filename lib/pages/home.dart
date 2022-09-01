@@ -34,30 +34,48 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-        return <PersistentBottomNavBarItem>[
-          PersistentBottomNavBarItem(
-                icon: const Icon(MdiIcons.heart),
-                title: S.of(context).myFavourite,
-                activeColorPrimary: Colors.red[300]!,
-                activeColorSecondary: Colors.white,
-                inactiveColorPrimary: Colors.grey,
-            ),
-            PersistentBottomNavBarItem(
-                icon: const Icon(MdiIcons.home),
-                title: S.of(context).home,
-                activeColorPrimary: Theme.of(context).primaryColor,
-                activeColorSecondary: Colors.white,
-                inactiveColorPrimary: Colors.grey,
-            ),
-            PersistentBottomNavBarItem(
-                icon: const Icon(MdiIcons.cog),
-                title: S.of(context).settings,
-                activeColorPrimary: Colors.grey[800]!,
-                activeColorSecondary: Colors.white,
-                inactiveColorPrimary: Colors.grey,
-            ),
-        ];
-    }
+    return <PersistentBottomNavBarItem>[
+      PersistentBottomNavBarItem(
+        contentPadding: MediaQuery.of(context).textScaleFactor > 1 ? 0.0 : 5.0,
+        icon: const Icon(MdiIcons.heart),
+        iconSize: 26.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+        title: S.of(context).myFavourite,
+        textStyle: TextStyle(
+          fontSize: 15.0 * MediaQuery.of(context).textScaleFactor,
+          height: 1.25,
+        ),
+        activeColorPrimary: Colors.red[300]!,
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.grey[400],
+      ),
+      PersistentBottomNavBarItem(
+        contentPadding: MediaQuery.of(context).textScaleFactor > 1 ? 0.0 : 5.0,
+        icon: const Icon(MdiIcons.home),
+        iconSize: 26.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+        title: S.of(context).home,
+        textStyle: TextStyle(
+          fontSize: 15.0 * MediaQuery.of(context).textScaleFactor,
+          height: 1.25,
+        ),
+        activeColorPrimary: Theme.of(context).primaryColor,
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.grey[400],
+      ),
+      PersistentBottomNavBarItem(
+        contentPadding: MediaQuery.of(context).textScaleFactor > 1 ? 0.0 : 5.0,
+        icon: const Icon(MdiIcons.cog),
+        iconSize: 26.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+        title: S.of(context).settings,
+        textStyle: TextStyle(
+          fontSize: 15.0 * MediaQuery.of(context).textScaleFactor,
+          height: 1.25,
+        ),
+        activeColorPrimary: Colors.grey[800]!,
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.grey[400],
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +94,11 @@ class _HomePageState extends State<HomePage> {
         screens: _buildTabs(),
         items: _navBarsItems(),
         navBarStyle: NavBarStyle.style7,
+        backgroundColor: Theme.of(context).backgroundColor,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          colorBehindNavBar: Colors.white,
+        ),
       ),
     );
   }

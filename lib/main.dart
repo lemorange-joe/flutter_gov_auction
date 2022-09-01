@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import './generated/l10n.dart';
 import './helpers/hive_helper.dart';
+import './include/theme_data.dart';
 import './routes.dart';
 
 void main() async {
@@ -35,9 +36,7 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+          theme: hiveHelper.getTheme() == 'dark' ? darkTheme : lightTheme,
           locale: Locale(
               hiveHelper.getLocaleCode().split('_')[0],
               hiveHelper.getLocaleCode().split('_')[1],
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, Widget? child) {
             final MediaQueryData data = MediaQuery.of(context);
             return MediaQuery(
-              data: data.copyWith(textScaleFactor: data.textScaleFactor * 1), // to be controlled by font size saved in hive
+              data: data.copyWith(textScaleFactor: data.textScaleFactor * hiveHelper.getFontSize() / 100), // to be controlled by font size saved in hive
               child: child!,
             );
           },
