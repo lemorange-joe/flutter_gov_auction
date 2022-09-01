@@ -30,7 +30,7 @@ class AuctionController {
       );
     }
 
-    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function details($param) {
@@ -50,7 +50,7 @@ class AuctionController {
       $auction->lotList = $this->getAuctionLotList($auctionId);
     }
 
-    echo json_change_key(json_encode($auction, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
+    echo json_change_key(json_encode($auction, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function search($param) {
@@ -98,7 +98,7 @@ class AuctionController {
       );
     }
 
-    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function related($param) {
@@ -147,7 +147,7 @@ class AuctionController {
       );
     }
 
-    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE), $GLOBALS['auctionJsonFieldMapping']);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   private function getAuction($auctionId) {

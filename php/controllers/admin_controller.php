@@ -48,7 +48,7 @@ class AdminController {
       $output[] = $auction;
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function getAuction($param) {
@@ -209,7 +209,7 @@ class AdminController {
       $output->lot_list[] = $curLotOutput;
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function updateAuction() {
@@ -275,7 +275,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
     
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function createAuction() {
@@ -331,7 +331,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function importAuction() {
@@ -439,7 +439,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function updateAuctionItemPdf() {
@@ -478,7 +478,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
     
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function updateAuctionLot() {
@@ -567,7 +567,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
     
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function addLotItems($lotId, $items) {
@@ -680,7 +680,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function listPush() {
@@ -714,7 +714,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function sendPush() {
@@ -775,7 +775,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function listKeywordImage($param) {
@@ -804,7 +804,7 @@ class AdminController {
       $output[] = $keywordImage;
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function getKeywordImageUrl($param) {
@@ -824,7 +824,7 @@ class AdminController {
       }
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function createKeywordImage() {
@@ -854,7 +854,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
   function deleteKeywordImage() {
@@ -879,7 +879,7 @@ class AdminController {
       $output->error = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE);
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 }
 ?>

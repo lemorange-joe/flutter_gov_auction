@@ -18,7 +18,7 @@ class _HomeTabState extends State<HomeTab> {
       _counter++;
     });
 
-    final dynamic result = await ApiHelper().get(S.of(context).lang, 'auction', 'list', useDemoData: true);
+    final dynamic result = await ApiHelper().get(S.of(context).lang, 'auction', 'details-5', useDemoData: true);
     Logger().d(result);
   }
 
