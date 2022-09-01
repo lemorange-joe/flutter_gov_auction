@@ -3,29 +3,15 @@ import 'package:flutter/material.dart';
 import '../generated/l10n.dart';
 
 class FavouriteTab extends StatefulWidget {
-  const FavouriteTab({Key? key}) : super(key: key);
+  const FavouriteTab(this.scrollController, {Key? key}) : super(key: key);
+
+  final ScrollController scrollController;
 
   @override
   State<FavouriteTab> createState() => _FavouriteTabState();
 }
 
 class _FavouriteTabState extends State<FavouriteTab> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController.addListener(() {});
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     // NotificationListener<UserScrollNotification>(
@@ -35,7 +21,7 @@ class _FavouriteTabState extends State<FavouriteTab> {
     // }
 
     return ListView.builder(
-      controller: _scrollController,
+      controller: widget.scrollController,
       itemCount: 500,
       itemBuilder: (BuildContext context, int i) {
         return ListTile(

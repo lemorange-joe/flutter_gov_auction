@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../generated/l10n.dart';
@@ -14,19 +15,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // double _bottomNavHeight = 80.0;
   int _tabIndex = 0;
-
+  double _prevScrollOffset = 0;
+  bool _scrollingUp = true; 
+  late ScrollController scrollController;
   final List<TabData> _tabs = <TabData>[];
 
   @override
   void initState() {
     super.initState();
 
+    scrollController = ScrollController();
+
+    scrollController.addListener(() {
+      _scrollingUp = scrollController.offset < _prevScrollOffset;
+      setState((){
+        _prevScrollOffset = scrollController.offset;
+      });
+      // Logger().i('$_scrollingUp || $_prevScrollOffset ');
+    });
+
+
     _tabs
       ..add(TabData(const HomeTab(), Colors.blue, Colors.blue))
-      ..add(TabData(const FavouriteTab(), Colors.red[300]!, Colors.red[300]!))
+      ..add(TabData(FavouriteTab(scrollController), Colors.red[300]!, Colors.red[300]!))
       ..add(TabData(const SettingsTab(), Colors.grey[800]!, Colors.white));
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   void _onTabItemTapped(int index) {
@@ -34,14 +53,6 @@ class _HomePageState extends State<HomePage> {
       _tabIndex = index;
     });
   }
-
-  // void toggleBottomNav(bool show) {
-  //   if (_bottomNavHeight == 80.0 || _bottomNavHeight == 0.0) {
-  //     setState(() {
-  //       _bottomNavHeight = show ? 80.0 : 0.0;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,33 +69,49 @@ class _HomePageState extends State<HomePage> {
         index: _tabIndex,
         children: _tabs.map((TabData t) => t.widget).toList(),
       ),
-      // body: Center(child: _tabs.elementAt(_tabIndex).widget),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(MdiIcons.home),
-            label: S.of(context).home,
+      bottomNavigationBar: AnimatedBuilder(
+        animation: scrollController,
+        builder: (BuildContext context, Widget? child) {
+          // Logger().d(scrollController.position.userScrollDirection);
+          double height = 0.0;
+
+          if (scrollController.position.userScrollDirection == ScrollDirection.forward || (scrollController.position.userScrollDirection == ScrollDirection.idle && _scrollingUp)) {
+            height = 72 * MediaQuery.of(context).textScaleFactor;
+          }
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: height,
+            child: child,
+          );
+        },
+        child: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: const Icon(MdiIcons.home),
+              label: S.of(context).home,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(MdiIcons.heart),
+              label: S.of(context).myFavourite,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(MdiIcons.cog),
+              label: S.of(context).settings,
+            ),
+          ],
+          onTap: _onTabItemTapped,
+          iconSize: 26.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+          selectedLabelStyle: TextStyle(
+            fontSize: 16.0 * MediaQuery.of(context).textScaleFactor,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(MdiIcons.heart),
-            label: S.of(context).myFavourite,
+          unselectedLabelStyle: TextStyle(
+            fontSize: 16.0 * MediaQuery.of(context).textScaleFactor,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(MdiIcons.cog),
-            label: S.of(context).settings,
-          ),
-        ],
-        onTap: _onTabItemTapped,
-        iconSize: 26.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
-        selectedLabelStyle: TextStyle(
-          fontSize: 16.0 * MediaQuery.of(context).textScaleFactor,
+          currentIndex: _tabIndex,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Theme.of(context).brightness == Brightness.dark ? _tabs.elementAt(_tabIndex).darkColor : _tabs.elementAt(_tabIndex).lightColor,
         ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 16.0 * MediaQuery.of(context).textScaleFactor,
-        ),
-        currentIndex: _tabIndex,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Theme.of(context).brightness == Brightness.dark ? _tabs.elementAt(_tabIndex).darkColor : _tabs.elementAt(_tabIndex).lightColor,
       ),
     );
   }
