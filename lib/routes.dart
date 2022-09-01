@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
 import './class/auction.dart';
 import './pages/auction_details.dart';
 import './pages/auction_lot.dart';
+import './pages/debug.dart';
 import './pages/home.dart';
 
 enum PageSlideDirection { up, down, left, right }
@@ -18,8 +18,10 @@ class Routes {
         final dynamic args = settings.arguments;
         final AuctionLot auctionLot = (args as Map<String, dynamic>)['auctionLot'] as AuctionLot;
         return _buildRoute(settings, AuctionLotPage(auctionLot));
+      case 'debug':
+        return _buildRoute(settings, const DebugPage());
       case 'home':
-        return _buildRoute(settings, HomePage(FlutterConfig.get('VERSION') as String));
+        return _buildRoute(settings, const HomePage());
     }
 
     throw Exception('Route not found!');

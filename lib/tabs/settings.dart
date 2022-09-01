@@ -11,7 +11,7 @@ class SettingsTab extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          const SizedBox(height: 100.0),
+          const SizedBox(height: 20.0),
           Text('Current: ${Intl.getCurrentLocale()} [${S.of(context).lang.toUpperCase()}]'),
           const SizedBox(height: 10.0),
           const Divider(),
@@ -70,6 +70,13 @@ class SettingsTab extends StatelessWidget {
               await HiveHelper().writeFontSize(125);
             },
             child: const Text('Large'),
+          ),
+          const Divider(),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'debug');
+            },
+            child: const Text('Debug Page'),
           ),
         ],
       ),
