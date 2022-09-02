@@ -4,30 +4,41 @@ class AuctionController {
     // quick api to return the list of available auctions
     global $conn, $lang;
 
-    $selectSql = "SELECT
-                    auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
-                    result_pdf_$lang as 'result_pdf', remarks_$lang as 'remarks', auction_status, status, last_update 
-                  FROM Auction
-                  WHERE status = ?
-                  ORDER BY start_time DESC";
+    $output = new StdClass();
+    $output->status = "fail";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
-    $rowNum = count($result);
+    try {
+      $selectSql = "SELECT
+                      auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
+                      result_pdf_$lang as 'result_pdf', remarks_$lang as 'remarks', auction_status, status, last_update 
+                    FROM Auction
+                    WHERE status = ?
+                    ORDER BY start_time DESC";
 
-    $output = array();
-    for($i = 0; $i < $rowNum; ++$i) {
-      $output[] = new Auction(
-        intval($result[$i]["auction_id"]),
-        $result[$i]["auction_num"],
-        $result[$i]["start_time"],
-        "",
-        $result[$i]["auction_pdf"],
-        $result[$i]["result_pdf"],
-        $result[$i]["remarks"],
-        $result[$i]["auction_status"],
-        $result[$i]["status"],
-        $result[$i]["last_update"],
-      );
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $data[] = new Auction(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["auction_num"],
+          $result[$i]["start_time"],
+          "",
+          $result[$i]["auction_pdf"],
+          $result[$i]["result_pdf"],
+          $result[$i]["remarks"],
+          $result[$i]["auction_status"],
+          $result[$i]["status"],
+          $result[$i]["last_update"],
+        );
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
     }
 
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
@@ -37,20 +48,32 @@ class AuctionController {
     // get the auction details and items by joining related tables
     global $conn, $lang;
 
+    $output = new StdClass();
+    $output->status = "fail";
+
     $auctionId = !empty($param) && is_array($param) ? intval($param[0]) : 0;
     if ($auctionId == 0) {
-      echo "{}";
+      $output->message = "Invalid id!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
       return;
     }
 
-    $auctionId = intval($param[0]);
-    $auction = $this->getAuction($auctionId);
-    if ($auction != null) {
-      $auction->itemPdfList = $this->getAuctionPdfList($auctionId);
-      $auction->lotList = $this->getAuctionLotList($auctionId);
+    try {
+      $auctionId = intval($param[0]);
+      $auction = $this->getAuction($auctionId);
+      if ($auction != null) {
+        $auction->itemPdfList = $this->getAuctionPdfList($auctionId);
+        $auction->lotList = $this->getAuctionLotList($auctionId);
+      }
+
+      $output->status = "success";
+      $output->data = $auction;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
     }
 
-    echo json_change_key(json_encode($auction, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
   function search($param) {
@@ -58,44 +81,56 @@ class AuctionController {
     // use $keyword to search the auction lot and items within the auction id
     global $conn, $lang;
 
+    $output = new StdClass();
+    $output->status = "fail";
+
     if (count($param) < 2 || empty($param[1])) {
-      echo "[]";
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
       return;
     }
 
-    list($auctionId, $keyword, $type) = array_pad($param, 3, "");
-    $selectSql = "SELECT
-                    A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
-                    I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
-                  FROM Auction A
-                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
-                  INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
-                  ORDER BY L.seq, I.seq";
+    try {
+      list($auctionId, $keyword, $type) = array_pad($param, 3, "");
+      $selectSql = "SELECT
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                      I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
+                    ORDER BY L.seq, I.seq";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
-    $rowNum = count($result);
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+      $rowNum = count($result);
 
-    $output = array();
-    for($i = 0; $i < $rowNum; ++$i) {
-      $output[] = new AuctionSearch(
-        intval($result[$i]["auction_id"]),
-        $result[$i]["start_time"],
-        $result[$i]["auction_status"],
-        intval($result[$i]["lot_id"]),
-        $result[$i]["code"],
-        $result[$i]["photo_url"],
-        $result[$i]["photo_real"],
-        $result[$i]["transaction_currency"],
-        $result[$i]["transaction_price"],
-        $result[$i]["transaction_status"],
-        $result[$i]["icon"],
-        $result[$i]["description"],
-        $result[$i]["quantity"],
-        $result[$i]["unit"],
-        0
-      );
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $data[] = new AuctionSearch(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["code"],
+          $result[$i]["photo_url"],
+          $result[$i]["photo_real"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"],
+          $result[$i]["icon"],
+          $result[$i]["description"],
+          $result[$i]["quantity"],
+          $result[$i]["unit"],
+          0
+        );
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
     }
 
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
@@ -106,45 +141,62 @@ class AuctionController {
     // use $itemId to search related items in other lots or auctions
     global $conn, $lang;
 
-    $itemId = array_shift($param);
-    
-    $selectSql = "SELECT
-                    A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
-                    I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
-                  FROM Auction A
-                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
-                  INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
-                    SELECT 1 
-                    FROM AuctionItem I0
-                    INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
-                    WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
-                  )
-                  ORDER BY A.start_time DESC, L.seq, I.seq";
+    $output = new StdClass();
+    $output->status = "fail";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
-    $rowNum = count($result);
+    if (count($param) < 1) {
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      return;
+    }
 
-    $output = array();
-    for($i = 0; $i < $rowNum; ++$i) {
-      $output[] = new AuctionSearch(
-        intval($result[$i]["auction_id"]),
-        $result[$i]["start_time"],
-        $result[$i]["auction_status"],
-        intval($result[$i]["lot_id"]),
-        $result[$i]["code"],
-        $result[$i]["photo_url"],
-        $result[$i]["photo_real"],
-        $result[$i]["transaction_currency"],
-        $result[$i]["transaction_price"],
-        $result[$i]["transaction_status"],
-        $result[$i]["icon"],
-        $result[$i]["description"],
-        $result[$i]["quantity"],
-        $result[$i]["unit"],
-        0
-      );
+    try {
+      $itemId = array_shift($param);
+      
+      $selectSql = "SELECT
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                      I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
+                      SELECT 1 
+                      FROM AuctionItem I0
+                      INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
+                      WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
+                    )
+                    ORDER BY A.start_time DESC, L.seq, I.seq";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $data[] = new AuctionSearch(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["code"],
+          $result[$i]["photo_url"],
+          $result[$i]["photo_real"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"],
+          $result[$i]["icon"],
+          $result[$i]["description"],
+          $result[$i]["quantity"],
+          $result[$i]["unit"],
+          0
+        );
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
     }
 
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);

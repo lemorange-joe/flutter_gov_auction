@@ -23,7 +23,7 @@ class UserController {
     global $conn, $LOGIN_SALT;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);

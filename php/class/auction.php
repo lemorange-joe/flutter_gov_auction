@@ -1,5 +1,9 @@
 <?php
 $auctionJsonFieldMapping = array(
+  // API level
+  "status" => "s",
+  "data" => "d",
+  "message" => "m",
   // Auction
   "num" => "n",
   "startTime" => "st",
@@ -10,7 +14,7 @@ $auctionJsonFieldMapping = array(
   "remarks" => "r",
   "lotList" => "ll",
   "auctionStatus" => "as",
-  "status" => "s",
+  // "status" => "s",
   "lastUpdate" => "lu",
   // ------
   // AuctionLot

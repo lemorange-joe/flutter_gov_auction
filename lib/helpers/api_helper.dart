@@ -58,9 +58,9 @@ class ApiHelper {
       if (demoData.containsKey(demoDataKey)) {
         final dynamic jsonResult = jsonDecode(demoData[demoDataKey]!) as dynamic;
 
-        if ((jsonResult as Map<String, dynamic>)['status'] == 'success') {
-          returnData = jsonResult['data'] as dynamic;
-        } else if (jsonResult['status'] == 'fail') {
+        if ((jsonResult as Map<String, dynamic>)['s'] == 'success') {
+          returnData = jsonResult['d'] as dynamic;
+        } else if (jsonResult['s'] == 'fail') {
           throw Exception('Demo data fail!');
         } else {
           throw Exception('Demo data error!');

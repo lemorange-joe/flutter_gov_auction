@@ -1,20 +1,31 @@
 <?php
 class DataController {
-  function getAppInfo() {
+  function appInfo() {
     global $conn, $lang;
 
-    $output = new stdClass();
-    $selectSql = "SELECT data_version, news_$lang as news FROM AppInfo ORDER BY id DESC LIMIT 1";
+    $output = new StdClass();
+    $output->status = "fail";
 
-    $result = $conn->Execute($selectSql)->GetRows();  // simple query, no need to cache
-    $rowNum = count($result);
+    try {
+      $data = new stdClass();
+      $selectSql = "SELECT data_version, news_$lang as news FROM AppInfo ORDER BY id DESC LIMIT 1";
 
-    if (count($result) > 0) {
-      $output->dv = $result[0]["data_version"];
-      $output->n = $result[0]["news"];
+      $result = $conn->Execute($selectSql)->GetRows();  // simple query, no need to cache
+      $rowNum = count($result);
+
+      if (count($result) > 0) {
+        $data->dv = $result[0]["data_version"];
+        $data->n = $result[0]["news"];
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
     }
 
-    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 }
 ?>

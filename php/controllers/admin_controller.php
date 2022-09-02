@@ -216,7 +216,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -282,7 +282,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -338,7 +338,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -446,7 +446,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -485,7 +485,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -631,7 +631,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -710,7 +710,7 @@ class AdminController {
         $output[] = $push;
       }
     } catch (Exception $e) {
-      $output->status = "failed";
+      $output->status = "fail";
       $output->error = $e->getMessage();
     }
 
@@ -721,7 +721,7 @@ class AdminController {
     global $conn, $PUSH_PASSWORD_HASHED;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
     
     try{
       $data = json_decode(file_get_contents('php://input'), true);
@@ -831,7 +831,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -861,7 +861,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);
@@ -906,7 +906,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $output->status = "failed";
+    $output->status = "fail";
 
     try {
       $data = json_decode(file_get_contents('php://input'), true);

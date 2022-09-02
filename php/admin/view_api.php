@@ -24,10 +24,11 @@ if (!isset($_SESSION["admin_user"])) {
       <option value="sc">简</option>
     </select>
     <select id="ddlApi" onchange="ChangeParamHint()">
-      <option value="list" data-param="" selected>List</option>
-      <option value="details" data-param="Auction ID, e.g. 1">Details</option>
-      <option value="search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
-      <option value="related" data-param="Item ID, e.g. 103">Related Items</option>
+      <option value="auction-list" data-param="" selected>List</option>
+      <option value="auction-details" data-param="Auction ID, e.g. 1">Details</option>
+      <option value="auction-search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
+      <option value="auction-related" data-param="Item ID, e.g. 103">Related Items</option>
+      <option value="data-appinfo" data-param="">App Info</option>
     </select>
     <input id="tbParam" type="text" style="width: 300px">
     <button onclick="GetData()">Get</button>
@@ -43,7 +44,7 @@ if (!isset($_SESSION["admin_user"])) {
       }
 
       function GetApiUrl() {
-        var url = "/{0}/api/auction-{1}{2}";
+        var url = "/{0}/api/{1}{2}";
         url = url.replace("{0}", document.getElementById("ddlLang").value);
         url = url.replace("{1}", document.getElementById("ddlApi").value);
         url = url.replace("{2}", document.getElementById("tbParam").value == "" ? "" : "-" + document.getElementById("tbParam").value);
