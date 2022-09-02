@@ -1,9 +1,20 @@
 <?php
 class DataController {
-  function getAppInfo($param) {
-    echo 'getAppInfo: ' . date('Y/m/d H:i:s');
-    Debug_var_dump($param);
-    echo $_SERVER['SERVER_NAME'] . "@" . date('Y/m/d H:i:s');
+  function getAppInfo() {
+    global $conn, $lang;
+
+    $output = new stdClass();
+    $selectSql = "SELECT data_version, news_$lang as news FROM AppInfo ORDER BY id DESC LIMIT 1";
+
+    $result = $conn->Execute($selectSql)->GetRows();  // simple query, no need to cache
+    $rowNum = count($result);
+
+    if (count($result) > 0) {
+      $output->dv = $result[0]["data_version"];
+      $output->n = $result[0]["news"];
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 }
 ?>

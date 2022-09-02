@@ -43,16 +43,6 @@ if (!isset($_SESSION["admin_user"])) {
     #newForm input.long {
       width: 550px;
     }
-
-    .highlight-text {
-      animation: highlight-fade 5s 1;
-    }
-
-    @keyframes highlight-fade {
-      0% { background-color: rgba(255,255,255,0); }
-      20% { background-color: rgba(255,255,128,.9); }  
-      1000% { background-color: rgba(255,255,255,0); }
-    }
   </style>
 </head>
 <body>

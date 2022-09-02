@@ -73,6 +73,16 @@ textarea {
   background-color: #888;
 }
 
+.highlight-text {
+  animation: highlight-fade 5s 1;
+}
+
+@keyframes highlight-fade {
+  0% { background-color: rgba(255,255,255,0); }
+  20% { background-color: rgba(255,255,128,.9); }  
+  1000% { background-color: rgba(255,255,255,0); }
+}
+
 /* for prod */
 /* .bgBlue {
   background-color: #eef8ff;

@@ -881,5 +881,59 @@ class AdminController {
 
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
+
+  function getAppInfo() {
+    global $conn;
+
+    $output = new stdClass();
+    $selectSql = "SELECT data_version, news_en, news_tc, news_sc, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
+
+    $result = $conn->Execute($selectSql)->GetRows();
+    $rowNum = count($result);
+
+    if (count($result) > 0) {
+      $output->data_version = $result[0]["data_version"];
+      $output->news_en = $result[0]["news_en"];
+      $output->news_tc = $result[0]["news_tc"];
+      $output->news_sc = $result[0]["news_sc"];
+      $output->last_update = $result[0]["last_update"];
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function saveAppInfo() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "failed";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["data_version"]) || empty($data["data_version"])) {
+        throw new Exception("Data Version missing!");  
+      }
+
+      $dataVersion = trim($data["data_version"]);
+      $newsEn = $data["news_en"];
+      $newsTc = $data["news_tc"];
+      $newsSc = $data["news_sc"];
+
+      $updateSql = "UPDATE AppInfo SET 
+                      data_version = ?, news_en = ?, news_tc = ?, news_sc = ?, last_update = now()
+                    WHERE id = 1";
+
+      $result = $conn->Execute($updateSql, array(
+        $dataVersion, $newsEn, $newsTc, $newsSc
+      ));
+  
+        $output->status = "success";
+    } catch (Exception $e) {
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
 }
 ?>

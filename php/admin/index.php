@@ -91,6 +91,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
       </div>
       <div class="admin-block bgYellow">
         <h3>Notification</h3>
+        <a href="app_info.php">App Info</a>
+        <br /><br />
         <a href="push_message.php">Push Message</a>
       </div>
       <div class="admin-block bgPurple">
