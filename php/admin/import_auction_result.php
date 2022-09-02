@@ -6,7 +6,6 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/enum.php");
-// include_once ('../include/demo_result_data.php');
 
 $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
 ?>
