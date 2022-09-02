@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
+import '../include/utilities.dart' as utilities;
+import '../providers/app_info_provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -12,6 +15,15 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+    });
+  }
 
   Future<void> _incrementCounter() async {
     setState(() {
@@ -26,18 +38,35 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(
-            'You have pushed the button this many times:',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Consumer<AppInfoProvider>(
+                builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+                  return appInfo.loaded ? Text(utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang)) : const SizedBox(height: 20.0, width: 20.0, child: CircularProgressIndicator());
+                },
+              ),
+            ],
           ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          TextButton(
-            onPressed: _incrementCounter,
-            child: const Icon(Icons.add),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                TextButton(
+                  onPressed: _incrementCounter,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
           ),
         ],
       ),

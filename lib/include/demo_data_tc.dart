@@ -1,7 +1,7 @@
 // ignore_for_file: leading_newlines_in_multiline_strings, unnecessary_string_escapes, use_raw_strings
 Map<String, String> demoDataTc = <String, String>{
   'data-appinfo': '''{
-    "s":"success","d":{"dv":"2209004","n":"立法會綜合大樓入口的臨時安排\\n\\n已預訂使用訪客泊車位的人士，請經地下低層停車場(LG1)4 部升降機大堂到\\n天橋入口進行安全檢查。"}
+    "s":"success","d":{"dv":"2209004","n":"立法會綜合大樓入口的臨時安排\\n\\n已預訂使用訪客泊車位的人士，請經地下低層停車場(LG1)4 部升降機大堂到\\n天橋入口進行安全檢查。","lu":"2022-09-02 12:01:23"}
   }''',
 
   'auction-list': '''{

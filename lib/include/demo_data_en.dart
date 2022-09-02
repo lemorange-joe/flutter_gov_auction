@@ -1,7 +1,7 @@
 // ignore_for_file: leading_newlines_in_multiline_strings, unnecessary_string_escapes, use_raw_strings
 Map<String, String> demoDataEn = <String, String>{
   'data-appinfo': '''{
-    "s":"success","d":{"dv":"2209004","n":"Temporary arrangements for entrances to the Legislative Council Complex \\n\\nVisitors who have reserved parking spaces are requested to go through security\\nscreening at Footbridge Entrance via the four lifts’ lobby on LG1 Carpark. "}
+    "s":"success","d":{"dv":"2209004","n":"Temporary arrangements for entrances to the Legislative Council Complex \\n\\nVisitors who have reserved parking spaces are requested to go through security\\nscreening at Footbridge Entrance via the four lifts’ lobby on LG1 Carpark. ","lu":"2022-09-02 12:01:23"}
   }''',
 
   'auction-list': '''{
