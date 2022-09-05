@@ -6,21 +6,32 @@ class AdminController {
   function listAuction() {
     global $conn;
 
-    $selectSql = "SELECT
-                    A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
-                    A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.remarks_en, A.remarks_tc, A.remarks_sc, 
-                    A.auction_status, A.status, A.last_update,
-                    GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
-                  FROM Auction A
-                  LEFT JOIN (
-                    SELECT L.auction_id, I.seq, concat(I.code, ': ',  COUNT(*)) as 'total'
-                    FROM AuctionLot L
-                    INNER JOIN ItemType I ON L.type_id = I.type_id
-                    WHERE L.status = 'A'
-                    GROUP BY L.auction_id, I.seq, I.code
-                  ) as C ON A.auction_id = C.auction_id
-                  GROUP BY A.auction_id
-                  ORDER BY A.auction_id DESC";
+    $selectSql = "SELECT T.*, GROUP_CONCAT(C2.total ORDER BY C2.seq SEPARATOR ', ') as item_count
+                    FROM (
+                      SELECT
+                        A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
+                        A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.remarks_en, A.remarks_tc, A.remarks_sc, 
+                        A.auction_status, A.status, A.last_update,
+                        GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
+                      FROM Auction A
+                      LEFT JOIN (
+                        SELECT L.auction_id, I.seq, concat(I.code, ': ',  COUNT(*)) as 'total'
+                        FROM AuctionLot L
+                        INNER JOIN ItemType I ON L.type_id = I.type_id
+                        WHERE L.status = 'A'
+                        GROUP BY L.auction_id, I.seq, I.code
+                      ) as C ON A.auction_id = C.auction_id
+                      GROUP BY A.auction_id
+                    ) as T LEFT JOIN (
+                      SELECT L.auction_id, I.seq, concat(I.code, ': ',  COUNT(*)) as 'total'
+                      FROM AuctionLot L
+                      INNER JOIN ItemType I ON L.type_id = I.type_id
+                      INNER JOIN AuctionItem AI ON L.lot_id = AI.lot_id
+                      WHERE L.status = 'A'
+                      GROUP BY L.auction_id, I.seq, I.code
+                    ) as C2 ON T.auction_id = C2.auction_id
+                    GROUP BY T.auction_id
+                    ORDER BY T.auction_id DESC";
 
     $result = $conn->Execute($selectSql)->GetRows();
     $rowNum = count($result);
@@ -44,6 +55,7 @@ class AdminController {
       $auction->status = $result[$i]["status"];
       $auction->last_update = $result[$i]["last_update"];
       $auction->lot_count = $result[$i]["lot_count"];
+      $auction->item_count = $result[$i]["item_count"];
 
       $output[] = $auction;
     }

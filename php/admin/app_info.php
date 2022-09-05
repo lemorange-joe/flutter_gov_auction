@@ -17,7 +17,7 @@ if (!isset($_SESSION["admin_user"])) {
   </style>
 </head>
 <body>
-  <div class="header bgBlue">
+  <div class="header bgYellow">
     <div><h2><a href="index.php">« Admin Index</a></h2></div>
     <div class="title">App Info</div>
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>

@@ -372,9 +372,11 @@ if (!isset($_SESSION["admin_user"])) {
                   divRemarks.appendChild(divRemarksSc);
 
                   var divCount = document.createElement("div");
-                  divCount.style.height = "30px";
+                  divCount.style.height = "70px";
                   divCount.style.lineHeight = "30px";
                   divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count));
+                  divCount.appendChild(document.createElement("br"));
+                  divCount.appendChild(document.createTextNode("📦 " + curAuction.item_count));
 
                   var divLastUpdate = document.createElement("div");
                   divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
