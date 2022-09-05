@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import './generated/l10n.dart';
 import './helpers/hive_helper.dart';
+import './include/global.dart';
 import './include/theme_data.dart';
 import './providers/app_info_provider.dart';
 import './routes.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               title: 'Flutter Demo',
+              scaffoldMessengerKey: globalScaffoldMessengerKey,
               theme: hiveHelper.getTheme() == 'dark' ? darkTheme : lightTheme,
               locale: Locale(
                 hiveHelper.getLocaleCode().split('_')[0],
