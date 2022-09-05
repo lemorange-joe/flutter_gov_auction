@@ -10,6 +10,7 @@ import '../generated/l10n.dart';
 import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../widgets/common/dialog.dart';
+import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
 
 class DebugPage extends StatelessWidget {
@@ -129,10 +130,13 @@ class DebugPage extends StatelessWidget {
                     MdiIcons.wifi,
                     Colors.green,
                     'Lorem ipsum dolor sit amet consec',
-                    Theme.of(context).backgroundColor,
                   );
                 },
-                style: ElevatedButton.styleFrom(primary: Colors.green),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(48, 48),
+                ),
                 child: const Icon(MdiIcons.wifi),
               ),
               ElevatedButton(
@@ -143,10 +147,14 @@ class DebugPage extends StatelessWidget {
                     Colors.grey,
                     '喜際代我北拿巴我才早一第電外表國，究講我節些有',
                     duration: 999999,
-                    Theme.of(context).backgroundColor,
+                    textColor: Colors.red[400],
                   );
                 },
-                style: ElevatedButton.styleFrom(primary: Colors.grey),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.grey,
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(48, 48),
+                ),
                 child: const Icon(MdiIcons.wifiAlert),
               ),
               ElevatedButton(
@@ -161,6 +169,10 @@ class DebugPage extends StatelessWidget {
                     },
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(48, 48),
+                ),
                 child: const Icon(MdiIcons.messageOutline),
               ),
               ElevatedButton(
@@ -179,7 +191,26 @@ class DebugPage extends StatelessWidget {
                     },
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(48, 48),
+                ),
                 child: const Icon(MdiIcons.messageProcessingOutline),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  CommonShare.share(
+                    context,
+                    'https://www.legco.gov.hk',
+                    '分享連結',
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.purple,
+                  shape: const CircleBorder(),
+                  fixedSize: const Size(48, 48),
+                ),
+                child: const Icon(MdiIcons.shareVariant),
               ),
             ],
           ),

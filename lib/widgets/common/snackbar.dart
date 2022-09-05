@@ -5,7 +5,7 @@ import '../../include/global.dart';
 class CommonSnackbar {
   const CommonSnackbar();
 
-  static void show(BuildContext context, IconData icon, Color iconColor, String message, Color textColor, {int duration = config.snackbarDuration}) {
+  static void show(BuildContext context, IconData? icon, Color iconColor, String message, {Color? textColor, int duration = config.snackbarDuration}) {
     globalScaffoldMessengerKey.currentState!.hideCurrentSnackBar();
 
     globalScaffoldMessengerKey.currentState!.showSnackBar(
@@ -20,18 +20,19 @@ class CommonSnackbar {
         ),
         content: Row(
           children: <Widget>[
-            Icon(
-              icon,
-              color: iconColor,
-              size: 24.0 * MediaQuery.of(context).textScaleFactor,
-            ),
+            if (icon != null)
+              Icon(
+                icon,
+                color: iconColor,
+                size: 24.0 * MediaQuery.of(context).textScaleFactor,
+              ),
             const SizedBox(width: 10.0),
             Flexible(
               child: Text(
                 message,
                 style: TextStyle(
                   fontSize: 18.0,
-                  color: textColor,
+                  color: textColor ?? Theme.of(context).backgroundColor,
                 ),
               ),
             ),
