@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="studio.lemorange.gov_auction">
+    package="studio.lemorange.govauction">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="gov_auction"

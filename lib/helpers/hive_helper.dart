@@ -8,6 +8,7 @@ class HiveHelper {
   HiveHelper._internal();
 
   static final Box<dynamic> _prefBox = Hive.box<dynamic>('preferences');
+  static final Box<dynamic> _notificationBox = Hive.box<dynamic>('notification');
   static final HiveHelper _hiveHelper = HiveHelper._internal();
 
   Future<void> init(String path) async {
@@ -57,5 +58,26 @@ class HiveHelper {
     return _prefBox.get('firstLaunch', defaultValue: DateTime(2022)) as DateTime;
   }
   // preferences box
+  // --------------------------------------------
+
+
+  // --------------------------------------------
+  // notification box:
+  Future<void> writeAllowNotification(bool val) async {
+    await _notificationBox.put('allow', val);
+  }
+
+  Future<void> writeSubscribeChannel(List<String> channelList) async {
+    await _notificationBox.put('channel', channelList.join(','));
+  }
+
+  bool getAllowNotification() {
+    return _notificationBox.get('allow', defaultValue: false) as bool;
+  }
+
+  List<String> getSubscribeChannel() {
+    return (_notificationBox.get('channel', defaultValue: '') as String).split(',');
+  }
+  // notification box
   // --------------------------------------------
 }

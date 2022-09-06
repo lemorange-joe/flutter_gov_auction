@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import './firebase_options.dart';
 import './generated/l10n.dart';
 import './helpers/hive_helper.dart';
 import './include/global.dart';
@@ -18,6 +20,9 @@ void main() async {
   final Directory appDocDir = await getApplicationDocumentsDirectory();
   await FlutterConfig.loadEnvVariables();
   await HiveHelper().init(appDocDir.path);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }

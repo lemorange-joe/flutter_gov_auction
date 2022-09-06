@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "294748943571",
+    "project_id": "gov-auction",
+    "storage_bucket": "gov-auction.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294748943571:android:b6f6fc66877aff6123d026",
+        "android_client_info": {
+          "package_name": "studio.lemorange.govauction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294748943571-bmqfhpslhti96s1dpjp03f82kr93tdvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMM6zzMcePwQ8FPTKwHImWE8KAs8YqN5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294748943571-bmqfhpslhti96s1dpjp03f82kr93tdvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "294748943571-19bp49i29lqkke5s5h4tb9njefdscket.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "studio.lemorange.govauction.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

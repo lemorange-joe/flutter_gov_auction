@@ -36,7 +36,7 @@ project.ext.envConfigFiles = [
 apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "studio.lemorange.gov_auction"
+        applicationId "studio.lemorange.govauction"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 29
