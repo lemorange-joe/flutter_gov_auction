@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _tabIndex = 0;
   double _prevScrollOffset = 0;
-  bool _scrollingUp = true; 
+  bool _scrollingUp = true;
   late ScrollController scrollController;
   final List<TabData> _tabs = <TabData>[];
 
@@ -29,12 +29,10 @@ class _HomePageState extends State<HomePage> {
 
     scrollController.addListener(() {
       _scrollingUp = scrollController.offset < _prevScrollOffset;
-      setState((){
+      setState(() {
         _prevScrollOffset = scrollController.offset;
       });
-      // Logger().i('$_scrollingUp || $_prevScrollOffset ');
     });
-
 
     _tabs
       ..add(TabData(const HomeTab(), Colors.blue, Colors.blue))
@@ -75,7 +73,8 @@ class _HomePageState extends State<HomePage> {
           // Logger().d(scrollController.position.userScrollDirection);
           double height = 0.0;
 
-          if (scrollController.position.userScrollDirection == ScrollDirection.forward || (scrollController.position.userScrollDirection == ScrollDirection.idle && _scrollingUp)) {
+          if (scrollController.position.userScrollDirection == ScrollDirection.forward ||
+              (scrollController.position.userScrollDirection == ScrollDirection.idle && _scrollingUp)) {
             height = 72 * MediaQuery.of(context).textScaleFactor;
           }
 

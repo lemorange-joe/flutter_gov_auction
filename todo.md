@@ -7,6 +7,8 @@ git remote set-url origin https://github.com/lemorange-joe/flutter_government_au
 - continue setup push in iOS
 https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with-fcm
 
+- setup server FCM push
+https://firebase.google.com/docs/cloud-messaging/server
 
 ## TODO:
 - add random data in API to prevent data theft

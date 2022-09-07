@@ -1,4 +1,9 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:logger/logger.dart';
+// import '../widgets/common/snackbar.dart';
 
 class NotificationHelper {
   factory NotificationHelper() {
@@ -7,15 +12,108 @@ class NotificationHelper {
 
   NotificationHelper._internal();
 
+  bool isFlutterLocalNotificationsInitialized = false;
   late FirebaseMessaging messaging;
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   static final NotificationHelper _notificationHelper = NotificationHelper._internal();
 
-  void init() {
+  Future<void> init() async {
     messaging = FirebaseMessaging.instance;
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await setupFlutterNotifications();
+
+    final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      Logger().w('--- initial message ---');
+      Logger().d(initialMessage);
+    }
   }
 
   Future<bool> requestPermission() async {
     final NotificationSettings settings = await messaging.requestPermission();
     return settings.authorizationStatus == AuthorizationStatus.authorized || settings.authorizationStatus == AuthorizationStatus.provisional;
+  }
+
+  Future<String> getToken() async {
+    final String? token = await FirebaseMessaging.instance.getToken();
+
+    return token ?? '';
+  }
+
+  Future<void> setupFlutterNotifications() async {
+    if (isFlutterLocalNotificationsInitialized) {
+      return;
+    }
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description: 'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    isFlutterLocalNotificationsInitialized = true;
+  }
+
+  void listenForegroundMessage() {
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      Logger().w('Got a message opened App');
+      Logger().i('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        Logger().i('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
+
+  void showFlutterNotification(RemoteMessage message) {
+    final RemoteNotification? notification = message.notification;
+    final AndroidNotification? android = message.notification?.android;
+
+    Logger().w('showFlutterNotification!');
+    Logger().i(message.notification?.android);
+    Logger().i(message.data);
+
+    if (notification != null && android != null && !kIsWeb) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
+            // to-do: add a proper drawable resource to android, for now using
+            //      one that already exists in example app.
+            icon: 'launch_background',
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> subscribeTopic(String topic) async {
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+  }
+
+  Future<void> unsubscribeTopic(String topic) async {
+    await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
   }
 }

@@ -1,20 +1,29 @@
 // import 'dart:ui';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
 // import '../helpers/hive_helper.dart';
+import '../helpers/notification_helper.dart';
 import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
 
-class DebugPage extends StatelessWidget {
+class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
+
+  @override
+  State<DebugPage> createState() => _DebugPageState();
+}
+
+class _DebugPageState extends State<DebugPage> {
+  bool? _notifiationAuthorized;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +47,8 @@ class DebugPage extends StatelessWidget {
                 ...buildGlobalWidgetSection(context),
                 const Divider(),
                 ...buildAppInfoSection(context),
+                const Divider(),
+                ...buildPushSection(context),
               ],
             ),
           ),
@@ -216,6 +227,52 @@ class DebugPage extends StatelessWidget {
           ),
         ),
       ),
+    ];
+  }
+
+  List<Widget> buildPushSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Push',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Authorization Status: '),
+          Text(_notifiationAuthorized != null ? _notifiationAuthorized.toString() : '-'),
+        ],
+      ),
+      ElevatedButton(
+        onPressed: () async {
+          final bool result = await NotificationHelper().requestPermission();
+          setState(() {
+            _notifiationAuthorized = result;
+          });
+          NotificationHelper().getToken().then((String token) {
+            Logger().i('token: $token');
+          });
+        },
+        child: const Text('Request Permissions'),
+      ),
+      const SizedBox(height: 10.0),
+      const Text('FCM Token'),
+      const SizedBox(height: 5.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: FutureBuilder<String>(
+          future: NotificationHelper().getToken(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const CircularProgressIndicator();
+            }
+
+            return SelectableText(snapshot.data as String);
+          },
+        ),
+      ),
+      // Text(),
     ];
   }
 }
