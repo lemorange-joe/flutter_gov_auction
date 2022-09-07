@@ -100,9 +100,7 @@ class NotificationHelper {
             channel.id,
             channel.name,
             channelDescription: channel.description,
-            // to-do: add a proper drawable resource to android, for now using
-            //      one that already exists in example app.
-            icon: 'launch_background',
+            icon: '@mipmap/ic_firebase_notification',
           ),
         ),
       );
