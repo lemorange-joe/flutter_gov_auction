@@ -695,15 +695,18 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
-  function listPush() {
+  function listPush($param) {
     global $conn;
+
+    $start = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : 0;
+    $size = isset($param) && is_array($param) && count($param) >= 2 ? trim($param[1]) : 3;
 
     $output = new stdClass();
     
     try {
-      $selectSql = "SELECT push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status FROM PushHistory ORDER BY push_id DESC";
+      $selectSql = "SELECT push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status FROM PushHistory ORDER BY push_id DESC LIMIT ?, ?";
 
-      $result = $conn->Execute($selectSql)->GetRows();
+      $result = $conn->Execute($selectSql, array($start, $size))->GetRows();
       $rowNum = count($result);
 
       $output = array();

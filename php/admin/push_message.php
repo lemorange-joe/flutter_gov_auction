@@ -103,7 +103,11 @@ if (!isset($_SESSION["admin_user"])) {
       </thead>
       <tbody id="tblPush"></tbody>
     </table>
-    <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
+    <div style="margin-top: 10px">
+      <input id="tbLoadMore" value="10" style="width:30px"/><button id="btnLoadMore" onclick="LoadMore()" data-start="-1" style="margin-left: 10px">Load More</button>
+    </div>
+    <button style="position: fixed; right: 20px; bottom: 60px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
+    <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
     <script>
       var pushList = [];
       var confirmTimeout;
@@ -176,7 +180,7 @@ if (!isset($_SESSION["admin_user"])) {
 
               if (jsonData.status == "success") {
                 ResetPush(true);
-                GetData();
+                GetData(false);
               } else {
                 ResetPush(false);
                 alert("Send push failed: " + jsonData.error);  
@@ -226,62 +230,89 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("tbTitleEn").focus();
       }
 
-      function GetData() {
-        var apiUrl = "../en/api/admin-listPush";
+      function LoadMore(){
+        var btnLoadMore = document.getElementById("btnLoadMore");
+        var origStart = parseInt(btnLoadMore.getAttribute("data-start"));
+        var pageSize = parseInt(document.getElementById("tbLoadMore").value);
+        var start = origStart == -1 ? 0 : origStart + pageSize;
+
+        GetData(true, start, pageSize);
+        btnLoadMore.setAttribute("data-start", start);
+      }
+
+      function GetData(append, start, pageSize) {
+        var apiUrl = "../en/api/admin-listPush-{0}-{1}";
+        apiUrl = apiUrl.replace("{0}", start ? start : 0);
+        apiUrl = apiUrl.replace("{1}", pageSize ? pageSize : parseInt(document.getElementById("tbLoadMore").value));
+
         var xhr = new XMLHttpRequest();
         
         xhr.open("GET", apiUrl);
         xhr.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
-            pushList = JSON.parse(this.responseText);
+            var curPushList = JSON.parse(this.responseText);
             
-            if (Array.isArray(pushList)) {
+            if (Array.isArray(curPushList)) {
               var tblPush = document.getElementById("tblPush");
-              tblPush.innerHTML = "";
-              
-              for (var i = 0; i < pushList.length; ++i) {
-                const curPush = pushList[i];
-                
-                var row = tblPush.insertRow();
-                row.insertCell(0).appendChild(document.createTextNode(curPush.id));
+              var btnLoadMore = document.getElementById("btnLoadMore");
+              if (!append) {
+                tblPush.innerHtml = "";
+                btnLoadMore.removeAttribute("disabled");
+                btnLoadMore.setAttribute("data-start", 0);
+                pushList = curPushList;
+              } else {
+                pushList = pushList.concat(curPushList);
+              }
 
-                var divTitleEn = document.createElement("div");
-                divTitleEn.appendChild(document.createTextNode(curPush.title_en));
-                divTitleEn.style.fontWeight = "bold";
-                divTitleEn.style.marginBottom = "10px";
-                var td1 = row.insertCell(1)
-                td1.appendChild(divTitleEn);
-                td1.appendChild(document.createTextNode(curPush.body_en));
-                td1.classList.add("left", "top");
+              if (curPushList.length == 0) {
+                btnLoadMore.setAttribute("disabled", "disabled");
+              } else {           
+                var itemStart = parseInt(btnLoadMore.getAttribute("data-start"));
 
-                var divTitleTc = document.createElement("div");
-                divTitleTc.appendChild(document.createTextNode(curPush.title_tc));
-                divTitleTc.style.fontWeight = "bold";
-                divTitleTc.style.marginBottom = "10px";
-                var td2 = row.insertCell(2)
-                td2.appendChild(divTitleTc);
-                td2.appendChild(document.createTextNode(curPush.body_tc));
-                td2.classList.add("left", "top");
+                for (var i = 0; i < curPushList.length; ++i) {
+                  const curPush = curPushList[i];
+                  
+                  var row = tblPush.insertRow();
+                  row.insertCell(0).appendChild(document.createTextNode(curPush.id));
 
-                var divTitleSc = document.createElement("div");
-                divTitleSc.appendChild(document.createTextNode(curPush.title_sc));
-                divTitleSc.style.fontWeight = "bold";
-                divTitleSc.style.marginBottom = "10px";
-                var td3 = row.insertCell(3)
-                td3.appendChild(divTitleSc);
-                td3.appendChild(document.createTextNode(curPush.body_sc));
-                td3.classList.add("left", "top");
-                
-                row.insertCell(4).appendChild(document.createTextNode(curPush.push_date));
-                row.insertCell(5).appendChild(document.createTextNode(statusMapping[curPush.status.toUpperCase()]));
+                  var divTitleEn = document.createElement("div");
+                  divTitleEn.appendChild(document.createTextNode(curPush.title_en));
+                  divTitleEn.style.fontWeight = "bold";
+                  divTitleEn.style.marginBottom = "10px";
+                  var td1 = row.insertCell(1)
+                  td1.appendChild(divTitleEn);
+                  td1.appendChild(document.createTextNode(curPush.body_en));
+                  td1.classList.add("left", "top");
 
-                var btnCopy = document.createElement("button");
-                btnCopy.appendChild(document.createTextNode("Copy"));
-                btnCopy.setAttribute("data-i", i);
-                btnCopy.onclick = function () {
-                  CopyContent(this);
+                  var divTitleTc = document.createElement("div");
+                  divTitleTc.appendChild(document.createTextNode(curPush.title_tc));
+                  divTitleTc.style.fontWeight = "bold";
+                  divTitleTc.style.marginBottom = "10px";
+                  var td2 = row.insertCell(2)
+                  td2.appendChild(divTitleTc);
+                  td2.appendChild(document.createTextNode(curPush.body_tc));
+                  td2.classList.add("left", "top");
+
+                  var divTitleSc = document.createElement("div");
+                  divTitleSc.appendChild(document.createTextNode(curPush.title_sc));
+                  divTitleSc.style.fontWeight = "bold";
+                  divTitleSc.style.marginBottom = "10px";
+                  var td3 = row.insertCell(3)
+                  td3.appendChild(divTitleSc);
+                  td3.appendChild(document.createTextNode(curPush.body_sc));
+                  td3.classList.add("left", "top");
+                  
+                  row.insertCell(4).appendChild(document.createTextNode(curPush.push_date));
+                  row.insertCell(5).appendChild(document.createTextNode(statusMapping[curPush.status.toUpperCase()]));
+
+                  var btnCopy = document.createElement("button");
+                  btnCopy.appendChild(document.createTextNode("Copy"));
+                  btnCopy.setAttribute("data-i", (i + itemStart));
+                  btnCopy.onclick = function () {
+                    CopyContent(this);
+                  }
+                  row.insertCell(6).appendChild(btnCopy);
                 }
-                row.insertCell(6).appendChild(btnCopy);
               }
             }
           }
@@ -290,7 +321,7 @@ if (!isset($_SESSION["admin_user"])) {
         xhr.send();
       }
 
-      GetData();
+      LoadMore();
     </script>
   </div>
 </body>
