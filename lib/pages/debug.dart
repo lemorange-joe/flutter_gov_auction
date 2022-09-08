@@ -272,6 +272,34 @@ class _DebugPageState extends State<DebugPage> {
           },
         ),
       ),
+      const SizedBox(height: 10.0),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () async {
+              NotificationHelper().subscribeTopic('topic1').then((_) {
+                CommonSnackbar.show(context, null, Colors.green, 'Subscribe success!');
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+            ),
+            child: const Text('Subscribe "topic1"'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              NotificationHelper().unsubscribeTopic('topic1').then((_) {
+                CommonSnackbar.show(context, null, Colors.red[300]!, 'Unubscribe success!');
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red[300],
+            ),
+            child: const Text('Unsubscribe "topic1"'),
+          ),
+        ],
+      ),
       // Text(),
     ];
   }
