@@ -774,7 +774,7 @@ class AdminController {
       if ($pushId > 0) {
         $pushManager = new PushManager();
 
-        $result = $pushManager->send($pushData);
+        $result = $pushManager->send($pushId, $pushData);
 
         $updateSql = "UPDATE PushHistory SET status = ? WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
