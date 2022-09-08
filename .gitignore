@@ -49,3 +49,6 @@ app.*.map.json
 # Web config files
 /php/include/config.test.php
 /php/include/config.prod.php
+
+# vendor libraries
+/php/include/google_api/

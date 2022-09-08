@@ -7,6 +7,9 @@ $DB_USERNAME = "root";
 $DB_PASSWORD = "root";
 $DB_NAME = "gov_auction";
 
+$FCM_ENDPOINT = "https://fcm.googleapis.com/v1/projects/gov-auction/messages:send";
+$GOOGLE_SERVICE_ACCOUNT_FILE_PATH = "/Volumes/untitled/config/gov-auction-firebase-adminsdk-tyayj-98166bb8ea.json";
+
 $CACHE_DIR = "/tmp";
 $CACHE_PERIOD = 1 * 60;  // seconds
 
