@@ -331,10 +331,10 @@ if (!isset($_SESSION["admin_user"])) {
                 var row2 = tblAuction.insertRow();
                 var cell = row2.insertCell(0);
                 cell.setAttribute("colspan", 8);
-                cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left");
+                cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left;border-bottom:5px double #000");
 
                   var divRemarks = document.createElement("div");
-                  divRemarks.setAttribute("style", "display:flex;");
+                  divRemarks.setAttribute("style", "display:flex");
 
                     var divRemarksEn = document.createElement("div");
                     var txtRemarksEn = document.createElement("textarea");
