@@ -70,7 +70,9 @@ class NotificationHelper {
   }
 
   void listenForegroundMessage() {
-    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      showFlutterNotification(message);
+    });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       Logger().w('Got a message opened App');
@@ -86,9 +88,8 @@ class NotificationHelper {
     final RemoteNotification? notification = message.notification;
     final AndroidNotification? android = message.notification?.android;
 
-    Logger().w('showFlutterNotification!');
-    Logger().i(message.notification?.android);
-    Logger().i(message.data);
+    // Logger().w('showFlutterNotification!');
+    // Logger().i(message.data);
 
     if (notification != null && android != null && !kIsWeb) {
       flutterLocalNotificationsPlugin.show(

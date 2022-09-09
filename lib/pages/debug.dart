@@ -1,6 +1,8 @@
 // import 'dart:ui';
 // import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:clear_all_notifications/clear_all_notifications.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
@@ -284,7 +286,16 @@ class _DebugPageState extends State<DebugPage> {
           ),
         ],
       ),
-      // Text(),
+      const SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () async {
+          await ClearAllNotifications.clear();
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.red,
+        ),
+        child: const Text('Clear All Badges'),
+      ),
     ];
   }
 }
