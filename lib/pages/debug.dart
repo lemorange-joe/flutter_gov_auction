@@ -2,12 +2,12 @@
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
-// import '../helpers/hive_helper.dart';
+import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
@@ -276,27 +276,11 @@ class _DebugPageState extends State<DebugPage> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          ElevatedButton(
-            onPressed: () async {
-              NotificationHelper().subscribeTopic('topic1').then((_) {
-                CommonSnackbar.show(context, null, Colors.green, 'Subscribe success!');
-              });
+          ValueListenableBuilder<Box<dynamic>>(
+            valueListenable: Hive.box<dynamic>('notification').listenable(),
+            builder: (BuildContext context, _, __) {
+              return Text('Subscribed: ${HiveHelper().getSubscribeTopic()}');
             },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
-            ),
-            child: const Text('Subscribe "topic1"'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              NotificationHelper().unsubscribeTopic('topic1').then((_) {
-                CommonSnackbar.show(context, null, Colors.red[300]!, 'Unubscribe success!');
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.red[300],
-            ),
-            child: const Text('Unsubscribe "topic1"'),
           ),
         ],
       ),

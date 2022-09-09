@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
+import '../helpers/notification_helper.dart';
 import '../providers/app_info_provider.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -27,8 +29,17 @@ class _SettingsTabState extends State<SettingsTab> {
             children: <Widget>[
               TextButton(
                 onPressed: () async {
+                  final HiveHelper hiveHelper = HiveHelper();
                   await S.load(const Locale('en', 'US'));
-                  await HiveHelper().writeLocaleCode('en_US');
+                  await hiveHelper.writeLocaleCode('en_US');
+
+                  final String subscribedTopic = hiveHelper.getSubscribeTopic();
+                  if (subscribedTopic.isNotEmpty) {
+                    final NotificationHelper notificationHelper = NotificationHelper();
+                    await notificationHelper.unsubscribeTopic(subscribedTopic); // 1. unsubscribe the old topic first
+                    final String newTopic = await notificationHelper.subscribeNewsTopic('en'); // 2. subscribe the topic in new lang
+                    hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
+                  }
 
                   if (!mounted) {
                     return;
@@ -40,8 +51,17 @@ class _SettingsTabState extends State<SettingsTab> {
               const SizedBox(width: 10.0),
               TextButton(
                 onPressed: () async {
+                  final HiveHelper hiveHelper = HiveHelper();
                   await S.load(const Locale('zh', 'HK'));
                   await HiveHelper().writeLocaleCode('zh_HK');
+
+                  final String subscribedTopic = hiveHelper.getSubscribeTopic();
+                  if (subscribedTopic.isNotEmpty) {
+                    final NotificationHelper notificationHelper = NotificationHelper();
+                    await notificationHelper.unsubscribeTopic(subscribedTopic); // 1. unsubscribe the old topic first
+                    final String newTopic = await notificationHelper.subscribeNewsTopic('tc'); // 2. subscribe the topic in new lang
+                    hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
+                  }
 
                   if (!mounted) {
                     return;
@@ -53,8 +73,17 @@ class _SettingsTabState extends State<SettingsTab> {
               const SizedBox(width: 10.0),
               TextButton(
                 onPressed: () async {
+                  final HiveHelper hiveHelper = HiveHelper();
                   await S.load(const Locale('zh', 'CN'));
-                  await HiveHelper().writeLocaleCode('zh_CN');
+                  await hiveHelper.writeLocaleCode('zh_CN');
+
+                  final String subscribedTopic = hiveHelper.getSubscribeTopic();
+                  if (subscribedTopic.isNotEmpty) {
+                    final NotificationHelper notificationHelper = NotificationHelper();
+                    await notificationHelper.unsubscribeTopic(subscribedTopic); // 1. unsubscribe the old topic first
+                    final String newTopic = await notificationHelper.subscribeNewsTopic('sc'); // 2. subscribe the topic in new lang
+                    hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
+                  }
 
                   if (!mounted) {
                     return;
@@ -107,6 +136,32 @@ class _SettingsTabState extends State<SettingsTab> {
                   await HiveHelper().writeFontSize(125);
                 },
                 child: const Text('Large'),
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Receive notification'),
+              ValueListenableBuilder<Box<dynamic>>(
+                valueListenable: Hive.box<dynamic>('notification').listenable(),
+                builder: (BuildContext context, _, __) {
+                  final String subscribedTopic = HiveHelper().getSubscribeTopic();
+                  return Switch(
+                    value: subscribedTopic.isNotEmpty,
+                    activeColor: Colors.green,
+                    onChanged: (bool value) async {
+                      if (value) {
+                        final String newTopic = await NotificationHelper().subscribeNewsTopic(S.of(context).lang);
+                        await HiveHelper().writeSubscribeTopic(newTopic);
+                      } else {
+                        await NotificationHelper().unsubscribeTopic(subscribedTopic);
+                        await HiveHelper().writeSubscribeTopic('');
+                      }
+                    },
+                  );
+                },
               ),
             ],
           ),

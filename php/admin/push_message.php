@@ -128,7 +128,7 @@ if (!isset($_SESSION["admin_user"])) {
             document.getElementById("txtBodyTc").value.trim() == "" ||
             document.getElementById("tbTitleSc").value.trim() == "" ||
             document.getElementById("txtBodySc").value.trim() == "") {
-          alert("Data empty!");
+          alert("Please input all fields!");
           return;
         }
 
@@ -152,12 +152,14 @@ if (!isset($_SESSION["admin_user"])) {
           clearTimeout(confirmTimeout);
           document.getElementById("btnCreate").style.display = "inline-block";
           document.getElementById("btnConfirm").style.display = "none";
+          document.getElementById("btnConfirm").innerHTML = "Confirm";
         }
       }
 
       function ConfirmPush() {
         clearTimeout(confirmTimeout);
         document.getElementById("btnConfirm").disabled = true;
+        document.getElementById("btnConfirm").innerHTML = "Sending...";
 
         var push_password = prompt("Please enter password for push message:");
         var pushData = {
@@ -256,7 +258,7 @@ if (!isset($_SESSION["admin_user"])) {
               var tblPush = document.getElementById("tblPush");
               var btnLoadMore = document.getElementById("btnLoadMore");
               if (!append) {
-                tblPush.innerHtml = "";
+                tblPush.innerHTML = "";
                 btnLoadMore.removeAttribute("disabled");
                 btnLoadMore.setAttribute("data-start", 0);
                 pushList = curPushList;

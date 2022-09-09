@@ -47,9 +47,9 @@ class NotificationHelper {
       return;
     }
     channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      description: 'This channel is used for important notifications.', // description
+      'auction_news', // id
+      'Latest Auction News', // title
+      description: 'This channel is used for receiving latest auction news.', // description
       importance: Importance.high,
     );
 
@@ -107,11 +107,22 @@ class NotificationHelper {
     }
   }
 
-  Future<void> subscribeTopic(String topic) async {
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
+  Future<String> subscribeNewsTopic(String lang) async {
+    final String topic = 'news_${lang.toLowerCase()}';
+    try {
+      await FirebaseMessaging.instance.subscribeToTopic(topic);
+      return topic;
+    } catch (_) {
+      return '';
+    }
   }
 
-  Future<void> unsubscribeTopic(String topic) async {
-    await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+  Future<bool> unsubscribeTopic(String topic) async {
+    try {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }

@@ -8,18 +8,16 @@ class CommonShare {
   const CommonShare();
 
   static Future<void> share(BuildContext context, String url, String subject) async {
-    ShareResult result;
-
-    final Size size = MediaQuery.of(context).size;  // for iPad
-    result = await Share.shareWithResult(
+    final Size size = MediaQuery.of(context).size; // for iPad
+    Share.shareWithResult(
       url,
       subject: subject,
       sharePositionOrigin: Rect.fromLTWH(0, 0, size.width, size.height / 2),
-    );
-
-    if (result.status == ShareResultStatus.success) {
-      CommonSnackbar.show(context, null, Colors.transparent, 'Share completed');
-    }
+    ).then((ShareResult result) {
+      if (result.status == ShareResultStatus.success) {
+        CommonSnackbar.show(context, null, Colors.transparent, 'Share completed');
+      }
+    });
 
     // Share.shareWithResult(
     //   url,

@@ -14,6 +14,7 @@ class HiveHelper {
   Future<void> init(String path) async {
     Hive.init(path);
     await Hive.openBox<dynamic>('preferences');
+    await Hive.openBox<dynamic>('notification');
   }
 
   // --------------------------------------------
@@ -67,16 +68,16 @@ class HiveHelper {
     await _notificationBox.put('allow', val);
   }
 
-  Future<void> writeSubscribeChannel(List<String> channelList) async {
-    await _notificationBox.put('channel', channelList.join(','));
+  Future<void> writeSubscribeTopic(String topic) async {
+    await _notificationBox.put('topic', topic);
   }
 
   bool getAllowNotification() {
     return _notificationBox.get('allow', defaultValue: false) as bool;
   }
 
-  List<String> getSubscribeChannel() {
-    return (_notificationBox.get('channel', defaultValue: '') as String).split(',');
+  String getSubscribeTopic() {
+    return _notificationBox.get('topic', defaultValue: '') as String;
   }
   // notification box
   // --------------------------------------------
