@@ -232,6 +232,14 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("tbTitleEn").focus();
       }
 
+      function ResendPush(btn) {
+        var id = parseInt(btn.getAttribute("data-id"));
+        var lang = btn.getAttribute("data-lang");
+
+        // TBC!!!
+        console.log(id + ": " + lang);
+      }
+
       function LoadMore(){
         var btnLoadMore = document.getElementById("btnLoadMore");
         var origStart = parseInt(btnLoadMore.getAttribute("data-start"));
@@ -310,10 +318,43 @@ if (!isset($_SESSION["admin_user"])) {
                   var btnCopy = document.createElement("button");
                   btnCopy.appendChild(document.createTextNode("Copy"));
                   btnCopy.setAttribute("data-i", (i + itemStart));
+                  btnCopy.setAttribute("style", "width:60px;height:40px;margin:10px 10px 30px 10px");
                   btnCopy.onclick = function () {
                     CopyContent(this);
                   }
-                  row.insertCell(6).appendChild(btnCopy);
+
+                  var btnResendEn = document.createElement("button");
+                  btnResendEn.appendChild(document.createTextNode("Resend (EN)"));
+                  btnResendEn.setAttribute("data-id", curPush.id);
+                  btnResendEn.setAttribute("data-lang", "en");
+                  btnResendEn.setAttribute("style", "width:110px;height:25px;margin:0 10px 10px 10px");
+                  btnResendEn.onclick = function () {
+                    ResendPush(this);
+                  }
+
+                  var btnResendTc = document.createElement("button");
+                  btnResendTc.appendChild(document.createTextNode("Resend (TC)"));
+                  btnResendTc.setAttribute("data-id", curPush.id);
+                  btnResendTc.setAttribute("data-lang", "tc");
+                  btnResendTc.setAttribute("style", "width:110px;height:25px;margin:0 10px 10px 10px");
+                  btnResendTc.onclick = function () {
+                    ResendPush(this);
+                  }
+
+                  var btnResendSc = document.createElement("button");
+                  btnResendSc.appendChild(document.createTextNode("Resend (SC)"));
+                  btnResendSc.setAttribute("data-id", curPush.id);
+                  btnResendSc.setAttribute("data-lang", "sc");
+                  btnResendSc.setAttribute("style", "width:110px;height:25px;margin:0 10px 10px 10px");
+                  btnResendSc.onclick = function () {
+                    ResendPush(this);
+                  }
+
+                  var td6 = row.insertCell(6);
+                  td6.appendChild(btnCopy);
+                  td6.appendChild(btnResendEn);
+                  td6.appendChild(btnResendTc);
+                  td6.appendChild(btnResendSc);
                 }
               }
             }

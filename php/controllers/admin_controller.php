@@ -1,5 +1,6 @@
 <?php
 include_once ('../class/push_manager.php');
+include_once ('../class/push_result.php');
 include_once ('../include/enum.php');
 
 class AdminController {
@@ -284,6 +285,7 @@ class AdminController {
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
     
@@ -340,6 +342,7 @@ class AdminController {
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -448,6 +451,7 @@ class AdminController {
       $output->data->type = $type;
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -487,6 +491,7 @@ class AdminController {
       
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
     
@@ -576,6 +581,7 @@ class AdminController {
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
     
@@ -689,6 +695,7 @@ class AdminController {
       $output->data->id = $auctionId;
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -704,7 +711,11 @@ class AdminController {
     $output = new stdClass();
     
     try {
-      $selectSql = "SELECT push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status FROM PushHistory ORDER BY push_id DESC LIMIT ?, ?";
+      $selectSql = "SELECT
+                      push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, 
+                      result_en, status_en, last_sent_en, result_tc, status_tc, last_sent_tc, result_sc, status_sc, last_sent_sc,
+                      status
+                    FROM PushHistory ORDER BY push_id DESC LIMIT ?, ?";
 
       $result = $conn->Execute($selectSql, array($start, $size))->GetRows();
       $rowNum = count($result);
@@ -725,7 +736,54 @@ class AdminController {
         $output[] = $push;
       }
     } catch (Exception $e) {
-      $output->status = "fail";
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function resendPush($param) {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    if (!isset($param) || !is_array($param) || count($param) <2 ) {
+      $output->message = "Invalid parameters!";
+      return;
+    }
+
+    $pushId = $param[0];
+    $lang = strtolower($param[1]);
+
+    try {
+      $selectSql = "SELECT title_$lang as 'title', body_$lang as 'body' WHERE push_id = ?";
+      $result = $conn->Execute($selectSql, array($pushId))->GetRows();
+
+      if (count($result) > 0) {
+        $title = $result[0]["title"];
+        $body = $result[0]["body"];
+        $accessToken = $this->getGoogleAccessToken();
+        
+        $pushResult = $this->sendTopic("news_$lang", $title, $body, $accessToken);
+        $pushSuccess = strpos(strtolower($pushResult), "error") === false;
+        $pushSent = date("Y-m-d H:i:s");
+
+        $updateSql = "UPDATE PushHistory SET 
+                        result_$lang = ?, status_$lang = ?, last_sent_$lang = ?
+                      WHERE push_id = ?";
+        $result = $conn->Execute($updateSql, array(
+          $pushResult, $pushSuccess ? PushStatus::Sent : PushStatus::Failed, $pushSent,
+          $pushId
+        ));
+
+        $output->status = "success";
+      } else {
+        $output->message = "Push ID: $pushId not found!";
+      }
+    } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -762,31 +820,49 @@ class AdminController {
         trim($data["body_en"]), trim($data["body_tc"]), trim($data["body_sc"])
       );
 
-      $insertSql = "INSERT INTO PushHistory (title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, status) 
-                    VALUES (
-                      ?, ?, ?, ?, ?, ?, now(), ?
+      $insertSql = "INSERT INTO PushHistory (
+                      title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, 
+                      result_en, status_en, last_sent_en,
+                      result_tc, status_tc, last_sent_tc,
+                      result_sc, status_sc, last_sent_sc,
+                      status
+                    ) VALUES (
+                      ?, ?, ?, ?, ?, ?, now(), 
+                      '', '', '1900-01-01',
+                      '', '', '1900-01-01',
+                      '', '', '1900-01-01',
+                      ?
                     );";
 
       $result = $conn->Execute($insertSql, array(
-        $pushData->titleEn, $pushData->titleTc, $pushData->titleSc,
-        $pushData->bodyEn, $pushData->bodyTc, $pushData->bodySc, PushStatus::Sending
+        $pushData->titleEn, $pushData->titleTc, $pushData->titleSc, $pushData->bodyEn, $pushData->bodyTc, $pushData->bodySc,
+        PushStatus::Sending
       ));
 
       $pushId = $conn->insert_Id();
 
       if ($pushId > 0) {
         $pushManager = new PushManager();
+        $pushResult = $pushManager->send($pushId, $pushData);
 
-        $result = $pushManager->send($pushId, $pushData);
-
-        $updateSql = "UPDATE PushHistory SET status = ? WHERE push_id = ?";
+        $updateSql = "UPDATE PushHistory SET 
+                        result_en = ?, status_en = ?, last_sent_en = ?,
+                        result_tc = ?, status_tc = ?, last_sent_tc = ?,
+                        result_sc = ?, status_sc = ?, last_sent_sc = ?,
+                        status = ?
+                      WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
-          $result ? PushStatus::Sent : PushStatus::Failed, $pushId
+          $pushResult->resultEn, $pushResult->successEn ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentEn,
+          $pushResult->resultTc, $pushResult->successTc ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentTc,
+          $pushResult->resultSc, $pushResult->successSc ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentSc,
+          $pushResult->success() ? PushStatus::Sent : PushStatus::Failed,
+          $pushId
         ));
       }
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -866,6 +942,7 @@ class AdminController {
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -891,6 +968,7 @@ class AdminController {
 
       $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
 
@@ -945,6 +1023,7 @@ class AdminController {
   
         $output->status = "success";
     } catch (Exception $e) {
+      $output->status = "error";
       $output->error = $e->getMessage();
     }
     

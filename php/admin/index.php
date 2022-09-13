@@ -27,7 +27,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     if ($validate) {
       $_SESSION["admin_user"] = $username;
     } else {
-      $loginError = "Wrong username or password!<br />" . Date("Y:m:d H:i:s") ;
+      $loginError = "Wrong username or password!<br />" . Date("Y-m-d H:i:s") ;
     }
   }
 }

@@ -2,12 +2,12 @@
 include_once("../include/config.php");
 include_once("../include/common.php");
 include_once("../include/google_api/vendor/autoload.php");
+include_once("../class/push_result.php");
 
 class PushManager {
   private String $key;
 
   function __construct() {
-
   }
 
   // legacy HTTP rest
@@ -57,19 +57,32 @@ class PushManager {
   //   return $result;
   // }
   public function send($pushId, $pushData) {
-    $accessToken = $this->getGoogleAccessToken();
+    $pushResult = new PushResult();
 
-    $this->sendTopic("news_en", $pushData->titleEn, $pushData->bodyEn, $accessToken);
+    $accessToken = $this->getGoogleAccessToken();
+    
+    $pushResult->resultEn = $this->sendTopic("news_en", $pushData->titleEn, $pushData->bodyEn, $accessToken);
+    $pushResult->successEn = strpos(strtolower($resultEn), "error") === false;
+    $pushResult->sentEn = date("Y-m-d H:i:s");
     sleep(1);
-    $this->sendTopic("news_tc", $pushData->titleTc, $pushData->bodyTc, $accessToken);
+    $pushResult->resultTc = $this->sendTopic("news_tc", $pushData->titleTc, $pushData->bodyTc, $accessToken);
+    $pushResult->successTc = strpos(strtolower($resultTc), "error") === false;
+    $pushResult->sentTc = date("Y-m-d H:i:s");
     sleep(1);
-    $this->sendTopic("news_sc", $pushData->titleSc, $pushData->bodySc, $accessToken);
-    return true;
+    $pushResult->resultSc = $this->sendTopic("news_sc", $pushData->titleSc, $pushData->bodySc, $accessToken);
+    $pushResult->successSc = strpos(strtolower($resultSc), "error") === false;
+    $pushResult->sentSc = date("Y-m-d H:i:s");
+    
+    return $pushResult;
+  }
+
+  public function resend($lang, $title, $body) {
+    //TBC!!!
   }
 
   private function sendTopic($topic, $title, $body, $accessToken) {
-    $result = false;
-    // $accessToken = $this->getGoogleAccessToken();
+    $result = "";
+    
     try {
       $headers = array(
         "Authorization: Bearer $accessToken",
@@ -96,15 +109,14 @@ class PushManager {
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
       curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
     
-      $curlResult = curl_exec($ch);
-      // Debug_var_dump($curlResult);
+      $result = curl_exec($ch);
+      // Debug_var_dump($result);
     
-      if ($curlResult === FALSE) {
+      if ($result === FALSE) {
           throw Exception("Curl failed: " . curl_error($ch));
       }
     
       curl_close($ch);
-      $result = true;
     } catch (Exception $e) {}
    
     return $result;
