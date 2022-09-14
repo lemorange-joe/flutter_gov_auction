@@ -161,6 +161,10 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("btnConfirm").disabled = true;
         document.getElementById("btnConfirm").innerHTML = "Sending...";
 
+        document.querySelectorAll('.resend-button').forEach(function(button) {
+          button.disabled = true;
+        });
+
         var push_password = prompt("Please enter password for push message:");
         var pushData = {
           "title_en": document.getElementById("tbTitleEn").value.trim(),
@@ -215,8 +219,13 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("tbTitleSc").disabled = false;
         document.getElementById("txtBodySc").disabled = false;
 
+        document.getElementById("btnCreate").disabled = false;
         document.getElementById("btnCreate").style.display = "inline-block";
         document.getElementById("btnConfirm").style.display = "none";
+
+        document.querySelectorAll('.resend-button').forEach(function(button) {
+          button.disabled = false;
+        });
       }
 
       function CopyContent(btn) {
@@ -233,11 +242,44 @@ if (!isset($_SESSION["admin_user"])) {
       }
 
       function ResendPush(btn) {
+        document.getElementById("btnCreate").disabled = true;
+        document.getElementById("btnConfirm").disabled = true;
+        document.querySelectorAll('.resend-button').forEach(function(button) {
+          button.disabled = true;
+        });
+
         var id = parseInt(btn.getAttribute("data-id"));
         var lang = btn.getAttribute("data-lang");
 
-        // TBC!!!
-        console.log(id + ": " + lang);
+        var push_password = prompt("Please enter password for resend push message:");
+        var pushData = {
+          "push_id": id,
+          "lang": lang,
+          push_password: push_password,
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../en/api/admin-resendPush");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              if (jsonData.status == "success") {
+                ResetPush(true);
+                GetData(false);
+              } else {
+                ResetPush(false);
+                alert("Resend failed: " + jsonData.error);  
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(pushData));
       }
 
       function LoadMore(){
@@ -285,6 +327,7 @@ if (!isset($_SESSION["admin_user"])) {
                   var row = tblPush.insertRow();
                   row.insertCell(0).appendChild(document.createTextNode(curPush.id));
 
+                  // EN
                   var divTitleEn = document.createElement("div");
                   divTitleEn.appendChild(document.createTextNode(curPush.title_en));
                   divTitleEn.style.fontWeight = "bold";
@@ -292,8 +335,19 @@ if (!isset($_SESSION["admin_user"])) {
                   var td1 = row.insertCell(1)
                   td1.appendChild(divTitleEn);
                   td1.appendChild(document.createTextNode(curPush.body_en));
+                  td1.appendChild(document.createElement("hr"));                  
+
+                  var statusEn = document.createElement("span");
+                  statusEn.appendChild(document.createTextNode("Status: " + curPush.status_en));
+                  statusEn.setAttribute("title", curPush.result_en);
+                  statusEn.style.color = curPush.status_en == "S" ? "#0a3" : "#d00";
+
+                  td1.appendChild(statusEn);
+                  td1.appendChild(document.createElement("br"));
+                  td1.appendChild(document.createTextNode("Last Sent: " + curPush.last_sent_en));
                   td1.classList.add("left", "top");
 
+                  // TC
                   var divTitleTc = document.createElement("div");
                   divTitleTc.appendChild(document.createTextNode(curPush.title_tc));
                   divTitleTc.style.fontWeight = "bold";
@@ -301,8 +355,19 @@ if (!isset($_SESSION["admin_user"])) {
                   var td2 = row.insertCell(2)
                   td2.appendChild(divTitleTc);
                   td2.appendChild(document.createTextNode(curPush.body_tc));
+                  td2.appendChild(document.createElement("hr"));
+                  
+                  var statusTc = document.createElement("span");
+                  statusTc.appendChild(document.createTextNode("Status: " + curPush.status_tc));
+                  statusTc.setAttribute("title", curPush.result_tc);
+                  statusTc.style.color = curPush.status_tc == "S" ? "#0a3" : "#d00";
+
+                  td2.appendChild(statusTc);
+                  td2.appendChild(document.createElement("br"));
+                  td2.appendChild(document.createTextNode("Last Sent: " + curPush.last_sent_tc));
                   td2.classList.add("left", "top");
 
+                  // SC
                   var divTitleSc = document.createElement("div");
                   divTitleSc.appendChild(document.createTextNode(curPush.title_sc));
                   divTitleSc.style.fontWeight = "bold";
@@ -310,6 +375,16 @@ if (!isset($_SESSION["admin_user"])) {
                   var td3 = row.insertCell(3)
                   td3.appendChild(divTitleSc);
                   td3.appendChild(document.createTextNode(curPush.body_sc));
+                  td3.appendChild(document.createElement("hr"));
+                  
+                  var statusSc = document.createElement("span");
+                  statusSc.appendChild(document.createTextNode("Status: " + curPush.status_sc));
+                  statusSc.setAttribute("title", curPush.result_sc);
+                  statusSc.style.color = curPush.status_sc == "S" ? "#0a3" : "#d00";
+
+                  td3.appendChild(statusSc);
+                  td3.appendChild(document.createElement("br"));
+                  td3.appendChild(document.createTextNode("Last Sent: " + curPush.last_sent_sc));
                   td3.classList.add("left", "top");
                   
                   row.insertCell(4).appendChild(document.createTextNode(curPush.push_date));
@@ -324,6 +399,7 @@ if (!isset($_SESSION["admin_user"])) {
                   }
 
                   var btnResendEn = document.createElement("button");
+                  btnResendEn.classList.add("resend-button");
                   btnResendEn.appendChild(document.createTextNode("Resend (EN)"));
                   btnResendEn.setAttribute("data-id", curPush.id);
                   btnResendEn.setAttribute("data-lang", "en");
@@ -333,6 +409,7 @@ if (!isset($_SESSION["admin_user"])) {
                   }
 
                   var btnResendTc = document.createElement("button");
+                  btnResendTc.classList.add("resend-button");
                   btnResendTc.appendChild(document.createTextNode("Resend (TC)"));
                   btnResendTc.setAttribute("data-id", curPush.id);
                   btnResendTc.setAttribute("data-lang", "tc");
@@ -342,6 +419,7 @@ if (!isset($_SESSION["admin_user"])) {
                   }
 
                   var btnResendSc = document.createElement("button");
+                  btnResendSc.classList.add("resend-button");
                   btnResendSc.appendChild(document.createTextNode("Resend (SC)"));
                   btnResendSc.setAttribute("data-id", curPush.id);
                   btnResendSc.setAttribute("data-lang", "sc");

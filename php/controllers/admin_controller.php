@@ -731,6 +731,17 @@ class AdminController {
         $push->body_tc = $result[$i]["body_tc"];
         $push->body_sc = $result[$i]["body_sc"];
         $push->push_date = $result[$i]["push_date"];
+        
+        $push->result_en = $result[$i]["result_en"];
+        $push->status_en = $result[$i]["status_en"];
+        $push->last_sent_en = $result[$i]["last_sent_en"];
+        $push->result_tc = $result[$i]["result_tc"];
+        $push->status_tc = $result[$i]["status_tc"];
+        $push->last_sent_tc = $result[$i]["last_sent_tc"];
+        $push->result_sc = $result[$i]["result_sc"];
+        $push->status_sc = $result[$i]["status_sc"];
+        $push->last_sent_sc = $result[$i]["last_sent_sc"];
+        
         $push->status = $result[$i]["status"];
 
         $output[] = $push;
@@ -744,37 +755,45 @@ class AdminController {
   }
 
   function resendPush($param) {
-    global $conn;
+    global $conn, $PUSH_PASSWORD_HASHED;
 
     $output = new stdClass();
     $output->status = "fail";
+    
+    try{
+      $data = json_decode(file_get_contents('php://input'), true);
 
-    if (!isset($param) || !is_array($param) || count($param) <2 ) {
-      $output->message = "Invalid parameters!";
-      return;
-    }
+      if (!isset($data["push_id"]) || trim($data["push_id"]) == "" || 
+          !isset($data["lang"]) || trim($data["lang"]) == "" || 
+          !isset($data["push_password"]) || trim($data["push_password"]) == "") {
+            throw new Exception("Data is empty!");
+          }
 
-    $pushId = $param[0];
-    $lang = strtolower($param[1]);
+      $pushId = intval($data["push_id"]);
+      $lang = $data["lang"];
+      $pushPassword = md5($data["push_password"]);
 
-    try {
-      $selectSql = "SELECT title_$lang as 'title', body_$lang as 'body' WHERE push_id = ?";
+      if (strcmp($pushPassword, $PUSH_PASSWORD_HASHED) !== 0) {
+        throw new Exception("Wrong push password!");
+      }
+
+      $selectSql = "SELECT title_$lang as 'title', body_$lang as 'body' FROM PushHistory WHERE push_id = ?";
       $result = $conn->Execute($selectSql, array($pushId))->GetRows();
 
       if (count($result) > 0) {
         $title = $result[0]["title"];
         $body = $result[0]["body"];
-        $accessToken = $this->getGoogleAccessToken();
-        
-        $pushResult = $this->sendTopic("news_$lang", $title, $body, $accessToken);
+
+        $pushManager = new PushManager();
+        $pushResult = $pushManager->resend($lang, $title, $body);
         $pushSuccess = strpos(strtolower($pushResult), "error") === false;
-        $pushSent = date("Y-m-d H:i:s");
+        $pushSent = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
 
         $updateSql = "UPDATE PushHistory SET 
                         result_$lang = ?, status_$lang = ?, last_sent_$lang = ?
                       WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
-          $pushResult, $pushSuccess ? PushStatus::Sent : PushStatus::Failed, $pushSent,
+          $pushResult, $pushSuccess ? PushStatus::Sent : PushStatus::Failed, date_format($pushSent, "Y/m/d H:i:s"),
           $pushId
         ));
 
@@ -809,9 +828,9 @@ class AdminController {
             throw new Exception("Data is empty!");
           }
 
-      $push_password = md5($data["push_password"]);
+      $pushPassword = md5($data["push_password"]);
 
-      if (strcmp($push_password, $PUSH_PASSWORD_HASHED) !== 0) {
+      if (strcmp($pushPassword, $PUSH_PASSWORD_HASHED) !== 0) {
         throw new Exception("Wrong push password!");
       }
 
@@ -852,9 +871,9 @@ class AdminController {
                         status = ?
                       WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
-          $pushResult->resultEn, $pushResult->successEn ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentEn,
-          $pushResult->resultTc, $pushResult->successTc ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentTc,
-          $pushResult->resultSc, $pushResult->successSc ? PushStatus::Sent : PushStatus::Failed, $pushResult->sentSc,
+          $pushResult->resultEn, $pushResult->successEn ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentEn, "Y/m/d H:i:s"),
+          $pushResult->resultTc, $pushResult->successTc ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentTc, "Y/m/d H:i:s"),
+          $pushResult->resultSc, $pushResult->successSc ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentSc, "Y/m/d H:i:s"),
           $pushResult->success() ? PushStatus::Sent : PushStatus::Failed,
           $pushId
         ));

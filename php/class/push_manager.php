@@ -62,22 +62,25 @@ class PushManager {
     $accessToken = $this->getGoogleAccessToken();
     
     $pushResult->resultEn = $this->sendTopic("news_en", $pushData->titleEn, $pushData->bodyEn, $accessToken);
-    $pushResult->successEn = strpos(strtolower($resultEn), "error") === false;
-    $pushResult->sentEn = date("Y-m-d H:i:s");
+    $pushResult->successEn = strpos(strtolower($pushResult->resultEn), "error") === false;
+    $pushResult->sentEn = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
     sleep(1);
     $pushResult->resultTc = $this->sendTopic("news_tc", $pushData->titleTc, $pushData->bodyTc, $accessToken);
-    $pushResult->successTc = strpos(strtolower($resultTc), "error") === false;
-    $pushResult->sentTc = date("Y-m-d H:i:s");
+    $pushResult->successTc = strpos(strtolower($pushResult->resultTc), "error") === false;
+    $pushResult->sentTc = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
     sleep(1);
     $pushResult->resultSc = $this->sendTopic("news_sc", $pushData->titleSc, $pushData->bodySc, $accessToken);
-    $pushResult->successSc = strpos(strtolower($resultSc), "error") === false;
-    $pushResult->sentSc = date("Y-m-d H:i:s");
+    $pushResult->successSc = strpos(strtolower($pushResult->resultSc), "error") === false;
+    $pushResult->sentSc = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
     
     return $pushResult;
   }
 
   public function resend($lang, $title, $body) {
-    //TBC!!!
+    $accessToken = $this->getGoogleAccessToken();
+    $pushResult = $this->sendTopic("news_$lang", $title, $body, $accessToken);
+    
+    return $pushResult;
   }
 
   private function sendTopic($topic, $title, $body, $accessToken) {
