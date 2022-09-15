@@ -17,9 +17,9 @@ class AppInfoProvider with ChangeNotifier {
       final Map<String, dynamic> result = await apiHelper.get(lang, 'data', 'appinfo', useDemoData: true) as Map<String, dynamic>;
       appInfo = AppInfo.fromJson(result);
       loaded = true;
-      //Logger().d(appInfo);
+      // Logger().d(appInfo);
     } catch (e) {
-      //Logger().e(e.toString());
+      // Logger().e(e.toString());
     }
 
     notifyListeners();
@@ -28,4 +28,5 @@ class AppInfoProvider with ChangeNotifier {
   String get dataVersion => appInfo.dataVersion;
   String get news => appInfo.news;
   DateTime get lastUpdate => appInfo.lastUpdate;
+  List<PushMessage> get messageList => appInfo.messageList;
 }

@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
-import '../include/utilities.dart' as utilities;
+// import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 
 class HomeTab extends StatefulWidget {
@@ -39,16 +39,6 @@ class _HomeTabState extends State<HomeTab> {
     return Center(
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Consumer<AppInfoProvider>(
-                builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
-                  return appInfo.loaded ? Text(utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang)) : const SizedBox(height: 20.0, width: 20.0, child: CircularProgressIndicator());
-                },
-              ),
-            ],
-          ),
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,

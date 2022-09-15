@@ -19,6 +19,26 @@ class DataController {
         $data->lu = date("Y-m-d H:i:s", strtotime($result[0]["last_update"]));
       }
 
+      $selectSql = "SELECT push_id, title_$lang as 'title', body_$lang as 'body', push_date
+                    FROM PushHistory
+                    WHERE status = ? AND push_date > ?
+                    ORDER BY push_date DESC";
+      $startDate = FormatMysqlDateTime(date_sub(GetCurrentLocalTime(), new DateInterval("P".$GLOBALS["PUSH_MESSAGE_DAYS"]."D")));
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();
+      $rowNum = count($result);
+
+      $data->ml = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $push = new StdClass();
+        $push->id = intval($result[$i]["push_id"]);
+        $push->t = $result[$i]["title"];
+        $push->b = $result[$i]["body"];
+        $push->d = date("Y-m-d H:i:s", strtotime($result[$i]["push_date"]));
+
+        $data->ml[] = $push;
+      }
+
       $output->status = "success";
       $output->data = $data;
     } catch (Exception $e) {
@@ -44,15 +64,7 @@ class DataController {
                     WHERE status = ? AND push_date > ?
                     ORDER BY push_date DESC";
 
-      $result = $conn->CacheExecute(
-        $GLOBALS["CACHE_PERIOD"],
-        $selectSql, 
-        array(
-          PushStatus::Sent,
-          $startDate
-        )
-      )->GetRows();
-
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();
       $rowNum = count($result);
 
       $data = array();

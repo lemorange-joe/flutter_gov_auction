@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import '../class/app_info.dart';
 import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
@@ -111,6 +112,15 @@ class _DebugPageState extends State<DebugPage> {
                       Text('News: ${appInfo.news}', textAlign: TextAlign.start),
                       Text('Last Update: ${utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang)}', textAlign: TextAlign.start),
                       Text('Loaded: ${appInfo.loaded}', textAlign: TextAlign.start),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text('Push: '),
+                          Column(
+                            children: appInfo.messageList.map((PushMessage msg) => Text('[${msg.pushDate}] ${msg.title}')).toList(),
+                          )
+                        ],
+                      ),
                     ],
                   );
                 },

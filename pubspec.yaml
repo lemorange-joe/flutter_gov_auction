@@ -32,6 +32,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  badges: ^2.0.3
   cached_network_image: ^3.2.1
   clear_all_notifications: ^0.0.3
   cupertino_icons: ^1.0.2
