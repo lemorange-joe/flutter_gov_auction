@@ -29,6 +29,7 @@ if (!isset($_SESSION["admin_user"])) {
       <option value="auction-search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
       <option value="auction-related" data-param="Item ID, e.g. 103">Related Items</option>
       <option value="data-appinfo" data-param="">App Info</option>
+      <option value="data-messagelist" data-param="">Message List</option>
     </select>
     <input id="tbParam" type="text" style="width: 300px">
     <button onclick="GetData()">Get</button>

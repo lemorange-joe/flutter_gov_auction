@@ -28,5 +28,52 @@ class DataController {
 
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
+
+  function messageList() {
+    // quick api to return the list of available auctions
+    global $conn, $lang;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    try {
+      $startDate = FormatMysqlDateTime(date_sub(GetCurrentLocalTime(), new DateInterval("P".$GLOBALS["PUSH_MESSAGE_DAYS"]."D")));
+
+      $selectSql = "SELECT push_id, title_$lang as 'title', body_$lang as 'body', push_date
+                    FROM PushHistory
+                    WHERE status = ? AND push_date > ?
+                    ORDER BY push_date DESC";
+
+      $result = $conn->CacheExecute(
+        $GLOBALS["CACHE_PERIOD"],
+        $selectSql, 
+        array(
+          PushStatus::Sent,
+          $startDate
+        )
+      )->GetRows();
+
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $push = new StdClass();
+        $push->id = intval($result[$i]["push_id"]);
+        $push->t = $result[$i]["title"];
+        $push->b = $result[$i]["body"];
+        $push->d = date("Y-m-d H:i:s", strtotime($result[$i]["push_date"]));
+
+        $data[] = $push;
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
 }
 ?>

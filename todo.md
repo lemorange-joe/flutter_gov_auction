@@ -12,6 +12,3 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 ## TODO:
 - add random data in API to prevent data theft
-- check if the intent is necessary
-  <intent-filter>
-    <action android:name="com.google.firebase.MESSAGING_EVENT" />

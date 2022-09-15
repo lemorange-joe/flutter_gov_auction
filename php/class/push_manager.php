@@ -63,15 +63,15 @@ class PushManager {
     
     $pushResult->resultEn = $this->sendTopic("news_en", $pushData->titleEn, $pushData->bodyEn, $accessToken);
     $pushResult->successEn = strpos(strtolower($pushResult->resultEn), "error") === false;
-    $pushResult->sentEn = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
+    $pushResult->sentEn = GetCurrentLocalTime();
     sleep(1);
     $pushResult->resultTc = $this->sendTopic("news_tc", $pushData->titleTc, $pushData->bodyTc, $accessToken);
     $pushResult->successTc = strpos(strtolower($pushResult->resultTc), "error") === false;
-    $pushResult->sentTc = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
+    $pushResult->sentTc = GetCurrentLocalTime();
     sleep(1);
     $pushResult->resultSc = $this->sendTopic("news_sc", $pushData->titleSc, $pushData->bodySc, $accessToken);
     $pushResult->successSc = strpos(strtolower($pushResult->resultSc), "error") === false;
-    $pushResult->sentSc = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
+    $pushResult->sentSc = GetCurrentLocalTime();
     
     return $pushResult;
   }

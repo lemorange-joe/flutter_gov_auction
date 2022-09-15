@@ -155,6 +155,15 @@ function GetLocalDateTime($timestamp) //from unix timestamp to "yyyy-mm-dd hh:mm
 	return date('Y-m-d H:i:s', $timestamp);
 }
 
+function GetCurrentLocalTime()
+{
+	return new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
+}
+
+function FormatMysqlDateTime($dt) {
+	return date_format($dt, "Y/m/d H:i:s");
+}
+
 function AES_128_Decrypt($encrypted_text, $password)
 {
 	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);

@@ -2,6 +2,7 @@
 include_once ('../class/push_manager.php');
 include_once ('../class/push_result.php');
 include_once ('../include/enum.php');
+include_once ('../include/common.php');
 
 class AdminController {
   function listAuction() {
@@ -787,13 +788,13 @@ class AdminController {
         $pushManager = new PushManager();
         $pushResult = $pushManager->resend($lang, $title, $body);
         $pushSuccess = strpos(strtolower($pushResult), "error") === false;
-        $pushSent = new DateTime("now", new DateTimeZone("Asia/Hong_Kong"));
+        $pushSent = GetCurrentLocalTime();
 
         $updateSql = "UPDATE PushHistory SET 
                         result_$lang = ?, status_$lang = ?, last_sent_$lang = ?
                       WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
-          $pushResult, $pushSuccess ? PushStatus::Sent : PushStatus::Failed, date_format($pushSent, "Y/m/d H:i:s"),
+          $pushResult, $pushSuccess ? PushStatus::Sent : PushStatus::Failed, FormatMysqlDateTime($pushSent),
           $pushId
         ));
 
@@ -871,9 +872,9 @@ class AdminController {
                         status = ?
                       WHERE push_id = ?";
         $result = $conn->Execute($updateSql, array(
-          $pushResult->resultEn, $pushResult->successEn ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentEn, "Y/m/d H:i:s"),
-          $pushResult->resultTc, $pushResult->successTc ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentTc, "Y/m/d H:i:s"),
-          $pushResult->resultSc, $pushResult->successSc ? PushStatus::Sent : PushStatus::Failed, date_format($pushResult->sentSc, "Y/m/d H:i:s"),
+          $pushResult->resultEn, $pushResult->successEn ? PushStatus::Sent : PushStatus::Failed, FormatMysqlDateTime($pushResult->sentEn),
+          $pushResult->resultTc, $pushResult->successTc ? PushStatus::Sent : PushStatus::Failed, FormatMysqlDateTime($pushResult->sentTc),
+          $pushResult->resultSc, $pushResult->successSc ? PushStatus::Sent : PushStatus::Failed, FormatMysqlDateTime($pushResult->sentSc),
           $pushResult->success() ? PushStatus::Sent : PushStatus::Failed,
           $pushId
         ));
