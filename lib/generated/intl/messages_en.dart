@@ -26,6 +26,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
+        "news": MessageLookupByLibrary.simpleMessage("News"),
+        "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),
+        "semanticsClose": MessageLookupByLibrary.simpleMessage("Close"),
+        "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("Read news"),
+        "semanticsRead": MessageLookupByLibrary.simpleMessage("Red"),
+        "semanticsTbc": MessageLookupByLibrary.simpleMessage("Semantics TBC"),
+        "semanticsUnread": MessageLookupByLibrary.simpleMessage("Unread"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings")
       };
 }

@@ -9,12 +9,14 @@ class HiveHelper {
 
   static final Box<dynamic> _prefBox = Hive.box<dynamic>('preferences');
   static final Box<dynamic> _notificationBox = Hive.box<dynamic>('notification');
+  static final Box<String> _historyBox = Hive.box<String>('history');
   static final HiveHelper _hiveHelper = HiveHelper._internal();
 
   Future<void> init(String path) async {
     Hive.init(path);
     await Hive.openBox<dynamic>('preferences');
     await Hive.openBox<dynamic>('notification');
+    await Hive.openBox<String>('history');
   }
 
   // --------------------------------------------
@@ -80,5 +82,29 @@ class HiveHelper {
     return _notificationBox.get('topic', defaultValue: '') as String;
   }
   // notification box
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // history box:
+  Future<void> addReadMessage(int id) async {
+    final List<int> readMessageList = getReadMessageList();
+    readMessageList.add(id);
+    await _historyBox.put('push_message', readMessageList.toSet().join(','));
+  }
+
+  Future<void> cleanReadMessage(List<int> idList) async {
+    final List<int> readMessageList = getReadMessageList();
+    readMessageList.removeWhere((int id) => !idList.contains(id));
+    await _historyBox.put('push_message', readMessageList.join(','));
+  }
+
+  List<int> getReadMessageList() {
+    return (_historyBox.get('push_message', defaultValue: '')!).split(',').map((String id) => id.isEmpty ? 0 : int.parse(id)).toList();
+  }
+
+  Future<void> clearPushMessage() async {
+    await _historyBox.put('push_message', '');
+  }
+  // history box
   // --------------------------------------------
 }

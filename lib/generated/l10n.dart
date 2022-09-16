@@ -90,6 +90,76 @@ class S {
     );
   }
 
+  /// `News`
+  String get news {
+    return Intl.message(
+      'News',
+      name: 'news',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no news.`
+  String get newsEmpty {
+    return Intl.message(
+      'There is no news.',
+      name: 'newsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get semanticsClose {
+    return Intl.message(
+      'Close',
+      name: 'semanticsClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read news`
+  String get semanticsOpenNews {
+    return Intl.message(
+      'Read news',
+      name: 'semanticsOpenNews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Red`
+  String get semanticsRead {
+    return Intl.message(
+      'Red',
+      name: 'semanticsRead',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Semantics TBC`
+  String get semanticsTbc {
+    return Intl.message(
+      'Semantics TBC',
+      name: 'semanticsTbc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unread`
+  String get semanticsUnread {
+    return Intl.message(
+      'Unread',
+      name: 'semanticsUnread',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settings {
     return Intl.message(

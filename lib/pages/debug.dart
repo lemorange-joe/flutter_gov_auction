@@ -51,6 +51,8 @@ class _DebugPageState extends State<DebugPage> {
                 const Divider(),
                 ...buildAppInfoSection(context),
                 const Divider(),
+                ...buildHiveSection(context),
+                const Divider(),
                 ...buildPushSection(context),
               ],
             ),
@@ -128,6 +130,51 @@ class _DebugPageState extends State<DebugPage> {
             ],
           ),
         ),
+      ),
+    ];
+  }
+
+  List<Widget> buildHiveSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Hive',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      DefaultTextStyle(
+        style: TextStyle(fontSize: 12.0, color: Colors.blue[900]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Row(
+            children: <Widget>[
+              ValueListenableBuilder<Box<String>>(
+                valueListenable: Hive.box<String>('history').listenable(),
+                builder: (BuildContext context, _, __) {
+                  return Text(HiveHelper().getReadMessageList().join(', '));
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              HiveHelper().clearPushMessage();
+            },
+            style: ElevatedButton.styleFrom(primary: Colors.pink[400]),
+            child: const Text('Clear All'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              HiveHelper().cleanReadMessage(<int>[81,83,85,87,89]);
+            },
+            style: ElevatedButton.styleFrom(primary: Colors.pink[700]),
+            child: const Text('Clean (81,83,85,87,89)'),
+          ),
+        ],
       ),
     ];
   }

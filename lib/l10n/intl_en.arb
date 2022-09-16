@@ -3,5 +3,12 @@
     "lang": "en",
     "home": "Home",
     "myFavourite": "My Favourite",
+    "news": "News",
+    "newsEmpty": "There is no news.",
+    "semanticsClose": "Close",
+    "semanticsOpenNews": "Read news",
+    "semanticsRead": "Red",
+    "semanticsTbc": "Semantics TBC",
+    "semanticsUnread": "Unread",
     "settings": "Settings"
 }

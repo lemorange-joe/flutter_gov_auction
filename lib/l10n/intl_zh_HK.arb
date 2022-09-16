@@ -3,5 +3,12 @@
     "lang": "tc",
     "home": "主頁",
     "myFavourite": "我的最愛",
+    "news": "最新消息",
+    "newsEmpty": "暫時未有最新消息",
+    "semanticsClose": "關閉",
+    "semanticsOpenNews": "閱讀最新消息",
+    "semanticsRead": "已閱讀",
+    "semanticsTbc": "無障礙內容待定",
+    "semanticsUnread": "未閱讀",
     "settings": "設定"
 }

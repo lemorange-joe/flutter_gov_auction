@@ -1,15 +1,19 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import '../class/app_info.dart';
 import '../generated/l10n.dart';
+import '../helpers/hive_helper.dart';
 import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../tabs/favourite.dart';
 import '../tabs/home.dart';
 import '../tabs/settings.dart';
+import '../widgets/push_message_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -138,36 +142,64 @@ class _HomePageState extends State<HomePage> {
             S.of(context).appName,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
-            return !appInfo.loaded
-                ? Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Icon(
-                      MdiIcons.email,
-                      color: Theme.of(context).disabledColor,
-                      size: 24.0 * MediaQuery.of(context).textScaleFactor,
-                    ),
-                )
-                : Badge(
-                    badgeContent: Text(
-                      appInfo.messageList.length.toString(),  // not completed yet!!!
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
-                      ),
-                    ),
-                    position: BadgePosition.topEnd(top: 20.0 * (1.05 - MediaQuery.of(context).textScaleFactor), end: 15.0 * (1.2 - MediaQuery.of(context).textScaleFactor)),
-                    child: IconButton(
-                      onPressed: () {},
-                      iconSize: 24.0 * MediaQuery.of(context).textScaleFactor,
-                      splashRadius: 24.0 * MediaQuery.of(context).textScaleFactor,
-                      icon: Icon(
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+              return !appInfo.loaded
+                  ? IconButton(
+                    onPressed: null,
+                    icon: Semantics(
+                      label: S.of(context).semanticsOpenNews,
+                      button: true,
+                      enabled: false,
+                      child: Icon(
                         MdiIcons.email,
-                        color: Theme.of(context).textTheme.bodyText2!.color,
+                        color: Theme.of(context).disabledColor,
+                        size: 24.0 * MediaQuery.of(context).textScaleFactor,
                       ),
                     ),
-                  );
-          }),
+                  )
+                  : ValueListenableBuilder<Box<String>>(
+                      valueListenable: Hive.box<String>('history').listenable(),
+                      builder: (BuildContext context, _, __) {
+                        final List<int> readIdList = HiveHelper().getReadMessageList();
+                        final List<int> messageIdList = appInfo.messageList.map((PushMessage message) => message.pushId).toList();
+                        final int badgeCount = messageIdList.fold(0, (int val, int id) {
+                          return val + (readIdList.contains(id) ? 0 : 1);
+                        });
+
+                        return Badge(
+                          showBadge: badgeCount > 0,
+                          badgeContent: Text(
+                            badgeCount.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
+                            ),
+                          ),
+                          toAnimate: false,
+                          position: BadgePosition.topEnd(
+                              top: 20.0 * (1.05 - MediaQuery.of(context).textScaleFactor), end: 15.0 * (1.2 - MediaQuery.of(context).textScaleFactor)),
+                          child: IconButton(
+                            onPressed: () {
+                              openMessageList(context);
+                            },
+                            iconSize: 24.0 * MediaQuery.of(context).textScaleFactor,
+                            splashRadius: 24.0 * MediaQuery.of(context).textScaleFactor,
+                            icon: Semantics(
+                              label: S.of(context).semanticsOpenNews,
+                              button: true,
+                              enabled: true,
+                              child: Icon(
+                                MdiIcons.email,
+                                color: Theme.of(context).textTheme.bodyText2!.color,
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+            }),
+          ),
         ],
       ),
     );
@@ -218,6 +250,16 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+void openMessageList(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierColor: Colors.black54,
+    builder: (BuildContext context) {
+      return const PushMessageList();
+    },
+  );
 }
 
 class TabData {

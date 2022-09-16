@@ -26,6 +26,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("我的最愛"),
+        "news": MessageLookupByLibrary.simpleMessage("最新消息"),
+        "newsEmpty": MessageLookupByLibrary.simpleMessage("暫時未有最新消息"),
+        "semanticsClose": MessageLookupByLibrary.simpleMessage("關閉"),
+        "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
+        "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),
+        "semanticsTbc": MessageLookupByLibrary.simpleMessage("無障礙內容待定"),
+        "semanticsUnread": MessageLookupByLibrary.simpleMessage("未閱讀"),
         "settings": MessageLookupByLibrary.simpleMessage("設定")
       };
 }
