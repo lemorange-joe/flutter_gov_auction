@@ -108,15 +108,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
       <input id="tbNewPassword" type="password" style="width: 180px; margin-bottom: 5px" placeholder="New Password">
       <input id="tbConfirmPassword" type="password" style="width: 180px; margin-bottom: 20px" placeholder="Confirm Password">
       <button id="btnSubmit" onclick="SubmitPassword()">Submit</button>
+      <button style="margin-left: 20px" onclick="document.getElementById('divChangePassword').style.display='none'">Cancel</button>
     </div>
+    <script src="js/main.js"></script>
     <script>
-      function TempDisableButton(id) {
-        document.getElementById(id).setAttribute("disabled", "disabled");
-        setTimeout(function() {
-          document.getElementById(id).removeAttribute("disabled");
-        }, 5000);
-      }
-
       function OpenChangePassword() {
         document.getElementById("tbOldPassword").value = "";
         document.getElementById("tbNewPassword").value = "";

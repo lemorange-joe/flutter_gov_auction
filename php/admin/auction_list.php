@@ -73,7 +73,7 @@ if (!isset($_SESSION["admin_user"])) {
     <div id="newForm">
       <div class="form-row">
         <div>Auction No.</div>
-        <div><input id="tbNewAuctionNum" /></div>
+        <div><input id="tbNewAuctionNum" placeholder="1/2022"/></div>
       </div>
       <div class="form-row">
         <div>Start Time</div>
@@ -141,14 +141,8 @@ if (!isset($_SESSION["admin_user"])) {
       <button onclick="ResetAuction()">Reset</button>
     </div>
     <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
+    <script src="js/main.js"></script>
     <script>
-      function TempDisableButton(id) {
-        document.getElementById(id).setAttribute("disabled", "disabled");
-        setTimeout(function() {
-          document.getElementById(id).removeAttribute("disabled");
-        }, 5000);
-      }
-
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");
         var option;
@@ -322,9 +316,11 @@ if (!isset($_SESSION["admin_user"])) {
                 row.insertCell(5).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
                 row.insertCell(6).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
                 var btnUpdate = document.createElement("button");
+                btnUpdate.setAttribute("id", "btnUpdate"+i);
                 btnUpdate.innerHTML = "Update";
                 btnUpdate.onclick = function () {
                   UpdateAuction(this.parentNode.parentNode.rowIndex - 1);
+                  TempDisableButton(this.getAttribute("id"));
                 };
                 row.insertCell(7).appendChild(btnUpdate);
 
