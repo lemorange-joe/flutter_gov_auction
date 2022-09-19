@@ -36,6 +36,7 @@ dependencies:
   cached_network_image: ^3.2.1
   clear_all_notifications: ^0.0.3
   cupertino_icons: ^1.0.2
+  firebase_analytics: ^9.3.5
   firebase_core: ^1.21.1
   firebase_messaging: ^13.0.0
   flutter_config: ^2.0.0

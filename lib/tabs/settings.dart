@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
+import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../providers/app_info_provider.dart';
@@ -159,6 +160,27 @@ class _SettingsTabState extends State<SettingsTab> {
                         await NotificationHelper().unsubscribeTopic(subscribedTopic);
                         await HiveHelper().writeSubscribeTopic('');
                       }
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Allow analytics:'),
+              ValueListenableBuilder<Box<dynamic>>(
+                valueListenable: Hive.box<dynamic>('preferences').listenable(),
+                builder: (BuildContext context, _, __) {
+                  final bool allow = HiveHelper().getAllowAnalytics();
+                  return Switch(
+                    value: allow,
+                    activeColor: Colors.green,
+                    onChanged: (bool value) async {
+                      FirebaseAnalyticsHelper.enabled = value;
+                      await HiveHelper().writeAllowAnalytics(value);
                     },
                   );
                 },

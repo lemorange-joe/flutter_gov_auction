@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:clear_all_notifications/clear_all_notifications.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import './firebase_options.dart';
 import './generated/l10n.dart';
+import './helpers/firebase_analytics_helper.dart';
 import './helpers/hive_helper.dart';
 import './helpers/notification_helper.dart';
 import './include/global.dart';
@@ -48,6 +50,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+@override
+  void initState() {
+    super.initState();
+
+    final FirebaseAnalyticsHelper firebaseAnalyticsHelper = FirebaseAnalyticsHelper();
+    firebaseAnalyticsHelper.init(HiveHelper().getAllowAnalytics());
+    firebaseAnalyticsHelper.logAppOpen();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
@@ -87,6 +99,7 @@ class _MyAppState extends State<MyApp> {
                   child: child!,
                 );
               },
+              navigatorObservers: FirebaseAnalyticsHelper.enabled ? <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: FirebaseAnalyticsHelper().analytics)] : <NavigatorObserver>[],
             ),
           );
         });

@@ -10,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import '../class/app_info.dart';
 import '../generated/l10n.dart';
+import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../include/utilities.dart' as utilities;
@@ -54,6 +55,8 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildHiveSection(context),
                 const Divider(),
                 ...buildPushSection(context),
+                const Divider(),
+                ...buildFirebaseAnalyticsSection(context),
               ],
             ),
           ),
@@ -169,7 +172,7 @@ class _DebugPageState extends State<DebugPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              HiveHelper().cleanReadMessage(<int>[81,83,85,87,89]);
+              HiveHelper().cleanReadMessage(<int>[81, 83, 85, 87, 89]);
             },
             style: ElevatedButton.styleFrom(primary: Colors.pink[700]),
             child: const Text('Clean (81,83,85,87,89)'),
@@ -352,6 +355,50 @@ class _DebugPageState extends State<DebugPage> {
           primary: Colors.red,
         ),
         child: const Text('Clear All Badges'),
+      ),
+    ];
+  }
+
+  List<Widget> buildFirebaseAnalyticsSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Firebase Analytics',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Row(
+          children: <Widget>[
+            const Text('Enable (Hive): '),
+            ValueListenableBuilder<Box<dynamic>>(
+              valueListenable: Hive.box<dynamic>('preferences').listenable(),
+              builder: (BuildContext context, _, __) {
+                return Text(HiveHelper().getAllowAnalytics().toString());
+              },
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Row(
+          children: <Widget>[
+            const Text('Enable (Helper): '),
+            Text(FirebaseAnalyticsHelper.enabled.toString()),
+          ],
+        ),
+      ),
+      const SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () async {
+          await FirebaseAnalyticsHelper().logEvent('test_log_event');
+          Logger().d('[${DateTime.now()}] logged');
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.yellow[800],
+        ),
+        child: const Text('Test Log Event'),
       ),
     ];
   }

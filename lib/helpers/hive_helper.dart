@@ -25,6 +25,10 @@ class HiveHelper {
     await _prefBox.put('agreed', val);
   }
 
+  Future<void> writeAllowAnalytics(bool val) async {
+    await _prefBox.put('allow_analytics', val);
+  }
+
   Future<void> writeFontSize(int val) async {
     await _prefBox.put('fontSize', val);
   }
@@ -43,6 +47,10 @@ class HiveHelper {
 
   bool getAgreed() {
     return _prefBox.get('agreed', defaultValue: false) as bool;
+  }
+
+  bool getAllowAnalytics() {
+    return _prefBox.get('allow_analytics', defaultValue: false) as bool;
   }
 
   int getFontSize() {
