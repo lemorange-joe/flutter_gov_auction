@@ -1,4 +1,4 @@
-# gov_auction
+# gac_util
 
 HKSAR Government Auction project
 

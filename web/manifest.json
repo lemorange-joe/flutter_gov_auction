@@ -1,6 +1,6 @@
 {
-    "name": "gov_auction",
-    "short_name": "gov_auction",
+    "name": "gac_util",
+    "short_name": "gac_util",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

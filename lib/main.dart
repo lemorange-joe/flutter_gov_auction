@@ -34,7 +34,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await ClearAllNotifications.clear();
-  
+
   runApp(const MyApp());
 }
 
@@ -50,8 +50,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-@override
+  @override
   void initState() {
     super.initState();
 
@@ -67,41 +66,44 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     return ValueListenableBuilder<Box<dynamic>>(
-        valueListenable: Hive.box<dynamic>('preferences').listenable(),
-        builder: (BuildContext context, _, __) {
-          final HiveHelper hiveHelper = HiveHelper();
+      valueListenable: Hive.box<dynamic>('preferences').listenable(),
+      builder: (BuildContext context, _, __) {
+        final HiveHelper hiveHelper = HiveHelper();
 
-          return MultiProvider(
-            providers: <ChangeNotifierProvider<dynamic>>[
-              ChangeNotifierProvider<AppInfoProvider>(create: (_) => AppInfoProvider()),
-            ],
-            child: MaterialApp(
-              title: 'Flutter Demo',
-              scaffoldMessengerKey: globalScaffoldMessengerKey,
-              theme: hiveHelper.getTheme() == 'dark' ? darkTheme : lightTheme,
-              locale: Locale(
-                hiveHelper.getLocaleCode().split('_')[0],
-                hiveHelper.getLocaleCode().split('_')[1],
-              ),
-              localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              initialRoute: 'home',
-              onGenerateRoute: Routes().getRoutes,
-              builder: (BuildContext context, Widget? child) {
-                final MediaQueryData data = MediaQuery.of(context);
-                return MediaQuery(
-                  data: data.copyWith(textScaleFactor: data.textScaleFactor * hiveHelper.getFontSize() / 100), // to be controlled by font size saved in hive
-                  child: child!,
-                );
-              },
-              navigatorObservers: FirebaseAnalyticsHelper.enabled ? <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: FirebaseAnalyticsHelper().analytics)] : <NavigatorObserver>[],
+        return MultiProvider(
+          providers: <ChangeNotifierProvider<dynamic>>[
+            ChangeNotifierProvider<AppInfoProvider>(create: (_) => AppInfoProvider()),
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            scaffoldMessengerKey: globalScaffoldMessengerKey,
+            theme: hiveHelper.getTheme() == 'dark' ? darkTheme : lightTheme,
+            locale: Locale(
+              hiveHelper.getLocaleCode().split('_')[0],
+              hiveHelper.getLocaleCode().split('_')[1],
             ),
-          );
-        });
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            initialRoute: 'home',
+            onGenerateRoute: Routes().getRoutes,
+            builder: (BuildContext context, Widget? child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(textScaleFactor: data.textScaleFactor * hiveHelper.getFontSize() / 100), // to be controlled by font size saved in hive
+                child: child!,
+              );
+            },
+            navigatorObservers: FirebaseAnalyticsHelper.enabled
+                ? <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: FirebaseAnalyticsHelper().analytics)]
+                : <NavigatorObserver>[],
+          ),
+        );
+      },
+    );
   }
 }

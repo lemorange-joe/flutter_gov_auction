@@ -2,7 +2,7 @@
     package="studio.lemorange.govauction">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="gov_auction"
+        android:label="gac_util"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
