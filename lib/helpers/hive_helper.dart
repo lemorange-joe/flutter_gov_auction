@@ -41,8 +41,8 @@ class HiveHelper {
     await _prefBox.put('theme', val);
   }
 
-  Future<void> writeFirstLaunch(DateTime val) async {
-    await _prefBox.put('firstLaunch', val);
+  Future<void> writeFirstLaunch(bool val) async {
+    await _prefBox.put('first_launch', val);
   }
 
   bool getAgreed() {
@@ -65,8 +65,8 @@ class HiveHelper {
     return _prefBox.get('theme', defaultValue: 'light') as String;
   }
 
-  DateTime getFirstLaunch() {
-    return _prefBox.get('firstLaunch', defaultValue: DateTime(2022)) as DateTime;
+  bool getFirstLaunch() {
+    return _prefBox.get('first_launch', defaultValue: true) as bool;
   }
   // preferences box
   // --------------------------------------------

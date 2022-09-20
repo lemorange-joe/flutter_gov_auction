@@ -1,14 +1,24 @@
 {
     "appName": "APP Name",
+    "done": "Done",
     "lang": "en",
     "home": "Home",
     "myFavourite": "My Favourite",
     "news": "News",
     "newsEmpty": "There is no news.",
+    "next": "Next",
     "semanticsClose": "Close",
     "semanticsOpenNews": "Read news",
     "semanticsRead": "Red",
     "semanticsTbc": "Semantics TBC",
     "semanticsUnread": "Unread",
-    "settings": "Settings"
+    "settings": "Settings",
+    "skip": "Skip",
+    "tourTitle1": "Lorem ipsum",
+    "tourTitle2": "Aliquam dictum",
+    "tourTitle3": "Pellentesque vestibulum risus",
+    "tourContent1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam.",
+    "tourContent2": "Massa nec rhoncus ultrices, urna sem vehicula justo.",
+    "tourContent3": "Pellentesque vestibulum risus sed justo pulvinar, vitae luctus nunc consequat.",
+    "zzzzzz": "(last item)"
 }

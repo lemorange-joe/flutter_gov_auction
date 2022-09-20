@@ -1,14 +1,24 @@
 {
     "appName": "APP Name (HK)",
+    "done": "完成",
     "lang": "tc",
     "home": "主頁",
     "myFavourite": "我的最愛",
     "news": "最新消息",
     "newsEmpty": "暫時未有最新消息",
+    "next": "下一個",
     "semanticsClose": "關閉",
     "semanticsOpenNews": "閱讀最新消息",
     "semanticsRead": "已閱讀",
     "semanticsTbc": "無障礙內容待定",
     "semanticsUnread": "未閱讀",
-    "settings": "設定"
+    "settings": "設定",
+    "skip": "略過",
+    "tourTitle1": "開師麼受舉前",
+    "tourTitle2": "一新是沒要人角命近因知提企",
+    "tourTitle3": "物絕這對當該",
+    "tourContent1": "灣在同分不活。角選和石車馬人經。",
+    "tourContent2": "面公樂來上精經，坡的這那樣他生力區。",
+    "tourContent3": "園一個策們……學的朋美理面參大政卻樂！就壓火臺禮信主，覺工華級本。",
+    "zzzzzz": "(last item)"
 }

@@ -4,6 +4,7 @@ import './pages/auction_details.dart';
 import './pages/auction_lot.dart';
 import './pages/debug.dart';
 import './pages/home.dart';
+import './pages/tour.dart';
 
 enum PageSlideDirection { up, down, left, right }
 
@@ -22,6 +23,10 @@ class Routes {
         return _buildRoute(settings, const DebugPage());
       case 'home':
         return _buildRoute(settings, const HomePage());
+      case 'tour':
+        final dynamic args = settings.arguments;
+        final bool popPage = args != null && (args as Map<String, dynamic>)['popPage'] != null && args['popPage'] as bool;
+        return _buildRoute(settings, TourPage(popPage));
     }
 
     throw Exception('Route not found!');

@@ -114,7 +114,10 @@ class _DebugPageState extends State<DebugPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Data Version: ${appInfo.dataVersion}', textAlign: TextAlign.start),
-                      Text('News: ${appInfo.news}', textAlign: TextAlign.start),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 24.0,
+                        child: Text('News: ${appInfo.news}', textAlign: TextAlign.start),
+                      ),
                       Text('Last Update: ${utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang)}', textAlign: TextAlign.start),
                       Text('Loaded: ${appInfo.loaded}', textAlign: TextAlign.start),
                       Row(
@@ -288,6 +291,14 @@ class _DebugPageState extends State<DebugPage> {
             ],
           ),
         ),
+      ),
+      const SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, 'tour', arguments: <String, dynamic>{'popPage': true});
+        },
+        style: ElevatedButton.styleFrom(primary: Colors.grey[800]),
+        child: const Text('Tour'),
       ),
     ];
   }

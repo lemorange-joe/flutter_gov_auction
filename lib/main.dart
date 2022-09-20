@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
       valueListenable: Hive.box<dynamic>('preferences').listenable(),
       builder: (BuildContext context, _, __) {
         final HiveHelper hiveHelper = HiveHelper();
+        final bool appFirstLaunch = hiveHelper.getFirstLaunch();
 
         return MultiProvider(
           providers: <ChangeNotifierProvider<dynamic>>[
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            initialRoute: 'home',
+            initialRoute: appFirstLaunch ? 'tour' : 'home',
             onGenerateRoute: Routes().getRoutes,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);

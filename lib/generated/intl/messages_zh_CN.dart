@@ -23,16 +23,29 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
+        "done": MessageLookupByLibrary.simpleMessage("完成"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "lang": MessageLookupByLibrary.simpleMessage("sc"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("我的最爱"),
         "news": MessageLookupByLibrary.simpleMessage("最新消息"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暂时未有最新消息"),
+        "next": MessageLookupByLibrary.simpleMessage("下一个"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("关闭"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已阅读"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("无障碍内容待定"),
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("未阅读"),
-        "settings": MessageLookupByLibrary.simpleMessage("设定")
+        "settings": MessageLookupByLibrary.simpleMessage("设定"),
+        "skip": MessageLookupByLibrary.simpleMessage("略过"),
+        "tourContent1":
+            MessageLookupByLibrary.simpleMessage("湾在同分不活。角选和石车马人经。"),
+        "tourContent2":
+            MessageLookupByLibrary.simpleMessage("面公乐来上精经，坡的这那样他生力区。"),
+        "tourContent3": MessageLookupByLibrary.simpleMessage(
+            "园一个策们……学的朋美理面参大政却乐！就压火台礼信主，觉工华级本。"),
+        "tourTitle1": MessageLookupByLibrary.simpleMessage("开师么受举前"),
+        "tourTitle2": MessageLookupByLibrary.simpleMessage("一新是没要人角命近因知提企"),
+        "tourTitle3": MessageLookupByLibrary.simpleMessage("物绝这对当该"),
+        "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

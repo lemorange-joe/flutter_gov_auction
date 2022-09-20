@@ -1,14 +1,24 @@
 {
     "appName": "APP Name (SC)",
+    "done": "完成",
     "lang": "sc",
     "home": "主頁",
     "myFavourite": "我的最爱",
     "news": "最新消息",
     "newsEmpty": "暂时未有最新消息",
+    "next": "下一个",
     "semanticsClose": "关闭",
     "semanticsOpenNews": "阅读最新消息",
     "semanticsRead": "已阅读",
     "semanticsTbc": "无障碍内容待定",
     "semanticsUnread": "未阅读",
-    "settings": "设定"
+    "settings": "设定",
+    "skip": "略过",
+    "tourTitle1": "开师么受举前",
+    "tourTitle2": "一新是没要人角命近因知提企",
+    "tourTitle3": "物绝这对当该",
+    "tourContent1": "湾在同分不活。角选和石车马人经。",
+    "tourContent2": "面公乐来上精经，坡的这那样他生力区。",
+    "tourContent3": "园一个策们……学的朋美理面参大政却乐！就压火台礼信主，觉工华级本。",
+    "zzzzzz": "(last item)"
 }

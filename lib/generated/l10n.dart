@@ -60,6 +60,16 @@ class S {
     );
   }
 
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `en`
   String get lang {
     return Intl.message(
@@ -105,6 +115,16 @@ class S {
     return Intl.message(
       'There is no news.',
       name: 'newsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
       desc: '',
       args: [],
     );
@@ -165,6 +185,86 @@ class S {
     return Intl.message(
       'Settings',
       name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip`
+  String get skip {
+    return Intl.message(
+      'Skip',
+      name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lorem ipsum`
+  String get tourTitle1 {
+    return Intl.message(
+      'Lorem ipsum',
+      name: 'tourTitle1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aliquam dictum`
+  String get tourTitle2 {
+    return Intl.message(
+      'Aliquam dictum',
+      name: 'tourTitle2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pellentesque vestibulum risus`
+  String get tourTitle3 {
+    return Intl.message(
+      'Pellentesque vestibulum risus',
+      name: 'tourTitle3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam.`
+  String get tourContent1 {
+    return Intl.message(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam.',
+      name: 'tourContent1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Massa nec rhoncus ultrices, urna sem vehicula justo.`
+  String get tourContent2 {
+    return Intl.message(
+      'Massa nec rhoncus ultrices, urna sem vehicula justo.',
+      name: 'tourContent2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pellentesque vestibulum risus sed justo pulvinar, vitae luctus nunc consequat.`
+  String get tourContent3 {
+    return Intl.message(
+      'Pellentesque vestibulum risus sed justo pulvinar, vitae luctus nunc consequat.',
+      name: 'tourContent3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(last item)`
+  String get zzzzzz {
+    return Intl.message(
+      '(last item)',
+      name: 'zzzzzz',
       desc: '',
       args: [],
     );

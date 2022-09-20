@@ -23,16 +23,30 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "appName": MessageLookupByLibrary.simpleMessage("APP Name"),
+        "done": MessageLookupByLibrary.simpleMessage("Done"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("Close"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("Read news"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("Red"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("Semantics TBC"),
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("Unread"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings")
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "tourContent1": MessageLookupByLibrary.simpleMessage(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),
+        "tourContent2": MessageLookupByLibrary.simpleMessage(
+            "Massa nec rhoncus ultrices, urna sem vehicula justo."),
+        "tourContent3": MessageLookupByLibrary.simpleMessage(
+            "Pellentesque vestibulum risus sed justo pulvinar, vitae luctus nunc consequat."),
+        "tourTitle1": MessageLookupByLibrary.simpleMessage("Lorem ipsum"),
+        "tourTitle2": MessageLookupByLibrary.simpleMessage("Aliquam dictum"),
+        "tourTitle3": MessageLookupByLibrary.simpleMessage(
+            "Pellentesque vestibulum risus"),
+        "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }
