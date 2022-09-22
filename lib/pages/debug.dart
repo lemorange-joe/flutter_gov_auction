@@ -10,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import '../class/app_info.dart';
 import '../generated/l10n.dart';
+import '../helpers/easter_egg_helper.dart';
 import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
@@ -18,6 +19,7 @@ import '../providers/app_info_provider.dart';
 import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
+import '../widgets/easter_egg.dart';
 import '../widgets/ui/animated_logo.dart';
 
 class DebugPage extends StatefulWidget {
@@ -29,6 +31,22 @@ class DebugPage extends StatefulWidget {
 
 class _DebugPageState extends State<DebugPage> {
   bool? _notifiationAuthorized;
+  String _easterEggResult = '';
+  late TextEditingController _easterEggController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _easterEggController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _easterEggController.dispose();
+    
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +78,8 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildFirebaseAnalyticsSection(context),
                 const Divider(),
                 ...buildLogSection(context),
+                const Divider(),
+                ...buildEasterEggSection(context),
                 const Divider(),
                 SizedBox(
                   height: 50.0,
@@ -484,6 +504,102 @@ class _DebugPageState extends State<DebugPage> {
         ),
         child: const Text('Clear All Log'),
       ),
+    ];
+  }
+
+  List<Widget> buildEasterEggSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Easter Egg',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: 200.0,
+            child: TextField(
+              controller: _easterEggController,
+            ),
+          ),
+          const SizedBox(width: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _easterEggResult = '${_easterEggController.text}: ${EasterEggHelper.check(context, _easterEggController.text)}';
+              });
+            },
+            style: ElevatedButton.styleFrom(primary: Colors.yellow),
+            child: const Text(
+              'Check',
+              style: TextStyle(color: Colors.black87),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 6.0),
+      SizedBox(
+        height: 30.0, 
+        child: Text(_easterEggResult),),
+      const SizedBox(height: 6.0),
+      Container(
+        decoration: BoxDecoration(
+          boxShadow: const <BoxShadow>[BoxShadow(color: Colors.black26, offset: Offset(0, 4), blurRadius: 5.0)],
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: const <double>[0.0, 1.0],
+            colors: <Color>[
+              Colors.red,
+              Colors.yellow[400]!,
+              // Colors.deepPurple.shade400,
+              // Colors.deepPurple.shade200,
+            ],
+          ),
+          // color: Colors.deepPurple.shade300,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            fixedSize: MaterialStateProperty.all(const Size(160, 50)),
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            // elevation: MaterialStateProperty.all(3),
+            shadowColor: MaterialStateProperty.all(Colors.transparent),
+          ),
+          onPressed: () {
+            showDialog<void>(
+              context: context,
+              barrierColor: Colors.transparent,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const EasterEgg(),
+                );
+              },
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 1.0),
+            child: Text(
+              'Show Easter Egg',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 10.0),
     ];
   }
 }
