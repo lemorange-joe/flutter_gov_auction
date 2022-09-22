@@ -93,7 +93,7 @@ class AuctionController {
     try {
       list($auctionId, $keyword, $type) = array_pad($param, 3, "");
       $selectSql = "SELECT
-                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
                       I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                     FROM Auction A
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -113,6 +113,7 @@ class AuctionController {
           $result[$i]["auction_status"],
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
+          $result[$i]["featured"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
@@ -154,7 +155,7 @@ class AuctionController {
       $itemId = array_shift($param);
       
       $selectSql = "SELECT
-                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
                       I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                     FROM Auction A
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -179,6 +180,7 @@ class AuctionController {
           $result[$i]["auction_status"],
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
+          $result[$i]["featured"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
@@ -265,7 +267,7 @@ class AuctionController {
                     L.lot_id, T.code, L.lot_num, 
                     L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
                     L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', 
-                    L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
+                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -303,6 +305,7 @@ class AuctionController {
           $result[$i]["location"],
           $result[$i]["remarks"],
           $result[$i]["item_condition"],
+          $result[$i]["featured"],
           $result[$i]["lot_icon"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],

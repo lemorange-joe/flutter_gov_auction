@@ -28,6 +28,7 @@ $auctionJsonFieldMapping = array(
   "contactLocation" => "cl",
   // "remarks" => "r",
   "itemCondition" => "ic",
+  "featured" => "f",
   "icon" => "i",
   "photoUrl" => "pu",
   "photoReal" => "pr",
@@ -112,6 +113,7 @@ class AuctionLot implements JsonSerializable {
   private $remarks;
   private $itemCondition;
 
+  private $featured;
   private $icon;
   private $photoUrl;
   private $photoReal;
@@ -124,7 +126,7 @@ class AuctionLot implements JsonSerializable {
   private $v;
 
   public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, 
-                              $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
+                              $featured, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -137,6 +139,7 @@ class AuctionLot implements JsonSerializable {
     $this->remarks = $remarks;
     $this->itemCondition = $itemCondition;
 
+    $this->featured = $featured;
     $this->icon = $icon;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
@@ -212,6 +215,7 @@ class AuctionSearch implements JsonSerializable {
   private $auctionStatus;
   private $lotId;
   private $type;
+  private $featured;
   private $photoUrl;
   private $photoReal;
   private $tranCurrency;
@@ -223,12 +227,13 @@ class AuctionSearch implements JsonSerializable {
   private $unit;
   private $v;
 
-  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $featured, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
     $this->auctionId = $auction_id;
     $this->startTime = $start_time;
     $this->auctionStatus = $auction_status;
     $this->lotId = $lot_id;
     $this->type = $type;
+    $this->featured = $featured;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
     $this->tranCurrency = $tranCurrency;

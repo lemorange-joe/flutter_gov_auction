@@ -137,7 +137,7 @@ class AdminController {
                     contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                     location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
                     item_condition_en, item_condition_tc, item_condition_sc,
-                    L.icon as 'lot_icon', L.photo_url, L.photo_real,
+                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc,
                     I.quantity, I.unit_en, I.unit_tc, I.unit_sc
@@ -191,6 +191,7 @@ class AdminController {
         $curLotOutput->item_condition_tc = $result[$i]["item_condition_tc"];
         $curLotOutput->item_condition_sc = $result[$i]["item_condition_sc"];
 
+        $curLotOutput->featured = $result[$i]["featured"];
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
         $curLotOutput->photo_url = $result[$i]["photo_url"];
         $curLotOutput->photo_real = $result[$i]["photo_real"];
@@ -418,7 +419,7 @@ class AdminController {
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
-                        icon, photo_url, photo_real,
+                        featured, icon, photo_url, photo_real,
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       )
@@ -427,7 +428,7 @@ class AdminController {
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, 
-                        'fontawesome.box', '', 0,
+                        0, 'fontawesome.box', '', 0,
                         '', 0, ?,
                         ?, now()
                       FROM AuctionLot
@@ -522,14 +523,14 @@ class AdminController {
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
-                        icon, photo_url, photo_real, transaction_currency, transaction_price, transaction_status,
+                        featured, icon, photo_url, photo_real, transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       )
                       SELECT ?, I.type_id, ?, ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, 
-                      ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?,
                       ?, now()
                       FROM ItemType I
                       WHERE code = ?;";
@@ -539,7 +540,7 @@ class AdminController {
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
-          trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
+          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]), trim($data["item_code"])
         ));
         $lotId = $conn->insert_Id();
@@ -553,7 +554,7 @@ class AdminController {
                         location_en = ?, location_tc = ?, location_sc = ?,
                         remarks_en = ?, remarks_tc = ?, remarks_sc = ?,
                         item_condition_en = ?, item_condition_tc = ?, item_condition_sc = ?,
-                        icon = ?, photo_url = ?, photo_real = ?,
+                        featured = ?, icon = ?, photo_url = ?, photo_real = ?,
                         transaction_currency = ?, transaction_price = ?, transaction_status = ?,
                         status = ?, last_update = now()
                       WHERE lot_id = ?;";
@@ -567,7 +568,7 @@ class AdminController {
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]),
           trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
-          trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
+          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]),
           $lotId

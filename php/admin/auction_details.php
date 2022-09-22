@@ -283,6 +283,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var itemConditionEn = document.getElementById("tbItemConditionEn_"+lotIndex).value;
         var itemConditionTc = document.getElementById("tbItemConditionTc_"+lotIndex).value;
         var itemConditionSc = document.getElementById("tbItemConditionSc_"+lotIndex).value;
+        var featured = document.getElementById("chkFeatured_"+lotIndex).checked ? 1 : 0;
         var lotIcon = document.getElementById("tbLotIcon_"+lotIndex).value;
         var photoUrl = document.getElementById("tbPhotoUrl_"+lotIndex).value;
         var photoReal = document.getElementById("chkPhotoReal_"+lotIndex).checked ? 1 : 0;
@@ -346,6 +347,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           item_condition_en: itemConditionEn,
           item_condition_tc: itemConditionTc,
           item_condition_sc: itemConditionSc,
+          featured: featured,
           lot_icon: lotIcon,
           photo_url: photoUrl,
           photo_real: photoReal,
@@ -387,6 +389,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var itemConditionTc = "";
         var itemConditionSc = "";
 
+        var featured = false;
         var lotIcon = "fontawesome.box";
         var photoUrl = "";
         var photoReal = false;
@@ -424,6 +427,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           itemConditionTc = lotData["item_condition_tc"];
           itemConditionSc = lotData["item_condition_sc"];
 
+          featured = lotData["featured"];
           lotIcon = lotData["lot_icon"];
           photoUrl = lotData["photo_url"];
           photoReal = lotData["photo_real"];
@@ -468,6 +472,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "</div>";
         divHtml += "<div style='width:700px;float: right;'>";
           divHtml += "<div style='height:20px'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Featured</div><input id='chkFeatured_" + i + "' type='checkbox' " + (selected ? "checked" : "") + "></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'>";
             divHtml += "<div style='width:100px'><a href='#' style='line-height: 32px;' onclick='window.open(document.getElementById(\"tbPhotoUrl_"+i+"\").value, \"_blank\");return false' title='View Photo'>Photo URL</a></div>";
