@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import '../include/utilities.dart' as utilities;
 
 class HiveHelper {
   factory HiveHelper() {
@@ -10,13 +11,20 @@ class HiveHelper {
   static final Box<dynamic> _prefBox = Hive.box<dynamic>('preferences');
   static final Box<dynamic> _notificationBox = Hive.box<dynamic>('notification');
   static final Box<String> _historyBox = Hive.box<String>('history');
+  static final Box<String> _logBox = Hive.box<String>('log');
+  static bool _enableLog = false;
   static final HiveHelper _hiveHelper = HiveHelper._internal();
 
-  Future<void> init(String path) async {
+  Future<void> init(String path, bool enableLog) async {
     Hive.init(path);
+    _enableLog = enableLog;
+
     await Hive.openBox<dynamic>('preferences');
     await Hive.openBox<dynamic>('notification');
     await Hive.openBox<String>('history');
+    if (_enableLog) {
+      await Hive.openBox<String>('log');
+    }
   }
 
   // --------------------------------------------
@@ -71,7 +79,6 @@ class HiveHelper {
   // preferences box
   // --------------------------------------------
 
-
   // --------------------------------------------
   // notification box:
   Future<void> writeAllowNotification(bool val) async {
@@ -114,5 +121,35 @@ class HiveHelper {
     await _historyBox.put('push_message', '');
   }
   // history box
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // log box:
+  Future<bool> writeLog(String val) async {
+    if (!_enableLog) {
+      return false;
+    }
+
+    await _logBox.put('${utilities.formatSimpleDateTime(DateTime.now())}.${DateTime.now().millisecond.toString().padLeft(3, '0')}', val);
+    return true;
+  }
+
+  List<MapEntry<String, String>> getAllLog() {
+    if (!_enableLog) {
+      return <MapEntry<String, String>>[];
+    }
+    
+    return _logBox.keys.toList().reversed.map((dynamic key) => MapEntry<String, String>(key as String, _logBox.get(key, defaultValue: '')!)).toList();
+  }
+
+  Future<bool> clearAllLog() async {
+    if (!_enableLog) {
+      return false;
+    }
+
+    await _logBox.clear();
+    return true;
+  }
+  // log box
   // --------------------------------------------
 }

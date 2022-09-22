@@ -25,7 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
   final Directory appDocDir = await getApplicationDocumentsDirectory();
   await FlutterConfig.loadEnvVariables();
-  await HiveHelper().init(appDocDir.path);
+  await HiveHelper().init(appDocDir.path, true);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await NotificationHelper().init();

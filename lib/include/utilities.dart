@@ -16,3 +16,11 @@ if (lang == 'sc') {
 String formatDateTime(DateTime dt, String lang) {
   return '${formatDate(dt, lang)} ${formatTime(dt, lang)}';
 }
+
+String formatShortDateTime(DateTime dt, String lang) {
+  return DateFormat('${config.shortDateFormat} ${config.shortTimeFormat}', lang).format(dt);
+}
+
+String formatSimpleDateTime(DateTime dt) {
+  return DateFormat('yyyy-MM-dd HH:mm:ss', 'en').format(dt);
+}

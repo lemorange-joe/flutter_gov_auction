@@ -57,6 +57,9 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildPushSection(context),
                 const Divider(),
                 ...buildFirebaseAnalyticsSection(context),
+                const Divider(),
+                ...buildLogSection(context),
+                const SizedBox(height: 30.0),
               ],
             ),
           ),
@@ -410,6 +413,69 @@ class _DebugPageState extends State<DebugPage> {
           primary: Colors.yellow[800],
         ),
         child: const Text('Test Log Event'),
+      ),
+    ];
+  }
+
+  List<Widget> buildLogSection(BuildContext context) {
+    return <Widget>[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(child: Container()),
+          const Text(
+            'Hive Log',
+            style: TextStyle(decoration: TextDecoration.underline),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                IconButton(
+                  onPressed: () async {
+                    await HiveHelper().writeLog('Test write log');
+                  },
+                  icon: const Icon(MdiIcons.plus),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    await HiveHelper().writeLog('測試記錄');
+                  },
+                  icon: const Icon(MdiIcons.plusBox),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 10.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Row(
+          children: <Widget>[
+            ValueListenableBuilder<Box<String>>(
+              valueListenable: Hive.box<String>('log').listenable(),
+              builder: (BuildContext context, _, __) {
+                final List<MapEntry<String, String>> logList = HiveHelper().getAllLog();
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: logList.map((MapEntry<String, String> entry) => Text('[${entry.key}] ${entry.value}')).toList()
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () async {
+          await HiveHelper().clearAllLog();
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.blueGrey,
+        ),
+        child: const Text('Clear All Log'),
       ),
     ];
   }
