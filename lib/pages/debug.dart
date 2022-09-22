@@ -13,11 +13,12 @@ import '../generated/l10n.dart';
 import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
-import '../include/utilities.dart' as utilities;
+import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
+import '../widgets/ui/animated_logo.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -59,6 +60,13 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildFirebaseAnalyticsSection(context),
                 const Divider(),
                 ...buildLogSection(context),
+                const Divider(),
+                SizedBox(
+                  height: 50.0,
+                  width: 50.0,
+                  child: LemorangeLogo(),
+                ),
+                const Divider(),
                 const SizedBox(height: 30.0),
               ],
             ),
@@ -459,9 +467,8 @@ class _DebugPageState extends State<DebugPage> {
                 final List<MapEntry<String, String>> logList = HiveHelper().getAllLog();
 
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: logList.map((MapEntry<String, String> entry) => Text('[${entry.key}] ${entry.value}')).toList()
-                );
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: logList.map((MapEntry<String, String> entry) => Text('[${entry.key}] ${entry.value}')).toList());
               },
             ),
           ],

@@ -1,3 +1,5 @@
+const String env = 'dev';
+
 const String dateFormatEn = 'd MMMM yyyy (EEEE)';
 const String dateFormatCh = 'yyyy年M月d日 (EEEE)';
 const String shortDateFormat = 'yyyy-M-d';

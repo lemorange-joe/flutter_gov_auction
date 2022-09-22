@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../class/app_info.dart';
 import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
-import '../include/utilities.dart' as utilities;
+import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../tabs/favourite.dart';
 import '../tabs/home.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../include/config.dart' as config;
-import '../../include/global.dart';
+import '../../includes/config.dart' as config;
+import '../../includes/global.dart';
 
 class CommonSnackbar {
   const CommonSnackbar();

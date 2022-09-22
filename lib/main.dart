@@ -16,8 +16,8 @@ import './generated/l10n.dart';
 import './helpers/firebase_analytics_helper.dart';
 import './helpers/hive_helper.dart';
 import './helpers/notification_helper.dart';
-import './include/global.dart';
-import './include/theme_data.dart';
+import './includes/global.dart';
+import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
 import './routes.dart';
 

@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import '../include/enums.dart';
+import '../includes/enums.dart';
 
 class Auction {
   Auction(this.id, this.auctionNum, this.startTime, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList, this.remarks, this.lotList,

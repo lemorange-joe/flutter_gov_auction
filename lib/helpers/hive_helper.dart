@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import '../include/utilities.dart' as utilities;
+import '../includes/utilities.dart' as utilities;
 
 class HiveHelper {
   factory HiveHelper() {

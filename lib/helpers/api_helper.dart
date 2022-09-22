@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import '../include/demo_data_en.dart';
-import '../include/demo_data_sc.dart';
-import '../include/demo_data_tc.dart';
+import '../includes/demo_data_en.dart';
+import '../includes/demo_data_sc.dart';
+import '../includes/demo_data_tc.dart';
 
 class ApiHelper {
   ApiHelper();
