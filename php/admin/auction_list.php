@@ -370,7 +370,7 @@ if (!isset($_SESSION["admin_user"])) {
                   var divCount = document.createElement("div");
                   divCount.style.height = "70px";
                   divCount.style.lineHeight = "30px";
-                  divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count));
+                  divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count + " | ★ " + curAuction.featured_count));
                   divCount.appendChild(document.createElement("br"));
                   divCount.appendChild(document.createTextNode("📦 " + curAuction.item_count));
 

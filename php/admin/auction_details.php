@@ -257,6 +257,51 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("btnAddLot").setAttribute("data-lot-count", lotIndex + 1);
       }
 
+      function UpdateLotFeatured(i){
+        var chk = document.getElementById("chkFeatured_"+i);
+        var origVal = chk.getAttribute("data-checked");
+        var newVal = origVal == "1" ? "0" : "1";
+
+        chk.setAttribute("data-checked", newVal);
+        chk.innerHTML = newVal == "1" ? "★" : "☆";
+
+        var logData = {
+          lot_id: parseInt(document.getElementById("tbLotId_"+i).value),
+          featured: parseInt(newVal)
+        };
+        var url = "../en/api/admin-updateAuctionLotFeatured";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              if (jsonData.status == "success") {
+                var divLastUpdate = document.getElementById("divLastUpdate_"+i);
+                divLastUpdate.innerHTML = jsonData.data;
+                divLastUpdate.classList.remove("highlight-text");
+                chk.classList.remove("highlight-text");
+                setTimeout(() => {
+                  chk.classList.add("highlight-text");
+                  divLastUpdate.classList.add("highlight-text");
+                }, 100);
+              } else {
+                chk.setAttribute("data-checked", origVal);
+                chk.innerHTML = origVal == "1" ? "★" : "☆";
+                alert("Update failed: " + jsonData.error);
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(logData));
+      }
+
       function SaveLot(lotIndex) {
         var auctionId = document.getElementById("tbAuctionId").value;
         var lotId = document.getElementById("tbLotId_"+lotIndex).value;
@@ -283,7 +328,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var itemConditionEn = document.getElementById("tbItemConditionEn_"+lotIndex).value;
         var itemConditionTc = document.getElementById("tbItemConditionTc_"+lotIndex).value;
         var itemConditionSc = document.getElementById("tbItemConditionSc_"+lotIndex).value;
-        var featured = document.getElementById("chkFeatured_"+lotIndex).checked ? 1 : 0;
+        var featured = parseInt(document.getElementById("chkFeatured_"+lotIndex).getAttribute("data-checked"));
         var lotIcon = document.getElementById("tbLotIcon_"+lotIndex).value;
         var photoUrl = document.getElementById("tbPhotoUrl_"+lotIndex).value;
         var photoReal = document.getElementById("chkPhotoReal_"+lotIndex).checked ? 1 : 0;
@@ -442,8 +487,14 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var divHtml = "<div>";
         
         divHtml += "<div style='width:900px; float: left'>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px; margin-right: 60px' disabled='disabled' value='" + lotId + "'>";
-          divHtml += GetDdl("ddlItemType_"+i, itemCode, "ItemType");
+          divHtml += "<div style='display:flex; justify-content: space-between'>";
+            divHtml += "<div style='display:flex'>";
+              divHtml += "<div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px; margin-right: 60px' disabled='disabled' value='" + lotId + "'>";
+              divHtml += GetDdl("ddlItemType_"+i, itemCode, "ItemType");
+            divHtml += "</div>";
+            divHtml += "<div id='chkFeatured_" + i + "' data-checked='" + (featured ? 1 : 0) + "' style='width:30px;margin-right:42px;cursor:pointer;font-size:18px;text-align:center' onclick='UpdateLotFeatured("+i+")'>";
+              divHtml += featured ? "★" : "☆";
+            divHtml += "</div>";
           divHtml += "</div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Seq</div><input id='tbSeq_" + i + "' style='width:100px' value='" + seq + "'></div>";
@@ -468,11 +519,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Status</div>" + GetDdl("ddlStatus_"+i, status, "Status") + "</div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Last Update:</div><div>" + lastUpdate + "</div></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Last Update:</div><div id='divLastUpdate_" + i + "'>" + lastUpdate + "</div></div>";
         divHtml += "</div>";
         divHtml += "<div style='width:700px;float: right;'>";
           divHtml += "<div style='height:20px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Featured</div><input id='chkFeatured_" + i + "' type='checkbox' " + (selected ? "checked" : "") + "></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'>";
             divHtml += "<div style='width:100px'><a href='#' style='line-height: 32px;' onclick='window.open(document.getElementById(\"tbPhotoUrl_"+i+"\").value, \"_blank\");return false' title='View Photo'>Photo URL</a></div>";

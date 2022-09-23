@@ -14,6 +14,11 @@ class AdminController {
                         A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
                         A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.remarks_en, A.remarks_tc, A.remarks_sc, 
                         A.auction_status, A.status, A.last_update,
+                        (
+                          SELECT COUNT(*)
+                          FROM AuctionLot L1
+                          WHERE A.auction_id = L1.auction_id AND L1.featured = 1
+                        ) as featured_count,
                         GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
                       FROM Auction A
                       LEFT JOIN (
@@ -56,6 +61,7 @@ class AdminController {
       $auction->auction_status = $result[$i]["auction_status"];
       $auction->status = $result[$i]["status"];
       $auction->last_update = $result[$i]["last_update"];
+      $auction->featured_count = $result[$i]["featured_count"];
       $auction->lot_count = $result[$i]["lot_count"];
       $auction->item_count = $result[$i]["item_count"];
 
@@ -500,6 +506,43 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
+  function updateAuctionLotFeatured(){
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["lot_id"]) || empty($data["lot_id"]) || !ctype_digit($data["lot_id"])) {
+        throw new Exception("Lot ID missing!");  
+      }
+      if (!isset($data["featured"])) {
+        throw new Exception("Featured missing!");  
+      }
+      
+      $lotId = intval($data["lot_id"]);
+      $featured = intval($data["featured"]);
+      
+      $updateSql = "UPDATE AuctionLot SET featured = ?, last_update = now() WHERE lot_id = ?";
+      $result = $conn->Execute($updateSql, array($featured, $lotId));
+
+      $selectSql = "SELECT last_update FROM AuctionLot WHERE lot_id = ?";
+      $result = $conn->Execute($selectSql, array($lotId))->GetRows();
+
+      if (Count($result) > 0) {
+        $output->status = "success";
+        $output->data = $result[0]['last_update'];
+      }      
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
   function updateAuctionLot() {
     global $conn;
 
@@ -568,7 +611,7 @@ class AdminController {
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]),
           trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
-          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
+          $data["featured"], trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]),
           $lotId
