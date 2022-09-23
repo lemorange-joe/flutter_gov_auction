@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
+        "loading": MessageLookupByLibrary.simpleMessage("Loading"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),

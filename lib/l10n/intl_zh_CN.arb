@@ -1,8 +1,9 @@
 {
     "appName": "APP Name (SC)",
-    "done": "完成",
     "lang": "sc",
+    "done": "完成",
     "home": "主頁",
+    "loading": "载入中",
     "myFavourite": "我的最爱",
     "news": "最新消息",
     "newsEmpty": "暂时未有最新消息",

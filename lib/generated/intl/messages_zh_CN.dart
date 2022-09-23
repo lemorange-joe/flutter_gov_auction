@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "lang": MessageLookupByLibrary.simpleMessage("sc"),
+        "loading": MessageLookupByLibrary.simpleMessage("载入中"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("我的最爱"),
         "news": MessageLookupByLibrary.simpleMessage("最新消息"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暂时未有最新消息"),

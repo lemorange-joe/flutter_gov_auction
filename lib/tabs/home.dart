@@ -5,6 +5,7 @@ import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 // import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
+import '../widgets/ui/lemorange_loading.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -55,6 +56,7 @@ class _HomeTabState extends State<HomeTab> {
                   onPressed: _incrementCounter,
                   child: const Icon(Icons.add),
                 ),
+                LemorangeLoading(),
               ],
             ),
           ),

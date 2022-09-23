@@ -201,14 +201,14 @@ class _DebugPageState extends State<DebugPage> {
             onPressed: () {
               HiveHelper().clearPushMessage();
             },
-            style: ElevatedButton.styleFrom(primary: Colors.pink[400]),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[400]),
             child: const Text('Clear All'),
           ),
           ElevatedButton(
             onPressed: () {
               HiveHelper().cleanReadMessage(<int>[81, 83, 85, 87, 89]);
             },
-            style: ElevatedButton.styleFrom(primary: Colors.pink[700]),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[700]),
             child: const Text('Clean (81,83,85,87,89)'),
           ),
         ],
@@ -240,7 +240,7 @@ class _DebugPageState extends State<DebugPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
+                  backgroundColor: Colors.green,
                   shape: const CircleBorder(),
                   fixedSize: const Size(48, 48),
                 ),
@@ -258,7 +258,7 @@ class _DebugPageState extends State<DebugPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  backgroundColor: Colors.grey,
                   shape: const CircleBorder(),
                   fixedSize: const Size(48, 48),
                 ),
@@ -313,7 +313,7 @@ class _DebugPageState extends State<DebugPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.purple,
+                  backgroundColor: Colors.purple,
                   shape: const CircleBorder(),
                   fixedSize: const Size(48, 48),
                 ),
@@ -328,7 +328,7 @@ class _DebugPageState extends State<DebugPage> {
         onPressed: () {
           Navigator.pushNamed(context, 'tour', arguments: <String, dynamic>{'popPage': true});
         },
-        style: ElevatedButton.styleFrom(primary: Colors.grey[800]),
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
         child: const Text('Tour'),
       ),
     ];
@@ -394,7 +394,7 @@ class _DebugPageState extends State<DebugPage> {
           await ClearAllNotifications.clear();
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.red,
+          backgroundColor: Colors.red,
         ),
         child: const Text('Clear All Badges'),
       ),
@@ -438,7 +438,7 @@ class _DebugPageState extends State<DebugPage> {
           Logger().d('[${DateTime.now()}] logged');
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.yellow[800],
+          backgroundColor: Colors.yellow[800],
         ),
         child: const Text('Test Log Event'),
       ),
@@ -500,7 +500,7 @@ class _DebugPageState extends State<DebugPage> {
           await HiveHelper().clearAllLog();
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey,
         ),
         child: const Text('Clear All Log'),
       ),
@@ -530,7 +530,7 @@ class _DebugPageState extends State<DebugPage> {
                 _easterEggResult = '${_easterEggController.text}: ${EasterEggHelper.check(context, _easterEggController.text)}';
               });
             },
-            style: ElevatedButton.styleFrom(primary: Colors.yellow),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
             child: const Text(
               'Check',
               style: TextStyle(color: Colors.black87),
@@ -576,7 +576,6 @@ class _DebugPageState extends State<DebugPage> {
             showDialog<void>(
               context: context,
               barrierColor: Colors.transparent,
-              barrierDismissible: true,
               builder: (BuildContext context) {
                 return GestureDetector(
                   onTap: () {
