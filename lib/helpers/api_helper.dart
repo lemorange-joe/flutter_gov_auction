@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
+import '../helpers/hive_helper.dart';
 import '../includes/demo_data_en.dart';
 import '../includes/demo_data_sc.dart';
 import '../includes/demo_data_tc.dart';
@@ -84,7 +85,8 @@ class ApiHelper {
           throw HttpException('${response.statusCode}');
         }
       } catch (e) {
-        Logger().e('URL: $apiUrl, ${e.toString()}');
+        // Logger().e('URL: $apiUrl, ${e.toString()}');
+        HiveHelper().writeLog('[API] URL: $apiUrl, ${e.toString()}');
         rethrow;
       }
     }

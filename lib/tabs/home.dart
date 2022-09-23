@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 // import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
+import '../providers/auction_provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _HomeTabState extends State<HomeTab> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+      Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
     });
   }
 
@@ -55,11 +58,28 @@ class _HomeTabState extends State<HomeTab> {
                   onPressed: _incrementCounter,
                   child: const Icon(Icons.add),
                 ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 5,
+                  child: _buildAuctionList(context),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildAuctionList(BuildContext context) {
+    return Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+      return !auctionProvider.loaded
+          ? const CircularProgressIndicator.adaptive()
+          : ListView.builder(
+              itemCount: auctionProvider.auctionList.length,
+              itemBuilder: (BuildContext context, int i) {
+                final Auction auction = auctionProvider.auctionList[i];
+                return Text('${auction.id} ${auction.startTime}');
+              });
+    });
   }
 }

@@ -45,17 +45,31 @@ class Auction {
 }
 
 class AuctionLot {
-  AuctionLot(this.itemType, this.gldFileRef, this.reference, this.itemList);
+  AuctionLot(this.id, this.itemType, this.lotNum, this.gldFileRef, this.reference, this.department, this.contact, this.contactNumber, this.contactLocation, 
+  this.itemCondition, this.featured, this.icon, this.photoUrl, this.photoReal, this.itemList);
 
+  final int id;
   final AuctionItemType itemType;
+  final String lotNum;
   final String gldFileRef;
   final String reference;
+  final String department;
+  final String contact;
+  final String contactNumber;
+  final String contactLocation;
+  final String itemCondition;
+  final bool featured;
+  final String icon;
+  final String photoUrl;
+  final bool photoReal;
   final List<AuctionItem> itemList;
 }
 
 class AuctionItem {
-  AuctionItem(this.description, this.quantity, this.unit);
+  AuctionItem(this.id, this.icon, this.description, this.quantity, this.unit);
 
+  final int id;
+  final String icon;
   final String description;
   final double quantity;
   final String unit;

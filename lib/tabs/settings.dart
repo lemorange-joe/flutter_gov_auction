@@ -7,6 +7,7 @@ import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../providers/app_info_provider.dart';
+import '../providers/auction_provider.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({Key? key}) : super(key: key);
@@ -46,6 +47,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     return;
                   }
                   Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                  Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
                 },
                 child: const Text('EN'),
               ),
@@ -68,6 +70,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     return;
                   }
                   Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                  Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
                 },
                 child: const Text('TC'),
               ),
@@ -90,6 +93,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     return;
                   }
                   Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                  Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
                 },
                 child: const Text('SC'),
               ),

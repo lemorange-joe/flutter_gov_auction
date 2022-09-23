@@ -19,6 +19,7 @@ import './helpers/notification_helper.dart';
 import './includes/global.dart';
 import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
+import './providers/auction_provider.dart';
 import './routes.dart';
 
 void main() async {
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
         return MultiProvider(
           providers: <ChangeNotifierProvider<dynamic>>[
             ChangeNotifierProvider<AppInfoProvider>(create: (_) => AppInfoProvider()),
+            ChangeNotifierProvider<AuctionProvider>(create: (_) => AuctionProvider()),
           ],
           child: MaterialApp(
             title: 'Flutter Demo',

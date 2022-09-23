@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import '../class/app_info.dart';
 import '../helpers/api_helper.dart';
+import '../helpers/hive_helper.dart';
 
 class AppInfoProvider with ChangeNotifier {
   AppInfoProvider();
@@ -20,6 +21,7 @@ class AppInfoProvider with ChangeNotifier {
       // Logger().d(appInfo);
     } catch (e) {
       // Logger().e(e.toString());
+      HiveHelper().writeLog('[App Info] ${e.toString()}');
     }
 
     notifyListeners();
