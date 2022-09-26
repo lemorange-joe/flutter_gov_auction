@@ -14,7 +14,6 @@ class EasterEggHelper {
         showDialog<void>(
           context: context,
           barrierColor: Colors.transparent,
-          barrierDismissible: true,
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {

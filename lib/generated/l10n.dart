@@ -60,16 +60,6 @@ class S {
     );
   }
 
-  /// `Done`
-  String get done {
-    return Intl.message(
-      'Done',
-      name: 'done',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `en`
   String get lang {
     return Intl.message(
@@ -80,11 +70,31 @@ class S {
     );
   }
 
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get home {
     return Intl.message(
       'Home',
       name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading...`
+  String get loading {
+    return Intl.message(
+      'Loading...',
+      name: 'loading',
       desc: '',
       args: [],
     );

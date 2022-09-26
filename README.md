@@ -2,6 +2,10 @@
 
 HKSAR Government Auction project
 
+<ins>Branch: project-template</ins>
+
+This is the flutter project template for other projects in future.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

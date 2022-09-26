@@ -1,8 +1,9 @@
 {
     "appName": "APP Name",
-    "done": "Done",
     "lang": "en",
+    "done": "Done",
     "home": "Home",
+    "loading": "Loading...",
     "myFavourite": "My Favourite",
     "news": "News",
     "newsEmpty": "There is no news.",
