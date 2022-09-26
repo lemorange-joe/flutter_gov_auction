@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Download Now`
+  String get downloadNow {
+    return Intl.message(
+      'Download Now',
+      name: 'downloadNow',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get home {
     return Intl.message(
@@ -110,6 +120,16 @@ class S {
     );
   }
 
+  /// `Network Error`
+  String get networkError {
+    return Intl.message(
+      'Network Error',
+      name: 'networkError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `News`
   String get news {
     return Intl.message(
@@ -135,6 +155,26 @@ class S {
     return Intl.message(
       'Next',
       name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Related Apps`
+  String get relatedApps {
+    return Intl.message(
+      'Related Apps',
+      name: 'relatedApps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reload`
+  String get reload {
+    return Intl.message(
+      'Reload',
+      name: 'reload',
       desc: '',
       args: [],
     );
