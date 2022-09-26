@@ -19,9 +19,9 @@ import './helpers/notification_helper.dart';
 import './includes/global.dart';
 import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
+import './providers/auction_provider.dart';
 import './providers/init_value.dart';
 import './providers/lemorange_app_provider.dart';
-import './providers/auction_provider.dart';
 import './routes.dart';
 
 void main() async {

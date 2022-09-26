@@ -20,7 +20,7 @@ import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
 import '../widgets/easter_egg.dart';
-import '../widgets/related_apps.dart';
+// import '../widgets/related_apps.dart';
 import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/animated_logo.dart';
 
@@ -83,8 +83,8 @@ class _DebugPageState extends State<DebugPage> {
                 const Divider(),
                 ...buildEasterEggSection(context),
                 const Divider(),
-                const RelatedApps(),
-                const Divider(),
+                // const RelatedApps(),
+                // const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
