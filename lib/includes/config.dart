@@ -1,3 +1,5 @@
+import 'package:flutter/painting.dart' show Color;
+
 const String env = 'dev';
 const String version = '0.1';
 const String appCode = 'GAUC';
@@ -14,6 +16,10 @@ const String timeFormatCh = 'aH時mm分';
 const String shortTimeFormat = 'HH:mm';
 
 const int snackbarDuration = 5000;  // in milliseconds
+
+// same as GLD website color
+const Color blue = Color.fromARGB(255, 0, 91, 172);
+const Color green = Color.fromARGB(255, 0, 166, 80);
 
 const double lgBorderRadius = 20.0;
 const double mdBorderRadius = 10.0;

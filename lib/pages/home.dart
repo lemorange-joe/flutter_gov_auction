@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../class/app_info.dart';
 import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
+import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../tabs/favourite.dart';
@@ -290,7 +291,7 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Navigator.pop(context);
           },
-          tileColor: isCurrent ? Colors.blue[300] : Theme.of(context).scaffoldBackgroundColor,
+          tileColor: isCurrent ? config.green : Theme.of(context).scaffoldBackgroundColor,
           dense: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
           visualDensity: VisualDensity(vertical: visualDensity),
