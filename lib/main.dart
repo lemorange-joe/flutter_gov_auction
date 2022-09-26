@@ -19,6 +19,8 @@ import './helpers/notification_helper.dart';
 import './includes/global.dart';
 import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
+import './providers/init_value.dart';
+import './providers/lemorange_app_provider.dart';
 import './routes.dart';
 
 void main() async {
@@ -70,10 +72,12 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, _, __) {
         final HiveHelper hiveHelper = HiveHelper();
         final bool appFirstLaunch = hiveHelper.getFirstLaunch();
+        final InitValue initValue = InitValue();  // later can initialize with parameters if necessary
 
         return MultiProvider(
           providers: <ChangeNotifierProvider<dynamic>>[
-            ChangeNotifierProvider<AppInfoProvider>(create: (_) => AppInfoProvider()),
+            ChangeNotifierProvider<AppInfoProvider>(create: (_) => initValue.initAppInfo),
+            ChangeNotifierProvider<LemorangeAppProvider>(create: (_) => initValue.initLemorangeApp),
           ],
           child: MaterialApp(
             title: 'Flutter Demo',
