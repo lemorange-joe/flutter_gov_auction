@@ -90,6 +90,36 @@ class S {
     );
   }
 
+  /// `FAQ`
+  String get faq {
+    return Intl.message(
+      'FAQ',
+      name: 'faq',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favourite`
+  String get favourite {
+    return Intl.message(
+      'Favourite',
+      name: 'favourite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help`
+  String get help {
+    return Intl.message(
+      'Help',
+      name: 'help',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get home {
     return Intl.message(
@@ -105,6 +135,16 @@ class S {
     return Intl.message(
       'Loading...',
       name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Items`
+  String get myItems {
+    return Intl.message(
+      'My Items',
+      name: 'myItems',
       desc: '',
       args: [],
     );
@@ -180,6 +220,36 @@ class S {
     );
   }
 
+  /// `Reminder`
+  String get reminder {
+    return Intl.message(
+      'Reminder',
+      name: 'reminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rules`
+  String get rules {
+    return Intl.message(
+      'Rules',
+      name: 'rules',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved`
+  String get saved {
+    return Intl.message(
+      'Saved',
+      name: 'saved',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Close`
   String get semanticsClose {
     return Intl.message(
@@ -245,6 +315,16 @@ class S {
     return Intl.message(
       'Skip',
       name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tour`
+  String get tour {
+    return Intl.message(
+      'Tour',
+      name: 'tour',
       desc: '',
       args: [],
     );

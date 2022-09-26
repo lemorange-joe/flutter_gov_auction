@@ -110,6 +110,15 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
       <button id="btnSubmit" onclick="SubmitPassword()">Submit</button>
       <button style="margin-left: 20px" onclick="document.getElementById('divChangePassword').style.display='none'">Cancel</button>
     </div>
+    <hr style="clear: both; margin: 0 5px 20px 5px" />
+    <div style="font-size: 11px; padding: 0 10px">
+      Before Launch:
+      <ul style="margin-top: 3px; padding-left: 20px;">
+        <li>select featured</li>
+        <li>set photos for featured lots</li>
+        <li>update fontawesome icons</li>
+      </ul>
+    </div>
     <script src="js/main.js"></script>
     <script>
       function OpenChangePassword() {

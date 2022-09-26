@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -147,18 +149,18 @@ class _HomePageState extends State<HomePage> {
             child: Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
               return !appInfo.loaded
                   ? IconButton(
-                    onPressed: null,
-                    icon: Semantics(
-                      label: S.of(context).semanticsOpenNews,
-                      button: true,
-                      enabled: false,
-                      child: Icon(
-                        MdiIcons.email,
-                        color: Theme.of(context).disabledColor,
-                        size: 24.0 * MediaQuery.of(context).textScaleFactor,
+                      onPressed: null,
+                      icon: Semantics(
+                        label: S.of(context).semanticsOpenNews,
+                        button: true,
+                        enabled: false,
+                        child: Icon(
+                          MdiIcons.email,
+                          color: Theme.of(context).disabledColor,
+                          size: 24.0 * MediaQuery.of(context).textScaleFactor,
+                        ),
                       ),
-                    ),
-                  )
+                    )
                   : ValueListenableBuilder<Box<String>>(
                       valueListenable: Hive.box<String>('history').listenable(),
                       builder: (BuildContext context, _, __) {
@@ -206,47 +208,107 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer buildDrawer(BuildContext context) {
+    final Color listItemColor = Theme.of(context).textTheme.bodyText2!.color!;
+
     return Drawer(
-      child: ListView(
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+      child: DefaultTextStyle(
+        style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 80.0,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                ),
+                child: Text(
+                  S.of(context).appName,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18.0),
+                ),
+              ),
             ),
-            child: Text(
-              'Drawer Header',
-              style: Theme.of(context).textTheme.bodyText1,
+            getCustomListTile(MdiIcons.homeOutline, listItemColor, S.of(context).home, 'home'),
+            getCustomListTile(MdiIcons.emailOutline, listItemColor, S.of(context).news, 'news'),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+              child: Text(
+                S.of(context).myItems,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 15.0),
+              ),
+            ),
+            getCustomListTile(MdiIcons.cardsHeartOutline, listItemColor, S.of(context).saved, 'save'),
+            getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).reminder, 'reminder'),
+            getCustomListTile(MdiIcons.cogOutline, listItemColor, S.of(context).settings, 'settings'),
+            const Divider(),
+            getCustomListTile(MdiIcons.bookOpenOutline, listItemColor, S.of(context).rules, 'rules'),
+            getCustomListTile(MdiIcons.navigationOutline, listItemColor, S.of(context).tour, 'tour'),
+            getCustomListTile(MdiIcons.frequentlyAskedQuestions, listItemColor, S.of(context).faq, 'faq'),
+            getCustomListTile(MdiIcons.helpCircleOutline, listItemColor, S.of(context).help, 'help'),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    FlutterConfig.get('VERSION').toString(),
+                    style: const TextStyle(fontSize: 11.0),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Consumer<AppInfoProvider>(
+                        builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+                          return appInfo.loaded
+                              ? Flexible(
+                                  child: Text(
+                                  utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang),
+                                  style: const TextStyle(fontSize: 11.0),
+                                ))
+                              : const SizedBox(height: 20.0, width: 20.0, child: CircularProgressIndicator.adaptive());
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getCustomListTile(IconData iconData, Color iconColor, String content, String route) {
+    final double visualDensity = min((MediaQuery.of(context).textScaleFactor - 1) * 8, VisualDensity.maximumDensity);
+    final bool isCurrent = ModalRoute.of(context) != null && ModalRoute.of(context)!.settings.name == route;
+
+    return SizedBox(
+      height: 48.0 * MediaQuery.of(context).textScaleFactor,
+      child: ListTileTheme(
+        child: ListTile(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          tileColor: isCurrent ? Colors.blue[300] : Theme.of(context).scaffoldBackgroundColor,
+          dense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+          visualDensity: VisualDensity(vertical: visualDensity),
+          horizontalTitleGap: (MediaQuery.of(context).textScaleFactor - 0.75) * 12,
+          leading: Icon(
+            iconData,
+            color: isCurrent ? Colors.white : iconColor,
+            size: 24.0 * MediaQuery.of(context).textScaleFactor,
+          ),
+          title: Text(
+            content,
+            style: TextStyle(
+              color: isCurrent ? Colors.white : Theme.of(context).textTheme.bodyText2!.color,
+              fontSize: 15.0,
+              fontWeight: isCurrent ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            title: const Text('AAA'),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            title: const Text('BBB'),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            title: const Text('CCC'),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Consumer<AppInfoProvider>(
-              builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
-                return appInfo.loaded
-                    ? Text(utilities.formatDateTime(appInfo.lastUpdate, S.of(context).lang))
-                    : const SizedBox(height: 20.0, width: 20.0, child: CircularProgressIndicator());
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
