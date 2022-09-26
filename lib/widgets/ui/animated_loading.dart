@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import '../../generated/l10n.dart';
 import '../../includes/config.dart' as config;
-
 
 const double scaleFactor = 3.0;
 
@@ -120,7 +119,6 @@ class _LemorangeLoadingState extends State<LemorangeLoading> with SingleTickerPr
     )
       ..forward()
       ..addStatusListener((AnimationStatus status) {
-        Logger().d(status);
         setState(() {
           if (status == AnimationStatus.completed) {
             rotationController.repeat();
@@ -151,18 +149,27 @@ class _LemorangeLoadingState extends State<LemorangeLoading> with SingleTickerPr
             //   offset: Offset(widget.deltaX * shake(_controller.value), 0),
             //   child: Text('Loading $dots'),
             // ),
-            SizedBox(
-              width: 50.0,
-              height: 50.0,
-              child: RotationTransition(
-                turns: Tween<double>(begin: 0.0, end: 0.5).animate(curve),
-                child: Image.asset(
-                  config.env == 'dev' ? 'assets/images/office_logo.png' : 'assets/images/lemorange_logo.png',
-                  isAntiAlias: true,
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: GestureDetector(
+                  onTap: () {
+                    rotationController.forward(from: 0.0);
+                  },
+                  child: RotationTransition(
+                    turns: Tween<double>(begin: 0.0, end: 0.5).animate(curve),
+                    child: Image.asset(
+                      config.env == 'dev' ? 'assets/images/office_logo.png' : 'assets/images/loading_logo.png',
+                      isAntiAlias: true,
+                    ),
+                  ),
                 ),
               ),
             ),
-            Text(S.of(context).loading),
+            Text(
+              S.of(context).loading,
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
+            ),
           ],
         );
       },

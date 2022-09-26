@@ -90,10 +90,10 @@ class S {
     );
   }
 
-  /// `Loading`
+  /// `Loading...`
   String get loading {
     return Intl.message(
-      'Loading',
+      'Loading...',
       name: 'loading',
       desc: '',
       args: [],

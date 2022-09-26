@@ -20,6 +20,7 @@ import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
 import '../widgets/easter_egg.dart';
+import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/animated_logo.dart';
 
 class DebugPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class _DebugPageState extends State<DebugPage> {
   @override
   void dispose() {
     _easterEggController.dispose();
-    
+
     super.dispose();
   }
 
@@ -81,10 +82,20 @@ class _DebugPageState extends State<DebugPage> {
                 const Divider(),
                 ...buildEasterEggSection(context),
                 const Divider(),
-                SizedBox(
-                  height: 50.0,
-                  width: 50.0,
-                  child: LemorangeLogo(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50.0,
+                      width: 50.0,
+                      child: LemorangeLogo(),
+                    ),
+                    SizedBox(
+                      height: 60.0 * MediaQuery.of(context).textScaleFactor,
+                      width: 60.0 * MediaQuery.of(context).textScaleFactor,
+                      child: LemorangeLoading(),
+                    ),
+                  ],
                 ),
                 const Divider(),
                 const SizedBox(height: 30.0),
@@ -540,8 +551,9 @@ class _DebugPageState extends State<DebugPage> {
       ),
       const SizedBox(height: 6.0),
       SizedBox(
-        height: 30.0, 
-        child: Text(_easterEggResult),),
+        height: 30.0,
+        child: Text(_easterEggResult),
+      ),
       const SizedBox(height: 6.0),
       Container(
         decoration: BoxDecoration(
