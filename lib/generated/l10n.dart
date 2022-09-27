@@ -280,6 +280,16 @@ class S {
     );
   }
 
+  /// `Notice to User`
+  String get noticeToUser {
+    return Intl.message(
+      'Notice to User',
+      name: 'noticeToUser',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy Policy`
   String get privacyPolicy {
     return Intl.message(

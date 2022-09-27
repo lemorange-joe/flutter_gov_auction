@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下載"),
         "faq": MessageLookupByLibrary.simpleMessage("常見問題"),
-        "help": MessageLookupByLibrary.simpleMessage("Help"),
+        "help": MessageLookupByLibrary.simpleMessage("幫助"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
         "loading": MessageLookupByLibrary.simpleMessage("載入中..."),
@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暫時未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一個"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
+        "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隱政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "步外口越發人親及什體發？這死識快自歡爭界總，任因點成：際電我們，支對答舉星語？國集源。人認法：當子軍歡頭，一要元維回從說天備開是不研現全為獨臺好作用然意……是因的文水做王在資。容的石非之後樓運十，張兒開了愛社，海或這突臺鄉標視導樣的；性對我外他權是全他前邊一專，火康可他商花事充營消力華。"),

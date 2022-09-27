@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暂时未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一个"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
+        "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "步外口越发人亲及什体发？这死识快自欢争界总，任因点成：际电我们，支对答举星语？国集源。人认法：当子军欢头，一要元维回从说天备开是不研现全为独台好作用然意……是因的文水做王在资。容的石非之后楼运十，张儿开了爱社，海或这突台乡标视导样的；性对我外他权是全他前边一专，火康可他商花事充营消力华。"),
