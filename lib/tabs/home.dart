@@ -73,7 +73,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildAuctionList(BuildContext context) {
     return Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
       return !auctionProvider.loaded
-          ? const CircularProgressIndicator.adaptive()
+          ? const SizedBox(width: 20.0, height: 20.0, child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: auctionProvider.auctionList.length,
               itemBuilder: (BuildContext context, int i) {

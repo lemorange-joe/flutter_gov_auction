@@ -4,7 +4,13 @@ import './pages/agreement.dart';
 import './pages/auction_details.dart';
 import './pages/auction_lot.dart';
 import './pages/debug.dart';
+import './pages/faq.dart';
+import './pages/help.dart';
 import './pages/home.dart';
+import './pages/notice.dart';
+import './pages/reminder.dart';
+import './pages/saved.dart';
+import './pages/settings.dart';
 import './pages/tour.dart';
 
 enum PageSlideDirection { up, down, left, right }
@@ -26,8 +32,20 @@ class Routes {
         return _buildRoute(settings, AuctionLotPage(auctionLot));
       case 'debug':
         return _buildRoute(settings, const DebugPage());
+      case 'faq':
+        return _buildRoute(settings, const FaqPage());
+      case 'help':
+        return _buildRoute(settings, const HelpPage());
       case 'home':
         return _buildRoute(settings, const HomePage());
+      case 'noticeToUser':
+        return _buildRoute(settings, const NoticePage());
+      case 'reminder':
+        return _buildRoute(settings, const ReminderPage());
+      case 'saved':
+        return _buildRoute(settings, const SavedPage());
+      case 'settings':
+        return _buildRoute(settings, const SettingsPage());
       case 'tour':
         final dynamic args = settings.arguments;
         final bool popPage = args != null && (args as Map<String, dynamic>)['popPage'] != null && args['popPage'] as bool;

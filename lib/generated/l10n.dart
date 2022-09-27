@@ -170,16 +170,6 @@ class S {
     );
   }
 
-  /// `Favourite`
-  String get favourite {
-    return Intl.message(
-      'Favourite',
-      name: 'favourite',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Help`
   String get help {
     return Intl.message(
@@ -380,16 +370,6 @@ class S {
     );
   }
 
-  /// `Rules`
-  String get rules {
-    return Intl.message(
-      'Rules',
-      name: 'rules',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Saved`
   String get saved {
     return Intl.message(
@@ -405,6 +385,16 @@ class S {
     return Intl.message(
       'Close',
       name: 'semanticsClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go back`
+  String get semanticsGoBack {
+    return Intl.message(
+      'Go back',
+      name: 'semanticsGoBack',
       desc: '',
       args: [],
     );

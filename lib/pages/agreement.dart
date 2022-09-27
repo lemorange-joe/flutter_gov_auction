@@ -59,36 +59,28 @@ class _AgreementPageState extends State<AgreementPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          const SizedBox(width: 60.0),
+                          const SizedBox(width: 65.0),
                           Expanded(
                             child: Center(
                               child: Text(
                                 S.of(context).agreement,
-                                style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24.0),
                               ),
                             ),
                           ),
                           SizedBox(
-                            width: 80.0,
+                            width: 65.0,
                             child: DropdownButton<String>(
                               value: S.of(context).lang,
                               icon: const Icon(Icons.arrow_drop_down_outlined),
-                              style: TextStyle(
-                                color: Colors.grey[800],
-                                fontSize: 26.0,
-                              ),
                               items: <String>['en', 'tc', 'sc'].map<DropdownMenuItem<String>>((String val) {
                                 return DropdownMenuItem<String>(
                                   value: val,
                                   child: Text(
                                     val == 'en' ? 'Eng' : (val == 'tc' ? '繁' : '简'),
                                     style: TextStyle(
-                                      color: val == S.of(context).lang ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyText2!.color,
-                                      fontSize: 26.0,
+                                      color: val == S.of(context).lang ? config.blue : Theme.of(context).textTheme.bodyText2!.color,
+                                      fontSize: 20.0,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -128,98 +120,76 @@ class _AgreementPageState extends State<AgreementPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    S.of(context).agreementParagraph1,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).agreementParagraph2,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).agreementParagraph3,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).agreementParagraph4,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 25.0),
-                                  Text(
-                                    S.of(context).privacyPolicy,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).privacyPolicyParagraph1,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).privacyPolicyParagraph2,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).privacyPolicyParagraph3,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).privacyPolicyParagraph4,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).privacyPolicyParagraph5,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  Text(
-                                    S.of(context).agreementParagraph5,
-                                    textAlign: TextAlign.justify,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                ],
+                              child: DefaultTextStyle(
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      fontSize: 18.0,
+                                    ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      S.of(context).agreementParagraph1,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).agreementParagraph2,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).agreementParagraph3,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).agreementParagraph4,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 25.0),
+                                    Text(
+                                      S.of(context).privacyPolicy,
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).privacyPolicyParagraph1,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).privacyPolicyParagraph2,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).privacyPolicyParagraph3,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).privacyPolicyParagraph4,
+                                      textAlign: TextAlign.justify,
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                            fontSize: 20.0,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).privacyPolicyParagraph5,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      S.of(context).agreementParagraph5,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

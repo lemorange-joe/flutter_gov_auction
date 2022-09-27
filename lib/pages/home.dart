@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 15.0),
               ),
             ),
-            getCustomListTile(MdiIcons.cardsHeartOutline, listItemColor, S.of(context).saved, 'save'),
+            getCustomListTile(MdiIcons.cardsHeartOutline, listItemColor, S.of(context).saved, 'saved'),
             getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).reminder, 'reminder'),
             getCustomListTile(MdiIcons.cogOutline, listItemColor, S.of(context).settings, 'settings'),
             const Divider(),
@@ -247,6 +247,8 @@ class _HomePageState extends State<HomePage> {
             getCustomListTile(MdiIcons.navigationOutline, listItemColor, S.of(context).tour, 'tour'),
             getCustomListTile(MdiIcons.frequentlyAskedQuestions, listItemColor, S.of(context).faq, 'faq'),
             getCustomListTile(MdiIcons.helpCircleOutline, listItemColor, S.of(context).help, 'help'),
+            const Divider(),
+            getCustomListTile(MdiIcons.bug, listItemColor, 'Debug', 'debug'),
             const Divider(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -291,6 +293,11 @@ class _HomePageState extends State<HomePage> {
         child: ListTile(
           onTap: () {
             Navigator.pop(context);
+            if (route == 'news') {
+              openMessageList(context);
+            } else if (!isCurrent) {
+              Navigator.pushNamed(context, route);
+            }
           },
           tileColor: isCurrent ? config.green : Theme.of(context).scaffoldBackgroundColor,
           dense: true,
