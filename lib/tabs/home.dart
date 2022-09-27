@@ -9,7 +9,9 @@ import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab(this.showAuction, {Key? key}) : super(key: key);
+
+  final void Function(Auction) showAuction;
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -78,7 +80,15 @@ class _HomeTabState extends State<HomeTab> {
               itemCount: auctionProvider.auctionList.length,
               itemBuilder: (BuildContext context, int i) {
                 final Auction auction = auctionProvider.auctionList[i];
-                return Text('${auction.id} ${auction.startTime}');
+                return SizedBox(
+                  height: 40.0,
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.showAuction(auction);
+                    },
+                    child: Text('${auction.id} ${auction.startTime}'),
+                  ),
+                );
               });
     });
   }

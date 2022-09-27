@@ -5,6 +5,10 @@ class Auction {
   Auction(this.id, this.auctionNum, this.startTime, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList, this.remarks, this.lotList,
       this.status, this.lastUpdate);
 
+  factory Auction.empty() {
+    return Auction(0, '', DateTime(1900), '', '', '', <AuctionItemPdf>[], '', <AuctionLot>[], AuctionStatus.None, DateTime(1900));
+  }
+
   factory Auction.fromJson(Map<String, dynamic> json) {
     final List<dynamic> ipl = json['ipl'] as List<dynamic>;
 
@@ -23,7 +27,8 @@ class Auction {
         } else {
           return AuctionItemPdf(AuctionItemType.None, '');
         }
-      }).toList()..removeWhere((AuctionItemPdf a) => a.itemType == AuctionItemType.None),
+      }).toList()
+        ..removeWhere((AuctionItemPdf a) => a.itemType == AuctionItemType.None),
       json['r'] as String,
       <AuctionLot>[],
       getAuctionStatus(json['as'] as String),
@@ -45,8 +50,8 @@ class Auction {
 }
 
 class AuctionLot {
-  AuctionLot(this.id, this.itemType, this.lotNum, this.gldFileRef, this.reference, this.department, this.contact, this.contactNumber, this.contactLocation, 
-  this.itemCondition, this.featured, this.icon, this.photoUrl, this.photoReal, this.itemList);
+  AuctionLot(this.id, this.itemType, this.lotNum, this.gldFileRef, this.reference, this.department, this.contact, this.contactNumber, this.contactLocation,
+      this.itemCondition, this.featured, this.icon, this.photoUrl, this.photoReal, this.itemList);
 
   final int id;
   final AuctionItemType itemType;
