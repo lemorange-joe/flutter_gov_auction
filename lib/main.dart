@@ -72,6 +72,7 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, _, __) {
         final HiveHelper hiveHelper = HiveHelper();
         final bool appFirstLaunch = hiveHelper.getFirstLaunch();
+        final bool agreed = hiveHelper.getAgreed();
         final InitValue initValue = InitValue();  // later can initialize with parameters if necessary
 
         return MultiProvider(
@@ -94,7 +95,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            initialRoute: appFirstLaunch ? 'tour' : 'home',
+            initialRoute: !agreed ? 'agreement' : (appFirstLaunch ? 'tour' : 'home'),
             onGenerateRoute: Routes().getRoutes,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);

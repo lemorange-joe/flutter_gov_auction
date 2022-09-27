@@ -338,12 +338,24 @@ class _DebugPageState extends State<DebugPage> {
         ),
       ),
       const SizedBox(height: 10.0),
-      ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'tour', arguments: <String, dynamic>{'popPage': true});
-        },
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-        child: const Text('Tour'),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'tour', arguments: <String, dynamic>{'popPage': true});
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
+            child: const Text('Tour'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'agreement');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey[700]),
+            child: const Text('Agreement'),
+          ),
+        ],
       ),
     ];
   }
