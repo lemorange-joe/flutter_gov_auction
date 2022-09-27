@@ -25,11 +25,6 @@ class Routes {
         final dynamic args = settings.arguments;
         final String exitPage = (args == null || (args as Map<String, dynamic>)['exitPage'] == null) ? '' : args['exitPage'] as String;
         return _buildRoute(settings, AgreementPage(exitPage));
-      // use AuctionLot Tab now  
-      // case 'auction_lot':
-      //   final dynamic args = settings.arguments;
-      //   final AuctionLot auctionLot = (args as Map<String, dynamic>)['auctionLot'] as AuctionLot;
-      //   return _buildRoute(settings, AuctionLotPage(auctionLot));
       case 'debug':
         return _buildRoute(settings, const DebugPage());
       case 'faq':

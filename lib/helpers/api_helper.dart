@@ -16,22 +16,25 @@ class ApiHelper {
     String lang,
     String controller,
     String method, {
+    List<String> urlParameters = const <String>[],
     Map<String, dynamic> parameters = const <String, dynamic>{},
     bool useDemoData = false,
     int demoDataDelay = 2,
   }) async {
+    final String urlParams = urlParameters.join('-');
     String strParams = '?';
     if (parameters.isNotEmpty) {
       parameters.forEach((String k, dynamic v) => strParams += '${Uri.encodeComponent(k)}=${Uri.encodeComponent(v.toString())}&');
     }
     strParams = strParams.substring(0, strParams.length - 1); // remove the last char, either '?' or &'
 
-    final String apiUrl = FlutterConfig.get('API_URL')
+    String apiUrl = FlutterConfig.get('API_URL')
         .toString()
         .replaceFirst('{lang}', lang)
         .replaceFirst('{controller}', controller)
         .replaceFirst('{method}', method)
-        .replaceFirst('{params}', strParams.isEmpty ? '' : '-$strParams');
+        .replaceFirst('{params}', urlParams.isEmpty ? '' : '-$urlParams');
+    apiUrl += strParams.isEmpty ? '' : strParams;
 
     final http.Client client = http.Client();
     dynamic returnData;
@@ -54,7 +57,7 @@ class ApiHelper {
       }
 
       await Future<void>.delayed(Duration(seconds: demoDataDelay));
-      final String demoDataKey = '$controller-$method';
+      final String demoDataKey = '$controller-$method${urlParams.isEmpty ? '' : '-$urlParams'}';
 
       if (demoData.containsKey(demoDataKey)) {
         final dynamic jsonResult = jsonDecode(demoData[demoDataKey]!) as dynamic;

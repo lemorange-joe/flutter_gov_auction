@@ -72,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               return;
                             }
                             Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
-                            Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                            Provider.of<AuctionProvider>(context, listen: false).refreshLang(S.of(context).lang);
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: localeCode == 'en_US' ? config.green : config.blue,
@@ -99,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               return;
                             }
                             Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
-                            Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                            Provider.of<AuctionProvider>(context, listen: false).refreshLang(S.of(context).lang);
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: localeCode == 'zh_HK' ? config.green : config.blue,
@@ -126,7 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               return;
                             }
                             Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
-                            Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+                            Provider.of<AuctionProvider>(context, listen: false).refreshLang(S.of(context).lang);
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: localeCode == 'zh_CN' ? config.green : config.blue,

@@ -4,14 +4,13 @@ import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
-// import '../include/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab(this.showAuction, {Key? key}) : super(key: key);
 
-  final void Function(Auction) showAuction;
+  final void Function() showAuction;
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -73,23 +72,27 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Widget _buildAuctionList(BuildContext context) {
-    return Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-      return !auctionProvider.loaded
-          ? const SizedBox(width: 20.0, height: 20.0, child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: auctionProvider.auctionList.length,
-              itemBuilder: (BuildContext context, int i) {
-                final Auction auction = auctionProvider.auctionList[i];
-                return SizedBox(
-                  height: 40.0,
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.showAuction(auction);
-                    },
-                    child: Text('${auction.id} ${auction.startTime}'),
-                  ),
-                );
-              });
-    });
+    return Consumer<AuctionProvider>(
+      builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+        return !auctionProvider.loaded
+            ? const SizedBox(width: 20.0, height: 20.0, child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: auctionProvider.auctionList.length,
+                itemBuilder: (BuildContext context, int i) {
+                  final Auction auction = auctionProvider.auctionList[i];
+                  return SizedBox(
+                    height: 40.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        widget.showAuction();
+                        Provider.of<AuctionProvider>(context, listen: false).getAuctionDetails(auction.id, S.of(context).lang);
+                      },
+                      child: Text('${auction.id} ${auction.startTime}'),
+                    ),
+                  );
+                },
+              );
+      },
+    );
   }
 }
