@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
@@ -24,8 +23,6 @@ class _AgreementPageState extends State<AgreementPage> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     _countdown = HiveHelper().getAgreed() ? 0 : 5;
 
