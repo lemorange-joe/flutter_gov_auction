@@ -22,6 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "agree": MessageLookupByLibrary.simpleMessage("同意"),
+        "agreement": MessageLookupByLibrary.simpleMessage("使用條款"),
+        "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
+            "可人道斯心土書日媽走何……拿中失朋精還的務象規以……手是方造皮升病法自城甚品我總經基在看，險地歷考生不別人方保的。問照毛見一能高今廠學人險作光這實格。破陽生是……林民布為：高心一來提更慢。"),
+        "agreementParagraph2": MessageLookupByLibrary.simpleMessage(
+            "的計的多一，多是天裝。爸合期直型馬後立告傷電華，縣條票了布樂此。聽我多了他實說河收道高向告外苦山子出響；領不生弟臺木多。來資體外放保的，又舉就我開考……員我化還？"),
+        "agreementParagraph3": MessageLookupByLibrary.simpleMessage(
+            "同動量之業說研樂心不子商人識對量吃：先子神能；持物的方上收向兒公而道務遠城在沒快大與受呢哥地終戲沒天電放總商斯起公一切改相語、下我海歡陸心不怎長去三百，們黑是發車！會氣山而活們細……熱孩一小民時本用第。於應集在下在，的意實經型直度實算。"),
+        "agreementParagraph4": MessageLookupByLibrary.simpleMessage(
+            "於不元是還點作快告，記場已美沒竟一的增農的對請制的來本石是往因接即心須起需。灣四沒動……場只業現學……比球西水口得……們音育是什人、印也功轉從關外算，話有回子臺要腦關樣出是，樣為失望路光已理活鄉關時是上，量書得方此，易很後球國此收，因發明馬著及然有界、他如手府年上們麼統完？"),
+        "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
+            "孩論腳定，腦告便過面了面樂的子地園響注。多界停看國題的史急文麼密李嚴來傳期入也開喜足飯也，很命的重和我麼養畫，天特務中到更西動金制就將方年人運朋計！"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (HK)"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下載"),
@@ -36,6 +48,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("最新消息"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暫時未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一個"),
+        "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隱政策"),
+        "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
+            "步外口越發人親及什體發？這死識快自歡爭界總，任因點成：際電我們，支對答舉星語？國集源。人認法：當子軍歡頭，一要元維回從說天備開是不研現全為獨臺好作用然意……是因的文水做王在資。容的石非之後樓運十，張兒開了愛社，海或這突臺鄉標視導樣的；性對我外他權是全他前邊一專，火康可他商花事充營消力華。"),
+        "privacyPolicyParagraph2": MessageLookupByLibrary.simpleMessage(
+            "界個雄家了場源：黨生我不而公傳體錢他？了當非會汽羅和！最色日；電想者食、打國最我在類員少的、親受的票見高畫，排同下單神制口綠會在當那消資老面從大言立，年品品天物、收友當程勢飛以在會，藝單地回影見片幾？"),
+        "privacyPolicyParagraph3": MessageLookupByLibrary.simpleMessage(
+            "今出法，臺康上經象，銷星怕因已……的個部總生善有全多他事面拉主女；聲陽的相我機情科，外可兒醫事些紙；離方商非使光一如開燈旅也類那月：華熱理市覺密？為否列在與，的我間製和都確就童否處去情，始克國甚廠達，師慢想像一看人不母業從。"),
+        "privacyPolicyParagraph4":
+            MessageLookupByLibrary.simpleMessage("包曾價共什飛區從檢也要的問，連該遊小形臺好自。"),
+        "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
+            "了方奇風業這業，界成但際高案生政其的光來……一明發友病確日經力意不是該總年異天等不又。"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相關Apps"),
         "reload": MessageLookupByLibrary.simpleMessage("重新載入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
