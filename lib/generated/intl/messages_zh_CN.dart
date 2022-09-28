@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "孩论脚定，脑告便过面了面乐的子地园响注。多界停看国题的史急文么密李严来传期入也开喜足饭也，很命的重和我么养画，天特务中到更西动金制就将方年人运朋计！"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
+        "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下载"),
         "faq": MessageLookupByLibrary.simpleMessage("常见问题"),
@@ -48,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("最新消息"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暂时未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一个"),
+        "noSearchHistory": MessageLookupByLibrary.simpleMessage("没有搜寻记录"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
@@ -61,10 +63,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("包曾价共什飞区从检也要的问，连该游小形台好自。"),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "了方奇风业这业，界成但际高案生政其的光来……一明发友病确日经力意不是该总年异天等不又。"),
+        "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜寻"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相关Apps"),
         "reload": MessageLookupByLibrary.simpleMessage("重新载入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
+        "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("关闭"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),

@@ -35,6 +35,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum."),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name"),
+        "clearSearchHistory":
+            MessageLookupByLibrary.simpleMessage("Clear search history"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
@@ -48,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "noSearchHistory":
+            MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("Notice to User"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
@@ -61,10 +65,13 @@ class MessageLookup extends MessageLookupByLibrary {
             " In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula."),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "Nullam fringilla suscipit tellus, nec dapibus eros porttitor at. Quisque rutrum cursus ipsum nec dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris eros lorem, vulputate sit amet turpis sed, condimentum volutpat leo. Aenean sed libero id risus volutpat rutrum eget sit amet est. Sed non neque mollis, lacinia lacus id, scelerisque elit. Aliquam lacus diam, pellentesque eget diam vitae, cursus pulvinar justo."),
+        "recentSearch": MessageLookupByLibrary.simpleMessage("Recent search"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("Related Apps"),
         "reload": MessageLookupByLibrary.simpleMessage("Reload"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
+        "searchAuction":
+            MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("Close"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("Read news"),

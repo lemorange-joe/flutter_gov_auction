@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Clear search history`
+  String get clearSearchHistory {
+    return Intl.message(
+      'Clear search history',
+      name: 'clearSearchHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Done`
   String get done {
     return Intl.message(
@@ -260,6 +270,16 @@ class S {
     );
   }
 
+  /// `No search history`
+  String get noSearchHistory {
+    return Intl.message(
+      'No search history',
+      name: 'noSearchHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Decline`
   String get notAgree {
     return Intl.message(
@@ -340,6 +360,16 @@ class S {
     );
   }
 
+  /// `Recent search`
+  String get recentSearch {
+    return Intl.message(
+      'Recent search',
+      name: 'recentSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Related Apps`
   String get relatedApps {
     return Intl.message(
@@ -375,6 +405,16 @@ class S {
     return Intl.message(
       'Saved',
       name: 'saved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC)Search items`
+  String get searchAuction {
+    return Intl.message(
+      '(TBC)Search items',
+      name: 'searchAuction',
       desc: '',
       args: [],
     );

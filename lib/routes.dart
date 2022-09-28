@@ -9,6 +9,7 @@ import './pages/home.dart';
 import './pages/notice.dart';
 import './pages/reminder.dart';
 import './pages/saved.dart';
+import './pages/search.dart';
 import './pages/settings.dart';
 import './pages/tour.dart';
 
@@ -39,6 +40,8 @@ class Routes {
         return _buildRoute(settings, const ReminderPage());
       case 'saved':
         return _buildRoute(settings, const SavedPage());
+      case 'search':
+        return _buildRoute(settings, const SearchPage());
       case 'settings':
         return _buildRoute(settings, const SettingsPage());
       case 'tour':

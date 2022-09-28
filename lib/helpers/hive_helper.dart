@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+// import 'package:logger/logger.dart';
+import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 
 class HiveHelper {
@@ -11,6 +13,7 @@ class HiveHelper {
   static final Box<dynamic> _prefBox = Hive.box<dynamic>('preferences');
   static final Box<dynamic> _notificationBox = Hive.box<dynamic>('notification');
   static final Box<String> _historyBox = Hive.box<String>('history');
+  static final Box<String> _searchHistoryBox = Hive.box<String>('search_history');
   static final Box<String> _logBox = Hive.box<String>('log');
   static bool _enableLog = false;
   static final HiveHelper _hiveHelper = HiveHelper._internal();
@@ -22,6 +25,7 @@ class HiveHelper {
     await Hive.openBox<dynamic>('preferences');
     await Hive.openBox<dynamic>('notification');
     await Hive.openBox<String>('history');
+    await Hive.openBox<String>('search_history');
     if (_enableLog) {
       await Hive.openBox<String>('log');
     }
@@ -121,6 +125,28 @@ class HiveHelper {
     await _historyBox.put('push_message', '');
   }
   // history box
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // search history box:
+  Future<void> writeSearchHistory(String searchKeyword) async {
+    final List<String> searchHistoryList = getSearchHistoryList();
+    if (searchHistoryList.contains(searchKeyword)) {
+      searchHistoryList.remove(searchKeyword);
+    }
+    searchHistoryList.insert(0, searchKeyword);
+    await _searchHistoryBox.put('auction_search', searchHistoryList.join(config.searchSeparatorChar));
+  }
+
+  List<String> getSearchHistoryList() {
+    final String strHistory = _searchHistoryBox.get('auction_search', defaultValue: '')!;
+    return strHistory.isEmpty ? <String>[] : strHistory.split(config.searchSeparatorChar);
+  }
+
+  Future<void> clearSearchHistory() async {
+    await _searchHistoryBox.clear();
+  }
+  // search history box
   // --------------------------------------------
 
   // --------------------------------------------

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
@@ -40,31 +41,50 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                TextButton(
-                  onPressed: _incrementCounter,
-                  child: const Icon(Icons.add),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 5,
-                  child: _buildAuctionList(context),
-                ),
-              ],
+          const SizedBox(height: 10.0),
+          SizedBox(
+            height: 40.0 * MediaQuery.of(context).textScaleFactor,
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'search');
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                foregroundColor: Theme.of(context).textTheme.bodyText1!.color,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    MdiIcons.magnify,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    size: 24.0 * MediaQuery.of(context).textScaleFactor,
+                  ),
+                  const SizedBox(width: 8.0),
+                  Text(S.of(context).searchAuction, style: Theme.of(context).textTheme.bodyText2),
+                ],
+              ),
             ),
+          ),
+          const SizedBox(height: 10.0),
+          const Text(
+            'You have pushed the button this many times:',
+          ),
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          TextButton(
+            onPressed: _incrementCounter,
+            child: const Icon(Icons.add),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 5,
+            child: _buildAuctionList(context),
           ),
         ],
       ),

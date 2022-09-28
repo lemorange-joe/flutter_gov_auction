@@ -25,3 +25,5 @@ const Color green = Color.fromARGB(255, 0, 166, 80);
 const double lgBorderRadius = 20.0;
 const double mdBorderRadius = 10.0;
 const double smBorderRadius = 6.0;
+
+const String searchSeparatorChar = '|';
