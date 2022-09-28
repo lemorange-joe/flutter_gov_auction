@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
               _searchKeyword = '';
             });
           },
-          child: Text('X'),
+          child: const Text('X'),
         ),
       ],
     );

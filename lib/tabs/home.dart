@@ -7,6 +7,7 @@ import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
+import '../widgets/featured_page_view.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab(this.showAuction, {Key? key}) : super(key: key);
@@ -71,6 +72,16 @@ class _HomeTabState extends State<HomeTab> {
             ),
           ),
           const SizedBox(height: 10.0),
+          Row(
+            children: <Widget>[
+              Consumer<AuctionProvider>(
+                builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                  return FeaturedPageView(auctionProvider.latestAuction);
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
           const Text(
             'You have pushed the button this many times:',
           ),
@@ -105,7 +116,7 @@ class _HomeTabState extends State<HomeTab> {
                     child: GestureDetector(
                       onTap: () {
                         widget.showAuction();
-                        Provider.of<AuctionProvider>(context, listen: false).getAuctionDetails(auction.id, S.of(context).lang);
+                        Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
                       },
                       child: Text('${auction.id} ${auction.startTime}'),
                     ),

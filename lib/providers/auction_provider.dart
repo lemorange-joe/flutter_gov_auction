@@ -14,8 +14,13 @@ class AuctionProvider with ChangeNotifier {
   bool loadedDetails = false;
   late List<Auction> auctionList;
   Auction curAuction = Auction.empty();
+  Auction latestAuction = Auction.empty();
 
   Future<void> refresh({String lang = 'en'}) async {
+    loaded = false;
+    latestAuction = Auction.empty();
+    notifyListeners();
+
     final ApiHelper apiHelper = ApiHelper();
 
     try {
@@ -24,6 +29,8 @@ class AuctionProvider with ChangeNotifier {
       for (final dynamic item in result) {
         auctionList.add(Auction.fromJson(item as Map<String, dynamic>));
       }
+
+      await refreshLatestAuction(lang);
 
       loaded = true;
     } catch (e) {
@@ -34,16 +41,32 @@ class AuctionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAuctionDetails(int auctionId, String lang) async {
+  Future<void> refreshLatestAuction(String lang) async {
+    if (auctionList.isEmpty) {
+      latestAuction = Auction.empty();
+      return;
+    }
+
+    latestAuction = await getAuctionDetails(auctionList[0].id, lang);
+  }
+
+  Future<void> setCurAuction(int auctionId, String lang) async {
     loadedDetails = false;
     notifyListeners();
 
+    curAuction = await getAuctionDetails(auctionId, lang);
+
+    loadedDetails = true;
+    notifyListeners();
+  }
+
+  Future<Auction> getAuctionDetails(int auctionId, String lang) async {
     final ApiHelper apiHelper = ApiHelper();
     try {
       final Map<String, dynamic> json =
           await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()], useDemoData: true) as Map<String, dynamic>;
 
-      curAuction = Auction(
+      return Auction(
         json['id'] as int,
         json['n'] as String,
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
@@ -61,8 +84,7 @@ class AuctionProvider with ChangeNotifier {
       HiveHelper().writeLog('[Auction] ${e.toString()}');
     }
 
-    loadedDetails = true;
-    notifyListeners();
+    return Auction.empty();
   }
 
   Future<void> refreshLang(String lang) async {
