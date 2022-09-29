@@ -180,6 +180,16 @@ class S {
     );
   }
 
+  /// `Featured Items`
+  String get featuredItems {
+    return Intl.message(
+      'Featured Items',
+      name: 'featuredItems',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Help`
   String get help {
     return Intl.message(

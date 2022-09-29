@@ -7,7 +7,7 @@ import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
-import '../widgets/featured_page_view.dart';
+import '../widgets/featured_list_view.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab(this.showAuction, {Key? key}) : super(key: key);
@@ -74,10 +74,12 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(height: 10.0),
           Row(
             children: <Widget>[
-              Consumer<AuctionProvider>(
-                builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                  return FeaturedPageView(auctionProvider.latestAuction);
-                },
+              Expanded(
+                child: Consumer<AuctionProvider>(
+                  builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                    return FeaturedListView(auctionProvider.latestAuction);
+                  },
+                ),
               ),
             ],
           ),

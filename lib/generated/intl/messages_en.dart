@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
+        "featuredItems": MessageLookupByLibrary.simpleMessage("Featured Items"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),

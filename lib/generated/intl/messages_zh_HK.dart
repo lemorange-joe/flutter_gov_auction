@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下載"),
         "faq": MessageLookupByLibrary.simpleMessage("常見問題"),
+        "featuredItems": MessageLookupByLibrary.simpleMessage("精選物品"),
         "help": MessageLookupByLibrary.simpleMessage("幫助"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
