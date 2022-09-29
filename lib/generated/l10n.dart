@@ -310,6 +310,26 @@ class S {
     );
   }
 
+  /// `* (TBC)photo disclaimer`
+  String get photoDisclaimer {
+    return Intl.message(
+      '* (TBC)photo disclaimer',
+      name: 'photoDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View details`
+  String get pressHoldViewDetails {
+    return Intl.message(
+      'View details',
+      name: 'pressHoldViewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy Policy`
   String get privacyPolicy {
     return Intl.message(
@@ -455,6 +475,16 @@ class S {
     return Intl.message(
       'Read news',
       name: 'semanticsOpenNews',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Press and hold to view details`
+  String get semanticsPressHoldViewDetails {
+    return Intl.message(
+      'Press and hold to view details',
+      name: 'semanticsPressHoldViewDetails',
       desc: '',
       args: [],
     );

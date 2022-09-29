@@ -22,6 +22,7 @@ const int transitionAnimationDuration = 200;  // in milliseconds
 const Color blue = Color.fromARGB(255, 0, 91, 172);
 const Color green = Color.fromARGB(255, 0, 166, 80);
 
+const double iconTextSpacing = 4.0;
 const double lgBorderRadius = 20.0;
 const double mdBorderRadius = 10.0;
 const double smBorderRadius = 6.0;

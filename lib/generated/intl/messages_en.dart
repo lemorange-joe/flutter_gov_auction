@@ -55,6 +55,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("Notice to User"),
+        "photoDisclaimer":
+            MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
+        "pressHoldViewDetails":
+            MessageLookupByLibrary.simpleMessage("View details"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "Proin ex metus, sodales eu cursus in, iaculis sit amet diam. Donec posuere pharetra erat et congue. Phasellus cursus rhoncus mi at luctus. Praesent et augue vitae dolor semper luctus. Pellentesque vitae neque cursus, posuere velit vestibulum, blandit nisi. Vestibulum vel erat vehicula, ullamcorper ipsum porta, lobortis est. Nam hendrerit tristique augue vel accumsan. Curabitur vitae iaculis purus, at euismod risus."),
@@ -76,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsClose": MessageLookupByLibrary.simpleMessage("Close"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("Read news"),
+        "semanticsPressHoldViewDetails": MessageLookupByLibrary.simpleMessage(
+            "Press and hold to view details"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("Red"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("Semantics TBC"),
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("Unread"),

@@ -53,6 +53,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("没有搜寻记录"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
+        "photoDisclaimer":
+            MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
+        "pressHoldViewDetails": MessageLookupByLibrary.simpleMessage("长按查看详情"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "步外口越发人亲及什体发？这死识快自欢争界总，任因点成：际电我们，支对答举星语？国集源。人认法：当子军欢头，一要元维回从说天备开是不研现全为独台好作用然意……是因的文水做王在资。容的石非之后楼运十，张儿开了爱社，海或这突台乡标视导样的；性对我外他权是全他前边一专，火康可他商花事充营消力华。"),
@@ -73,6 +76,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsClose": MessageLookupByLibrary.simpleMessage("关闭"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),
+        "semanticsPressHoldViewDetails":
+            MessageLookupByLibrary.simpleMessage("长按查看详情"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已阅读"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("无障碍内容待定"),
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("未阅读"),
