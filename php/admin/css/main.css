@@ -61,6 +61,14 @@ textarea {
   padding: 10px;
 }
 
+tr.green {
+  background-color: #efe;
+}
+
+tr.red {
+  background-color: #fee;
+}
+
 .action-button {
   background-color: #37f;
   color: #fff;

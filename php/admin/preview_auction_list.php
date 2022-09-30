@@ -129,10 +129,7 @@ include_once ("../class/admin_import.php");
         }
 
         function ImportData() {
-          document.getElementById("btnImport").setAttribute("disabled", "disabled");
-          setTimeout(function() {
-            document.getElementById("btnImport").removeAttribute("disabled");
-          }, 5000);
+          TempDisableButton("btnImport");
 
           var i = 0;
           var auctionData = {

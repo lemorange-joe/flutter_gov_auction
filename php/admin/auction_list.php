@@ -300,6 +300,8 @@ if (!isset($_SESSION["admin_user"])) {
 
                 var row = tblAuction.insertRow();
                 row.setAttribute("data-index", i);
+                row.classList.add(curAuction.status == "A" ? "green" : "red");
+
                 var td0 = row.insertCell(0)
                 td0.appendChild(link);
                 td0.appendChild(GetTextBox("tbAuctionId_"+i, curAuction.id, "hidden"));
@@ -325,6 +327,8 @@ if (!isset($_SESSION["admin_user"])) {
                 row.insertCell(7).appendChild(btnUpdate);
 
                 var row2 = tblAuction.insertRow();
+                row2.classList.add(curAuction.status == "A" ? "green" : "red");
+
                 var cell = row2.insertCell(0);
                 cell.setAttribute("colspan", 8);
                 cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left;border-bottom:5px double #000");
