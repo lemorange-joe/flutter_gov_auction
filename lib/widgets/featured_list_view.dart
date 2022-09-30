@@ -8,6 +8,7 @@ import '../includes/config.dart' as config;
 import '../includes/enums.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/featured_card.dart';
+import '../widgets/ui/animated_loading.dart';
 
 class FeaturedListView extends StatelessWidget {
   const FeaturedListView(this.auction, this.homeTabShowAuction, {super.key});
@@ -33,7 +34,7 @@ class FeaturedListView extends StatelessWidget {
                 ),
                 const SizedBox(width: config.iconTextSpacing),
                 Text(
-                  S.of(context).featuredItems,
+                  '${auction.status == AuctionStatus.Finished ? S.of(context).previousAuction : S.of(context).nextAuction} - ${S.of(context).featuredItems}',
                   style: TextStyle(
                     color: titleColor,
                     fontSize: 16.0,
@@ -57,36 +58,26 @@ class FeaturedListView extends StatelessWidget {
         ),
         SizedBox(
           height: 250.0,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: auction.lotList
-                  .map((AuctionLot auctionLot) => FeaturedCard(auctionLot.title, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'tour01.jpg'))
-                  .toList(),
-
-              // children: <Widget>[
-              //   const FeaturedCard('Lorem ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'tour01.jpg'),
-              //   const FeaturedCard('Curabitur scelerisque ',
-              //       'Curabitur scelerisque in massa quis eleifend. Curabitur in eros viverra, interdum nisl ac, dapibus turpis.', 'tour02.jpg'),
-              //   const FeaturedCard(
-              //       'Nullam pharetra',
-              //       'Nullam pharetra varius leo et tincidunt. Suspendisse sagittis tortor quis nulla vulputate, eu fringilla odio egestas. Cras efficitur, nisi eu vehicula convallis, arcu sem congue ex, non condimentum quam lectus ut risus.',
-              //       'tour03.jpg'),
-              //   const FeaturedCard(
-              //       'Etiam vestibulum tempor ligula',
-              //       'Nulla facilisi. Maecenas placerat, sapien non sollicitudin cursus, quam arcu tempor diam, eget congue eros eros egestas ex. Nullam ornare semper risus at tincidunt. Phasellus quis diam vehicula, tincidunt justo ut, fermentum eros. Ut neque justo, placerat ac laoreet at, pharetra in orci.',
-              //       'tour01.jpg'),
-              //   const FeaturedCard('E', 'content', 'tour02.jpg'),
-              //   const FeaturedCard('F', 'content', 'tour03.jpg'),
-              //   const FeaturedCard('G', 'content', 'tour01.jpg'),
-              //   const FeaturedCard('H', 'content', 'tour02.jpg'),
-              //   const FeaturedCard('I', 'content', 'tour03.jpg'),
-              //   const FeaturedCard('J', 'content', 'tour01.jpg'),
-              //   const FeaturedCard('K', 'content', 'tour02.jpg'),
-              //   FeaturedCard(S.of(context).agreement, S.of(context).agreementParagraph1, 'tour03.jpg'),
-              // ],
-            ),
-          ),
+          child: Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+            return auctionProvider.loaded
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: auction.lotList
+                          // .where((AuctionLot auctionLot) => auctionLot.featured)
+                          .map((AuctionLot auctionLot) =>
+                              FeaturedCard(auctionLot.title, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'tour01.jpg'))
+                          .toList(),
+                    ),
+                  )
+                : Center(
+                    child: SizedBox(
+                      width: 60.0,
+                      height: 60.0,
+                      child: LemorangeLoading(),
+                    ),
+                  );
+          }),
         ),
       ],
     );

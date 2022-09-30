@@ -60,8 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "pressHoldViewDetails":
             MessageLookupByLibrary.simpleMessage("View details"),
-        "previousAuctionFeatured":
-            MessageLookupByLibrary.simpleMessage("Last auction"),
+        "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "Proin ex metus, sodales eu cursus in, iaculis sit amet diam. Donec posuere pharetra erat et congue. Phasellus cursus rhoncus mi at luctus. Praesent et augue vitae dolor semper luctus. Pellentesque vitae neque cursus, posuere velit vestibulum, blandit nisi. Vestibulum vel erat vehicula, ullamcorper ipsum porta, lobortis est. Nam hendrerit tristique augue vel accumsan. Curabitur vitae iaculis purus, at euismod risus."),
@@ -90,6 +89,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("Unread"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "tabAll": MessageLookupByLibrary.simpleMessage("All"),
+        "tabItemTypeC":
+            MessageLookupByLibrary.simpleMessage("Confiscated Goods"),
+        "tabItemTypeM":
+            MessageLookupByLibrary.simpleMessage("Unserviceable Stores"),
+        "tabItemTypeMS":
+            MessageLookupByLibrary.simpleMessage("Surplus Serviceable Stores"),
+        "tabItemTypeUP":
+            MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),
         "tourContent1": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),

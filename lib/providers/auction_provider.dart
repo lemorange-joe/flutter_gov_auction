@@ -62,6 +62,8 @@ class AuctionProvider with ChangeNotifier {
 
   void setLatestAuctionAsCurrent() {
     curAuction = latestAuction;
+    loadedDetails = true;
+    
     notifyListeners();
   }
 

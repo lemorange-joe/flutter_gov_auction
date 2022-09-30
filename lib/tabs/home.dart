@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
-import '../providers/app_info_provider.dart';
+// import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/featured_list_view.dart';
 

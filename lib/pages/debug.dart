@@ -16,6 +16,7 @@ import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
+import '../providers/auction_provider.dart';
 import '../widgets/common/dialog.dart';
 import '../widgets/common/share.dart';
 import '../widgets/common/snackbar.dart';
@@ -72,6 +73,8 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildGlobalWidgetSection(context),
                 const Divider(),
                 ...buildAppInfoSection(context),
+                const Divider(),
+                ...buildAuctionSection(context),
                 const Divider(),
                 ...buildHiveSection(context),
                 const Divider(),
@@ -174,6 +177,37 @@ class _DebugPageState extends State<DebugPage> {
                           )
                         ],
                       ),
+                    ],
+                  );
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> buildAuctionSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Auction Provider',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      DefaultTextStyle(
+        style: const TextStyle(fontSize: 12.0, color: Colors.deepPurple),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Row(
+            children: <Widget>[
+              Consumer<AuctionProvider>(
+                builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Loaded: ${auctionProvider.loaded}', textAlign: TextAlign.start),
+                      Text('Loaded Details: ${auctionProvider.loadedDetails}', textAlign: TextAlign.start),
                     ],
                   );
                 },

@@ -341,10 +341,10 @@ class S {
   }
 
   /// `Last auction`
-  String get previousAuctionFeatured {
+  String get previousAuction {
     return Intl.message(
       'Last auction',
-      name: 'previousAuctionFeatured',
+      name: 'previousAuction',
       desc: '',
       args: [],
     );
@@ -555,6 +555,56 @@ class S {
     return Intl.message(
       'Skip',
       name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get tabAll {
+    return Intl.message(
+      'All',
+      name: 'tabAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confiscated Goods`
+  String get tabItemTypeC {
+    return Intl.message(
+      'Confiscated Goods',
+      name: 'tabItemTypeC',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unserviceable Stores`
+  String get tabItemTypeM {
+    return Intl.message(
+      'Unserviceable Stores',
+      name: 'tabItemTypeM',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Surplus Serviceable Stores`
+  String get tabItemTypeMS {
+    return Intl.message(
+      'Surplus Serviceable Stores',
+      name: 'tabItemTypeMS',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unclaimed Properties`
+  String get tabItemTypeUP {
+    return Intl.message(
+      'Unclaimed Properties',
+      name: 'tabItemTypeUP',
       desc: '',
       args: [],
     );

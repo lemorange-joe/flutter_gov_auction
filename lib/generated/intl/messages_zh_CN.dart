@@ -57,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "pressHoldViewDetails": MessageLookupByLibrary.simpleMessage("长按查看详情"),
-        "previousAuctionFeatured": MessageLookupByLibrary.simpleMessage("上次拍卖"),
+        "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "步外口越发人亲及什体发？这死识快自欢争界总，任因点成：际电我们，支对答举星语？国集源。人认法：当子军欢头，一要元维回从说天备开是不研现全为独台好作用然意……是因的文水做王在资。容的石非之后楼运十，张儿开了爱社，海或这突台乡标视导样的；性对我外他权是全他前边一专，火康可他商花事充营消力华。"),
@@ -85,6 +85,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("未阅读"),
         "settings": MessageLookupByLibrary.simpleMessage("设定"),
         "skip": MessageLookupByLibrary.simpleMessage("略过"),
+        "tabAll": MessageLookupByLibrary.simpleMessage("全部"),
+        "tabItemTypeC": MessageLookupByLibrary.simpleMessage("充公物品"),
+        "tabItemTypeM": MessageLookupByLibrary.simpleMessage("废弃物品及剩余物品"),
+        "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之废弃物品及剩余物品"),
+        "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("无人认领物品"),
         "tour": MessageLookupByLibrary.simpleMessage("导览"),
         "tourContent1":
             MessageLookupByLibrary.simpleMessage("湾在同分不活。角选和石车马人经。"),
