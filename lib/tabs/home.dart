@@ -21,16 +21,6 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   int _counter = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
-      Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
-    });
-  }
-
   Future<void> _incrementCounter() async {
     setState(() {
       _counter++;
@@ -77,7 +67,7 @@ class _HomeTabState extends State<HomeTab> {
               Expanded(
                 child: Consumer<AuctionProvider>(
                   builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                    return FeaturedListView(auctionProvider.latestAuction);
+                    return FeaturedListView(auctionProvider.latestAuction, widget.showAuction);
                   },
                 ),
               ),
@@ -117,8 +107,8 @@ class _HomeTabState extends State<HomeTab> {
                     height: 40.0,
                     child: GestureDetector(
                       onTap: () {
-                        widget.showAuction();
                         Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
+                        widget.showAuction();
                       },
                       child: Text('${auction.id} ${auction.startTime}'),
                     ),

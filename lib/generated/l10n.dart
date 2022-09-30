@@ -180,10 +180,10 @@ class S {
     );
   }
 
-  /// `Featured Items`
+  /// `featured items`
   String get featuredItems {
     return Intl.message(
-      'Featured Items',
+      'featured items',
       name: 'featuredItems',
       desc: '',
       args: [],
@@ -280,6 +280,16 @@ class S {
     );
   }
 
+  /// `Next auction`
+  String get nextAuction {
+    return Intl.message(
+      'Next auction',
+      name: 'nextAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No search history`
   String get noSearchHistory {
     return Intl.message(
@@ -325,6 +335,16 @@ class S {
     return Intl.message(
       'View details',
       name: 'pressHoldViewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last auction`
+  String get previousAuctionFeatured {
+    return Intl.message(
+      'Last auction',
+      name: 'previousAuctionFeatured',
       desc: '',
       args: [],
     );
@@ -605,6 +625,16 @@ class S {
     return Intl.message(
       'Pellentesque vestibulum risus sed justo pulvinar, vitae luctus nunc consequat.',
       name: 'tourContent3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View all`
+  String get viewAll {
+    return Intl.message(
+      'View all',
+      name: 'viewAll',
       desc: '',
       args: [],
     );

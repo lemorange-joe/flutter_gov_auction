@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
-        "featuredItems": MessageLookupByLibrary.simpleMessage("Featured Items"),
+        "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
+        "nextAuction": MessageLookupByLibrary.simpleMessage("Next auction"),
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
@@ -59,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "pressHoldViewDetails":
             MessageLookupByLibrary.simpleMessage("View details"),
+        "previousAuctionFeatured":
+            MessageLookupByLibrary.simpleMessage("Last auction"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "Proin ex metus, sodales eu cursus in, iaculis sit amet diam. Donec posuere pharetra erat et congue. Phasellus cursus rhoncus mi at luctus. Praesent et augue vitae dolor semper luctus. Pellentesque vitae neque cursus, posuere velit vestibulum, blandit nisi. Vestibulum vel erat vehicula, ullamcorper ipsum porta, lobortis est. Nam hendrerit tristique augue vel accumsan. Curabitur vitae iaculis purus, at euismod risus."),
@@ -98,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tourTitle2": MessageLookupByLibrary.simpleMessage("Aliquam dictum"),
         "tourTitle3": MessageLookupByLibrary.simpleMessage(
             "Pellentesque vestibulum risus"),
+        "viewAll": MessageLookupByLibrary.simpleMessage("View all"),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

@@ -50,12 +50,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("最新消息"),
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暫時未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一個"),
+        "nextAuction": MessageLookupByLibrary.simpleMessage("下次拍賣"),
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("沒有搜尋記錄"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "pressHoldViewDetails": MessageLookupByLibrary.simpleMessage("長按查看詳情"),
+        "previousAuctionFeatured": MessageLookupByLibrary.simpleMessage("上次拍賣"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隱政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
             "步外口越發人親及什體發？這死識快自歡爭界總，任因點成：際電我們，支對答舉星語？國集源。人認法：當子軍歡頭，一要元維回從說天備開是不研現全為獨臺好作用然意……是因的文水做王在資。容的石非之後樓運十，張兒開了愛社，海或這突臺鄉標視導樣的；性對我外他權是全他前邊一專，火康可他商花事充營消力華。"),
@@ -93,6 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tourTitle1": MessageLookupByLibrary.simpleMessage("開師麼受舉前"),
         "tourTitle2": MessageLookupByLibrary.simpleMessage("一新是沒要人角命近因知提企"),
         "tourTitle3": MessageLookupByLibrary.simpleMessage("物絕這對當該"),
+        "viewAll": MessageLookupByLibrary.simpleMessage("查看全部"),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

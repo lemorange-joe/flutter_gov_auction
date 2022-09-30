@@ -34,7 +34,7 @@ class AuctionProvider with ChangeNotifier {
 
       loaded = true;
     } catch (e) {
-      // Logger().e(e.toString());
+      Logger().e(e.toString());
       HiveHelper().writeLog('[Auction] ${e.toString()}');
     }
 
@@ -60,11 +60,30 @@ class AuctionProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setLatestAuctionAsCurrent() {
+    curAuction = latestAuction;
+    notifyListeners();
+  }
+
   Future<Auction> getAuctionDetails(int auctionId, String lang) async {
     final ApiHelper apiHelper = ApiHelper();
     try {
       final Map<String, dynamic> json =
           await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()], useDemoData: true) as Map<String, dynamic>;
+
+      final List<dynamic> jsonItemPdfList = json['ipl'] as List<dynamic>;
+      final List<dynamic> jsonLotList = json['ll'] as List<dynamic>;
+
+      final List<AuctionItemPdf> itemPdfList = <AuctionItemPdf>[];
+      final List<AuctionLot> lotList = <AuctionLot>[];
+
+      for (final dynamic jsonItemPdf in jsonItemPdfList) {
+        itemPdfList.add(AuctionItemPdf(getAuctionItemType((jsonItemPdf as Map<String, dynamic>)['t']! as String), jsonItemPdf['url']! as String));
+      }
+
+      for (final dynamic jsonLot in jsonLotList) {
+        lotList.add(AuctionLot.fromJson(jsonLot as Map<String, dynamic>));
+      }
 
       return Auction(
         json['id'] as int,
@@ -73,9 +92,9 @@ class AuctionProvider with ChangeNotifier {
         '${json['l'] as String} XXX',
         json['ap'] as String,
         json['rp'] as String,
-        <AuctionItemPdf>[],
+        itemPdfList,
         json['r'] as String,
-        <AuctionLot>[],
+        lotList,
         getAuctionStatus(json['as'] as String),
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
       );

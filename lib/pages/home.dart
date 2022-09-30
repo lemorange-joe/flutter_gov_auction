@@ -30,6 +30,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppInfoProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+      Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+    });
   }
 
   void showHome() {
@@ -49,29 +54,37 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: buildAppBar(context),
       drawer: buildDrawer(context),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: config.transitionAnimationDuration),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return SlideTransition(
-            position: Tween<Offset>(begin: Offset(_tabIndex > 0 ? 1.0 : -1.0, 0), end: Offset.zero).animate(animation),
-            child: child,
-          );
-        },
-        layoutBuilder: (Widget? currentChild, _) => currentChild!,
-        child: IndexedStack(
-          index: _tabIndex,
-          key: ValueKey<int>(_tabIndex),
-          children: <Widget>[
-            HomeTab(showAuction),
-            Consumer<AuctionProvider>(
-              builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                return AuctionTab(
-                  auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
-                  showHome,
-                );
-              },
+      body: Opacity(
+        opacity: 0.03,
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.grey.shade100, BlendMode.saturation,
+          ),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: config.transitionAnimationDuration),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return SlideTransition(
+                position: Tween<Offset>(begin: Offset(_tabIndex > 0 ? 1.0 : -1.0, 0), end: Offset.zero).animate(animation),
+                child: child,
+              );
+            },
+            layoutBuilder: (Widget? currentChild, _) => currentChild!,
+            child: IndexedStack(
+              index: _tabIndex,
+              key: ValueKey<int>(_tabIndex),
+              children: <Widget>[
+                HomeTab(showAuction),
+                Consumer<AuctionProvider>(
+                  builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                    return AuctionTab(
+                      auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
+                      showHome,
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
