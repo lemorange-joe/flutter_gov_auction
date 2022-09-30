@@ -18,7 +18,11 @@ class FeaturedListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color titleColor = auction.status == AuctionStatus.Finished ? Theme.of(context).textTheme.bodyText1!.color! : config.blue;
+    Color titleColor = auction.status == AuctionStatus.Finished ? Theme.of(context).textTheme.bodyText1!.color! : config.blue;
+    if (Theme.of(context).brightness == Brightness.dark) {
+      titleColor = auction.status == AuctionStatus.Finished ? Colors.grey[100]! : Colors.white;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -57,16 +61,15 @@ class FeaturedListView extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 250.0,
+          height: 250.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
           child: Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
             return auctionProvider.loaded
                 ? SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: auction.lotList
-                          // .where((AuctionLot auctionLot) => auctionLot.featured)
-                          .map((AuctionLot auctionLot) =>
-                              FeaturedCard(auctionLot.title, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'tour01.jpg'))
+                          .where((AuctionLot auctionLot) => auctionLot.featured)
+                          .map((AuctionLot auctionLot) => FeaturedCard(auctionLot))
                           .toList(),
                     ),
                   )

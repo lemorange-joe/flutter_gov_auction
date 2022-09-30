@@ -16,7 +16,7 @@ const String timeFormatCh = 'aH時mm分';
 const String shortTimeFormat = 'HH:mm';
 
 const int snackbarDuration = 5000;  // in milliseconds
-const int transitionAnimationDuration = 200;  // in milliseconds
+const int transitionAnimationDuration = 250;  // in milliseconds
 
 // same as GLD website color
 const Color blue = Color.fromARGB(255, 0, 91, 172);

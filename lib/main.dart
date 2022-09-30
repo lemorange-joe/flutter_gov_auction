@@ -24,8 +24,19 @@ import './providers/init_value.dart';
 import './providers/lemorange_app_provider.dart';
 import './routes.dart';
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
+
+  HttpOverrides.global = MyHttpOverrides();
+  
   final Directory appDocDir = await getApplicationDocumentsDirectory();
   await FlutterConfig.loadEnvVariables();
   await HiveHelper().init(appDocDir.path, true);

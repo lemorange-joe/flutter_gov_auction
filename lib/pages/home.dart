@@ -51,38 +51,53 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
-      drawer: buildDrawer(context),
-      body: Opacity(
-        opacity: 1,
-        child: ColorFiltered(
-          colorFilter: ColorFilter.mode(
-            Colors.grey.shade100, BlendMode.saturation,
-          ),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: config.transitionAnimationDuration),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SlideTransition(
-                position: Tween<Offset>(begin: Offset(_tabIndex > 0 ? 1.0 : -1.0, 0), end: Offset.zero).animate(animation),
-                child: child,
-              );
-            },
-            layoutBuilder: (Widget? currentChild, _) => currentChild!,
-            child: IndexedStack(
-              index: _tabIndex,
-              key: ValueKey<int>(_tabIndex),
-              children: <Widget>[
-                HomeTab(showAuction),
-                Consumer<AuctionProvider>(
-                  builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                    return AuctionTab(
-                      auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
-                      showHome,
-                    );
-                  },
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        if (_tabIndex != 0) {
+          setState(() {
+            _tabIndex = 0;
+            
+          });
+          return false;
+        }
+
+        return true;
+      },
+      child: Scaffold(
+        appBar: buildAppBar(context),
+        drawer: buildDrawer(context),
+        body: Opacity(
+          opacity: 0.03,
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              // Colors.transparent,
+              Colors.grey.shade100,
+              BlendMode.saturation,
+            ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: config.transitionAnimationDuration),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return SlideTransition(
+                  position: Tween<Offset>(begin: Offset(_tabIndex > 0 ? 1.0 : -1.0, 0), end: Offset.zero).animate(animation),
+                  child: child,
+                );
+              },
+              layoutBuilder: (Widget? currentChild, _) => currentChild!,
+              child: IndexedStack(
+                index: _tabIndex,
+                key: ValueKey<int>(_tabIndex),
+                children: <Widget>[
+                  HomeTab(showAuction),
+                  Consumer<AuctionProvider>(
+                    builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                      return AuctionTab(
+                        auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
+                        showHome,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

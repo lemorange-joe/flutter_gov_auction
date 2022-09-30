@@ -1,16 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 
 class FeaturedCard extends StatefulWidget {
-  const FeaturedCard(this.title, this.content, this.image, {super.key});
+  const FeaturedCard(this.auctionLot, {super.key});
 
-  final String title;
-  final String content;
-  final String image;
+  final AuctionLot auctionLot;
 
   @override
   State<FeaturedCard> createState() => _FeaturedCardState();
@@ -21,8 +21,11 @@ class _FeaturedCardState extends State<FeaturedCard> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d('${widget.auctionLot.photoUrl}: ${Uri.parse(widget.auctionLot.photoUrl).isAbsolute}');
+    final Color remarksColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[100]! : Colors.grey[700]!;
+
     return SizedBox(
-      width: 150.0,
+      width: 160.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
       child: GestureDetector(
         onTap: () {
           setState(() {
@@ -44,15 +47,28 @@ class _FeaturedCardState extends State<FeaturedCard> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/${widget.image}'),
-                          fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            image: AssetImage('assets/images/app_logo.png'),
+                            fit: BoxFit.contain,
+                          ),
+                          borderRadius: BorderRadius.circular(config.mdBorderRadius),
                         ),
-                        borderRadius: BorderRadius.circular(config.mdBorderRadius),
                       ),
                     ),
+                    if (widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute)
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(widget.auctionLot.photoUrl),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(config.mdBorderRadius),
+                        ),
+                      ),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: LayoutBuilder(
@@ -68,10 +84,10 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    widget.title,
+                                    widget.auctionLot.title,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color: _showDetails ? config.blue : Theme.of(context).textTheme.bodyText1!.color,
+                                      color: _showDetails ? (Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue) : Theme.of(context).textTheme.bodyText1!.color,
                                       fontSize: 14.0,
                                       fontWeight: _showDetails ? FontWeight.bold : FontWeight.normal,
                                     ),
@@ -81,7 +97,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                     Expanded(
                                       child: SingleChildScrollView(
                                         child: Text(
-                                          widget.content,
+                                          widget.auctionLot.department,
                                           style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0),
                                         ),
                                       ),
@@ -95,13 +111,13 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                           Icon(
                                             MdiIcons.gestureDoubleTap,
                                             size: 15.0,
-                                            color: Colors.grey[700],
+                                            color: remarksColor,
                                           ),
                                           const SizedBox(width: config.iconTextSpacing),
                                           AutoSizeText(
                                             S.of(context).pressHoldViewDetails,
                                             style: TextStyle(
-                                              color: Colors.grey[700],
+                                              color: remarksColor,
                                               fontSize: 12.0,
                                             ),
                                             minFontSize: 8.0,
@@ -114,7 +130,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                     AutoSizeText(
                                       S.of(context).photoDisclaimer,
                                       style: TextStyle(
-                                        color: Colors.grey[700],
+                                        color: remarksColor,
                                         fontSize: 12.0,
                                       ),
                                       minFontSize: 8.0,

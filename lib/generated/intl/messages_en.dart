@@ -79,14 +79,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
-        "semanticsClose": MessageLookupByLibrary.simpleMessage("Close"),
-        "semanticsGoBack": MessageLookupByLibrary.simpleMessage("Go back"),
-        "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("Read news"),
+        "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
+        "semanticsFeaturedItems":
+            MessageLookupByLibrary.simpleMessage("featured items"),
+        "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
+        "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),
         "semanticsPressHoldViewDetails": MessageLookupByLibrary.simpleMessage(
-            "Press and hold to view details"),
-        "semanticsRead": MessageLookupByLibrary.simpleMessage("Red"),
-        "semanticsTbc": MessageLookupByLibrary.simpleMessage("Semantics TBC"),
-        "semanticsUnread": MessageLookupByLibrary.simpleMessage("Unread"),
+            "press and hold to view details"),
+        "semanticsRead": MessageLookupByLibrary.simpleMessage("red"),
+        "semanticsSavedItems":
+            MessageLookupByLibrary.simpleMessage("saved items"),
+        "semanticsTbc": MessageLookupByLibrary.simpleMessage("semantics TBC"),
+        "semanticsUnread": MessageLookupByLibrary.simpleMessage("unread"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
         "tabAll": MessageLookupByLibrary.simpleMessage("All"),

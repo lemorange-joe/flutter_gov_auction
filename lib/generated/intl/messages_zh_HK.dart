@@ -76,11 +76,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜尋項目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("關閉"),
+        "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精選物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
         "semanticsPressHoldViewDetails":
             MessageLookupByLibrary.simpleMessage("長按查看詳情"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),
+        "semanticsSavedItems": MessageLookupByLibrary.simpleMessage("已收藏物品"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("無障礙內容待定"),
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("未閱讀"),
         "settings": MessageLookupByLibrary.simpleMessage("設定"),

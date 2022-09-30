@@ -470,70 +470,90 @@ class S {
     );
   }
 
-  /// `Close`
+  /// `close`
   String get semanticsClose {
     return Intl.message(
-      'Close',
+      'close',
       name: 'semanticsClose',
       desc: '',
       args: [],
     );
   }
 
-  /// `Go back`
+  /// `featured items`
+  String get semanticsFeaturedItems {
+    return Intl.message(
+      'featured items',
+      name: 'semanticsFeaturedItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `go back`
   String get semanticsGoBack {
     return Intl.message(
-      'Go back',
+      'go back',
       name: 'semanticsGoBack',
       desc: '',
       args: [],
     );
   }
 
-  /// `Read news`
+  /// `read news`
   String get semanticsOpenNews {
     return Intl.message(
-      'Read news',
+      'read news',
       name: 'semanticsOpenNews',
       desc: '',
       args: [],
     );
   }
 
-  /// `Press and hold to view details`
+  /// `press and hold to view details`
   String get semanticsPressHoldViewDetails {
     return Intl.message(
-      'Press and hold to view details',
+      'press and hold to view details',
       name: 'semanticsPressHoldViewDetails',
       desc: '',
       args: [],
     );
   }
 
-  /// `Red`
+  /// `red`
   String get semanticsRead {
     return Intl.message(
-      'Red',
+      'red',
       name: 'semanticsRead',
       desc: '',
       args: [],
     );
   }
 
-  /// `Semantics TBC`
+  /// `saved items`
+  String get semanticsSavedItems {
+    return Intl.message(
+      'saved items',
+      name: 'semanticsSavedItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `semantics TBC`
   String get semanticsTbc {
     return Intl.message(
-      'Semantics TBC',
+      'semantics TBC',
       name: 'semanticsTbc',
       desc: '',
       args: [],
     );
   }
 
-  /// `Unread`
+  /// `unread`
   String get semanticsUnread {
     return Intl.message(
-      'Unread',
+      'unread',
       name: 'semanticsUnread',
       desc: '',
       args: [],
