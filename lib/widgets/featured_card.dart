@@ -21,7 +21,6 @@ class _FeaturedCardState extends State<FeaturedCard> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().d('${widget.auctionLot.photoUrl}: ${Uri.parse(widget.auctionLot.photoUrl).isAbsolute}');
     final Color remarksColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[100]! : Colors.grey[700]!;
 
     return SizedBox(

@@ -1,9 +1,11 @@
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
+import '../includes/enums.dart';
 
 class AuctionTab extends StatefulWidget {
   const AuctionTab(this.auction, this.showHome, {Key? key}) : super(key: key);
@@ -15,17 +17,48 @@ class AuctionTab extends StatefulWidget {
   State<AuctionTab> createState() => _AuctionTabState();
 }
 
-Widget _buildLotList(List<AuctionLot> lotList) {
-  
-  return ListView.builder(
-    itemCount: lotList.length,
-    itemBuilder: (BuildContext context, int i) {
-      return Text('${i + 1} ${lotList[i].reference}');
-    },
-  );
-}
+class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateMixin {
+  Widget _buildLotList(List<AuctionLot> lotList) {
+    // Logger().w('_buildLotList: ${lotList.length}');
+    return ListView.builder(
+      itemCount: lotList.length,
+      itemBuilder: (BuildContext context, int i) {
+        return ExpansionTileCard(
+          title: Text('${lotList[i].id}: ${lotList[i].reference}'),
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Divider(),
+                    Text(lotList[i].gldFileRef),
+                    Text(lotList[i].department),
+                    Row(
+                      children: <Widget>[
+                        Text(lotList[i].contact),
+                        const SizedBox(width: 20.0),
+                        Text(lotList[i].contactNumber),
+                      ],
+                    ),
+                    Text(lotList[i].contactLocation),
+                    const Divider(
+                      endIndent: 50.0,
+                    ),
+                    Text(lotList[i].title),
+                  ],
+                ),
+              ),
+            ),
+            
+          ],
+        );
+      },
+    );
+  }
 
-class _AuctionTabState extends State<AuctionTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +130,10 @@ class _AuctionTabState extends State<AuctionTab> {
               _buildLotList(widget.auction.lotList),
               _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
               const Text('3'),
-              const Text('4'),
-              const Text('5'),
-              const Text('6'),
-              const Text('7'),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
             ],
           ),
         ),

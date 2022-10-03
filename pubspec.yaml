@@ -39,6 +39,7 @@ dependencies:
   clear_all_notifications: ^0.0.3
   confetti: ^0.7.0
   cupertino_icons: ^1.0.2
+  expansion_tile_card: ^2.0.0
   firebase_analytics: ^9.3.5
   firebase_core: ^1.21.1
   firebase_messaging: ^13.0.0
