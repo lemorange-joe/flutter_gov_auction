@@ -96,11 +96,7 @@ class _DebugPageState extends State<DebugPage> {
                       width: 50.0,
                       child: LemorangeLogo(),
                     ),
-                    SizedBox(
-                      height: 60.0 * MediaQuery.of(context).textScaleFactor,
-                      width: 60.0 * MediaQuery.of(context).textScaleFactor,
-                      child: LemorangeLoading(),
-                    ),
+                    LemorangeLoading(size: 60.0 * MediaQuery.of(context).textScaleFactor),
                   ],
                 ),
                 const Divider(),

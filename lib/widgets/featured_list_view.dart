@@ -74,11 +74,7 @@ class FeaturedListView extends StatelessWidget {
                     ),
                   )
                 : Center(
-                    child: SizedBox(
-                      width: 60.0,
-                      height: 60.0,
-                      child: LemorangeLoading(),
-                    ),
+                    child: LemorangeLoading(size: 60.0),
                   );
           }),
         ),

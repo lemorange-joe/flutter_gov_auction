@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum."),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name"),
+        "auctionList": MessageLookupByLibrary.simpleMessage("Auction List"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),

@@ -270,7 +270,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget getCustomListTile(IconData iconData, Color iconColor, String content, String route) {
     final double visualDensity = min((MediaQuery.of(context).textScaleFactor - 1) * 8, VisualDensity.maximumDensity);
-    final bool isCurrent = ModalRoute.of(context) != null && ModalRoute.of(context)!.settings.name == route;
+    final String currentRoute = ModalRoute.of(context) != null && ModalRoute.of(context)!.settings.name != null ? ModalRoute.of(context)!.settings.name! : '';
+    final bool isCurrentRoute = currentRoute == route;
+    final bool isCurrentTab = currentRoute != 'home' || _tabIndex == 0;
 
     return SizedBox(
       height: 48.0 * MediaQuery.of(context).textScaleFactor,
@@ -280,26 +282,30 @@ class _HomePageState extends State<HomePage> {
             Navigator.pop(context);
             if (route == 'news') {
               openMessageList(context);
-            } else if (!isCurrent) {
+            } else if (!isCurrentRoute) {
               Navigator.pushNamed(context, route);
+            } else if (route == 'home' && _tabIndex != 0) {
+              setState((){
+                _tabIndex = 0;
+              });
             }
           },
-          tileColor: isCurrent ? config.green : Theme.of(context).scaffoldBackgroundColor,
+          tileColor: isCurrentRoute && isCurrentTab ? config.green : Theme.of(context).scaffoldBackgroundColor,
           dense: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
           visualDensity: VisualDensity(vertical: visualDensity),
           horizontalTitleGap: (MediaQuery.of(context).textScaleFactor - 0.75) * 12,
           leading: Icon(
             iconData,
-            color: isCurrent ? Colors.white : iconColor,
+            color: isCurrentRoute && isCurrentTab ? Colors.white : iconColor,
             size: 24.0 * MediaQuery.of(context).textScaleFactor,
           ),
           title: Text(
             content,
             style: TextStyle(
-              color: isCurrent ? Colors.white : Theme.of(context).textTheme.bodyText2!.color,
+              color: isCurrentRoute && isCurrentTab ? Colors.white : Theme.of(context).textTheme.bodyText2!.color,
               fontSize: 15.0,
-              fontWeight: isCurrent ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: isCurrentRoute && isCurrentTab ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ),

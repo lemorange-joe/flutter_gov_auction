@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Auction List`
+  String get auctionList {
+    return Intl.message(
+      'Auction List',
+      name: 'auctionList',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Clear search history`
   String get clearSearchHistory {
     return Intl.message(

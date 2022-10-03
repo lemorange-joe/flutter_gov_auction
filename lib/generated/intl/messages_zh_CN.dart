@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "孩论脚定，脑告便过面了面乐的子地园响注。多界停看国题的史急文么密李严来传期入也开喜足饭也，很命的重和我么养画，天特务中到更西动金制就将方年人运朋计！"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
+        "auctionList": MessageLookupByLibrary.simpleMessage("拍卖列表"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下载"),

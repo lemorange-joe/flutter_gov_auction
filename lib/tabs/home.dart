@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
-import '../helpers/api_helper.dart';
+// import '../helpers/api_helper.dart';
+import '../includes/config.dart' as config;
 // import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
+import '../widgets/auction_list_item.dart';
 import '../widgets/featured_list_view.dart';
+import '../widgets/ui/animated_loading.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab(this.showAuction, {Key? key}) : super(key: key);
@@ -19,19 +22,14 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  int _counter = 0;
-
-  Future<void> _incrementCounter() async {
-    setState(() {
-      _counter++;
-    });
-
-    final dynamic result = await ApiHelper().get(S.of(context).lang, 'data', 'appinfo', useDemoData: true);
-    Logger().d(result);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final TextStyle titleStyle = TextStyle(
+      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue,
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SingleChildScrollView(
@@ -76,18 +74,7 @@ class _HomeTabState extends State<HomeTab> {
               ],
             ),
             const SizedBox(height: 10.0),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            TextButton(
-              onPressed: _incrementCounter,
-              child: const Icon(Icons.add),
-            ),
-            _buildAuctionList(context),
+            _buildAuctionList(titleStyle),
             ..._buildOtherSection1(),
           ],
         ),
@@ -95,25 +82,29 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  Widget _buildAuctionList(BuildContext context) {
+  Widget _buildAuctionList(TextStyle titleStyle) {
     return Consumer<AuctionProvider>(
       builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-        return !auctionProvider.loaded
-            ? const SizedBox(width: 20.0, height: 20.0, child: CircularProgressIndicator())
-            : Column(
-                children: auctionProvider.auctionList.map((Auction auction) {
-                  return SizedBox(
-                    height: 40.0,
-                    child: GestureDetector(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(S.of(context).auctionList, style: titleStyle),
+            if (auctionProvider.loaded)
+              ...auctionProvider.auctionList
+                  .map(
+                    (Auction auction) => ListTile(
                       onTap: () {
                         Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
                         widget.showAuction();
                       },
-                      child: Text('${auction.id} ${auction.startTime}'),
+                      title: AuctionListItem(auction),
                     ),
-                  );
-                }).toList(),
-              );
+                  )
+                  .toList()
+            else
+              LemorangeLoading(),
+          ],
+        );
       },
     );
   }

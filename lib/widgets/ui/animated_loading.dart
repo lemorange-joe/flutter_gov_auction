@@ -83,8 +83,9 @@ class ShakeCurve extends Curve {
 }
 
 class LemorangeLoading extends StatefulWidget {
-  LemorangeLoading({Key? key, this.duration = const Duration(milliseconds: 500), this.deltaX = 20, this.curve = Curves.bounceOut}) : super(key: key);
+  LemorangeLoading({Key? key, this.size = 50.0, this.duration = const Duration(milliseconds: 500), this.deltaX = 20, this.curve = Curves.bounceOut}) : super(key: key);
 
+  final double size;
   final Duration duration;
   final double deltaX;
   final Curve curve;
@@ -140,39 +141,43 @@ class _LemorangeLoadingState extends State<LemorangeLoading> with SingleTickerPr
   Widget build(BuildContext context) {
     final Animation<double> curve = CurvedAnimation(parent: rotationController, curve: ShakeCurve());
 
-    return AnimatedBuilder(
-      animation: rotationController,
-      builder: (BuildContext context, Widget? child) {
-        return Column(
-          children: <Widget>[
-            // Transform.translate(
-            //   offset: Offset(widget.deltaX * shake(_controller.value), 0),
-            //   child: Text('Loading $dots'),
-            // ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: GestureDetector(
-                  onTap: () {
-                    rotationController.forward(from: 0.0);
-                  },
-                  child: RotationTransition(
-                    turns: Tween<double>(begin: 0.0, end: 0.5).animate(curve),
-                    child: Image.asset(
-                      config.env == 'dev' ? 'assets/images/office_logo.png' : 'assets/images/loading_logo.png',
-                      isAntiAlias: true,
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: AnimatedBuilder(
+        animation: rotationController,
+        builder: (BuildContext context, Widget? child) {
+          return Column(
+            children: <Widget>[
+              // Transform.translate(
+              //   offset: Offset(widget.deltaX * shake(_controller.value), 0),
+              //   child: Text('Loading $dots'),
+              // ),
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: GestureDetector(
+                    onTap: () {
+                      rotationController.forward(from: 0.0);
+                    },
+                    child: RotationTransition(
+                      turns: Tween<double>(begin: 0.0, end: 0.5).animate(curve),
+                      child: Image.asset(
+                        config.env == 'dev' ? 'assets/images/office_logo.png' : 'assets/images/loading_logo.png',
+                        isAntiAlias: true,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Text(
-              S.of(context).loading,
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
-            ),
-          ],
-        );
-      },
+              Text(
+                S.of(context).loading,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
