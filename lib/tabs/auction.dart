@@ -6,6 +6,7 @@ import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../widgets/ui/calendar.dart';
 
 class AuctionTab extends StatefulWidget {
   const AuctionTab(this.auction, this.showHome, {Key? key}) : super(key: key);
@@ -76,6 +77,8 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
                   title: Column(
                     children: <Widget>[
                       const SizedBox(height: 60.0),
+                      const SizedBox(height: 10.0),
+                      Calendar(widget.auction.startTime),
                       if (widget.auction.id == 0)
                         const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
                       else
