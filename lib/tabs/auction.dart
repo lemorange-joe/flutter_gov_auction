@@ -32,52 +32,52 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
     initialLotId = Provider.of<AuctionProvider>(context, listen: false).initialLot;
   }
 
-
   Widget _buildLotList(List<AuctionLot> lotList, {int initialLotId = 0}) {
     return SingleChildScrollView(
       controller: ScrollController(initialScrollOffset: -10),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: lotList.length,
-        itemBuilder: (BuildContext context, int i) {
-          return ExpansionTileCard(
-            title: Text(
-              '${lotList[i].id}: ${lotList[i].reference}',
-              key: initialLotId == lotList[i].id ? _initialLotKey : null,
-            ),
-            initiallyExpanded: initialLotId == lotList[i].id,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Divider(),
-                      Text(lotList[i].gldFileRef),
-                      Text(lotList[i].department),
-                      Row(
-                        children: <Widget>[
-                          Text(lotList[i].contact),
-                          const SizedBox(width: 20.0),
-                          Text(lotList[i].contactNumber),
-                        ],
-                      ),
-                      Text(lotList[i].contactLocation),
-                      const Divider(
-                        endIndent: 50.0,
-                      ),
-                      Text(lotList[i].title),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+      child: GetListView(lotList, initialLotId, _initialLotKey),
+      // child: ListView.builder(
+      //   shrinkWrap: true,
+      //   physics: const NeverScrollableScrollPhysics(),
+      //   itemCount: lotList.length,
+      //   itemBuilder: (BuildContext context, int i) {
+      //     return ExpansionTileCard(
+      //       title: Text(
+      //         '${lotList[i].id}: ${lotList[i].reference}',
+      //         key: initialLotId == lotList[i].id ? _initialLotKey : null,
+      //       ),
+      //       initiallyExpanded: initialLotId == lotList[i].id,
+      //       children: <Widget>[
+      //         Align(
+      //           alignment: Alignment.centerLeft,
+      //           child: Padding(
+      //             padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
+      //             child: Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: <Widget>[
+      //                 const Divider(),
+      //                 Text(lotList[i].gldFileRef),
+      //                 Text(lotList[i].department),
+      //                 Row(
+      //                   children: <Widget>[
+      //                     Text(lotList[i].contact),
+      //                     const SizedBox(width: 20.0),
+      //                     Text(lotList[i].contactNumber),
+      //                   ],
+      //                 ),
+      //                 Text(lotList[i].contactLocation),
+      //                 const Divider(
+      //                   endIndent: 50.0,
+      //                 ),
+      //                 Text(lotList[i].title),
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // ),
     );
   }
 
@@ -207,4 +207,67 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return false;
   }
+}
+
+class GetListView extends StatefulWidget {
+  const GetListView(this.lotList, this.initialLotId, this.initialLotKey, {Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => _GetListViewState();
+
+  final List<AuctionLot> lotList;
+  final int initialLotId;
+  final Key initialLotKey;
+}
+
+class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClientMixin<GetListView> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.lotList.length,
+      itemBuilder: (BuildContext context, int i) {
+        return ExpansionTileCard(
+          title: Text(
+            '${widget.lotList[i].id}: ${widget.lotList[i].reference}',
+            key: widget.initialLotId == widget.lotList[i].id ? widget.initialLotKey : null,
+          ),
+          initiallyExpanded: widget.initialLotId == widget.lotList[i].id,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Divider(),
+                    Text(widget.lotList[i].gldFileRef),
+                    Text(widget.lotList[i].department),
+                    Row(
+                      children: <Widget>[
+                        Text(widget.lotList[i].contact),
+                        const SizedBox(width: 20.0),
+                        Text(widget.lotList[i].contactNumber),
+                      ],
+                    ),
+                    Text(widget.lotList[i].contactLocation),
+                    const Divider(
+                      endIndent: 50.0,
+                    ),
+                    Text(widget.lotList[i].title),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
