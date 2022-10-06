@@ -2,10 +2,12 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../providers/auction_provider.dart';
 import '../widgets/ui/calendar.dart';
 
 class AuctionTab extends StatefulWidget {
@@ -19,49 +21,87 @@ class AuctionTab extends StatefulWidget {
 }
 
 class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateMixin {
-  Widget _buildLotList(List<AuctionLot> lotList) {
-    // Logger().w('_buildLotList: ${lotList.length}');
-    return ListView.builder(
-      itemCount: lotList.length,
-      itemBuilder: (BuildContext context, int i) {
-        return ExpansionTileCard(
-          title: Text('${lotList[i].id}: ${lotList[i].reference}'),
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Divider(),
-                    Text(lotList[i].gldFileRef),
-                    Text(lotList[i].department),
-                    Row(
-                      children: <Widget>[
-                        Text(lotList[i].contact),
-                        const SizedBox(width: 20.0),
-                        Text(lotList[i].contactNumber),
-                      ],
-                    ),
-                    Text(lotList[i].contactLocation),
-                    const Divider(
-                      endIndent: 50.0,
-                    ),
-                    Text(lotList[i].title),
-                  ],
+  int initialLotId = 0;
+  int initialLotIndex = -1;
+  final GlobalKey _initialLotKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+
+    initialLotId = Provider.of<AuctionProvider>(context, listen: false).initialLot;
+  }
+
+
+  Widget _buildLotList(List<AuctionLot> lotList, {int initialLotId = 0}) {
+    return SingleChildScrollView(
+      controller: ScrollController(initialScrollOffset: -10),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: lotList.length,
+        itemBuilder: (BuildContext context, int i) {
+          return ExpansionTileCard(
+            title: Text(
+              '${lotList[i].id}: ${lotList[i].reference}',
+              key: initialLotId == lotList[i].id ? _initialLotKey : null,
+            ),
+            initiallyExpanded: initialLotId == lotList[i].id,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Divider(),
+                      Text(lotList[i].gldFileRef),
+                      Text(lotList[i].department),
+                      Row(
+                        children: <Widget>[
+                          Text(lotList[i].contact),
+                          const SizedBox(width: 20.0),
+                          Text(lotList[i].contactNumber),
+                        ],
+                      ),
+                      Text(lotList[i].contactLocation),
+                      const Divider(
+                        endIndent: 50.0,
+                      ),
+                      Text(lotList[i].title),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Logger().d('lot length: ${widget.auction.lotList.length}');
+    if (widget.auction.lotList.isNotEmpty) {
+      Future<void>.delayed(const Duration(milliseconds: 100)).then((_) {
+        if (_initialLotKey.currentContext != null) {
+          Scrollable.ensureVisible(
+            _initialLotKey.currentContext!,
+            alignment: 0.25,
+            duration: const Duration(milliseconds: config.transitionAnimationDuration),
+            curve: Curves.easeInOut,
+          );
+          // Logger().w('Scrollable.ensureVisible done!');
+        } else {
+          // Logger().w('_initialLotKey.currentContext is null!!');
+        }
+      });
+    } else {
+      // Logger().w('lotList empty');
+    }
+
     return Scaffold(
       body: DefaultTabController(
         length: 7,
@@ -130,7 +170,7 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
           },
           body: TabBarView(
             children: <Widget>[
-              _buildLotList(widget.auction.lotList),
+              _buildLotList(widget.auction.lotList, initialLotId: initialLotId),
               _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
               const Text('3'),
               _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),

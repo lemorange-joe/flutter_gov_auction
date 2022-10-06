@@ -1,16 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 
 class FeaturedCard extends StatefulWidget {
-  const FeaturedCard(this.auctionLot, {super.key});
+  const FeaturedCard(this.auctionLot, this.showFeaturedLot, {super.key});
 
   final AuctionLot auctionLot;
+  final Function(BuildContext, int) showFeaturedLot;
 
   @override
   State<FeaturedCard> createState() => _FeaturedCardState();
@@ -31,11 +32,11 @@ class _FeaturedCardState extends State<FeaturedCard> {
             _showDetails = !_showDetails;
           });
         },
-        onLongPress: () {
+        onDoubleTap: () {
           setState(() {
             _showDetails = false;
           });
-          Logger().w('Long pressed!');
+          widget.showFeaturedLot(context, widget.auctionLot.id);
         },
         child: Card(
           shape: RoundedRectangleBorder(
@@ -103,7 +104,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                     ),
                                   if (_showDetails)
                                     Semantics(
-                                      label: S.of(context).semanticsPressHoldViewDetails,
+                                      label: S.of(context).semanticsDoubleTapViewDetails,
                                       excludeSemantics: true,
                                       child: Row(
                                         children: <Widget>[
@@ -114,7 +115,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                           ),
                                           const SizedBox(width: config.iconTextSpacing),
                                           AutoSizeText(
-                                            S.of(context).pressHoldViewDetails,
+                                            S.of(context).doubleTapViewDetails,
                                             style: TextStyle(
                                               color: remarksColor,
                                               fontSize: 12.0,

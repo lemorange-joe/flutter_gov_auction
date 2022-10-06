@@ -13,6 +13,7 @@ class AuctionProvider with ChangeNotifier {
   bool loaded = false;
   bool loadedDetails = false;
   late List<Auction> auctionList;
+  int initialLot = 0; // to auto expand the auction lot when showing the auction tab
   Auction curAuction = Auction.empty();
   Auction latestAuction = Auction.empty();
 
@@ -55,12 +56,14 @@ class AuctionProvider with ChangeNotifier {
     notifyListeners();
 
     curAuction = await getAuctionDetails(auctionId, lang);
+    initialLot = 0;
 
     loadedDetails = true;
     notifyListeners();
   }
 
-  void setLatestAuctionAsCurrent() {
+  void setLatestAuctionAsCurrent(int lotId) {
+    initialLot = lotId;
     curAuction = latestAuction;
     loadedDetails = true;
     

@@ -170,6 +170,16 @@ class S {
     );
   }
 
+  /// `View details`
+  String get doubleTapViewDetails {
+    return Intl.message(
+      'View details',
+      name: 'doubleTapViewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Download Now`
   String get downloadNow {
     return Intl.message(
@@ -335,16 +345,6 @@ class S {
     return Intl.message(
       '* (TBC)photo disclaimer',
       name: 'photoDisclaimer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View details`
-  String get pressHoldViewDetails {
-    return Intl.message(
-      'View details',
-      name: 'pressHoldViewDetails',
       desc: '',
       args: [],
     );
@@ -521,10 +521,10 @@ class S {
   }
 
   /// `press and hold to view details`
-  String get semanticsPressHoldViewDetails {
+  String get semanticsDoubleTapViewDetails {
     return Intl.message(
       'press and hold to view details',
-      name: 'semanticsPressHoldViewDetails',
+      name: 'semanticsDoubleTapViewDetails',
       desc: '',
       args: [],
     );

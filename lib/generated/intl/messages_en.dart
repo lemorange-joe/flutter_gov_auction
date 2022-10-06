@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
+        "doubleTapViewDetails":
+            MessageLookupByLibrary.simpleMessage("View details"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
@@ -59,8 +61,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeToUser": MessageLookupByLibrary.simpleMessage("Notice to User"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
-        "pressHoldViewDetails":
-            MessageLookupByLibrary.simpleMessage("View details"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
@@ -81,12 +81,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
+        "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(
+            "press and hold to view details"),
         "semanticsFeaturedItems":
             MessageLookupByLibrary.simpleMessage("featured items"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),
-        "semanticsPressHoldViewDetails": MessageLookupByLibrary.simpleMessage(
-            "press and hold to view details"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("red"),
         "semanticsSavedItems":
             MessageLookupByLibrary.simpleMessage("saved items"),

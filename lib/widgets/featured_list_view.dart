@@ -16,6 +16,11 @@ class FeaturedListView extends StatelessWidget {
   final Auction auction;
   final Function() homeTabShowAuction;
 
+  void showFeaturedLot(BuildContext context, int lotId) {
+    Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent(lotId);
+    homeTabShowAuction();
+  }
+
   @override
   Widget build(BuildContext context) {
     Color titleColor = auction.status == AuctionStatus.Finished ? Theme.of(context).textTheme.bodyText1!.color! : config.blue;
@@ -49,7 +54,7 @@ class FeaturedListView extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent();
+                Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent(0);
                 homeTabShowAuction();
               },
               style: TextButton.styleFrom(
@@ -69,7 +74,7 @@ class FeaturedListView extends StatelessWidget {
                     child: Row(
                       children: auction.lotList
                           .where((AuctionLot auctionLot) => auctionLot.featured)
-                          .map((AuctionLot auctionLot) => FeaturedCard(auctionLot))
+                          .map((AuctionLot auctionLot) => FeaturedCard(auctionLot, showFeaturedLot))
                           .toList(),
                     ),
                   )

@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "auctionList": MessageLookupByLibrary.simpleMessage("拍卖列表"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
+        "doubleTapViewDetails": MessageLookupByLibrary.simpleMessage("双击查看详情"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下载"),
         "faq": MessageLookupByLibrary.simpleMessage("常见问题"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("精选物品"),
@@ -57,7 +58,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
-        "pressHoldViewDetails": MessageLookupByLibrary.simpleMessage("长按查看详情"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
@@ -77,11 +77,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("关闭"),
+        "semanticsDoubleTapViewDetails":
+            MessageLookupByLibrary.simpleMessage("双击查看详情"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精选物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),
-        "semanticsPressHoldViewDetails":
-            MessageLookupByLibrary.simpleMessage("长按查看详情"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已阅读"),
         "semanticsSavedItems": MessageLookupByLibrary.simpleMessage("已收藏物品"),
         "semanticsTbc": MessageLookupByLibrary.simpleMessage("无障碍内容待定"),
