@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../providers/auction_provider.dart';
 import '../widgets/ui/calendar.dart';
 
 class AuctionTab extends StatefulWidget {
@@ -17,18 +19,30 @@ class AuctionTab extends StatefulWidget {
   State<AuctionTab> createState() => _AuctionTabState();
 }
 
-class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  Widget _buildLotList(int pageStorageKey, List<AuctionLot> lotList) {
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController = TabController(length: 7, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildLotList(List<AuctionLot> lotList) {
     // remove SingleChildScrollView because does not support auto expand/collapse sliver appbar
     return lotList.isEmpty ? const Center(child: Text('Empty')) : GetListView(lotList);
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    _tabController.index = Provider.of<AuctionProvider>(context, listen: false).initialShowFeatured ? 1 : 0;
 
     return Scaffold(
       body: DefaultTabController(
@@ -38,7 +52,9 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
             return <Widget>[
               SliverAppBar(
                 expandedHeight: 200.0,
+                floating: true,
                 pinned: true,
+                snap: true,
                 backgroundColor: config.blue,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
@@ -67,6 +83,7 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
               SliverPersistentHeader(
                 delegate: _SliverAppBarDelegate(
                   TabBar(
+                    controller: _tabController,
                     isScrollable: true,
                     overlayColor: MaterialStateProperty.all(Colors.red),
                     labelColor: Theme.of(context).textTheme.bodyText2!.color,
@@ -97,15 +114,16 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
             ];
           },
           body: TabBarView(
+            key: Key(widget.auction.id.toString()),
+            controller: _tabController,
             children: <Widget>[
-              _buildLotList(1, widget.auction.lotList),
-              _buildLotList(2, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
+              _buildLotList(widget.auction.lotList),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
               const Text('3'),
-              _buildLotList(4, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
-              _buildLotList(5, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
-              _buildLotList(6, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
-              _buildLotList(
-                  7, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
+              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
             ],
           ),
         ),

@@ -12,6 +12,7 @@ class AuctionProvider with ChangeNotifier {
 
   bool loaded = false;
   bool loadedDetails = false;
+  bool initialShowFeatured = false;
   late List<Auction> auctionList;
   Auction curAuction = Auction.empty();
   Auction latestAuction = Auction.empty();
@@ -54,6 +55,7 @@ class AuctionProvider with ChangeNotifier {
     loadedDetails = false;
     notifyListeners();
 
+    initialShowFeatured = false;
     curAuction = await getAuctionDetails(auctionId, lang);
 
     loadedDetails = true;
@@ -61,6 +63,7 @@ class AuctionProvider with ChangeNotifier {
   }
 
   void setLatestAuctionAsCurrent() {
+    initialShowFeatured = true;
     curAuction = latestAuction;
     loadedDetails = true;
     
