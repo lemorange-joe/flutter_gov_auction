@@ -20,8 +20,9 @@ class Routes {
     switch (settings.name) {
       case 'auction_lot':
         final dynamic args = settings.arguments;
-        final AuctionLot auctionLot = (args as Map<String, dynamic>)['auctionLot'] as AuctionLot;
-        return _buildRoute(settings, AuctionLotPage(auctionLot));
+        final String title = (args as Map<String, dynamic>)['title'] as String;
+        final AuctionLot auctionLot = args['auctionLot'] as AuctionLot;
+        return _buildRoute(settings, AuctionLotPage(title, auctionLot));
       case 'agreement':
         final dynamic args = settings.arguments;
         final String exitPage = (args == null || (args as Map<String, dynamic>)['exitPage'] == null) ? '' : args['exitPage'] as String;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -172,27 +173,54 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
     return ListView.builder(
       itemCount: widget.lotList.length,
       itemBuilder: (BuildContext context, int i) {
+        final AuctionLot curLot = widget.lotList[i];
+
         return ListTile(
           onTap: () {
-            Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{'auctionLot': widget.lotList[i]});
+            Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{'title': S.of(context).itemDetails, 'auctionLot': curLot});
           },
-          leading: Text(widget.lotList[i].id.toString()),
+          leading: Hero(
+            tag: 'lot_photo_${curLot.id}',
+            child: SizedBox(
+              width: 40.0,
+              height: 40.0,
+              child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
+                  ? Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(curLot.photoUrl),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(config.mdBorderRadius),
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/app_logo.png'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(config.mdBorderRadius),
+                      ),
+                    ),
+            ),
+          ),
           title: Column(
             children: <Widget>[
-              Text(widget.lotList[i].gldFileRef),
-              Text(widget.lotList[i].department),
+              Text(curLot.gldFileRef),
+              Text(curLot.department),
               Row(
                 children: <Widget>[
-                  Text(widget.lotList[i].contact),
+                  Text(curLot.contact),
                   const SizedBox(width: 20.0),
-                  Text(widget.lotList[i].contactNumber),
+                  Text(curLot.contactNumber),
                 ],
               ),
-              Text(widget.lotList[i].contactLocation),
+              Text(curLot.contactLocation),
               const Divider(
                 endIndent: 50.0,
               ),
-              Text(widget.lotList[i].title),
+              Text(curLot.title),
             ],
           ),
         );

@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),

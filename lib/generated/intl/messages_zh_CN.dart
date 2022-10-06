@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "featuredItems": MessageLookupByLibrary.simpleMessage("精选物品"),
         "help": MessageLookupByLibrary.simpleMessage("帮助"),
         "home": MessageLookupByLibrary.simpleMessage("主页"),
+        "itemDetails": MessageLookupByLibrary.simpleMessage("项目详情"),
         "lang": MessageLookupByLibrary.simpleMessage("sc"),
         "loading": MessageLookupByLibrary.simpleMessage("载入中..."),
         "myFavourite": MessageLookupByLibrary.simpleMessage("我的最爱"),

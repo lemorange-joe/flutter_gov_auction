@@ -230,6 +230,16 @@ class S {
     );
   }
 
+  /// `Item Details`
+  String get itemDetails {
+    return Intl.message(
+      'Item Details',
+      name: 'itemDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Loading...`
   String get loading {
     return Intl.message(
