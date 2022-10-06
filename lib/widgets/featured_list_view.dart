@@ -16,8 +16,8 @@ class FeaturedListView extends StatelessWidget {
   final Auction auction;
   final Function() homeTabShowAuction;
 
-  void showFeaturedLot(BuildContext context, int lotId) {
-    Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent(lotId);
+  void showFeaturedLot(BuildContext context) {
+    Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent();
     homeTabShowAuction();
   }
 
@@ -54,7 +54,7 @@ class FeaturedListView extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent(0);
+                Provider.of<AuctionProvider>(context, listen: false).setLatestAuctionAsCurrent();
                 homeTabShowAuction();
               },
               style: TextButton.styleFrom(

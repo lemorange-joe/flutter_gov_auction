@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
@@ -11,7 +10,7 @@ class FeaturedCard extends StatefulWidget {
   const FeaturedCard(this.auctionLot, this.showFeaturedLot, {super.key});
 
   final AuctionLot auctionLot;
-  final Function(BuildContext, int) showFeaturedLot;
+  final Function(BuildContext) showFeaturedLot;
 
   @override
   State<FeaturedCard> createState() => _FeaturedCardState();
@@ -32,11 +31,24 @@ class _FeaturedCardState extends State<FeaturedCard> {
             _showDetails = !_showDetails;
           });
         },
+        onPanUpdate: (DragUpdateDetails details) {
+          if (details.delta.dy > 0 && _showDetails) {
+            setState(() {
+              _showDetails = false;
+            });
+          }
+
+          if (details.delta.dy < 0 && !_showDetails) {
+            setState(() {
+              _showDetails = true;
+            });
+          }
+        },
         onDoubleTap: () {
           setState(() {
             _showDetails = false;
           });
-          widget.showFeaturedLot(context, widget.auctionLot.id);
+          widget.showFeaturedLot(context);
         },
         child: Card(
           shape: RoundedRectangleBorder(
@@ -87,7 +99,9 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                     widget.auctionLot.title,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color: _showDetails ? (Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue) : Theme.of(context).textTheme.bodyText1!.color,
+                                      color: _showDetails
+                                          ? (Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue)
+                                          : Theme.of(context).textTheme.bodyText1!.color,
                                       fontSize: 14.0,
                                       fontWeight: _showDetails ? FontWeight.bold : FontWeight.normal,
                                     ),
@@ -100,30 +114,6 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                           widget.auctionLot.department,
                                           style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0),
                                         ),
-                                      ),
-                                    ),
-                                  if (_showDetails)
-                                    Semantics(
-                                      label: S.of(context).semanticsDoubleTapViewDetails,
-                                      excludeSemantics: true,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            MdiIcons.gestureDoubleTap,
-                                            size: 15.0,
-                                            color: remarksColor,
-                                          ),
-                                          const SizedBox(width: config.iconTextSpacing),
-                                          AutoSizeText(
-                                            S.of(context).doubleTapViewDetails,
-                                            style: TextStyle(
-                                              color: remarksColor,
-                                              fontSize: 12.0,
-                                            ),
-                                            minFontSize: 8.0,
-                                            maxLines: 1,
-                                          ),
-                                        ],
                                       ),
                                     ),
                                   if (_showDetails)

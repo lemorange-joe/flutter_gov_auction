@@ -53,10 +53,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_tabIndex != 0) {
+        if (_tabIndex > 0) {
           setState(() {
-            _tabIndex = 0;
-            
+            --_tabIndex;
           });
           return false;
         }

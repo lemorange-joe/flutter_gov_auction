@@ -105,6 +105,10 @@ class AuctionLot {
     );
   }
 
+  factory AuctionLot.empty() {
+    return AuctionLot(0, AuctionItemType.None, '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
+  }
+
   final int id;
   final AuctionItemType itemType;
   final String lotNum;
