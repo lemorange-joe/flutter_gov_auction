@@ -54,7 +54,6 @@ class AuctionLotPage extends StatelessWidget {
                           widthFactor: 0.618,
                           heightFactor: 0.618,
                           child: FittedBox(
-                            fit: BoxFit.fill,
                             child: FaIcon(dynamic_icon_helper.getIcon(auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
                           ),
                         ),

@@ -208,14 +208,13 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                               imageUrl: curLot.photoUrl,
                               placeholder: (_, __) => const ImageLoadingSkeleton(),
                               errorWidget: (_, __, ___) => const Image(image: AssetImage('assets/images/app_logo.png')),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             ),
                           )
                         : FractionallySizedBox(
                             widthFactor: 0.618,
                             heightFactor: 0.618,
                             child: FittedBox(
-                              fit: BoxFit.fill,
                               child: FaIcon(dynamic_icon_helper.getIcon(curLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
                             ),
                           ),
