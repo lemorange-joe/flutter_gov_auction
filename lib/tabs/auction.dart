@@ -9,6 +9,7 @@ import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../includes/utilities.dart' as utilities;
 import '../providers/auction_provider.dart';
 // import '../widgets/tel_group.dart';
 import '../widgets/ui/calendar.dart';
@@ -56,7 +57,7 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 200.0,
+                expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
                 floating: true,
                 pinned: true,
                 snap: true,
@@ -66,7 +67,6 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
                   title: Column(
                     children: <Widget>[
                       const SizedBox(height: 60.0),
-                      const SizedBox(height: 10.0),
                       Calendar(widget.auction.startTime),
                       if (widget.auction.id == 0)
                         const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
@@ -177,13 +177,13 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
 
     return ListView.builder(
       itemCount: widget.lotList.length,
-      itemExtent: 150.0,
+      itemExtent: 150.0 * MediaQuery.of(context).textScaleFactor,
       itemBuilder: (BuildContext context, int i) {
         final AuctionLot curLot = widget.lotList[i];
         final String heroTag = 'lot_photo_${widget.listIndex}_${curLot.id}';
 
         return SizedBox(
-          height: 150.0,
+          height: 150.0 * MediaQuery.of(context).textScaleFactor,
           child: ListTile(
             onTap: () {
               Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
@@ -196,8 +196,8 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  width: 100.0,
-                  height: 100.0,
+                  width: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                  height: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
                   child: Hero(
                     tag: heroTag,
                     child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)

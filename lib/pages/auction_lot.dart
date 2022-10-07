@@ -6,6 +6,7 @@ import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
+import '../includes/utilities.dart' as utilities;
 import '../widgets/tel_group.dart';
 
 class AuctionLotPage extends StatelessWidget {
@@ -40,6 +41,7 @@ class AuctionLotPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 56.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
         backgroundColor: config.blue,
         leading: IconButton(
           icon: Semantics(
@@ -60,7 +62,7 @@ class AuctionLotPage extends StatelessWidget {
             children: <Widget>[
               SizedBox(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor,
                 child: ColoredBox(
                   color: Theme.of(context).backgroundColor,
                   child: Stack(

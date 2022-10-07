@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
+import '../includes/utilities.dart' as utilities;
 
 class FeaturedCard extends StatefulWidget {
   const FeaturedCard(this.auctionLot, this.showFeaturedLot, {super.key});
@@ -24,7 +25,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
     final Color remarksColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[100]! : Colors.grey[700]!;
 
     return SizedBox(
-      width: 160.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+      width: 160.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
       child: GestureDetector(
         onTap: () {
           setState(() {

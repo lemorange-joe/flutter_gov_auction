@@ -6,6 +6,7 @@ import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../includes/utilities.dart' as utilities;
 import '../providers/auction_provider.dart';
 import '../widgets/featured_card.dart';
 import '../widgets/ui/animated_loading.dart';
@@ -66,7 +67,7 @@ class FeaturedListView extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 250.0 * (1 + (MediaQuery.of(context).textScaleFactor - 1) * 0.5),
+          height: 250.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
           child: Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
             return auctionProvider.loaded
                 ? SingleChildScrollView(

@@ -24,3 +24,11 @@ String formatShortDateTime(DateTime dt, String lang) {
 String formatSimpleDateTime(DateTime dt) {
   return DateFormat('yyyy-MM-dd HH:mm:ss', 'en').format(dt);
 }
+
+double adjustedScale(double scale) {
+  return scale * 0.7 + 0.3;
+}
+
+double adjustedPhotoScale(double scale) {
+  return scale * 0.5 + 0.5;
+}

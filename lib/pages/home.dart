@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       titleSpacing: 0.0,
-      toolbarHeight: 56.0 * MediaQuery.of(context).textScaleFactor,
+      toolbarHeight: 56.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
       backgroundColor: Theme.of(context).backgroundColor,
       leading: Builder(builder: (BuildContext context) {
         return IconButton(
