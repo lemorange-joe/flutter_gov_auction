@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
+import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 
 class AuctionLotPage extends StatelessWidget {
-  const AuctionLotPage(this.title, this.auctionLot, {super.key});
+  const AuctionLotPage(this.title, this.heroTag, this.auctionLot, {super.key});
 
   final String title;
+  final String heroTag;
   final AuctionLot auctionLot;
 
   @override
@@ -29,15 +32,15 @@ class AuctionLotPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 50.0),
               Hero(
-                tag: 'lot_photo_${auctionLot.id}',
+                tag: heroTag,
                 child: SizedBox(
-                  width: 40.0,
-                  height: 40.0,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 2,
                   child: (auctionLot.photoUrl.isNotEmpty && Uri.parse(auctionLot.photoUrl).isAbsolute)
                       ? Container(
                           decoration: BoxDecoration(
@@ -45,20 +48,25 @@ class AuctionLotPage extends StatelessWidget {
                               image: CachedNetworkImageProvider(auctionLot.photoUrl),
                               fit: BoxFit.cover,
                             ),
-                            borderRadius: BorderRadius.circular(config.mdBorderRadius),
                           ),
                         )
-                      : Container(
-                          decoration: BoxDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage('assets/images/app_logo.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(config.mdBorderRadius),
+                      : FractionallySizedBox(
+                          widthFactor: 0.618,
+                          heightFactor: 0.618,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: FaIcon(dynamic_icon_helper.getIcon(auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
                           ),
                         ),
                 ),
               ),
+              const SizedBox(height: 100.0),
+              const Text('ABC'),
+              const SizedBox(height: 100.0),
+              const Text('ABC'),
+              const SizedBox(height: 100.0),
+              const Text('ABC'),
+              const SizedBox(height: 100.0),
               Text(auctionLot.title),
             ],
           ),

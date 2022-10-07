@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
+import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/ui/calendar.dart';
+import '../widgets/ui/image_loading_skeleton.dart';
 
 class AuctionTab extends StatefulWidget {
   const AuctionTab(this.auction, this.showHome, {Key? key}) : super(key: key);
@@ -36,9 +39,9 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  Widget _buildLotList(List<AuctionLot> lotList) {
+  Widget _buildLotList(int listIndex, List<AuctionLot> lotList) {
     // remove SingleChildScrollView because does not support auto expand/collapse sliver appbar
-    return lotList.isEmpty ? const Center(child: Text('Empty')) : GetListView(lotList);
+    return lotList.isEmpty ? const Center(child: Text('Empty')) : GetListView(listIndex, lotList);
   }
 
   @override
@@ -118,13 +121,13 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
             key: Key(widget.auction.id.toString()),
             controller: _tabController,
             children: <Widget>[
-              _buildLotList(widget.auction.lotList),
-              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
+              _buildLotList(1, widget.auction.lotList),
+              _buildLotList(2, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
               const Text('3'),
-              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
-              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
-              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
-              _buildLotList(widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
+              _buildLotList(4, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
+              _buildLotList(5, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
+              _buildLotList(6, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
+              _buildLotList(7, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
             ],
           ),
         ),
@@ -158,10 +161,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class GetListView extends StatefulWidget {
-  const GetListView(this.lotList, {Key? key}) : super(key: key);
+  const GetListView(this.listIndex, this.lotList, {Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _GetListViewState();
 
+  final int listIndex;
   final List<AuctionLot> lotList;
 }
 
@@ -172,56 +176,84 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
 
     return ListView.builder(
       itemCount: widget.lotList.length,
+      itemExtent: 150.0,
       itemBuilder: (BuildContext context, int i) {
         final AuctionLot curLot = widget.lotList[i];
+        final String heroTag = 'lot_photo_${widget.listIndex}_${curLot.id}';
 
-        return ListTile(
-          onTap: () {
-            Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{'title': S.of(context).itemDetails, 'auctionLot': curLot});
-          },
-          leading: Hero(
-            tag: 'lot_photo_${curLot.id}',
-            child: SizedBox(
-              width: 40.0,
-              height: 40.0,
-              child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
-                  ? Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(curLot.photoUrl),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(config.mdBorderRadius),
+        return SizedBox(
+          height: 150.0,
+          child: ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
+                'title': S.of(context).itemDetails,
+                'heroTag': heroTag,
+                'auctionLot': curLot,
+              });
+            },
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: Hero(
+                    tag: heroTag,
+                    child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(config.smBorderRadius),
+                            child: CachedNetworkImage(
+                              width: 100.0,
+                              height: 100.0,
+                              imageUrl: curLot.photoUrl,
+                              placeholder: (_, __) => const ImageLoadingSkeleton(),
+                              errorWidget: (_, __, ___) => const Image(image: AssetImage('assets/images/app_logo.png')),
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                        : FractionallySizedBox(
+                            widthFactor: 0.618,
+                            heightFactor: 0.618,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: FaIcon(dynamic_icon_helper.getIcon(curLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
+                            ),
+                          ),
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                DefaultTextStyle(
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontSize: 14.0,
                       ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage('assets/images/app_logo.png'),
-                          fit: BoxFit.cover,
+                  child: Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(curLot.icon),
+                        Text(curLot.gldFileRef),
+                        Text(curLot.department),
+                        Row(
+                          children: <Widget>[
+                            Text(curLot.contact),
+                            const SizedBox(width: 8.0),
+                            Text(curLot.contactNumber),
+                          ],
                         ),
-                        borderRadius: BorderRadius.circular(config.mdBorderRadius),
-                      ),
+                        Text(curLot.contactLocation),
+                        Flexible(
+                          child: Text(
+                            curLot.title,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          title: Column(
-            children: <Widget>[
-              Text(curLot.gldFileRef),
-              Text(curLot.department),
-              Row(
-                children: <Widget>[
-                  Text(curLot.contact),
-                  const SizedBox(width: 20.0),
-                  Text(curLot.contactNumber),
-                ],
-              ),
-              Text(curLot.contactLocation),
-              const Divider(
-                endIndent: 50.0,
-              ),
-              Text(curLot.title),
-            ],
           ),
         );
       },
