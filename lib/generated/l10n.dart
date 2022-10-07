@@ -210,6 +210,96 @@ class S {
     );
   }
 
+  /// `Contact Person`
+  String get fieldContact {
+    return Intl.message(
+      'Contact Person',
+      name: 'fieldContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get fieldContactLocation {
+    return Intl.message(
+      'Location',
+      name: 'fieldContactLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tel`
+  String get fieldContactNumber {
+    return Intl.message(
+      'Tel',
+      name: 'fieldContactNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Department`
+  String get fieldDeapartment {
+    return Intl.message(
+      'Department',
+      name: 'fieldDeapartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GLD File Ref`
+  String get fieldGldFileRef {
+    return Intl.message(
+      'GLD File Ref',
+      name: 'fieldGldFileRef',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item List`
+  String get fieldItemList {
+    return Intl.message(
+      'Item List',
+      name: 'fieldItemList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lot Num`
+  String get fieldLotNum {
+    return Intl.message(
+      'Lot Num',
+      name: 'fieldLotNum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reference`
+  String get fieldReference {
+    return Intl.message(
+      'Reference',
+      name: 'fieldReference',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remarks`
+  String get fieldRemarks {
+    return Intl.message(
+      'Remarks',
+      name: 'fieldRemarks',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Help`
   String get help {
     return Intl.message(

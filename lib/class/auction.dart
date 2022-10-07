@@ -137,6 +137,14 @@ class AuctionLot {
 
     return itemList.map((AuctionItem auctionItem) => auctionItem.description).toList().join(', ');
   }
+
+  String get itemDescriptionList {
+    if (itemList.isEmpty) {
+      return lotNum;
+    }
+
+    return itemList.map((AuctionItem auctionItem) => '${auctionItem.description} ${auctionItem.quantity} ${auctionItem.unit}').toList().join(', ');
+  }
 }
 
 class AuctionItem {

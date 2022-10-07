@@ -10,6 +10,7 @@ import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
 import '../providers/auction_provider.dart';
+// import '../widgets/tel_group.dart';
 import '../widgets/ui/calendar.dart';
 import '../widgets/ui/image_loading_skeleton.dart';
 
@@ -229,17 +230,12 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(curLot.icon),
+                        Text(curLot.lotNum),
                         Text(curLot.gldFileRef),
                         Text(curLot.department),
-                        Row(
-                          children: <Widget>[
-                            Text(curLot.contact),
-                            const SizedBox(width: 8.0),
-                            Text(curLot.contactNumber),
-                          ],
-                        ),
-                        Text(curLot.contactLocation),
+                        // Text(curLot.contact),
+                        // TelGroup(curLot.contactNumber),
+                        // Text(curLot.contactLocation),
                         Flexible(
                           child: Text(
                             curLot.title,
