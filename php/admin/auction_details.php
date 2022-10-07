@@ -88,8 +88,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
     <hr style="border-top: solid 3px #46f" />
     
-    <div style="padding: 10px 0">
-      Show lots:
+    <div style="padding: 10px 0; background-color: #ccc">
+      <span style="font-weight: bold">Show lots:</span>
       <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
         <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
         <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
@@ -98,7 +98,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
       </select>
     </div>
-    <hr style="width: 310px; margin: 5px 0 15px 0" />
 
     <div id="divLotList" style="width: 1600px"></div>
     <div style="margin-top: 10px">
