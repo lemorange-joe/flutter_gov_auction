@@ -86,6 +86,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nullam fringilla suscipit tellus, nec dapibus eros porttitor at. Quisque rutrum cursus ipsum nec dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris eros lorem, vulputate sit amet turpis sed, condimentum volutpat leo. Aenean sed libero id risus volutpat rutrum eget sit amet est. Sed non neque mollis, lacinia lacus id, scelerisque elit. Aliquam lacus diam, pellentesque eget diam vitae, cursus pulvinar justo."),
         "recentSearch": MessageLookupByLibrary.simpleMessage("Recent search"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("Related Apps"),
+        "relatedLots": MessageLookupByLibrary.simpleMessage("Related Items"),
+        "relatedLotsEmpty":
+            MessageLookupByLibrary.simpleMessage("No more related items"),
         "reload": MessageLookupByLibrary.simpleMessage("Reload"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),

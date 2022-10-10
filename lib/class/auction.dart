@@ -184,3 +184,45 @@ double jsonToDouble(dynamic val) {
   }
   return val as double;
 }
+
+class RelatedAuctionLot {
+  RelatedAuctionLot(this.auctionId, this.startTime, this.auctionStatus, 
+  this.lotId, this.itemType, this.lotNum, this.description, this.icon, this.photoUrl, this.photoReal, 
+  this.transactionCurrency, this.transactionPrice, this.transactionStatus);
+
+  factory RelatedAuctionLot.fromjson(Map<String, dynamic> json) {
+    return RelatedAuctionLot(
+      json['aid'] as int,
+      DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
+      getAuctionStatus(json['as'] as String),
+
+      json['lid'] as int,
+      getAuctionItemType(json['t'] as String),
+      json['ln'] as String,
+      json['d'] as String,
+      json['i'] as String,
+      json['pu'] as String,
+      json['pr'] as int == 1,
+      
+      json['tc'] as String,
+      jsonToDouble(json['tp']),
+      json['ts'] as String,
+    );
+  }
+
+  final int auctionId;
+  final DateTime startTime;
+  final AuctionStatus auctionStatus;
+
+  final int lotId;
+  final AuctionItemType itemType;
+  final String lotNum;
+  final String description;
+  final String icon;
+  final String photoUrl;
+  final bool photoReal;
+
+  final String transactionCurrency;
+  final double transactionPrice;
+  final String transactionStatus;
+}

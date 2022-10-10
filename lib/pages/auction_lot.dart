@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
+import '../helpers/api_helper.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../widgets/tel_group.dart';
+import '../widgets/ui/animated_loading.dart';
 
 class AuctionLotPage extends StatefulWidget {
   const AuctionLotPage(this.title, this.heroTag, this.auctionLot, {super.key});
@@ -22,8 +25,9 @@ class AuctionLotPage extends StatefulWidget {
 
 class _AuctionLotPageState extends State<AuctionLotPage> {
   late ScrollController _scrollController;
-  List<AuctionLot> relatedLots = <AuctionLot>[];
+  List<RelatedAuctionLot> relatedLots = <RelatedAuctionLot>[];
   int relatedPageNum = 0;
+  bool noMoreRelatedLots = false;
   String moreText = 'xxx';
 
   @override
@@ -32,17 +36,26 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
 
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
-        setState(() {
-          moreText = '${_scrollController.offset}: ${DateTime.now()}';
-          ++relatedPageNum;
-          relatedLots.add(AuctionLot.empty());
-          relatedLots.add(AuctionLot.empty());
-          relatedLots.add(AuctionLot.empty());
-          relatedLots.add(AuctionLot.empty());
-          relatedLots.add(AuctionLot.empty());
-        });
+      if (_scrollController.position.maxScrollExtent == _scrollController.offset && !noMoreRelatedLots) {
+        loadRelatedLots(relatedPageNum + 1);
       }
+    });
+  }
+
+  void loadRelatedLots(int page) {
+    ApiHelper()
+        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()], useDemoData: true)
+        .then((dynamic result) {
+      final List<dynamic> resultList = result as List<dynamic>;
+      final List<RelatedAuctionLot> newRelatedAuctionLot = resultList.map((dynamic jsonData) => RelatedAuctionLot.fromjson(jsonData as Map<String, dynamic>)).toList();
+      setState(() {
+        relatedPageNum = page;
+        if (newRelatedAuctionLot.isEmpty) {
+          noMoreRelatedLots = true;
+        } else {
+          relatedLots.addAll(newRelatedAuctionLot);
+        }
+      });
     });
   }
 
@@ -73,9 +86,16 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
 
   Widget _buildRelatedLotList() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text('Related Lots'),
-        ...relatedLots.map((AuctionLot auctionLot) => SizedBox(height: 50.0, child: Text(auctionLot.id.toString()))).toList(),
+        Text(
+          S.of(context).relatedLots,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        ...relatedLots.map((RelatedAuctionLot auctionLot) => SizedBox(height: 50.0, child: Text('${auctionLot.lotNum}: ${auctionLot.description}'))).toList(),
       ],
     );
   }
@@ -106,6 +126,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
           physics: const BouncingScrollPhysics(),
           controller: _scrollController,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(
                 width: double.infinity,
@@ -203,15 +224,24 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         Expanded(child: TelGroup(widget.auctionLot.contactNumber)),
                       ],
                     ),
-                    Container(
-                      color: Colors.yellow[300],
-                      child: _buildItemList(context),
-                    ),
+                    _buildItemList(context),
                   ],
                 ),
               ),
-              _buildRelatedLotList(),
-              Text(moreText),
+              if (relatedPageNum == 0)
+                SizedBox(height: MediaQuery.of(context).size.height / 2)
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                  child: _buildRelatedLotList(),
+                ),
+              Center(
+                  child: noMoreRelatedLots
+                      ? Text(
+                          S.of(context).relatedLotsEmpty,
+                          style: Theme.of(context).textTheme.bodyText2,
+                        )
+                      : LemorangeLoading()),
             ],
           ),
         ),

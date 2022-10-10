@@ -540,6 +540,26 @@ class S {
     );
   }
 
+  /// `Related Items`
+  String get relatedLots {
+    return Intl.message(
+      'Related Items',
+      name: 'relatedLots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No more related items`
+  String get relatedLotsEmpty {
+    return Intl.message(
+      'No more related items',
+      name: 'relatedLotsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Reload`
   String get reload {
     return Intl.message(

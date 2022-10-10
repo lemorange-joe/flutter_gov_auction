@@ -21,7 +21,7 @@ class ApiHelper {
     bool useDemoData = false,
     int demoDataDelay = 2,
   }) async {
-    final String urlParams = urlParameters.join('-');
+    String urlParams = urlParameters.join('-');
     String strParams = '?';
     if (parameters.isNotEmpty) {
       parameters.forEach((String k, dynamic v) => strParams += '${Uri.encodeComponent(k)}=${Uri.encodeComponent(v.toString())}&');
@@ -40,6 +40,12 @@ class ApiHelper {
     dynamic returnData;
 
     if (useDemoData) {
+      if (method == 'relatedLots') {
+        urlParams = '13-${urlParameters[1]}';
+      } else if (method == 'relatedItems') {
+        urlParams = '31-${urlParameters[1]}';
+      }
+
       Map<String, String> demoData;
       switch (lang) {
         case 'en':

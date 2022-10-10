@@ -82,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "了方奇风业这业，界成但际高案生政其的光来……一明发友病确日经力意不是该总年异天等不又。"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜寻"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相关Apps"),
+        "relatedLots": MessageLookupByLibrary.simpleMessage("相关项目"),
+        "relatedLotsEmpty": MessageLookupByLibrary.simpleMessage("没有更多相关项目"),
         "reload": MessageLookupByLibrary.simpleMessage("重新载入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
