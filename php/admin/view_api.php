@@ -27,7 +27,8 @@ if (!isset($_SESSION["admin_user"])) {
       <option value="auction-list" data-param="" selected>List</option>
       <option value="auction-details" data-param="Auction ID, e.g. 1">Details</option>
       <option value="auction-search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
-      <option value="auction-related" data-param="Item ID, e.g. 103">Related Items</option>
+      <option value="auction-relatedLots" data-param="Lot ID - page, e.g. 13-1">Related Lots</option>
+      <option value="auction-relatedItems" data-param="Item ID - page, e.g. 31-2">Related Items</option>
       <option value="data-appinfo" data-param="">App Info</option>
       <option value="data-messagelist" data-param="">Message List</option>
     </select>

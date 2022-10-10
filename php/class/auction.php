@@ -212,7 +212,64 @@ class AuctionItem implements JsonSerializable {
   }
 }
 
-class AuctionSearch implements JsonSerializable {
+class AuctionLotSearch implements JsonSerializable {
+  private $auctionId;
+  private $startTime;
+  private $auctionStatus;
+  private $lotId;
+  private $type;
+  private $lotNum;
+  private $description;
+
+  private $featured;
+  private $icon;
+  private $photoUrl;
+  private $photoReal;
+  private $tranCurrency;
+  private $tranPrice;
+  private $tranStatus;
+  private $v;
+
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $lot_num, $description, $featured, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $v) {
+    $this->auctionId = $auction_id;
+    $this->startTime = $start_time;
+    $this->auctionStatus = $auction_status;
+    $this->lotId = $lot_id;
+    $this->type = $type;
+    $this->lotNum = $lot_num;
+    $this->description = $description;
+
+    $this->featured = $featured;
+    $this->icon = $icon;
+    $this->photoUrl = $photoUrl;
+    $this->photoReal = $photoReal;
+    $this->tranCurrency = $tranCurrency;
+    $this->tranPrice = $tranPrice;
+    $this->tranStatus = $tranStatus;
+    $this->v = $v;
+  }
+
+  public function __get($property) {
+    if (property_exists($this, $property)) {
+      return $this->$property;
+    }
+  }
+
+  public function __set($property, $value) {
+    if (property_exists($this, $property)) {
+        $this->$property = $value;
+    }
+
+    return $this;
+  }
+
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
+    return $vars;
+  }
+}
+
+class AuctionItemSearch implements JsonSerializable {
   private $auctionId;
   private $startTime;
   private $auctionStatus;

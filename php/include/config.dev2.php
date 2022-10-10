@@ -12,6 +12,7 @@ $GOOGLE_SERVICE_ACCOUNT_FILE_PATH = "/Volumes/untitled/config/gov-auction-fireba
 
 $CACHE_DIR = "/tmp";
 $CACHE_PERIOD = 1 * 60;  // seconds
+$RELATED_RECORD_PAGE_SIZE = 5;
 
 $LOGIN_SALT = "lX9#30er";
 $PUSH_PASSWORD_HASHED = "21a361d96e3e13f5f109748c2a9d2434"; //push

@@ -107,7 +107,7 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $data[] = new AuctionSearch(
+        $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
           $result[$i]["auction_status"],
@@ -137,60 +137,66 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
-  function relatedLot($param) {
-    // pre: $lotId
+  function relatedLots($param) {
+    // pre: $lotId, $page (starting from 1)
     // use $logId to search lots in other auctions that have any same auction items
     global $conn, $lang;
 
     $output = new StdClass();
     $output->status = "fail";
 
-    if (count($param) < 1) {
+    if (count($param) < 2) {
       $output->message = "Invalid parameters!";
       echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
       return;
     }
 
     try {
-      $lotId = array_shift($param);
-      $page = array_shift($param);
+      $lotId = intval(array_shift($param));
+      $page = intval(array_shift($param));
+      $pageSize = $GLOBALS["RELATED_RECORD_PAGE_SIZE"];
+      $start = ($page - 1) * $pageSize;
       
       $selectSql = "SELECT
                       A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.lot_num, L.description_$lang as 'lot_description', 
                       L.featured, L.icon, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status
                     FROM Auction A
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                     INNER JOIN ItemType T ON L.type_id = T.type_id
-                    WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
-                      SELECT 1 
-                      FROM AuctionItem I0
+                    INNER JOIN
+                    (
+                      SELECT DISTINCT L1.lot_id
+                      FROM AuctionLot L1
+                      INNER JOIN AuctionItem I1 ON L1.lot_id = I1.lot_id
+                      INNER JOIN AuctionItem I0 ON (I1.description_en = I0.description_en OR I1.description_tc = I0.description_tc OR I1.description_sc = I0.description_sc)
                       INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
-                      WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
-                    )
-                    ORDER BY A.start_time DESC, L.seq, I.seq";
+                      WHERE L1.lot_id <> ? AND L0.lot_id = ? AND L1.status = ? AND I1.item_id <> I0.item_id
+                    ) as T
+                    ON T.lot_id = L.lot_id
+                    WHERE A.status = ?
+                    ORDER BY A.start_time DESC, L.seq
+                    LIMIT ?, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId, $lotId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
       $rowNum = count($result);
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $data[] = new AuctionSearch(
+        $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
           $result[$i]["auction_status"],
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
+          $result[$i]["lot_num"],
+          $result[$i]["lot_description"],
           $result[$i]["featured"],
+          $result[$i]["icon"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],
-          $result[$i]["icon"],
-          $result[$i]["description"],
-          $result[$i]["quantity"],
-          $result[$i]["unit"],
           0
         );
       }
@@ -205,23 +211,26 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
-  function related($param) {
-    // pre: $itemId
+  function relatedItems($param) {
+    // pre: $itemId, $page (starting from 1)
     // use $itemId to search related items in other lots or auctions
     global $conn, $lang;
 
     $output = new StdClass();
     $output->status = "fail";
 
-    if (count($param) < 1) {
+    if (count($param) < 2) {
       $output->message = "Invalid parameters!";
       echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
       return;
     }
 
     try {
-      $itemId = array_shift($param);
-      
+      $itemId = intval(array_shift($param));
+      $page = intval(array_shift($param));
+      $pageSize = $GLOBALS["RELATED_RECORD_PAGE_SIZE"];
+      $start = ($page - 1) * $pageSize;
+
       $selectSql = "SELECT
                       A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status,
                       I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
@@ -229,20 +238,18 @@ class AuctionController {
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                     INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                     INNER JOIN ItemType T ON L.type_id = T.type_id
-                    WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
-                      SELECT 1 
-                      FROM AuctionItem I0
-                      INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
-                      WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
-                    )
-                    ORDER BY A.start_time DESC, L.seq, I.seq";
+                    INNER JOIN AuctionItem I0 ON I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc
+                    INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
+                    WHERE I0.item_id = ? AND I.item_id <> ? AND A.status = ? AND L.status = ?
+                    ORDER BY A.start_time DESC, L.seq, I.seq
+                    LIMIT ?, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, $itemId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
       $rowNum = count($result);
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $data[] = new AuctionSearch(
+        $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
           $result[$i]["auction_status"],
