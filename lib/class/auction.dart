@@ -63,6 +63,7 @@ class AuctionLot {
       this.contactLocation,
       this.remarks,
       this.itemCondition,
+      this.description,
       this.featured,
       this.icon,
       this.photoUrl,
@@ -93,6 +94,7 @@ class AuctionLot {
       json['cl'] as String,
       json['r'] as String,
       json['ic'] as String,
+      json['d'] as String,
       json['f'] as int == 1,
       json['i'] as String,
       json['pu'] as String,
@@ -106,7 +108,7 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, AuctionItemType.None, '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(0, AuctionItemType.None, '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
   }
 
   final int id;
@@ -120,6 +122,7 @@ class AuctionLot {
   final String contactLocation;
   final String remarks;
   final String itemCondition;
+  final String description;
   final bool featured;
   final String icon;
   final String photoUrl;
@@ -130,13 +133,14 @@ class AuctionLot {
   final String transactionStatus;
   final DateTime lastUpdate;
 
-  String get title {
-    if (itemList.isEmpty) {
-      return lotNum;
-    }
+  // use the description field now
+  // String get title {
+  //   if (itemList.isEmpty) {
+  //     return lotNum;
+  //   }
 
-    return itemList.map((AuctionItem auctionItem) => auctionItem.description).toList().join(', ');
-  }
+  //   return itemList.map((AuctionItem auctionItem) => auctionItem.description).toList().join(', ');
+  // }
 
   String get itemDescriptionList {
     if (itemList.isEmpty) {

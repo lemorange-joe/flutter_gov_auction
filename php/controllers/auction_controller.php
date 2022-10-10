@@ -137,6 +137,74 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  function relatedLot($param) {
+    // pre: $lotId
+    // use $logId to search lots in other auctions that have any same auction items
+    global $conn, $lang;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    if (count($param) < 1) {
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      return;
+    }
+
+    try {
+      $lotId = array_shift($param);
+      $page = array_shift($param);
+      
+      $selectSql = "SELECT
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.lot_num, L.description_$lang as 'lot_description', 
+                      L.featured, L.icon, L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE I.item_id <> ? AND A.status = ? AND L.status = ? AND EXISTS (
+                      SELECT 1 
+                      FROM AuctionItem I0
+                      INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
+                      WHERE I0.item_id = ? AND L0.lot_id <> L.lot_id AND (I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc)
+                    )
+                    ORDER BY A.start_time DESC, L.seq, I.seq";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, Status::Active, Status::Active, $itemId))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $data[] = new AuctionSearch(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["code"],
+          $result[$i]["featured"],
+          $result[$i]["photo_url"],
+          $result[$i]["photo_real"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"],
+          $result[$i]["icon"],
+          $result[$i]["description"],
+          $result[$i]["quantity"],
+          $result[$i]["unit"],
+          0
+        );
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
+
   function related($param) {
     // pre: $itemId
     // use $itemId to search related items in other lots or auctions
@@ -266,7 +334,7 @@ class AuctionController {
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, 
                     L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
-                    L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', 
+                    L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_$lang as 'lot_description',
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM Auction A
@@ -309,6 +377,7 @@ class AuctionController {
           $result[$i]["lot_icon"],
           $result[$i]["photo_url"],
           $result[$i]["photo_real"],
+          $result[$i]["lot_description"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],

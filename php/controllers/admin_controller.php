@@ -143,6 +143,7 @@ class AdminController {
                     contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                     location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
                     item_condition_en, item_condition_tc, item_condition_sc,
+                    L.description_en as 'lot_description_en', L.description_tc as 'lot_description_tc', L.description_sc as 'lot_description_sc',
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc,
@@ -196,6 +197,9 @@ class AdminController {
         $curLotOutput->item_condition_en = $result[$i]["item_condition_en"];
         $curLotOutput->item_condition_tc = $result[$i]["item_condition_tc"];
         $curLotOutput->item_condition_sc = $result[$i]["item_condition_sc"];
+        $curLotOutput->lot_description_en = $result[$i]["lot_description_en"];
+        $curLotOutput->lot_description_tc = $result[$i]["lot_description_tc"];
+        $curLotOutput->lot_description_sc = $result[$i]["lot_description_sc"];
 
         $curLotOutput->featured = $result[$i]["featured"];
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
@@ -395,6 +399,8 @@ class AdminController {
         throw new Exception("Auction no.: $auctionNum or type: $type not exists!");
       }
 
+      $conn->Execute("SET session group_concat_max_len=15000");
+
       for ($i = 0; $i < Count($lots); ++$i){
         $curLot = $lots[$i];
         $lotNum = trim($curLot["lot_num"]);
@@ -425,6 +431,7 @@ class AdminController {
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
+                        description_en, description_tc, description_sc,
                         featured, icon, photo_url, photo_real,
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
@@ -434,6 +441,7 @@ class AdminController {
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, 
+                        '', '', '', 
                         0, 'fontawesome.box', '', 0,
                         '', 0, ?,
                         ?, now()
@@ -452,6 +460,22 @@ class AdminController {
         $lastId = $conn->insert_Id();
 
         $this->importLotItems($lastId, $items);
+
+        // update lot description
+        $updateSql = "UPDATE AuctionLot AS L
+                      INNER JOIN (
+                        SELECT
+                          lot_id,
+                          group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
+                          group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
+                          group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
+                        FROM AuctionItem I
+                        WHERE lot_id = ?
+                        GROUP BY lot_id
+                      ) as T
+                      ON L.lot_id = T.lot_id
+                      SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
+        $result = $conn->Execute($updateSql, array($lastId));
       }
 
       $output->data = new StdClass();
@@ -566,6 +590,7 @@ class AdminController {
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
+                        description_en, description_tc, description_sc,
                         featured, icon, photo_url, photo_real, transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       )
@@ -573,6 +598,7 @@ class AdminController {
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, 
+                      '', '', '', 
                       ?, ?, ?, ?, ?, ?, ?,
                       ?, now()
                       FROM ItemType I
@@ -623,6 +649,22 @@ class AdminController {
       $deleteSql = "DELETE FROM AuctionItem WHERE lot_id = ?";
       $result = $conn->Execute($deleteSql, array($lotId));
       $this->addLotItems($lotId, $items);
+
+      // update lot description
+      $updateSql = "UPDATE AuctionLot AS L
+                    INNER JOIN (
+                      SELECT
+                        lot_id,
+                        group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
+                        group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
+                        group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
+                      FROM AuctionItem I
+                      WHERE lot_id = ?
+                      GROUP BY lot_id
+                    ) as T
+                    ON L.lot_id = T.lot_id
+                    SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
+      $result = $conn->Execute($updateSql, array($lotId));
 
       $output->status = "success";
     } catch (Exception $e) {

@@ -32,6 +32,7 @@ $auctionJsonFieldMapping = array(
   "icon" => "i",
   "photoUrl" => "pu",
   "photoReal" => "pr",
+  "description" => "d",
   "itemList" => "il",
   "tranCurrency" => "tc",
   "tranPrice" => "tp",
@@ -41,7 +42,7 @@ $auctionJsonFieldMapping = array(
   // ------
   // Auction Item
   // "icon" => "i",
-  "description" => "d",
+  // "description" => "d",
   "quantity" => "q",
   "unit" => "u",
   // ------
@@ -112,6 +113,7 @@ class AuctionLot implements JsonSerializable {
   private $contactLocation;
   private $remarks;
   private $itemCondition;
+  private $description;
 
   private $featured;
   private $icon;
@@ -126,7 +128,7 @@ class AuctionLot implements JsonSerializable {
   private $v;
 
   public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, 
-                              $featured, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
+                              $featured, $icon, $photoUrl, $photoReal, $description, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -143,6 +145,7 @@ class AuctionLot implements JsonSerializable {
     $this->icon = $icon;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
+    $this->description = $description;
     $this->itemList = array();
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;

@@ -238,7 +238,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                         // Text(curLot.contactLocation),
                         Flexible(
                           child: Text(
-                            curLot.title,
+                            curLot.description,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),

@@ -14,6 +14,6 @@ git remote set-url origin https://github.com/lemorange-joe/flutter_government_au
 https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with-fcm
 
 
-
 ## TODO:
+- handle dynamic item type: C, UP, M, MS...
 - add random data in API to prevent data theft

@@ -97,7 +97,7 @@ class _FeaturedCardState extends State<FeaturedCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    widget.auctionLot.title,
+                                    widget.auctionLot.description,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: _showDetails
