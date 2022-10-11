@@ -63,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "newsEmpty": MessageLookupByLibrary.simpleMessage("暂时未有最新消息"),
         "next": MessageLookupByLibrary.simpleMessage("下一个"),
         "nextAuction": MessageLookupByLibrary.simpleMessage("下次拍卖"),
+        "noAuctionItem": MessageLookupByLibrary.simpleMessage("没有拍卖物品"),
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("没有搜寻记录"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),

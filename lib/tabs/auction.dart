@@ -10,8 +10,10 @@ import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 // import '../includes/enums.dart';
 import '../includes/utilities.dart' as utilities;
+import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 // import '../widgets/tel_group.dart';
+import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/calendar.dart';
 import '../widgets/ui/image_loading_skeleton.dart';
 
@@ -25,15 +27,8 @@ class AuctionTab extends StatefulWidget {
   State<AuctionTab> createState() => _AuctionTabState();
 }
 
-class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateMixin {
+class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
   late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _tabController = TabController(length: 7, vsync: this);
-  }
 
   @override
   void dispose() {
@@ -41,97 +36,113 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  Widget _buildLotList(int listIndex, List<AuctionLot> lotList) {
+  Widget _buildLotList(String listIndex, List<AuctionLot> lotList) {
     // remove SingleChildScrollView because does not support auto expand/collapse sliver appbar
-    return lotList.isEmpty ? const Center(child: Text('Empty')) : GetListView(listIndex, lotList);
+    return lotList.isEmpty
+        ? Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 80.0),
+              child: Text(S.of(context).noAuctionItem),
+            ),
+          )
+        : GetListView(listIndex, lotList);
   }
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = Provider.of<AuctionProvider>(context, listen: false).initialShowFeatured ? 1 : 0;
-
     return Scaffold(
-      body: DefaultTabController(
-        length: 7,
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                floating: true,
-                pinned: true,
-                snap: true,
-                backgroundColor: config.blue,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 60.0),
-                      Calendar(widget.auction.startTime),
-                      if (widget.auction.id == 0)
-                        const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
-                      else
-                        Text(
-                          'id: ${widget.auction.id}, ${widget.auction.startTime}',
-                          style: const TextStyle(fontSize: 12.0),
+      body: Consumer<AppInfoProvider>(
+        builder: (BuildContext context, AppInfoProvider appInfoProvider, Widget? _) {
+          final Map<String, String> itemTypes = appInfoProvider.appInfo.itemTypeList;
+
+          _tabController = TabController(length: itemTypes.entries.length + 3, vsync: this);
+          _tabController.index = Provider.of<AuctionProvider>(context, listen: false).initialShowFeatured ? 1 : 0;
+
+          return !appInfoProvider.loaded
+              ? LemorangeLoading()
+              : DefaultTabController(
+                  length: itemTypes.length + 3,
+                  child: NestedScrollView(
+                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverAppBar(
+                          expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                          floating: true,
+                          pinned: true,
+                          snap: true,
+                          backgroundColor: config.blue,
+                          flexibleSpace: FlexibleSpaceBar(
+                            centerTitle: true,
+                            title: Column(
+                              children: <Widget>[
+                                const SizedBox(height: 60.0),
+                                Calendar(widget.auction.startTime),
+                                if (widget.auction.id == 0)
+                                  const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
+                                else
+                                  Text(
+                                    'id: ${widget.auction.id}, ${widget.auction.startTime}',
+                                    style: const TextStyle(fontSize: 12.0),
+                                  ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    widget.showHome();
+                                  },
+                                  child: Text(S.of(context).home),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ElevatedButton(
-                        onPressed: () {
-                          widget.showHome();
-                        },
-                        child: Text(S.of(context).home),
-                      ),
-                    ],
+                        SliverPersistentHeader(
+                          delegate: _SliverAppBarDelegate(
+                            TabBar(
+                              controller: _tabController,
+                              isScrollable: true,
+                              overlayColor: MaterialStateProperty.all(Colors.red),
+                              labelColor: Theme.of(context).textTheme.bodyText2!.color,
+                              indicatorColor: config.green,
+                              tabs: <Widget>[
+                                Tab(text: S.of(context).tabAll),
+                                Tab(
+                                  icon: Semantics(
+                                    label: S.of(context).semanticsFeaturedItems,
+                                    child: const Icon(MdiIcons.checkDecagramOutline),
+                                  ),
+                                ),
+                                Tab(
+                                  icon: Semantics(
+                                    label: S.of(context).semanticsSavedItems,
+                                    child: const Icon(MdiIcons.cardsHeartOutline),
+                                  ),
+                                ),
+                                ...itemTypes.entries.map((MapEntry<String, String> entry) => Tab(text: entry.value)).toList(),
+                              ],
+                            ),
+                          ),
+                          pinned: true,
+                        ),
+                      ];
+                    },
+                    body: TabBarView(
+                      key: Key(widget.auction.id.toString()),
+                      controller: _tabController,
+                      children: <Widget>[
+                        _buildLotList('1', widget.auction.lotList),
+                        _buildLotList('2', widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
+                        const Text('3'),
+                        ...itemTypes.entries
+                            .map(
+                              (MapEntry<String, String> entry) =>
+                                  _buildLotList(entry.key, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == entry.key).toList()),
+                            )
+                            .toList(),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    controller: _tabController,
-                    isScrollable: true,
-                    overlayColor: MaterialStateProperty.all(Colors.red),
-                    labelColor: Theme.of(context).textTheme.bodyText2!.color,
-                    indicatorColor: config.green,
-                    tabs: <Widget>[
-                      Tab(text: S.of(context).tabAll),
-                      Tab(
-                        icon: Semantics(
-                          label: S.of(context).semanticsFeaturedItems,
-                          child: const Icon(MdiIcons.checkDecagramOutline),
-                        ),
-                      ),
-                      Tab(
-                        icon: Semantics(
-                          label: S.of(context).semanticsSavedItems,
-                          child: const Icon(MdiIcons.cardsHeartOutline),
-                        ),
-                      ),
-                      Tab(text: S.of(context).tabItemTypeC),
-                      Tab(text: S.of(context).tabItemTypeUP),
-                      Tab(text: S.of(context).tabItemTypeM),
-                      Tab(text: S.of(context).tabItemTypeMS),
-                    ],
-                  ),
-                ),
-                pinned: true,
-              ),
-            ];
-          },
-          body: TabBarView(
-            key: Key(widget.auction.id.toString()),
-            controller: _tabController,
-            children: <Widget>[
-              _buildLotList(1, widget.auction.lotList),
-              _buildLotList(2, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
-              const Text('3'),
-              _buildLotList(4, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'C').toList()),
-              _buildLotList(5, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'UP').toList()),
-              _buildLotList(6, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'M').toList()),
-              _buildLotList(7, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'MS').toList()),
-            ],
-          ),
-        ),
+                );
+        },
       ),
     );
   }
@@ -166,7 +177,7 @@ class GetListView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _GetListViewState();
 
-  final int listIndex;
+  final String listIndex;
   final List<AuctionLot> lotList;
 }
 

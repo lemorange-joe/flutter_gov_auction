@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "newsEmpty": MessageLookupByLibrary.simpleMessage("There is no news."),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "nextAuction": MessageLookupByLibrary.simpleMessage("Next auction"),
+        "noAuctionItem":
+            MessageLookupByLibrary.simpleMessage("No auction items"),
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),

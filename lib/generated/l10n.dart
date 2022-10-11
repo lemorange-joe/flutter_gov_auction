@@ -410,6 +410,16 @@ class S {
     );
   }
 
+  /// `No auction items`
+  String get noAuctionItem {
+    return Intl.message(
+      'No auction items',
+      name: 'noAuctionItem',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No search history`
   String get noSearchHistory {
     return Intl.message(

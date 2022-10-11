@@ -15,5 +15,4 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- handle dynamic item type: C, UP, M, MS...
 - add random data in API to prevent data theft
