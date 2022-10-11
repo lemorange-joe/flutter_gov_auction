@@ -1,7 +1,7 @@
 <?php
 include_once ('../include/config.php');
 include_once ('../include/adodb5/adodb.inc.php');
-include_once ('auction_item_type.php');
+include_once ('../class/auction_item_type.php');
 
 class AppData {
 	private static $instance = null;

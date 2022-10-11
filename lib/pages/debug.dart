@@ -173,6 +173,8 @@ class _DebugPageState extends State<DebugPage> {
                           )
                         ],
                       ),
+                      const Text('Item types'),
+                      ...appInfo.appInfo.itemTypeList.entries.map((MapEntry<String, String> itemType) => Text('${itemType.key} - ${itemType.value}')).toList(),
                     ],
                   );
                 },

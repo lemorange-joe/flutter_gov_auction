@@ -6,7 +6,7 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/common.php");
-include_once ("../class/appdata.php");
+include_once ("../include/appdata.php");
 $_APP = AppData::getInstance();
 
 if (isset($_POST["refresh"])) {
@@ -37,9 +37,5 @@ if (isset($_POST["refresh"])) {
       <button type="submit" name="refresh">Refresh Data</button>
     </form>
   </div>
-  <script src="js/main.js"></script>
-  <script>
-    
-  </script>
 </body>
 </html>

@@ -6,6 +6,8 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/enum.php");
+include_once ("../include/appdata.php");
+$_APP = AppData::getInstance();
 
 $id = $_GET["id"];
 $type = isset($_GET["type"]) ? $_GET["type"] : "";
@@ -92,10 +94,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       <span style="font-weight: bold">Show lots:</span>
       <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
         <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
-        <option value="<?=ItemType::ConfiscatedGoods?>" <?=$type==ItemType::ConfiscatedGoods ? "selected" : ""?>><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
-        <option value="<?=ItemType::UnclaimedProperties?>" <?=$type==ItemType::UnclaimedProperties ? "selected" : ""?>><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
-        <option value="<?=ItemType::UnserviceableStores?>" <?=$type==ItemType::UnserviceableStores ? "selected" : ""?>><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
-        <option value="<?=ItemType::SurplusServiceableStores?>" <?=$type==ItemType::SurplusServiceableStores ? "selected" : ""?>><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
+        <?php
+          foreach ($_APP->auctionItemTypeList as $auctionItemType) {
+            echo "<option value='" . $auctionItemType->code . "'" . ($type == $auctionItemType->code ? " selected" : "") . ">" . $auctionItemType->code . " - " . $auctionItemType->description("tc") . "</option>";
+          }
+        ?>
       </select>
     </div>
 
@@ -127,10 +130,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           };
         } else if (type == "ItemType") {
           values = {
-            "<?=ItemType::ConfiscatedGoods?>": "<?=ItemType::ConfiscatedGoods?> - 充公物品",
-            "<?=ItemType::UnclaimedProperties?>": "<?=ItemType::UnclaimedProperties?> - 無人認領物品",
-            "<?=ItemType::UnserviceableStores?>": "<?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品",
-            "<?=ItemType::SurplusServiceableStores?>": "<?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品",
+            <?php
+            foreach ($_APP->auctionItemTypeList as $auctionItemType) {
+              echo '"' . $auctionItemType->code . '": "' . $auctionItemType->code .' - ' . $auctionItemType->description("tc") . '",' . "\n";
+            }
+            ?>            
           };
         }
         
@@ -232,14 +236,12 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var divHtml = "<div style='border: solid 1px #000;padding: 8px;'>";
         divHtml += "<select id='ddlItemPdf_" + i + "' style='margin-bottom: 10px'>";
         divHtml += "<option value=''>-- Empty -- </option>";
-          selected = (type == "<?=ItemType::ConfiscatedGoods?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::ConfiscatedGoods?>'" + selected + "><?=ItemType::ConfiscatedGoods?> - 充公物品</option>";
-          selected = (type == "<?=ItemType::UnclaimedProperties?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::UnclaimedProperties?>'" + selected + "><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>";
-          selected = (type == "<?=ItemType::UnserviceableStores?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::UnserviceableStores?>'" + selected + "><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>";
-          selected = (type == "<?=ItemType::SurplusServiceableStores?>") ? "selected" : "";
-          divHtml += "<option value='<?=ItemType::SurplusServiceableStores?>'" + selected + "><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>";
+          <?php
+            foreach ($_APP->auctionItemTypeList as $auctionItemType) {
+              echo 'selected = (type == "' . $auctionItemType->code . '") ? "selected" : "";' . "\n";
+              echo 'divHtml += "<option value=\'' . $auctionItemType->code . '\'" + selected + ">' . $auctionItemType->code .' - ' . $auctionItemType->description("tc") . '</option>";' . "\n";
+            }
+          ?>            
         divHtml += "</select>";
         divHtml += "<div style='width: 550px'>EN: <input id='tbItemPdfEn_" + i + "' type='text' value='" + urlEn + "' style='width: 500px;'></div>";
         divHtml += "<div style='width: 550px'>TC: <input id='tbItemPdfTc_" + i + "' type='text' value='" + urlTc + "' style='width: 500px;'></div>";

@@ -6,6 +6,8 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/enum.php");
+include_once ("../include/appdata.php");
+$_APP = AppData::getInstance();
 
 $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
 ?>
@@ -29,10 +31,11 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
           &nbsp;&nbsp;
           <select name="item_type">
             <option selected value="">-- Please Select --</option>
-            <option value="<?=ItemType::ConfiscatedGoods?>"><?=ItemType::ConfiscatedGoods?> - 充公物品</option>
-            <option value="<?=ItemType::UnclaimedProperties?>"><?=ItemType::UnclaimedProperties?> - 無人認領物品</option>
-            <option value="<?=ItemType::UnserviceableStores?>"><?=ItemType::UnserviceableStores?> - 廢棄物品及剩餘物品</option>
-            <option value="<?=ItemType::SurplusServiceableStores?>"><?=ItemType::SurplusServiceableStores?> - 仍可使用之廢棄物品及剩餘物品</option>
+            <?php
+              foreach ($_APP->auctionItemTypeList as $auctionItemType) {
+                echo "<option value='" . $auctionItemType->code . "'>" . $auctionItemType->code . " - " . $auctionItemType->description("tc") . "</option>";
+              }
+            ?>    
           </select>
         </div>
         <button id="btnSubmit" class="action-button" onclick="TempDisableButton('btnSubmit');document.getElementById('import_form').submit();">Submit</button>

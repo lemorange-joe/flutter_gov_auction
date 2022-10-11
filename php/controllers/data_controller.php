@@ -1,7 +1,10 @@
 <?php
+include_once ("../include/appdata.php");
+
 class DataController {
   function appInfo() {
     global $conn, $lang;
+    $_APP = AppData::getInstance();
 
     $output = new StdClass();
     $output->status = "fail";
@@ -37,6 +40,12 @@ class DataController {
         $push->d = date("Y-m-d H:i:s", strtotime($result[$i]["push_date"]));
 
         $data->ml[] = $push;
+      }
+
+      // item type list, from $_APP
+      $data->itm = new StdClass();
+      foreach ($_APP->auctionItemTypeList as $auctionItemType) {
+        $data->itm->{$auctionItemType->code} = $auctionItemType->description($lang);
       }
 
       $output->status = "success";
