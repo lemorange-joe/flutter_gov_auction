@@ -8,7 +8,7 @@ import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
-import '../includes/enums.dart';
+// import '../includes/enums.dart';
 import '../includes/utilities.dart' as utilities;
 import '../providers/auction_provider.dart';
 // import '../widgets/tel_group.dart';
@@ -125,10 +125,10 @@ class _AuctionTabState extends State<AuctionTab> with SingleTickerProviderStateM
               _buildLotList(1, widget.auction.lotList),
               _buildLotList(2, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
               const Text('3'),
-              _buildLotList(4, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.ConfiscatedGoods).toList()),
-              _buildLotList(5, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnclaimedProperties).toList()),
-              _buildLotList(6, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.UnserviceableStores).toList()),
-              _buildLotList(7, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == AuctionItemType.SurplusServiceableStores).toList()),
+              _buildLotList(4, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'C').toList()),
+              _buildLotList(5, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'UP').toList()),
+              _buildLotList(6, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'M').toList()),
+              _buildLotList(7, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == 'MS').toList()),
             ],
           ),
         ),
@@ -180,7 +180,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
       itemExtent: 150.0 * MediaQuery.of(context).textScaleFactor,
       itemBuilder: (BuildContext context, int i) {
         final AuctionLot curLot = widget.lotList[i];
-        final String heroTag = 'lot_photo_${widget.listIndex}_${curLot.id}';
+        final String heroTagPrefix = 'lot_photo_${widget.listIndex}';
 
         return SizedBox(
           height: 150.0 * MediaQuery.of(context).textScaleFactor,
@@ -188,7 +188,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
             onTap: () {
               Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
                 'title': S.of(context).itemDetails,
-                'heroTag': heroTag,
+                'heroTagPrefix': heroTagPrefix,
                 'auctionLot': curLot,
               });
             },
@@ -199,7 +199,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                   width: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
                   height: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
                   child: Hero(
-                    tag: heroTag,
+                    tag: '${heroTagPrefix}_${curLot.id}',
                     child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(config.smBorderRadius),

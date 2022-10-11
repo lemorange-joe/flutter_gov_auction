@@ -83,7 +83,7 @@ class AuctionProvider with ChangeNotifier {
       final List<AuctionLot> lotList = <AuctionLot>[];
 
       for (final dynamic jsonItemPdf in jsonItemPdfList) {
-        itemPdfList.add(AuctionItemPdf(getAuctionItemType((jsonItemPdf as Map<String, dynamic>)['t']! as String), jsonItemPdf['url']! as String));
+        itemPdfList.add(AuctionItemPdf((jsonItemPdf as Map<String, dynamic>)['t']! as String, jsonItemPdf['url']! as String));
       }
 
       for (final dynamic jsonLot in jsonLotList) {

@@ -13,10 +13,10 @@ import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class AuctionLotPage extends StatefulWidget {
-  const AuctionLotPage(this.title, this.heroTag, this.auctionLot, {super.key});
+  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionLot, {super.key});
 
   final String title;
-  final String heroTag;
+  final String heroTagPrefix;
   final AuctionLot auctionLot;
 
   @override
@@ -46,8 +46,12 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     ApiHelper()
         .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()], useDemoData: true)
         .then((dynamic result) {
+      if (!mounted) {
+        return;
+      }
       final List<dynamic> resultList = result as List<dynamic>;
-      final List<RelatedAuctionLot> newRelatedAuctionLot = resultList.map((dynamic jsonData) => RelatedAuctionLot.fromjson(jsonData as Map<String, dynamic>)).toList();
+      final List<RelatedAuctionLot> newRelatedAuctionLot =
+          resultList.map((dynamic jsonData) => RelatedAuctionLot.fromjson(jsonData as Map<String, dynamic>)).toList();
       setState(() {
         relatedPageNum = page;
         if (newRelatedAuctionLot.isEmpty) {
@@ -118,7 +122,10 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('${S.of(context).fieldLotNum} ${widget.auctionLot.lotNum}', style: const TextStyle(color: Colors.white)),
+        title: Text(
+          '${S.of(context).fieldLotNum} ${widget.auctionLot.lotNum}',
+          style: const TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -137,7 +144,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     children: <Widget>[
                       Center(
                         child: Hero(
-                          tag: widget.heroTag,
+                          tag: '${widget.heroTagPrefix}_${widget.auctionLot.id}',
                           child: (widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute)
                               ? Container(
                                   decoration: BoxDecoration(
@@ -182,11 +189,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(widget.heroTagPrefix),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldGldFileRef)),
-                        Expanded(child: Text(widget.auctionLot.gldFileRef)),
+                        Expanded(
+                          child: Text(widget.auctionLot.gldFileRef),
+                        ),
                       ],
                     ),
                     Row(

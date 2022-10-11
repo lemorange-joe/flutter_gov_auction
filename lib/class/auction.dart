@@ -24,12 +24,12 @@ class Auction {
         final Map<String, String> itemPdf = ip as Map<String, String>;
 
         if (itemPdf['t'] != null && itemPdf['url'] != null) {
-          return AuctionItemPdf(getAuctionItemType(itemPdf['t']!), itemPdf['url']!);
+          return AuctionItemPdf(itemPdf['t']!, itemPdf['url']!);
         } else {
-          return AuctionItemPdf(AuctionItemType.None, '');
+          return AuctionItemPdf('', '');
         }
       }).toList()
-        ..removeWhere((AuctionItemPdf a) => a.itemType == AuctionItemType.None),
+        ..removeWhere((AuctionItemPdf a) => a.itemType == ''),
       json['r'] as String,
       <AuctionLot>[],
       getAuctionStatus(json['as'] as String),
@@ -84,7 +84,7 @@ class AuctionLot {
 
     return AuctionLot(
       json['id'] as int,
-      getAuctionItemType(json['t'] as String),
+      json['t'] as String,
       json['ln'] as String,
       json['gr'] as String,
       json['rf'] as String,
@@ -108,11 +108,11 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, AuctionItemType.None, '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
   }
 
   final int id;
-  final AuctionItemType itemType;
+  final String itemType;
   final String lotNum;
   final String gldFileRef;
   final String reference;
@@ -174,7 +174,7 @@ class AuctionItem {
 class AuctionItemPdf {
   AuctionItemPdf(this.itemType, this.pdfUrl);
 
-  final AuctionItemType itemType;
+  final String itemType;
   final String pdfUrl;
 }
 
@@ -197,7 +197,7 @@ class RelatedAuctionLot {
       getAuctionStatus(json['as'] as String),
 
       json['lid'] as int,
-      getAuctionItemType(json['t'] as String),
+      json['t'] as String,
       json['ln'] as String,
       json['d'] as String,
       json['i'] as String,
@@ -215,7 +215,7 @@ class RelatedAuctionLot {
   final AuctionStatus auctionStatus;
 
   final int lotId;
-  final AuctionItemType itemType;
+  final String itemType;
   final String lotNum;
   final String description;
   final String icon;
