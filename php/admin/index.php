@@ -90,6 +90,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <a href="view_api.php">View API</a>
         <br /><br />
         <a href="verify_data.php">Verify Data</a>
+        <br /><br />
+        <a href="app_data.php">App Data</a>
       </div>
       <div class="admin-block bgYellow">
         <h3>Notification</h3>
