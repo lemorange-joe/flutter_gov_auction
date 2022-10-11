@@ -14,6 +14,9 @@ class AppInfoProvider with ChangeNotifier {
   Future<void> refresh({String lang = 'en'}) async {
     final ApiHelper apiHelper = ApiHelper();
 
+    loaded = false;
+    notifyListeners();
+
     try {
       final Map<String, dynamic> result = await apiHelper.get(lang, 'data', 'appinfo', useDemoData: true) as Map<String, dynamic>;
       appInfo = AppInfo.fromJson(result);

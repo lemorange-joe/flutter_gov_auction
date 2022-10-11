@@ -546,7 +546,23 @@ class _DebugPageState extends State<DebugPage> {
 
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: logList.map((MapEntry<String, String> entry) => Text('[${entry.key}] ${entry.value}')).toList());
+                    children: logList
+                        .map(
+                          (MapEntry<String, String> entry) => SizedBox(
+                            width: MediaQuery.of(context).size.width - 24.0,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  '${entry.key.replaceAll(' ', '\n')}  ',
+                                  style: const TextStyle(fontSize: 10.0),
+                                ),
+                                Flexible(child: Text(entry.value)),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList());
               },
             ),
           ],
