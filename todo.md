@@ -15,4 +15,5 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
+- swipe prev/next auction lot
 - add random data in API to prevent data theft

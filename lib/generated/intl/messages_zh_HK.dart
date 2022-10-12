@@ -89,6 +89,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜尋項目"),
+        "semanticsAddToSavedItems":
+            MessageLookupByLibrary.simpleMessage("加至收藏物品"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("關閉"),
         "semanticsDoubleTapViewDetails":
             MessageLookupByLibrary.simpleMessage("雙擊查看詳情"),

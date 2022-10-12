@@ -96,6 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
+        "semanticsAddToSavedItems":
+            MessageLookupByLibrary.simpleMessage("add to saved items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
         "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(
             "press and hold to view details"),

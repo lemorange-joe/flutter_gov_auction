@@ -610,6 +610,16 @@ class S {
     );
   }
 
+  /// `add to saved items`
+  String get semanticsAddToSavedItems {
+    return Intl.message(
+      'add to saved items',
+      name: 'semanticsAddToSavedItems',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `close`
   String get semanticsClose {
     return Intl.message(

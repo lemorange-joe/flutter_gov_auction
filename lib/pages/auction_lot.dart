@@ -172,32 +172,37 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         right: 0.0,
                         bottom: 8.0,
                         child: ValueListenableBuilder<Box<SavedAuction>>(
-                            valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-                            builder: (BuildContext context, _, __) {
-                              final SavedAuction curAuction = SavedAuction(widget.auctionId, widget.auctionDate, widget.auctionLot.lotNum, widget.auctionLot.photoUrl, widget.auctionLot.description);
-                              final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
+                          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                          builder: (BuildContext context, _, __) {
+                            final SavedAuction curAuction = SavedAuction(
+                                widget.auctionId, widget.auctionDate, widget.auctionLot.lotNum, widget.auctionLot.photoUrl, widget.auctionLot.description);
+                            final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
-                              return TextButton(
-                                onPressed: () async {
-                                  if (isSaved) {
-                                    await HiveHelper().deleteSavedAuction(curAuction);
-                                  } else {
-                                    curAuction.savedDate = DateTime.now();
-                                    await HiveHelper().writeSavedAuction(curAuction);
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  fixedSize: const Size(50.0, 50.0),
-                                  shape: const CircleBorder(),
-                                  backgroundColor: const Color.fromARGB(190, 255, 255, 255),
-                                ),
+                            return TextButton(
+                              onPressed: () async {
+                                if (isSaved) {
+                                  await HiveHelper().deleteSavedAuction(curAuction);
+                                } else {
+                                  curAuction.savedDate = DateTime.now();
+                                  await HiveHelper().writeSavedAuction(curAuction);
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                fixedSize: const Size(50.0, 50.0),
+                                shape: const CircleBorder(),
+                                backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0),
+                              ),
+                              child: Semantics(
+                                label: isSaved ? S.of(context).semanticsSavedItems : S.of(context).semanticsAddToSavedItems,
                                 child: Icon(
                                   isSaved ? MdiIcons.heart : MdiIcons.heartOutline,
                                   color: config.green,
                                   size: 28.0,
                                 ),
-                              );
-                            }),
+                              ),
+                            );
+                          },
+                        ),
                       )
                     ],
                   ),

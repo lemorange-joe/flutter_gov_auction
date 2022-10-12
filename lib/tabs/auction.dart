@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
+import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
+import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 // import '../includes/enums.dart';
 import '../includes/utilities.dart' as utilities;
@@ -131,7 +134,23 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                       children: <Widget>[
                         _buildLotList('1', widget.auction.lotList),
                         _buildLotList('2', widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
-                        const Text('3'),
+                        ValueListenableBuilder<Box<SavedAuction>>(
+                          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                          builder: (BuildContext context, _, __) {
+                            final List<String> savedLotNums = HiveHelper()
+                                .getSavedAuctionList()
+                                .where((SavedAuction auction) => auction.auctionId == widget.auction.id)
+                                .map((SavedAuction auction) => auction.lotNum)
+                                .toList();
+
+                            return _buildLotList(
+                              '3',
+                              widget.auction.lotList.where((AuctionLot auctionLot) {
+                                return savedLotNums.contains(auctionLot.lotNum);
+                              }).toList(),
+                            );
+                          },
+                        ),
                         ...itemTypes.entries
                             .map(
                               (MapEntry<String, String> entry) =>
