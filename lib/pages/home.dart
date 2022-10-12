@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 15.0),
               ),
             ),
-            getCustomListTile(MdiIcons.cardsHeartOutline, listItemColor, S.of(context).saved, 'saved'),
+            getCustomListTile(MdiIcons.heartOutline, listItemColor, S.of(context).saved, 'saved'),
             getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).reminder, 'reminder'),
             getCustomListTile(MdiIcons.cogOutline, listItemColor, S.of(context).settings, 'settings'),
             const Divider(),

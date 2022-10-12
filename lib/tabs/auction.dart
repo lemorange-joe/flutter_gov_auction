@@ -46,7 +46,7 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
               child: Text(S.of(context).noAuctionItem),
             ),
           )
-        : GetListView(listIndex, lotList);
+        : GetListView(listIndex, widget.auction, lotList);
   }
 
   @override
@@ -114,7 +114,7 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                                 Tab(
                                   icon: Semantics(
                                     label: S.of(context).semanticsSavedItems,
-                                    child: const Icon(MdiIcons.cardsHeartOutline),
+                                    child: const Icon(MdiIcons.heartOutline),
                                   ),
                                 ),
                                 ...itemTypes.entries.map((MapEntry<String, String> entry) => Tab(text: entry.value)).toList(),
@@ -173,11 +173,12 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class GetListView extends StatefulWidget {
-  const GetListView(this.listIndex, this.lotList, {Key? key}) : super(key: key);
+  const GetListView(this.listIndex, this.auction, this.lotList, {Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _GetListViewState();
 
   final String listIndex;
+  final Auction auction;
   final List<AuctionLot> lotList;
 }
 
@@ -200,6 +201,8 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
               Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
                 'title': S.of(context).itemDetails,
                 'heroTagPrefix': heroTagPrefix,
+                'auctionId': widget.auction.id,
+                'auctionDate': widget.auction.startTime,
                 'auctionLot': curLot,
               });
             },

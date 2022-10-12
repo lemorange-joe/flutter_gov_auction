@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/app_info.dart';
+import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/easter_egg_helper.dart';
 import '../helpers/firebase_analytics_helper.dart';
@@ -258,6 +259,38 @@ class _DebugPageState extends State<DebugPage> {
             child: const Text('Clean (81,83,85,87,89)'),
           ),
         ],
+      ),
+      const SizedBox(height: 10.0),
+      const Text('Saved Auction'),
+      const SizedBox(height: 5.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: ValueListenableBuilder<Box<SavedAuction>>(
+          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+          builder: (BuildContext context, _, __) {
+            return Column(
+              children: HiveHelper()
+                  .getSavedAuctionList()
+                  .map((SavedAuction auction) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(auction.savedDate.toString().replaceAll(' ', '\n'), style: const TextStyle(fontSize: 10.0)),
+                          const SizedBox(width: 5.0),
+                          Text('${auction.auctionId}_${auction.lotNum}: ${auction.description}'),
+                        ],
+                      ))
+                  .toList(),
+            );
+          },
+        ),
+      ),
+      const SizedBox(height: 5.0),
+      ElevatedButton(
+        onPressed: () async {
+          await HiveHelper().clearAllSavedAuction();
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.purple[300]),
+        child: const Text('Clear saved auction'),
       ),
     ];
   }

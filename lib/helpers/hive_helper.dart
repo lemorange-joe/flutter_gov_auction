@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 // import 'package:logger/logger.dart';
+import '../class/saved_auction.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 
@@ -14,11 +15,15 @@ class HiveHelper {
   static final Box<dynamic> _notificationBox = Hive.box<dynamic>('notification');
   static final Box<String> _historyBox = Hive.box<String>('history');
   static final Box<String> _searchHistoryBox = Hive.box<String>('search_history');
+  static final Box<SavedAuction> _savedAuctionBox = Hive.box<SavedAuction>('saved_auction');
   static final Box<String> _logBox = Hive.box<String>('log');
+
   static bool _enableLog = false;
   static final HiveHelper _hiveHelper = HiveHelper._internal();
 
   Future<void> init(String path, bool enableLog) async {
+    Hive.registerAdapter(SavedAuctionAdapter());
+
     Hive.init(path);
     _enableLog = enableLog;
 
@@ -26,6 +31,7 @@ class HiveHelper {
     await Hive.openBox<dynamic>('notification');
     await Hive.openBox<String>('history');
     await Hive.openBox<String>('search_history');
+    await Hive.openBox<SavedAuction>('saved_auction');
     if (_enableLog) {
       await Hive.openBox<String>('log');
     }
@@ -147,6 +153,30 @@ class HiveHelper {
     await _searchHistoryBox.clear();
   }
   // search history box
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // saved auction box:
+  Future<void> writeSavedAuction(SavedAuction auction) async {
+    await _savedAuctionBox.put(auction.hiveKey, auction);
+  }
+
+  List<SavedAuction> getSavedAuctionList() {
+    return _savedAuctionBox.values.toList();
+  }
+
+  List<String> getSavedAuctionKeyList() {
+    return _savedAuctionBox.values.map((SavedAuction auction) => auction.hiveKey).toList();
+  }
+
+  Future<void> deleteSavedAuction(SavedAuction auction) async {
+    _savedAuctionBox.delete(auction.hiveKey);
+  }
+
+  Future<void> clearAllSavedAuction() async {
+    _savedAuctionBox.clear();
+  }
+  // saved auction box:
   // --------------------------------------------
 
   // --------------------------------------------

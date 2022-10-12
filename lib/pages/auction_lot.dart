@@ -1,22 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
+import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
+import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class AuctionLotPage extends StatefulWidget {
-  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionLot, {super.key});
+  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionDate, this.auctionLot, {super.key});
 
   final String title;
   final String heroTagPrefix;
+  final int auctionId;
+  final DateTime auctionDate;
   final AuctionLot auctionLot;
 
   @override
@@ -166,19 +171,33 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       Positioned(
                         right: 0.0,
                         bottom: 8.0,
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            fixedSize: const Size(50.0, 50.0),
-                            shape: const CircleBorder(),
-                            backgroundColor: const Color.fromARGB(190, 255, 255, 255),
-                          ),
-                          child: const Icon(
-                            MdiIcons.cardsHeartOutline,
-                            color: config.green,
-                            size: 28.0,
-                          ),
-                        ),
+                        child: ValueListenableBuilder<Box<SavedAuction>>(
+                            valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                            builder: (BuildContext context, _, __) {
+                              final SavedAuction curAuction = SavedAuction(widget.auctionId, widget.auctionDate, widget.auctionLot.lotNum, widget.auctionLot.photoUrl, widget.auctionLot.description);
+                              final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
+
+                              return TextButton(
+                                onPressed: () async {
+                                  if (isSaved) {
+                                    await HiveHelper().deleteSavedAuction(curAuction);
+                                  } else {
+                                    curAuction.savedDate = DateTime.now();
+                                    await HiveHelper().writeSavedAuction(curAuction);
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  fixedSize: const Size(50.0, 50.0),
+                                  shape: const CircleBorder(),
+                                  backgroundColor: const Color.fromARGB(190, 255, 255, 255),
+                                ),
+                                child: Icon(
+                                  isSaved ? MdiIcons.heart : MdiIcons.heartOutline,
+                                  color: config.green,
+                                  size: 28.0,
+                                ),
+                              );
+                            }),
                       )
                     ],
                   ),
