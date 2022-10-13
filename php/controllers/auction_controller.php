@@ -168,7 +168,7 @@ class AuctionController {
                       SELECT DISTINCT L1.lot_id
                       FROM AuctionLot L1
                       INNER JOIN AuctionItem I1 ON L1.lot_id = I1.lot_id
-                      INNER JOIN AuctionItem I0 ON (I1.description_en = I0.description_en OR I1.description_tc = I0.description_tc OR I1.description_sc = I0.description_sc)
+                      INNER JOIN AuctionItem I0 ON (I1.search_keyword_$lang = I0.search_keyword_$lang)
                       INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
                       WHERE L1.lot_id <> ? AND L0.lot_id = ? AND L1.status = ? AND I1.item_id <> I0.item_id
                     ) as T

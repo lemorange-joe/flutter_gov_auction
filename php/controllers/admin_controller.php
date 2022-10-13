@@ -689,17 +689,23 @@ class AdminController {
       $unitEn = trim($curItem["unit_en"]);
       $unitTc = trim($curItem["unit_tc"]);
       $unitSc = trim($curItem["unit_sc"]);
+      $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
+      $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
+      $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
       $insertSql = "INSERT INTO AuctionItem (
                       lot_id, seq, icon, description_en, description_tc, description_sc, 
-                      quantity, unit_en, unit_tc, unit_sc
+                      quantity, unit_en, unit_tc, unit_sc,
+                      search_keyword_en, search_keyword_tc, search_keyword_sc
                     ) VALUES (
                       ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?
+                      ?, ?, ?, ?,
+                      ?, ?, ?
                     );";
       
       $result = $conn->Execute($insertSql, array(
         $lotId, $i+1, $icon, $descriptionEn, $descriptionTc, $descriptionSc, 
-        $quantity, $unitEn, $unitTc, $unitSc 
+        $quantity, $unitEn, $unitTc, $unitSc,
+        $searchKeywordEn, $searchKeywordTc, $searchKeywordSc
       ));
     }
   }
@@ -717,17 +723,24 @@ class AdminController {
       $unitEn = trim($curItem["unit_en"]);
       $unitTc = trim($curItem["unit_tc"]);
       $unitSc = str_chinese_simp(trim($curItem["unit_tc"]));
+      $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
+      $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
+      $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
+
       $insertSql = "INSERT INTO AuctionItem (
                       lot_id, seq, icon, description_en, description_tc, description_sc, 
-                      quantity, unit_en, unit_tc, unit_sc
+                      quantity, unit_en, unit_tc, unit_sc,
+                      search_keyword_en, search_keyword_tc, search_keyword_sc
                     ) VALUES (
                       ?, ?, 'fontawesome.box', ?, ?, ?,
-                      ?, ?, ?, ?
+                      ?, ?, ?, ?,
+                      ?, ?, ?
                     );";
       
       $result = $conn->Execute($insertSql, array(
         $lotId, $i+1, $descriptionEn, $descriptionTc, $descriptionSc, 
-        $quantity, $unitEn, $unitTc, $unitSc 
+        $quantity, $unitEn, $unitTc, $unitSc,
+        $searchKeywordEn, $searchKeywordTc, $searchKeywordSc
       ));
     }
   }
@@ -973,6 +986,62 @@ class AdminController {
     }
 
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  // for initial setup batch update only
+  // function batchUpdateItemSearchKeyword() {
+  //   global $conn;
+  //   $selectSql = "SELECT item_id, description_en, description_tc, description_sc
+  //                 FROM AuctionItem";
+    
+  //   $result = $conn->Execute($selectSql)->GetRows();
+  //   $rowNum = count($result);
+  //   echo "total: $rowNum\n";
+
+  //   for($i = 0; $i < $rowNum; ++$i) {
+  //     $itemId = $result[$i]['item_id'];
+  //     $descriptionEn = $result[$i]['description_en'];
+  //     $descriptionTc = $result[$i]['description_tc'];
+  //     $descriptionSc = $result[$i]['description_sc'];
+  //     $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
+  //     $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
+  //     $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
+
+  //     $updateSql = "UPDATE AuctionItem 
+  //                   SET search_keyword_en = ?, search_keyword_tc = ?, search_keyword_sc = ?
+  //                   WHERE item_id = ?";
+
+  //     $conn->Execute($updateSql, array($searchKeywordEn, $searchKeywordTc, $searchKeywordSc, $itemId));
+      
+  //     echo "[$i]$itemId: $searchKeywordEn, $searchKeywordTc, $searchKeywordSc\n";
+  //   }
+
+  //   echo "DONE!";
+  // }
+
+  private function getSearchKeyword($description, $lang) {
+    $bracketPos = strpos($description, "(");
+    $bracket2Pos = strpos($description, "（");
+    $commaPos = strpos($description, ",");
+    $pos = ($lang == "en" ? 255 : 50);
+
+    if ($bracketPos !== false && $bracket2Pos !== false && $commaPos != false) {
+      $pos = min(min($bracketPos, $bracket2Pos), $commaPos);
+    } else if ($bracketPos !== false && $bracket2Pos !== false) {
+      $pos = min($bracketPos, $bracket2Pos);
+    } else if ($bracketPos !== false && $commaPos != false) {
+      $pos = min($bracketPos, $commaPos);
+    } else if ($bracket2Pos !== false && $commaPos != false) {
+      $pos = min($bracket2Pos, $commaPos);
+    } else if ($bracketPos !== false) {
+      $pos = $bracketPos;
+    } else if ($bracket2Pos !== false) {
+      $pos = $bracket2Pos;
+    } else if ($commaPos !== false) {
+      $pos = $commaPos;
+    }
+
+    return trim(substr($description, 0, $pos));
   }
 
   function listKeywordImage($param) {
