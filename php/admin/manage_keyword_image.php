@@ -4,6 +4,8 @@ if (!isset($_SESSION["admin_user"])) {
   header("Location: index.php");
   exit;
 }
+
+include_once ("../include/config.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,11 +39,18 @@ if (!isset($_SESSION["admin_user"])) {
   </div>
   <div class="body">
     <div style="margin:10px 0;text-decoration:underline">Create</div>
-    <input type="text" id="tbKeywordEn" style="width: 200px; margin-right: 10px" placeholder="Keyword (EN)">
-    <input type="text" id="tbKeywordTc" style="width: 100px; margin-right: 10px" placeholder="Keyword (TC)">
-    <input type="text" id="tbImageUrl" style="width: 600px; margin-right: 20px" placeholder="Image URL">
-    <button id="btnCreate" style="margin-right: 10px" onclick="CreateKeywordImage()">Create</button>
-    <button onclick="ResetData()">Reset</button>
+    <div>
+      <input type="text" id="tbKeywordEn" style="vertical-align: top; width: 200px; margin-right: 10px" placeholder="Keyword (EN)">
+      <input type="text" id="tbKeywordTc" style="vertical-align: top; width: 100px; margin-right: 10px" placeholder="Keyword (TC)">
+      <div style="display: inline-block">
+        <input type="text" id="tbImageUrl" style="width: 600px; margin-right: 20px" placeholder="Image URL">
+        <br />OR<br />
+        <input type="file" name="fileImage" id="fileImage" />
+      </div>
+
+      <button id="btnCreate" style="vertical-align: top; margin-right: 10px" onclick="CreateKeywordImage()">Create</button>
+      <button onclick="ResetData()" style="vertical-align: top">Reset</button>
+    </div>
     <hr style="width: 75%; margin-left: 0" />
     <div style="height: 40px;line-height: 30px;">
       Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" placeholder="Input Keyword" />
@@ -106,15 +115,20 @@ if (!isset($_SESSION["admin_user"])) {
           row.insertCell(1).appendChild(document.createTextNode(keywordImage.keyword_en));
           row.insertCell(2).appendChild(document.createTextNode(keywordImage.keyword_tc));
 
+          var imageUrl = keywordImage.image_url;
+          if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
+            imageUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>" + imageUrl; 
+          }
+
           var imgKeyword = document.createElement("img");
-          imgKeyword.setAttribute("src", keywordImage.image_url);
+          imgKeyword.setAttribute("src", imageUrl);
           imgKeyword.style.height = "60px";
 
           var lnkImageUrl = document.createElement("a");
           lnkImageUrl.appendChild(imgKeyword);
           lnkImageUrl.appendChild(document.createElement("br"));
           lnkImageUrl.appendChild(document.createTextNode(keywordImage.image_url));
-          lnkImageUrl.setAttribute("href", keywordImage.image_url);
+          lnkImageUrl.setAttribute("href", imageUrl);
           lnkImageUrl.setAttribute("target", "_blank");
           row.insertCell(3).appendChild(lnkImageUrl);
 
@@ -135,24 +149,25 @@ if (!isset($_SESSION["admin_user"])) {
         document.getElementById("tbKeywordEn").value = keywordEn ? keywordEn : "";
         document.getElementById("tbKeywordTc").value = keywordTc ? keywordTc : "";
         document.getElementById("tbImageUrl").value = imageUrl ? imageUrl : "";
+        document.getElementById("fileImage").value = "";
       }
 
       function CreateKeywordImage() {
         TempDisableButton("btnCreate");
 
-        var keywordEn = document.getElementById("tbKeywordEn").value.trim();
-        var keywordTc = document.getElementById("tbKeywordTc").value.trim();
-        var imageurl = document.getElementById("tbImageUrl").value.trim();
-
-        var postData = {
-          keyword_en: keywordEn,
-          keyword_tc: keywordTc,
-          image_url: imageurl,
-        };
-
+        var formData = new FormData();
+        formData.append("keyword_en", document.getElementById("tbKeywordEn").value.trim());
+        formData.append("keyword_tc", document.getElementById("tbKeywordTc").value.trim());
+        if (document.getElementById("fileImage").files.length > 0) {
+          formData.append("image_file", document.getElementById("fileImage").files[0], document.getElementById("fileImage").files[0].name);
+          formData.append("image_url", "");
+        } else {
+          formData.append("image_file", "");
+          formData.append("image_url", document.getElementById("tbImageUrl").value.trim());
+        }
+        
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "../en/api/admin-createKeywordImage");
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onreadystatechange = function () {
           if (this.readyState == 4) {
             if (this.status == 200) {
@@ -170,7 +185,7 @@ if (!isset($_SESSION["admin_user"])) {
           }
         };
 
-        xhr.send(JSON.stringify(postData));
+        xhr.send(formData);
       }
 
       function DeleteKeywordImage(btn) {
@@ -178,6 +193,10 @@ if (!isset($_SESSION["admin_user"])) {
         var keywordEn = btn.getAttribute("data-keyword-en");
         var keywordTc = btn.getAttribute("data-keyword-tc");
         var imageUrl = btn.getAttribute("data-image-url");
+
+        if (!confirm("Confirm to delete image for " + keywordTc + ", " + keywordEn + "?")) {
+          return;
+        }
 
         var postData = {
           id: id,

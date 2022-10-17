@@ -10,6 +10,9 @@ $DB_NAME = "gov_auction";
 $FCM_ENDPOINT = "https://fcm.googleapis.com/v1/projects/gov-auction/messages:send";
 $GOOGLE_SERVICE_ACCOUNT_FILE_PATH = "/Volumes/untitled/config/gov-auction-firebase-adminsdk-tyayj-98166bb8ea.json";
 
+$AUCTION_IMAGE_FOLDER = "/Volumes/untitled/FlutterProjects/67b30e82-a005-75a88993-c0e3fe49d08d/php/images/";
+$AUCTION_IMAGE_ROOT_URL = "http://gauc.local/images/";
+
 $CACHE_DIR = "/tmp";
 $CACHE_PERIOD = 1 * 60;  // seconds
 $RELATED_RECORD_PAGE_SIZE = 5;

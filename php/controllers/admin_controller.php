@@ -1100,20 +1100,36 @@ class AdminController {
     $output->status = "fail";
 
     try {
-      $data = json_decode(file_get_contents('php://input'), true);
-
-      if (!isset($data["image_url"]) || empty($data["image_url"])) {
-        throw new Exception("Image URL missing!");  
+      if (!isset($_POST["image_url"]) && !isset($_POST["image_file"])) {
+        throw new Exception("Image missing!");  
       }
 
-      $keywordEn = empty(trim($data["keyword_en"])) ? "-" : trim($data["keyword_en"]);
-      $keywordTc = empty(trim($data["keyword_tc"])) ? "-" : trim($data["keyword_tc"]);
-      $imageUrl = trim($data["image_url"]);
+      $keywordEn = empty(trim($_POST["keyword_en"])) ? "-" : trim($_POST["keyword_en"]);
+      $keywordTc = empty(trim($_POST["keyword_tc"])) ? "-" : trim($_POST["keyword_tc"]);
+      $imageUrl = trim($_POST["image_url"]);
+      $md5FileName = "";
+
+      if (!empty($_FILES["image_file"])) {
+        $uploadFileName = $_FILES["image_file"]["name"];
+        $ext = substr($uploadFileName, strrpos($uploadFileName, ".") + 1);
+        $md5FileName = md5(basename($uploadFileName, $ext)."_".time()) . "." . $ext;
+        $targetFile = $GLOBALS["AUCTION_IMAGE_FOLDER"] . $md5FileName;
+
+        if (getimagesize($_FILES["image_file"]["tmp_name"]) === false) {
+          throw new Exception("Image file not found!");
+        }
+
+        try {
+          move_uploaded_file($_FILES["image_file"]["tmp_name"], $targetFile);
+        } catch (Exception $e) {
+          throw $e;
+        }
+      }
 
       $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url) 
                     VALUES (?, ?, ?)";
       
-      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, $imageUrl));
+      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, empty($md5FileName) ? $imageUrl : $md5FileName));
 
       $output->status = "success";
     } catch (Exception $e) {
@@ -1138,6 +1154,20 @@ class AdminController {
       }
 
       $id = trim($data["id"]);
+      $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_image_id = ?";
+      $result = $conn->Execute($selectSql, array($id))->GetRows();
+      if (count($result) < 1) {
+        throw new Exception("keyword image id: $id not found!");
+      } 
+
+      if (strpos($result[0]["image_url"], "http://") === false && strpos($result[0]["image_url"], "https://") === false) {
+        $filePath = $GLOBALS["AUCTION_IMAGE_FOLDER"] . $result[0]["image_url"];
+
+        if (file_exists($filePath)) {
+          unlink($filePath);
+        }
+      }
+
       $deleteSql = "DELETE FROM KeywordImage WHERE keyword_image_id = ?";
       $result = $conn->Execute($deleteSql, array($id));
 
