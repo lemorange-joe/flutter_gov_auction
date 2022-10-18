@@ -1050,7 +1050,7 @@ class AdminController {
     $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
 
     $selectSql = "SELECT
-                    keyword_image_id, keyword_en, keyword_tc, image_url
+                    keyword_image_id, keyword_en, keyword_tc, image_url, author_en, author_tc, author_sc, author_url
                   FROM KeywordImage
                   WHERE ? = '' OR keyword_en LIKE ? OR keyword_tc LIKE ?";
 
@@ -1066,6 +1066,10 @@ class AdminController {
       $keywordImage->keyword_en = $result[$i]["keyword_en"];
       $keywordImage->keyword_tc = $result[$i]["keyword_tc"];
       $keywordImage->image_url = $result[$i]["image_url"];
+      $keywordImage->author_en = $result[$i]["author_en"];
+      $keywordImage->author_tc = $result[$i]["author_tc"];
+      $keywordImage->author_sc = $result[$i]["author_sc"];
+      $keywordImage->author_url = $result[$i]["author_url"];
       
       $output[] = $keywordImage;
     }
@@ -1112,6 +1116,10 @@ class AdminController {
       $keywordEn = empty(trim($_POST["keyword_en"])) ? "-" : trim($_POST["keyword_en"]);
       $keywordTc = empty(trim($_POST["keyword_tc"])) ? "-" : trim($_POST["keyword_tc"]);
       $imageUrl = trim($_POST["image_url"]);
+      $authorEn = trim($_POST["author_en"]);
+      $authorTc = trim($_POST["author_tc"]);
+      $authorSc = trim($_POST["author_sc"]);
+      $authorUrl = trim($_POST["author_url"]);
       $md5FileName = "";
 
       if (!empty($_FILES["image_file"])) {
@@ -1131,10 +1139,10 @@ class AdminController {
         }
       }
 
-      $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url) 
-                    VALUES (?, ?, ?)";
+      $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url, author_en, author_tc, author_sc, author_url) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
       
-      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, empty($md5FileName) ? $imageUrl : $md5FileName));
+      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, empty($md5FileName) ? $imageUrl : $md5FileName, $authorEn, $authorTc, $authorSc, $authorUrl));
 
       $output->status = "success";
     } catch (Exception $e) {

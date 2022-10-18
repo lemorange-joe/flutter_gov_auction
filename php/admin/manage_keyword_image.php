@@ -39,19 +39,30 @@ include_once ("../include/config.php");
   </div>
   <div class="body">
     <div style="margin:10px 0;text-decoration:underline">Create</div>
-    <div>
-      <input type="text" id="tbKeywordEn" style="vertical-align: top; width: 200px; margin-right: 10px" placeholder="Keyword (EN)">
-      <input type="text" id="tbKeywordTc" style="vertical-align: top; width: 100px; margin-right: 10px" placeholder="Keyword (TC)">
-      <div style="display: inline-block">
-        <input type="text" id="tbImageUrl" style="width: 600px; margin-right: 20px" placeholder="Image URL">
-        <br />OR<br />
-        <input type="file" name="fileImage" id="fileImage" />
+    <div style="display: flex; justify-content: space-between">
+      <div>
+        <div>
+          <input type="text" id="tbKeywordEn" style="vertical-align: top; width: 200px; margin-right: 10px" placeholder="Keyword (EN)">
+          <input type="text" id="tbKeywordTc" style="vertical-align: top; width: 100px; margin-right: 10px" placeholder="Keyword (TC)">
+          <div style="display: inline-block">
+            <input type="text" id="tbImageUrl" style="width: 600px; margin-right: 20px" placeholder="Image URL">
+            <br />OR<br />
+            <input type="file" name="fileImage" id="fileImage" />
+          </div>
+        </div>
+        <div>Author</div>
+        <div>EN: <input type="text" id="tbAuthorEn" style="width: 200px"></div>
+        <div>TC: <input type="text" id="tbAuthorTc" style="width: 200px"></div>
+        <div>SC: <input type="text" id="tbAuthorSc" style="width: 200px"></div>
+        <div>URL <input type="text" id="tbAuthorUrl" style="width: 500px"></div>
       </div>
-
-      <button id="btnCreate" style="vertical-align: top; margin-right: 10px" onclick="CreateKeywordImage()">Create</button>
-      <button onclick="ResetData()" style="vertical-align: top">Reset</button>
+      <div style="align-self: center; width: 200px">
+        <button id="btnCreate" style="vertical-align: top; width: 65px; height: 30px;" onclick="CreateKeywordImage()">Create</button>
+        <div style="height: 20px"></div>
+        <button onclick="ResetData()" style="vertical-align: top;margin-left: 8px">Reset</button>
+      </div>
     </div>
-    <hr style="width: 75%; margin-left: 0" />
+    <hr style="width: 90%; margin-left: 0" />
     <div style="height: 40px;line-height: 30px;">
       Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" placeholder="Input Keyword" />
       <button style="margin-right:10px" onclick="GetData(document.getElementById('tbKeyword').value)">Get</button>
@@ -132,23 +143,52 @@ include_once ("../include/config.php");
           lnkImageUrl.setAttribute("target", "_blank");
           row.insertCell(3).appendChild(lnkImageUrl);
 
+
+          var td4 = row.insertCell(4);
+          td4.setAttribute("rowspan", 2);
+
           var btnDelete = document.createElement("button");
           btnDelete.appendChild(document.createTextNode("Delete"));
           btnDelete.setAttribute("data-id", keywordImage.id);
           btnDelete.setAttribute("data-keyword-en", keywordImage.keyword_en);
           btnDelete.setAttribute("data-keyword-tc", keywordImage.keyword_tc);
           btnDelete.setAttribute("data-image-url", keywordImage.image_url);
+          btnDelete.setAttribute("data-author-en", keywordImage.author_en);
+          btnDelete.setAttribute("data-author-tc", keywordImage.author_tc);
+          btnDelete.setAttribute("data-author-sc", keywordImage.author_sc);
+          btnDelete.setAttribute("data-author-url", keywordImage.author_url);
           btnDelete.onclick = function () {
             DeleteKeywordImage(this);
           }
-          row.insertCell(4).appendChild(btnDelete);
+          td4.appendChild(btnDelete);
+
+          var row2 = tblKeywordImage.insertRow();
+          var td5 = row2.insertCell(0);
+          td5.setAttribute("colspan", 4);
+
+          var lnkAuthorUrl = document.createElement("a");
+          lnkAuthorUrl.appendChild(document.createTextNode(keywordImage.author_url));
+          lnkAuthorUrl.setAttribute("href", keywordImage.author_url);
+          lnkAuthorUrl.setAttribute("target", "_blank");
+
+          td5.appendChild(document.createTextNode(keywordImage.author_en));
+          td5.appendChild(document.createElement("br"));
+          td5.appendChild(document.createTextNode(keywordImage.author_tc));
+          td5.appendChild(document.createElement("br"));
+          td5.appendChild(document.createTextNode(keywordImage.author_sc));
+          td5.appendChild(document.createElement("br"));
+          td5.appendChild(lnkAuthorUrl);
         }
       }
 
-      function ResetData(keywordEn, keywordTc, imageUrl) {
+      function ResetData(keywordEn, keywordTc, imageUrl, authorEn, authorTc, authorSc, authorUrl) {
         document.getElementById("tbKeywordEn").value = keywordEn ? keywordEn : "";
         document.getElementById("tbKeywordTc").value = keywordTc ? keywordTc : "";
         document.getElementById("tbImageUrl").value = imageUrl ? imageUrl : "";
+        document.getElementById("tbAuthorEn").value = authorEn ? authorEn : "";
+        document.getElementById("tbAuthorTc").value = authorTc ? authorTc : "";
+        document.getElementById("tbAuthorSc").value = authorSc ? authorSc : "";
+        document.getElementById("tbAuthorUrl").value = authorUrl ? authorUrl : "";
         document.getElementById("fileImage").value = "";
       }
 
@@ -158,6 +198,11 @@ include_once ("../include/config.php");
         var formData = new FormData();
         formData.append("keyword_en", document.getElementById("tbKeywordEn").value.trim());
         formData.append("keyword_tc", document.getElementById("tbKeywordTc").value.trim());
+        formData.append("author_en", document.getElementById("tbAuthorEn").value.trim());
+        formData.append("author_tc", document.getElementById("tbAuthorTc").value.trim());
+        formData.append("author_sc", document.getElementById("tbAuthorSc").value.trim());
+        formData.append("author_url", document.getElementById("tbAuthorUrl").value.trim());
+
         if (document.getElementById("fileImage").files.length > 0) {
           formData.append("image_file", document.getElementById("fileImage").files[0], document.getElementById("fileImage").files[0].name);
           formData.append("image_url", "");
@@ -193,6 +238,10 @@ include_once ("../include/config.php");
         var keywordEn = btn.getAttribute("data-keyword-en");
         var keywordTc = btn.getAttribute("data-keyword-tc");
         var imageUrl = btn.getAttribute("data-image-url");
+        var authorEn = btn.getAttribute("data-author-en");
+        var authorTc = btn.getAttribute("data-author-tc");
+        var authorSc = btn.getAttribute("data-author-sc");
+        var authorUrl = btn.getAttribute("data-author-url");
 
         if (!confirm("Confirm to delete image for " + keywordTc + ", " + keywordEn + "?")) {
           return;
@@ -211,7 +260,7 @@ include_once ("../include/config.php");
               const jsonData = JSON.parse(this.responseText);
 
               if (jsonData.status == "success") {
-                ResetData(keywordEn, keywordTc, imageUrl);
+                ResetData(keywordEn, keywordTc, imageUrl, authorEn, authorTc, authorSc, authorUrl);
                 GetData();
                 document.getElementById("tbKeywordEn").focus();
               } else {
