@@ -107,6 +107,9 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
+        $photoUrl .= $result[$i]["photo_url"];
+
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
@@ -114,7 +117,7 @@ class AuctionController {
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
           $result[$i]["featured"],
-          $result[$i]["photo_url"],
+          $photoUrl,
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
@@ -182,6 +185,9 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
+        $photoUrl .= $result[$i]["photo_url"];
+
         $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
@@ -192,7 +198,7 @@ class AuctionController {
           $result[$i]["lot_description"],
           $result[$i]["featured"],
           $result[$i]["icon"],
-          $result[$i]["photo_url"],
+          $photoUrl,
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
@@ -249,6 +255,9 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
+        $photoUrl .= $result[$i]["photo_url"];
+
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
@@ -256,7 +265,7 @@ class AuctionController {
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
           $result[$i]["featured"],
-          $result[$i]["photo_url"],
+          $photoUrl,
           $result[$i]["photo_real"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
@@ -368,6 +377,9 @@ class AuctionController {
 
         // prepare to start next lot
         $curLotNum = $result[$i]["lot_num"];
+        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
+        $photoUrl .= $result[$i]["photo_url"];
+
         $curLot = new AuctionLot(
           intval($result[$i]["lot_id"]),
           $result[$i]["code"],
@@ -382,7 +394,7 @@ class AuctionController {
           $result[$i]["item_condition"],
           $result[$i]["featured"],
           $result[$i]["lot_icon"],
-          $result[$i]["photo_url"],
+          $photoUrl,
           $result[$i]["photo_real"],
           $result[$i]["lot_description"],
           $result[$i]["transaction_currency"],

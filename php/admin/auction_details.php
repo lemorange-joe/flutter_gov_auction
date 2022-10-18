@@ -5,6 +5,7 @@ if (!isset($_SESSION["admin_user"])) {
   exit;
 }
 
+include_once ("../include/config.php");
 include_once ("../include/enum.php");
 include_once ("../include/appdata.php");
 $_APP = AppData::getInstance();
@@ -113,6 +114,16 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
     <script src="js/main.js"></script>
     <script>
+      var photoRootUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>";
+
+      function GetImageSrc(photoUrl) {
+        if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
+          return photoRootUrl + photoUrl;
+        }
+
+        return photoUrl;
+      }
+
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");
         var option;
@@ -533,7 +544,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='height:20px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'>";
-            divHtml += "<div style='width:100px'><a href='#' style='line-height: 32px;' onclick='window.open(document.getElementById(\"tbPhotoUrl_"+i+"\").value, \"_blank\");return false' title='View Photo'>Photo URL</a></div>";
+            divHtml += "<div style='width:100px'><a href='#' style='line-height: 32px;' onclick='window.open(GetImageSrc(document.getElementById(\"tbPhotoUrl_"+i+"\").value), \"_blank\");return false' title='View Photo'>Photo URL</a></div>";
             divHtml += "<div>";
               divHtml += "<button style='margin-right:5px;font-size:24px;padding:0 5px' onclick='GetLotImage("+i+")'>⊞</button>";
               divHtml += "<input id='tbPhotoUrl_" + i + "' style='width:490px' value='" + photoUrl.replace("'", '"') + "'>";
@@ -661,12 +672,37 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("btnAddLot").setAttribute("data-lot-count", lotList.length);
       }
 
+      function GetImageSearchKeyword(itemDesc, lang) {
+        var bracketPos = itemDesc.indexOf("(");
+        var bracket2Pos = itemDesc.indexOf("（");
+        var commaPos = itemDesc.indexOf(",");
+        var pos = (lang == "en" ? 255 : 50);
+
+        if (bracketPos != -1 && bracket2Pos != -1 && commaPos != -1) {
+          pos = Math.min(Math.min(bracketPos, bracket2Pos), commaPos);
+        } else if (bracketPos != -1 && bracket2Pos != -1) {
+          pos = Math.min(bracketPos, bracket2Pos);
+        } else if (bracketPos != -1 && commaPos != -1) {
+          pos = Math.min(bracketPos, commaPos);
+        } else if (bracket2Pos != -1 && commaPos != -1) {
+          pos = Math.min(bracket2Pos, commaPos);
+        } else if (bracketPos != -1) {
+          pos = bracketPos;
+        } else if (bracket2Pos != -1) {
+          pos = bracket2Pos;
+        } else if (commaPos != -1) {
+          pos = commaPos;
+        }
+        
+        return itemDesc.substring(0, pos).trim();
+      }
+
       function GetLotImage(i) {
         var itemLines = document.getElementById("tbItem_"+i+"_0").value.split("\n");
-        var keywordEn = itemLines[0];
-        var keywordTc = itemLines[1];
+        var keywordEn = GetImageSearchKeyword(itemLines[0]).replaceAll("-", " ");
+        var keywordTc = GetImageSearchKeyword(itemLines[1]).replaceAll("-", " ");
         
-        var apiUrl = '../en/api/admin-getKeywordImageUrl-' + keywordTc;
+        var apiUrl = '../en/api/admin-getKeywordImageUrl-' + encodeURIComponent(keywordEn)+ '-' + encodeURIComponent(keywordTc);
         var xhr = new XMLHttpRequest();
         
         xhr.open("GET", apiUrl);
@@ -677,7 +713,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
               var rndIndex = Math.floor(Math.random() * jsonData.length);
               document.getElementById("tbPhotoUrl_"+i).value = jsonData[rndIndex];
             } else {
-              alert(keywordTc + " image not found!");
+              alert(keywordEn + ", " + keywordTc + " image not found!");
             }
           }
         }

@@ -1025,13 +1025,13 @@ class AdminController {
     $commaPos = strpos($description, ",");
     $pos = ($lang == "en" ? 255 : 50);
 
-    if ($bracketPos !== false && $bracket2Pos !== false && $commaPos != false) {
+    if ($bracketPos !== false && $bracket2Pos !== false && $commaPos !== false) {
       $pos = min(min($bracketPos, $bracket2Pos), $commaPos);
     } else if ($bracketPos !== false && $bracket2Pos !== false) {
       $pos = min($bracketPos, $bracket2Pos);
-    } else if ($bracketPos !== false && $commaPos != false) {
+    } else if ($bracketPos !== false && $commaPos !== false) {
       $pos = min($bracketPos, $commaPos);
-    } else if ($bracket2Pos !== false && $commaPos != false) {
+    } else if ($bracket2Pos !== false && $commaPos !== false) {
       $pos = min($bracket2Pos, $commaPos);
     } else if ($bracketPos !== false) {
       $pos = $bracketPos;
@@ -1076,13 +1076,18 @@ class AdminController {
   function getKeywordImageUrl($param) {
     global $conn;
 
-    $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
-
+    $keywordEn = "";
+    $keywordTc = "";
+    if (isset($param) && is_array($param)) {
+      $keywordEn = count($param) >= 1 ? trim($param[0]) : "";
+      $keywordTc = count($param) >= 2 ? trim($param[1]) : "";
+    }
+    
     $output = array();
-    if (!empty($keyword)) {
+    if (!empty($keywordEn) || !empty($keywordTc)) {
       $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
 
-      $result = $conn->Execute($selectSql, array("%".$keyword."%", "%".$keyword."%"))->GetRows();
+      $result = $conn->Execute($selectSql, array("%".$keywordEn."%", "%".$keywordTc."%"))->GetRows();
       $rowNum = count($result);
 
       for($i = 0; $i < $rowNum; ++$i) {
