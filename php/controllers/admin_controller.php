@@ -144,7 +144,7 @@ class AdminController {
                     location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
                     item_condition_en, item_condition_tc, item_condition_sc,
                     L.description_en as 'lot_description_en', L.description_tc as 'lot_description_tc', L.description_sc as 'lot_description_sc',
-                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real,
+                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author_en, L.photo_author_tc, L.photo_author_sc, L.photo_author_url, 
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc,
                     I.quantity, I.unit_en, I.unit_tc, I.unit_sc
@@ -205,6 +205,11 @@ class AdminController {
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
         $curLotOutput->photo_url = $result[$i]["photo_url"];
         $curLotOutput->photo_real = $result[$i]["photo_real"];
+        $curLotOutput->photo_author_en = $result[$i]["photo_author_en"];
+        $curLotOutput->photo_author_tc = $result[$i]["photo_author_tc"];
+        $curLotOutput->photo_author_sc = $result[$i]["photo_author_sc"];
+        $curLotOutput->photo_author_url = $result[$i]["photo_author_url"];
+
         $curLotOutput->transaction_currency = $result[$i]["transaction_currency"];
         $curLotOutput->transaction_price = $result[$i]["transaction_price"];
         $curLotOutput->transaction_status = $result[$i]["transaction_status"];
@@ -599,7 +604,9 @@ class AdminController {
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, 
                       '', '', '', 
-                      ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, 
+                      ?, ?, ?, ?, 
+                      ?, ?, ?,
                       ?, now()
                       FROM ItemType I
                       WHERE code = ?;";
@@ -609,7 +616,9 @@ class AdminController {
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
-          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
+          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), 
+          trim($data["photo_author_en"]), trim($data["photo_author_tc"]), trim($data["photo_author_sc"]), trim($data["photo_author_url"]), 
+          trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]), trim($data["item_code"])
         ));
         $lotId = $conn->insert_Id();
@@ -624,6 +633,7 @@ class AdminController {
                         remarks_en = ?, remarks_tc = ?, remarks_sc = ?,
                         item_condition_en = ?, item_condition_tc = ?, item_condition_sc = ?,
                         featured = ?, icon = ?, photo_url = ?, photo_real = ?,
+                        photo_author_en = ?, photo_author_tc = ?, photo_author_sc = ?, photo_author_url = ?, 
                         transaction_currency = ?, transaction_price = ?, transaction_status = ?,
                         status = ?, last_update = now()
                       WHERE lot_id = ?;";
@@ -638,6 +648,7 @@ class AdminController {
           trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
           $data["featured"], trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
+          $data["photo_author_en"], $data["photo_author_tc"], $data["photo_author_sc"], $data["photo_author_url"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]),
           $lotId
@@ -1089,13 +1100,20 @@ class AdminController {
     
     $output = array();
     if (!empty($keywordEn) || !empty($keywordTc)) {
-      $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
+      $selectSql = "SELECT image_url, author_en, author_tc, author_sc, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
 
       $result = $conn->Execute($selectSql, array("%".$keywordEn."%", "%".$keywordTc."%"))->GetRows();
       $rowNum = count($result);
 
       for($i = 0; $i < $rowNum; ++$i) {
-        $output[] = $result[$i]["image_url"];
+        $imageKeyword = new StdClass();
+        $imageKeyword->image_url = $result[$i]["image_url"];
+        $imageKeyword->author_en = $result[$i]["author_en"];
+        $imageKeyword->author_tc = $result[$i]["author_tc"];
+        $imageKeyword->author_sc = $result[$i]["author_sc"];
+        $imageKeyword->author_url = $result[$i]["author_url"];
+
+        $output[] = $imageKeyword;
       }
     }
 

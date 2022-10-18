@@ -32,6 +32,8 @@ $auctionJsonFieldMapping = array(
   "icon" => "i",
   "photoUrl" => "pu",
   "photoReal" => "pr",
+  "photoAuthor" => "pa",
+  "photoAuthorUrl" => "pau",
   "description" => "d",
   "itemList" => "il",
   "tranCurrency" => "tc",
@@ -119,6 +121,8 @@ class AuctionLot implements JsonSerializable {
   private $icon;
   private $photoUrl;
   private $photoReal;
+  private $photoAuthor;
+  private $photoAuthorUrl;
   private $itemList;
   private $tranCurrency;
   private $tranPrice;
@@ -127,8 +131,8 @@ class AuctionLot implements JsonSerializable {
   private $lastUpdate;
   private $v;
 
-  public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, 
-                              $featured, $icon, $photoUrl, $photoReal, $description, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
+  public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, $featured, $icon, 
+                              $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $description, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -145,6 +149,8 @@ class AuctionLot implements JsonSerializable {
     $this->icon = $icon;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
+    $this->photoAuthor = $photoAuthor;
+    $this->photoAuthorUrl = $photoAuthorUrl;
     $this->description = $description;
     $this->itemList = array();
     $this->tranCurrency = $tranCurrency;
@@ -225,12 +231,14 @@ class AuctionLotSearch implements JsonSerializable {
   private $icon;
   private $photoUrl;
   private $photoReal;
+  private $photoAuthor;
+  private $photoAuthorUrl;
   private $tranCurrency;
   private $tranPrice;
   private $tranStatus;
   private $v;
 
-  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $lot_num, $description, $featured, $icon, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $v) {
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $lot_num, $description, $featured, $icon, $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus, $v) {
     $this->auctionId = $auction_id;
     $this->startTime = $start_time;
     $this->auctionStatus = $auction_status;
@@ -243,6 +251,8 @@ class AuctionLotSearch implements JsonSerializable {
     $this->icon = $icon;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
+    $this->photoAuthor = $photoAuthor;
+    $this->photoAuthorUrl = $photoAuthorUrl;
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;
     $this->tranStatus = $tranStatus;
@@ -278,6 +288,8 @@ class AuctionItemSearch implements JsonSerializable {
   private $featured;
   private $photoUrl;
   private $photoReal;
+  private $photoAuthor;
+  private $photoAuthorUrl;
   private $tranCurrency;
   private $tranPrice;
   private $tranStatus;
@@ -287,7 +299,7 @@ class AuctionItemSearch implements JsonSerializable {
   private $unit;
   private $v;
 
-  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $featured, $photoUrl, $photoReal, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $featured, $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
     $this->auctionId = $auction_id;
     $this->startTime = $start_time;
     $this->auctionStatus = $auction_status;
@@ -296,6 +308,8 @@ class AuctionItemSearch implements JsonSerializable {
     $this->featured = $featured;
     $this->photoUrl = $photoUrl;
     $this->photoReal = $photoReal;
+    $this->photoAuthor = $photoAuthor;
+    $this->photoAuthorUrl = $photoAuthorUrl;
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;
     $this->tranStatus = $tranStatus;
