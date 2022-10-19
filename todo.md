@@ -15,5 +15,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
+- use dev key to preview new auction data (input in app, then pass in api)
+- favourite auction save descriptions in hive, do not query api when showing favourite list 
 - swipe prev/next auction lot
 - add random data in API to prevent data theft

@@ -269,7 +269,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("btnAddLot").setAttribute("data-lot-count", lotIndex + 1);
       }
 
-      function UpdateLotFeatured(i){
+      function UpdateLotFeatured(i) {
+        var lotId = document.getElementById("tbLotId_"+i).value;
         var chk = document.getElementById("chkFeatured_"+i);
         var origVal = chk.getAttribute("data-checked");
         var newVal = origVal == "1" ? "0" : "1";
@@ -277,8 +278,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         chk.setAttribute("data-checked", newVal);
         chk.innerHTML = newVal == "1" ? "★" : "☆";
 
+        if (lotId <= 0) return; // this is adding new lot, no need to update featured immediately
+
         var logData = {
-          lot_id: parseInt(document.getElementById("tbLotId_"+i).value),
+          lot_id: lotId,
           featured: parseInt(newVal)
         };
         var url = "../en/api/admin-updateAuctionLotFeatured";
@@ -453,11 +456,19 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var itemConditionEn = "";
         var itemConditionTc = "";
         var itemConditionSc = "";
+        var lotDescriptionEn = "";
+        var lotDescriptionTc = "";
+        var lotDescriptionSc = "";
 
         var featured = false;
         var lotIcon = "fontawesome.box";
         var photoUrl = "";
         var photoReal = false;
+        var photoAuthorEn = "";
+        var photoAuthorTc = "";
+        var photoAuthorSc = "";
+        var photoAuthorUrl = "";
+
         var transactionCurrency = "HKD";
         var transactionPrice = 0;
         var transactionStatus = "N";
@@ -596,7 +607,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         divHtml += "</div>"
 
         divHtml += "<div><button id='btnAddItem_" + i + "' data-lot-index='" + i + "' data-total='" + itemList.length + "' onclick='AddItem(" + i + ")'>+ Item</button></div>";
-        divHtml += "<div><button id='btnSaveLot_" + i + "' onclick='SaveLot(" + i + ")' style='width: 80px;height: 30px;margin-top: 15px'>Save Lot</button></div>";
+        divHtml += "<div style='display: flex'>";
+          divHtml += "<button id='btnSaveLot_" + i + "' onclick='SaveLot(" + i + ")' style='width: 80px;height: 30px;margin-top: 15px'>Save Lot</button>";
+          // more buttons later
+        divHtml += "</div>";
 
         divHtml += "</div>";
         divHtml += "<br style='clear: both' /><hr />";

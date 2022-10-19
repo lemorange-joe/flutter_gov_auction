@@ -431,6 +431,10 @@ class AdminController {
         $itemConditionSc = str_chinese_simp(trim($curLot["item_condition_tc"]));
         $items = $curLot["items"];
 
+        $item0SearchKeywordEn = count($items) > 0 ? $this->getSearchKeyword($items[0]["description_en"], "en") : "xxx";
+        $item0SearchKeywordTc = count($items) > 0 ? $this->getSearchKeyword($items[0]["description_tc"], "tc") : "xxx";
+        $keywordPhotoAuthor = $this->getKeywordPhotoAuthor($item0SearchKeywordEn, $item0SearchKeywordTc);
+
         $insertSql = "INSERT INTO AuctionLot (
                         auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
@@ -438,6 +442,7 @@ class AdminController {
                         item_condition_en, item_condition_tc, item_condition_sc,
                         description_en, description_tc, description_sc,
                         featured, icon, photo_url, photo_real,
+                        photo_author_en, photo_author_tc, photo_author_sc, photo_author_url, 
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       )
@@ -447,7 +452,8 @@ class AdminController {
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, 
                         '', '', '', 
-                        0, 'fontawesome.box', '', 0,
+                        0, 'fontawesome.box', ?, 0,
+                        ?, ?, ?, ?, 
                         '', 0, ?,
                         ?, now()
                       FROM AuctionLot
@@ -458,6 +464,8 @@ class AdminController {
           $contactEn, $contactTc, $contactSc, $numberEn, $numberTc, $numberSc,
           $locationEn, $locationTc, $locationSc, $remarksEn, $remarksTc, $remarksSc,
           $itemConditionEn, $itemConditionTc, $itemConditionSc,
+          $keywordPhotoAuthor->photoUrl,
+          $keywordPhotoAuthor->authorEn, $keywordPhotoAuthor->authorTc, $keywordPhotoAuthor->authorSc, $keywordPhotoAuthor->authorUrl, 
           TransactionStatus::NotSold,
           Status::Active,
           $auctionId
@@ -584,7 +592,7 @@ class AdminController {
       if (!isset($data["auction_id"]) || empty($data["auction_id"]) || !ctype_digit($data["auction_id"])) {
         throw new Exception("Auction ID missing!");  
       }
-      if (!isset($data["lot_id"]) || empty($data["lot_id"]) || !ctype_digit($data["lot_id"])) {
+      if (!isset($data["lot_id"]) || !ctype_digit($data["lot_id"])) {
         throw new Exception("Lot ID missing!");  
       }
       
@@ -596,9 +604,11 @@ class AdminController {
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
                         description_en, description_tc, description_sc,
-                        featured, icon, photo_url, photo_real, transaction_currency, transaction_price, transaction_status,
+                        featured, icon, photo_url, photo_real, 
+                        photo_author_en, photo_author_tc, photo_author_sc, photo_author_url,  
+                        transaction_currency, transaction_price, transaction_status,
                         status, last_update
-                      )
+                      ) 
                       SELECT ?, I.type_id, ?, ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
@@ -612,15 +622,16 @@ class AdminController {
                       WHERE code = ?;";
 
         $result = $conn->Execute($insertSql, array(
-          $data["auction_id"], $data["lot_num"], $data["seq"], trim($data["gld_file_ref"]), trim($data["reference"]), trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
+          intval($data["auction_id"]), trim($data["lot_num"]), intval($data["seq"]), trim($data["gld_file_ref"]), trim($data["reference"]), trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
-          trim($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), trim($data["photo_real"]), 
+          intval($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), intval($data["photo_real"]), 
           trim($data["photo_author_en"]), trim($data["photo_author_tc"]), trim($data["photo_author_sc"]), trim($data["photo_author_url"]), 
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]), trim($data["item_code"])
         ));
+
         $lotId = $conn->insert_Id();
       } else {
         $updateSql = "UPDATE AuctionLot SET
@@ -653,6 +664,10 @@ class AdminController {
           trim($data["status"]),
           $lotId
         ));
+      }
+
+      if ($lotId == 0) {
+        throw new Exception("Failed! lot id: 0");
       }
       
       // delete the existing items first, then add back
@@ -1030,6 +1045,26 @@ class AdminController {
   //   echo "DONE!";
   // }
 
+  private function getKeywordPhotoAuthor($keywordEn, $keywordTc) {
+    if (empty($keywordEn) && empty($keywordTc)) {
+      return new KeywordPhotoAuthor("", "", "", "", "");
+    }
+
+    global $conn;
+
+    $selectSql = "SELECT image_url, author_en, author_tc, author_sc, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
+
+    $result = $conn->Execute($selectSql, array("%".$keywordEn."%", "%".$keywordTc."%"))->GetRows();
+    $rowNum = count($result);
+
+    if ($rowNum == 0) {
+      return new KeywordPhotoAuthor("", "", "", "", "");
+    }
+
+    $randIndex = rand(0, $rowNum - 1);
+    return new KeywordPhotoAuthor($result[$randIndex]["image_url"], $result[$randIndex]["author_en"], $result[$randIndex]["author_tc"], $result[$randIndex]["author_sc"], $result[$randIndex]["author_url"]);
+  }
+
   private function getSearchKeyword($description, $lang) {
     $bracketPos = strpos($description, "(");
     $bracket2Pos = strpos($description, "（");
@@ -1264,6 +1299,22 @@ class AdminController {
     }
     
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+}
+
+class KeywordPhotoAuthor {
+  public $photoUrl;
+  public $authorEn;
+  public $authorTc;
+  public $authorSc;
+  public $authorUrl;
+
+  public function __construct($photoUrl, $authorEn, $authorTc, $authorSc, $authorUrl) {
+    $this->photoUrl = $photoUrl;
+    $this->authorEn = $authorEn;
+    $this->authorTc = $authorTc;
+    $this->authorSc = $authorSc;
+    $this->authorUrl = $authorUrl;
   }
 }
 ?>
