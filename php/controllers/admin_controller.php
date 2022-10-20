@@ -1226,7 +1226,7 @@ class AdminController {
         throw new Exception("keyword image id: $id not found!");
       } 
 
-      if (strpos($result[0]["image_url"], "http://") === false && strpos($result[0]["image_url"], "https://") === false) {
+      if (!empty(trim($result[0]["image_url"])) && strpos($result[0]["image_url"], "http://") === false && strpos($result[0]["image_url"], "https://") === false) {
         $filePath = $GLOBALS["AUCTION_IMAGE_FOLDER"] . $result[0]["image_url"];
 
         if (file_exists($filePath)) {

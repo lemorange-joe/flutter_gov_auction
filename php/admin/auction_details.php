@@ -117,7 +117,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       var photoRootUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>";
 
       function GetImageSrc(photoUrl) {
-        if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://")) {
+        if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://") && photoUrl.trim() != "") {
           return photoRootUrl + photoUrl;
         }
 

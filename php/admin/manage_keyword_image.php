@@ -127,7 +127,7 @@ include_once ("../include/config.php");
           row.insertCell(2).appendChild(document.createTextNode(keywordImage.keyword_tc));
 
           var imageUrl = keywordImage.image_url;
-          if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
+          if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://") && imageUrl.trim() != "") {
             imageUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>" + imageUrl; 
           }
 

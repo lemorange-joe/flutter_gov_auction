@@ -108,8 +108,10 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
-        $photoUrl .= $result[$i]["photo_url"];
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
 
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
@@ -189,8 +191,10 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
-        $photoUrl .= $result[$i]["photo_url"];
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
 
         $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
@@ -262,8 +266,10 @@ class AuctionController {
 
       $data = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
-        $photoUrl .= $result[$i]["photo_url"];
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
 
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
@@ -387,8 +393,11 @@ class AuctionController {
 
         // prepare to start next lot
         $curLotNum = $result[$i]["lot_num"];
-        $photoUrl = (strpos($result[$i]["photo_url"], "http://") === false && strpos($result[$i]["photo_url"], "https://") === false) ? $GLOBALS["AUCTION_IMAGE_ROOT_URL"] : "";
-        $photoUrl .= $result[$i]["photo_url"];
+        
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
 
         $curLot = new AuctionLot(
           intval($result[$i]["lot_id"]),
