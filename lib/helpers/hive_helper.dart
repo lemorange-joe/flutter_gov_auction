@@ -63,6 +63,10 @@ class HiveHelper {
     await _prefBox.put('first_launch', val);
   }
 
+  Future<void> writeDeveloper(bool val) async {
+    await _prefBox.put('is_developer', val);
+  }
+
   bool getAgreed() {
     return _prefBox.get('agreed', defaultValue: false) as bool;
   }
@@ -85,6 +89,10 @@ class HiveHelper {
 
   bool getFirstLaunch() {
     return _prefBox.get('first_launch', defaultValue: true) as bool;
+  }
+
+  bool getDeveloper() {
+    return _prefBox.get('is_developer', defaultValue: false) as bool;
   }
   // preferences box
   // --------------------------------------------

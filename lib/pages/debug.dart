@@ -137,6 +137,16 @@ class _DebugPageState extends State<DebugPage> {
           ),
         ),
       ),
+      const SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () {
+          HiveHelper().writeDeveloper(false).then((_) {
+            Navigator.of(context).pop();
+          });
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.black87),
+        child: const Text('Remove developer'),
+      ),
     ];
   }
 

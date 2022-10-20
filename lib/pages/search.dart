@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../generated/l10n.dart';
+import '../helpers/easter_egg_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 
@@ -25,6 +26,10 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       _searchKeyword = txt.replaceAll(config.searchSeparatorChar, '');
     });
+
+    if (EasterEggHelper.check(context, _searchKeyword)) {
+      HiveHelper().writeDeveloper(true);
+    }
     _searchController.text = '';
     HiveHelper().writeSearchHistory(_searchKeyword);
   }

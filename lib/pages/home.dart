@@ -232,8 +232,19 @@ class _HomePageState extends State<HomePage> {
             getCustomListTile(MdiIcons.frequentlyAskedQuestions, listItemColor, S.of(context).faq, 'faq'),
             getCustomListTile(MdiIcons.helpCircleOutline, listItemColor, S.of(context).help, 'help'),
             const Divider(),
-            getCustomListTile(MdiIcons.bug, listItemColor, 'Debug', 'debug'),
-            const Divider(),
+            ValueListenableBuilder<Box<dynamic>>(
+              valueListenable: Hive.box<dynamic>('preferences').listenable(),
+              builder: (BuildContext context, _, __) {
+                return HiveHelper().getDeveloper()
+                    ? Column(
+                        children: <Widget>[
+                          getCustomListTile(MdiIcons.bug, listItemColor, 'Debug', 'debug'),
+                          const Divider(),
+                        ],
+                      )
+                    : Container();
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -284,7 +295,7 @@ class _HomePageState extends State<HomePage> {
             } else if (!isCurrentRoute) {
               Navigator.pushNamed(context, route);
             } else if (route == 'home' && _tabIndex != 0) {
-              setState((){
+              setState(() {
                 _tabIndex = 0;
               });
             }
