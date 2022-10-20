@@ -36,7 +36,6 @@ class ApiHelper {
         .replaceFirst('{params}', urlParams.isEmpty ? '' : '-$urlParams');
     apiUrl += strParams.isEmpty ? '' : strParams;
 
-    final http.Client client = http.Client();
     dynamic returnData;
 
     if (useDemoData) {
@@ -80,7 +79,14 @@ class ApiHelper {
       }
     } else {
       try {
-        final http.Response response = await client.get(Uri.parse(apiUrl));
+        final Map<String, String> headers = <String, String>{};
+        final String developerGaucId = HiveHelper().getDeveloper();
+        if (developerGaucId.isNotEmpty) {
+          headers['gauc-id'] = developerGaucId;
+        }
+
+        final http.Client client = http.Client();
+        final http.Response response = await client.get(Uri.parse(apiUrl), headers: headers);
         if (response.statusCode == 200) {
           final dynamic jsonResult = jsonDecode(response.body) as dynamic;
           if ((jsonResult as Map<String, dynamic>)['status'] == 'success') {
@@ -101,5 +107,79 @@ class ApiHelper {
     }
 
     return returnData;
+  }
+
+  Future<String> post(
+    String lang,
+    String controller,
+    String method, {
+    Map<String, dynamic> parameters = const <String, dynamic>{},
+    bool useDemoData = false,
+    int demoDataDelay = 2,
+  }) async {
+    final Map<String, dynamic> postData = <String, dynamic>{};
+
+    if (parameters.isNotEmpty) {
+      parameters.forEach((String k, dynamic v) => postData[k] = v);
+    }
+
+    final String apiUrl =
+        FlutterConfig.get('API_URL').toString().replaceFirst('{lang}', lang).replaceFirst('{controller}', controller).replaceFirst('{method}', method);
+
+    String result;
+
+    if (useDemoData) {
+      Map<String, String> demoData;
+      switch (lang) {
+        case 'en':
+          demoData = demoDataEn;
+          break;
+        case 'tc':
+          demoData = demoDataTc;
+          break;
+        case 'sc':
+          demoData = demoDataSc;
+          break;
+        default:
+          demoData = demoDataTc;
+          break;
+      }
+
+      await Future<void>.delayed(Duration(seconds: demoDataDelay));
+      final String demoDataKey = '$controller-$method';
+
+      if (demoData.containsKey(demoDataKey)) {
+        result = demoData[demoDataKey]!;
+      } else {
+        throw Exception('Demo data not found!');
+      }
+    } else {
+      try {
+        final Map<String, String> headers = <String, String>{};
+        final String developerGaucId = HiveHelper().getDeveloper();
+        if (developerGaucId.isNotEmpty) {
+          headers['gauc-id'] = developerGaucId;
+        }
+
+        final http.Client client = http.Client();
+        final http.Response response = await client.post(
+          Uri.parse(apiUrl),
+          body: postData,
+          headers: headers,
+        );
+
+        if (response.statusCode == 200) {
+          result = jsonDecode(response.body) as String;
+        } else {
+          throw HttpException('${response.statusCode}');
+        }
+      } catch (e) {
+        // Logger().e('URL: $apiUrl, ${e.toString()}');
+        HiveHelper().writeLog('[API] URL: $apiUrl, ${e.toString()}');
+        rethrow;
+      }
+    }
+
+    return result;
   }
 }

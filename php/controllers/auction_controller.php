@@ -2,7 +2,7 @@
 class AuctionController {
   function list($param) {
     // quick api to return the list of available auctions
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -12,10 +12,10 @@ class AuctionController {
                       auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
                       result_pdf_$lang as 'result_pdf', remarks_$lang as 'remarks', auction_status, status, last_update 
                     FROM Auction
-                    WHERE status = ?
+                    WHERE (status = ? OR 1 = ?)
                     ORDER BY start_time DESC";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, $isDeveloper))->GetRows();
       $rowNum = count($result);
 
       $data = array();
@@ -360,7 +360,7 @@ class AuctionController {
   }
 
   private function getAuctionLotList($auctionId) {
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, 
@@ -373,10 +373,10 @@ class AuctionController {
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE A.auction_id = ? AND L.status = ?
+                  WHERE A.auction_id = ? AND (L.status = ? OR 1 = ?)
                   ORDER BY L.seq, I.seq";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active))->GetRows();
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $isDeveloper))->GetRows();
     $rowNum = count($result);
 
     $output = array();

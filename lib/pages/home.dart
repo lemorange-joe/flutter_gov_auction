@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
             ValueListenableBuilder<Box<dynamic>>(
               valueListenable: Hive.box<dynamic>('preferences').listenable(),
               builder: (BuildContext context, _, __) {
-                return HiveHelper().getDeveloper()
+                return HiveHelper().getDeveloper().isNotEmpty
                     ? Column(
                         children: <Widget>[
                           getCustomListTile(MdiIcons.bug, listItemColor, 'Debug', 'debug'),

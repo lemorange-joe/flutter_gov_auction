@@ -21,5 +21,8 @@ $APP_DATA_FILE = "/tmp/gauc.data";
 $LOGIN_SALT = "lX9#30er";
 $PUSH_PASSWORD_HASHED = "729780585edf5eb1d800fcb75f693296";
 
+$ENABLE_DEVELOPER = true;
+$DEVELOPER_GAUC_ID = "oJA7y4b3kQX4szQ91kQeak8S"; // for flutter app to pass to api to verify the request is from developer, can change anytime to invalidate previous developer id
+
 $PUSH_MESSAGE_DAYS = 30;
 ?>

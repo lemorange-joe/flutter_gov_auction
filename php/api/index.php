@@ -32,12 +32,18 @@ if (strtolower($_REQUEST['lang']) == "en") {
   $lang = "sc";
 }
 
-// ========================================================================
-// main flow
+// $isDeveloper mainly use for previewing unpublished auctions, lots and items
+$isDeveloper = 0; // use int for easy mysql comparison
 $headers = getallheaders();
-$gaucId = $headers["gauc-id"];
+if (isset($headers["gauc-id"])) {
+  // $isDeveloper to be tested
+  $isDeveloper = $headers["gauc-id"] == $GLOBALS["DEVELOPER_GAUC_ID"] ? 1 : 0;
+}
 // echo "gaucId: $gaucId, lang: $lang <hr>";
 
+
+// ========================================================================
+// main flow
 $controller = new stdClass();
 
 if ($strController == "auction") {
@@ -49,7 +55,6 @@ if ($strController == "auction") {
 } else if ($strController == "user") {
   $controller = new UserController();
 }
-
 
 if ($strController == "admin" || $strController == "user") {
   if (!isset($_SESSION["admin_user"])) {

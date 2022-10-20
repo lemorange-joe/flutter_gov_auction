@@ -138,9 +138,11 @@ class _DebugPageState extends State<DebugPage> {
         ),
       ),
       const SizedBox(height: 10.0),
+      Text('Developer ID: ${HiveHelper().getDeveloper()}'),
+      const SizedBox(height: 5.0),
       ElevatedButton(
         onPressed: () {
-          HiveHelper().writeDeveloper(false).then((_) {
+          HiveHelper().writeDeveloper('').then((_) {
             Navigator.of(context).pop();
           });
         },

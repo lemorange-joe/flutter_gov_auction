@@ -96,5 +96,17 @@ class DataController {
 
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
+
+  function getDeveloperId() {
+    if (!$GLOBALS["ENABLE_DEVELOPER"]) return;
+    if (!isset($_POST["keyword"])) return;
+    
+    $base64Keyword = base64_encode($_POST["keyword"]);
+    if ($base64Keyword == "6Kyd6Kqe5b+D" || $base64Keyword == "6Kyd6Ku+54S2") {
+      echo $GLOBALS["DEVELOPER_GAUC_ID"];
+    } else {
+      echo "x9LvKM6J80B6qIzOEhdhW8vw";  // just return a fake key
+    }
+  }
 }
 ?>

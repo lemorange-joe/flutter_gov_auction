@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../generated/l10n.dart';
+import '../helpers/api_helper.dart';
 import '../helpers/easter_egg_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
@@ -18,7 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchKeyword = '';
 
-  void _onSubmitted(String txt) {
+  Future<void> _onSubmitted(String txt) async {
     if (txt.isEmpty) {
       return;
     }
@@ -26,12 +27,15 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       _searchKeyword = txt.replaceAll(config.searchSeparatorChar, '');
     });
+    _searchController.text = '';
 
     if (EasterEggHelper.check(context, _searchKeyword)) {
-      HiveHelper().writeDeveloper(true);
+      final ApiHelper apiHelper = ApiHelper();
+      final String developerGaucId = await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword}, useDemoData: true);
+      await HiveHelper().writeDeveloper(developerGaucId);
     }
-    _searchController.text = '';
-    HiveHelper().writeSearchHistory(_searchKeyword);
+
+    await HiveHelper().writeSearchHistory(_searchKeyword);
   }
 
   @override

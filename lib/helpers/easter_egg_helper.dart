@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 import 'package:flutter/material.dart';
-import '../helpers/hive_helper.dart';
 import '../widgets/easter_egg.dart';
 
 class EasterEggHelper {
@@ -11,9 +10,7 @@ class EasterEggHelper {
 
   static bool check(BuildContext context, String txt) {
     for (final List<int> c in _codes) {
-      if (String.fromCharCodes(c) == txt) {
-        HiveHelper().writeDeveloper(true);
-        
+      if (String.fromCharCodes(c) == txt) {        
         showDialog<void>(
           context: context,
           barrierColor: Colors.transparent,
