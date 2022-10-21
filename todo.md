@@ -12,7 +12,47 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- use dev key to preview new auction data (input in app, then pass in api)
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
+- options to show/hide FAQ reminders
+  - faq page add save hive option
 - swipe prev/next auction lot
 - add random data in API to prevent data theft
+
+
+## Deliverables:
+software
+├ app
+  ├ app name
+  ├ admob
+    ├ ref: https://developers.google.com/admob/android/app-open
+    ├ app open ads
+    ├ decide interstitial ads places
+    ├ inline ads between auction lots/items
+    └ search result show native / medium banenr ads
+  └ push
+    ├ APNs cert
+    ├ manage topic groups in firebase console
+    └ create test topic to test push before real publishing
+└ server
+  ├ hosting
+  ├ sub-domain
+  ├ api
+    ├ password protect
+    ├ url rewrite
+    └ config update
+  └ DB
+    ├ import data
+    ├ select featured lots
+    ├ assign photos
+    └ assign fontawesome icons
+assets
+├ import keyword photos
+├ design
+  ├ app logo
+  └ press material
+└ documents
+  ├ declarations
+  └ faq
+LO website
+├ portfolio
+└ gauc app details in api
