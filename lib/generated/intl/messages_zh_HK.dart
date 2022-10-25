@@ -66,7 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAuctionItem": MessageLookupByLibrary.simpleMessage("沒有拍賣物品"),
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("沒有搜尋記錄"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
-        "noticeToUser": MessageLookupByLibrary.simpleMessage("使用者公告"),
+        "noticeLinks": MessageLookupByLibrary.simpleMessage("參與拍賣須知連結:"),
+        "noticeToParticipants": MessageLookupByLibrary.simpleMessage("參與拍賣須知"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍賣"),

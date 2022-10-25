@@ -440,11 +440,21 @@ class S {
     );
   }
 
-  /// `Notice to User`
-  String get noticeToUser {
+  /// `Notice links:`
+  String get noticeLinks {
     return Intl.message(
-      'Notice to User',
-      name: 'noticeToUser',
+      'Notice links:',
+      name: 'noticeLinks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notice to Participants`
+  String get noticeToParticipants {
+    return Intl.message(
+      'Notice to Participants',
+      name: 'noticeToParticipants',
       desc: '',
       args: [],
     );

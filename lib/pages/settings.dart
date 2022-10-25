@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(S.of(context).noticeToUser, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
+        title: Text(S.of(context).noticeToParticipants, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
         centerTitle: true,
       ),
       body: SafeArea(

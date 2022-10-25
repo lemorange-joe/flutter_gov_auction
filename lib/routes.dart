@@ -38,7 +38,7 @@ class Routes {
         return _buildRoute(settings, const HelpPage());
       case 'home':
         return _buildRoute(settings, const HomePage());
-      case 'noticeToUser':
+      case 'noticeToParticipants':
         return _buildRoute(settings, const NoticePage());
       case 'reminder':
         return _buildRoute(settings, const ReminderPage());

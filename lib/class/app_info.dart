@@ -2,11 +2,16 @@ import 'package:intl/intl.dart';
 // import 'package:logger/logger.dart';
 
 class AppInfo {
-  AppInfo(this.dataVersion, this.news, this.lastUpdate, this.messageList, this.itemTypeList);
+  AppInfo(this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList);
 
   factory AppInfo.fromJson(Map<String, dynamic> json) {
+    final List<NoticeLink> noticeLinkList = <NoticeLink>[];
     final List<PushMessage> messageList = <PushMessage>[];
     final Map<String, String> itemTypeMap = <String, String>{};
+
+    for (final dynamic jsonNoticeLink in json['nll'] as List<dynamic>) {
+      noticeLinkList.add(NoticeLink.fromJson(jsonNoticeLink as Map<String, dynamic>));
+    }
 
     for (final dynamic jsonMsg in json['ml'] as List<dynamic>) {
       messageList.add(PushMessage.fromJson(jsonMsg as Map<String, dynamic>));
@@ -20,20 +25,36 @@ class AppInfo {
       json['dv'] as String,
       json['n'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
+      noticeLinkList,
       messageList,
       itemTypeMap,
     );
   }
 
   factory AppInfo.empty() {
-    return AppInfo('', '', DateTime.now(), <PushMessage>[], <String, String>{});
+    return AppInfo('', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{});
   }
 
   final String dataVersion;
   final String news;
   final DateTime lastUpdate;
+  final List<NoticeLink> noticeLinkList;
   final List<PushMessage> messageList;
   final Map<String, String> itemTypeList;
+}
+
+class NoticeLink {
+    NoticeLink(this.title, this.url);
+
+  factory NoticeLink.fromJson(Map<String, dynamic> json) {
+    return NoticeLink(
+      json['t'] as String,
+      json['u'] as String,
+    );
+  }
+
+  final String title;
+  final String url;
 }
 
 class PushMessage {

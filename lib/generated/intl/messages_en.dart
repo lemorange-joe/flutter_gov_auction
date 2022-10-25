@@ -71,7 +71,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
-        "noticeToUser": MessageLookupByLibrary.simpleMessage("Notice to User"),
+        "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
+        "noticeToParticipants":
+            MessageLookupByLibrary.simpleMessage("Notice to Participants"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
