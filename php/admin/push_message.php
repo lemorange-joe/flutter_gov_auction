@@ -83,7 +83,7 @@ if (!isset($_SESSION["admin_user"])) {
         </div>
       </div>
     </div>
-    <div style="margin-top: 10px">
+    <div style="margin-top: 15px">
       <button id="btnCreate" style="margin-right: 20px" onclick="CreatePush(5)">Send</button>
       <button id="btnConfirm" style="margin-right: 20px; display:none" onclick="ConfirmPush()">Confirm</button>
       <button onclick="ResetPush(true)">Reset</button>

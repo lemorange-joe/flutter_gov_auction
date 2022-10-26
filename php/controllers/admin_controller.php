@@ -1014,6 +1014,100 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
+  function listNoticeLink() {
+    global $conn;
+
+    $output = new stdClass();
+    
+    try {
+      $selectSql = "SELECT
+                      notice_id, title_en, title_tc, title_sc, url_en, url_tc, url_sc, seq, status
+                    FROM NoticeLink
+                    ORDER BY notice_id";
+
+      $result = $conn->Execute($selectSql)->GetRows();
+      $rowNum = count($result);
+
+      $output = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $noticeLink = new stdClass();
+        $noticeLink->id = $result[$i]["notice_id"];
+        $noticeLink->title_en = $result[$i]["title_en"];
+        $noticeLink->title_tc = $result[$i]["title_tc"];
+        $noticeLink->title_sc = $result[$i]["title_sc"];
+        $noticeLink->url_en = $result[$i]["url_en"];
+        $noticeLink->url_tc = $result[$i]["url_tc"];
+        $noticeLink->url_sc = $result[$i]["url_sc"];
+        $noticeLink->seq = $result[$i]["seq"];
+        $noticeLink->status = $result[$i]["status"];
+
+        $output[] = $noticeLink;
+      }
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function updateNoticeLink() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["notice_id"])) {
+        throw new Exception("Notice ID missing!");  
+      }
+      
+      $noticeId = intval($data["notice_id"]);
+      if ($noticeId == 0) {
+        $insertSql = "INSERT INTO NoticeLink (
+                        title_en, title_tc, title_sc,
+                        url_en, url_tc, url_sc, seq, status
+                      ) VALUES ( 
+                        ?, ?, ?, 
+                        ?, ?, ?, ?, ?
+                      );";
+
+        $result = $conn->Execute($insertSql, array(
+          trim($data["title_en"]), trim($data["title_tc"]), trim($data["title_sc"]),
+          trim($data["url_en"]), trim($data["url_tc"]), trim($data["url_sc"]), intval($data["seq"]), trim($data["status"])
+        ));
+
+        $noticeId = $conn->insert_Id();
+      } else {
+        $updateSql = "UPDATE NoticeLink SET
+                        title_en = ?, title_tc = ?, title_sc = ?,
+                        url_en = ?, url_tc = ?, url_sc = ?,
+                        seq = ?, status = ?
+                      WHERE notice_id = ?;";
+
+        $result = $conn->Execute($updateSql, array(
+          trim($data["title_en"]), trim($data["title_tc"]), trim($data["title_sc"]),
+          trim($data["url_en"]), trim($data["url_tc"]), trim($data["url_sc"]),
+          intval($data["seq"]), trim($data["status"]),
+          $noticeId
+        ));
+      }
+
+      if ($noticeId == 0) {
+        throw new Exception("Failed! Notice id: 0");
+      }
+
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
   // for initial setup batch update only
   // function batchUpdateItemSearchKeyword() {
   //   global $conn;

@@ -15,36 +15,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
 - swipe prev/next auction lot
 - add random data in API to prevent data theft
-- notice:
-
-Application Form for Inclusion in the Registered Person List for Participation in Auctions
-https://www.gld.gov.hk/assets/gld/download-files/auction/GLD-Auction-Bidder-Application.pdf
-
-Standard Terms and Conditions of Auction Sale (Rev. January 2021)
-https://www.gld.gov.hk/assets/gld/download-files/auction/terms-and-conditions-en-2021-01.pdf
-
-Warning and Debarment System for Auctions held by Government Logistics Department (Rev. January 2021)
-https://www.gld.gov.hk/assets/gld/download-files/auction/Warning-and-Debarment-System-en-2021-01.pdf
-
-----
-參與拍賣的競投人士登記申請書
-https://www.gld.gov.hk/assets/gld/download-files/auction/GLD-Auction-Bidder-Application.pdf
-
-拍賣標準條款及條件(2021年1月修訂版)
-https://www.gld.gov.hk/assets/gld/download-files/auction/terms-and-conditions-zh-hk-2021-01.pdf
-
-政府物流服務署所舉行拍賣的警告及禁制制度(2021年1月修訂版)
-https://www.gld.gov.hk/assets/gld/download-files/auction/Warning-and-Debarment-System-zh-hk-2021-01.pdf
-
-----
-参与拍卖的竞投人士登记申请书
-https://www.gld.gov.hk/assets/gld/download-files/auction/GLD-Auction-Bidder-Application.pdf
-
-拍卖标准条款及条件(2021年1月修订版)
-https://www.gld.gov.hk/assets/gld/download-files/auction/terms-and-conditions-zh-cn-2021-01.pdf
-
-政府物流服务署所举行拍卖的警告及禁制制度(2021年1月修订版)
-https://www.gld.gov.hk/assets/gld/download-files/auction/Warning-and-Debarment-System-zh-cn-2021-01.pdf
 
 
 ## Deliverables:
