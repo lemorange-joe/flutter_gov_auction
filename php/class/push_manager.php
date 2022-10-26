@@ -5,7 +5,7 @@ include_once("../include/google_api/vendor/autoload.php");
 include_once("../class/push_result.php");
 
 class PushManager {
-  private String $key;
+  private $key;
 
   function __construct() {
   }

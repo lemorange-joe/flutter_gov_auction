@@ -23,20 +23,18 @@ class DataController {
         $data->lu = date("Y-m-d H:i:s", strtotime($result[0]["last_update"]));
       }
 
-      // TODO: add columns in DB, update admin page, TBC!!!
-      // $selectSql = "SELECT title_$lang as 'title', url_$lang as 'url' FROM NoticeLink WHERE status = ? ORDER BY seq";
-      // $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
-      // $rowNum = count($result);
+      $selectSql = "SELECT title_$lang as 'title', url_$lang as 'url' FROM NoticeLink WHERE status = ? ORDER BY seq";
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+      $rowNum = count($result);
 
-      // $data->nll = array(); // notice links list
-      // for($i = 0; $i < $rowNum; ++$i) {
-      //   $noticeLink = new StdClass();
-      //   $noticeLink->u = $result[$i]["title"];
-      //   $noticeLink->l = $result[$i]["u"];
+      $data->nll = array(); // notice links list
+      for($i = 0; $i < $rowNum; ++$i) {
+        $noticeLink = new StdClass();
+        $noticeLink->u = $result[$i]["title"];
+        $noticeLink->l = $result[$i]["url"];
 
-      //   $data->nll[] = $noticeLink;
-      // }
-
+        $data->nll[] = $noticeLink;
+      }
 
       $selectSql = "SELECT push_id, title_$lang as 'title', body_$lang as 'body', push_date
                     FROM PushHistory
