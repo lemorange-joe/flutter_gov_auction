@@ -286,11 +286,82 @@ class AdminImport {
           $outputList[] = $textList[$i];
         }
       }
+
+      if (count($outputList) != 5) {
+        // cannot copy line break from the PDF file, e.g. Bracelet/Bangle 手鐲/手鏈 59 Nos. (隻)
+        // or weird format, e.g. multiple line breaks
+        $outputList = $this->specialFixItemText(implode(" ", $outputList));
+      }
       
       $this->buildItems(implode("\n", $outputList), $lotIndex, $itemIndex);
     }
 
     return $total;
+  }
+
+  // special handle single line item text or weird format, e.g. Bracelet/Bangle 手鐲/手鏈 59 Nos. (隻)
+  // because sometimes cannot copy line break from PDF file
+  function specialFixItemText($itemText) {
+    $tempList = array();
+    $startPos = 0;
+    $i = 1;
+
+    // 1. find the first Chinese characters
+    while ($i < mb_strlen($itemText)) {
+      if (mb_ord(mb_substr($itemText, $i, 1)) >= 19968) {
+        break;
+      }
+      ++$i;
+    }
+    $tempList[] = trim(mb_substr($itemText, $startPos, $i - $startPos));
+    $startPos = $i;
+    if ($i >= mb_strlen($itemText) - 1) {
+      return $tempList;
+    }
+
+    // 2. find the next digit
+    while ($i < mb_strlen($itemText)) {
+      if (ctype_digit(mb_substr($itemText, $i, 1))) {
+        break;
+      }
+      ++$i;
+    }
+    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $startPos = $i;
+    if ($i >= mb_strlen($itemText) - 1) {
+      return $tempList;
+    }
+
+    // 3. find the next ascii characters
+    while ($i < mb_strlen($itemText)) {
+      $asciiCode = mb_ord(mb_substr($itemText, $i, 1));
+      if ((65 <= $asciiCode && $asciiCode <= 90) || (97 <= $asciiCode && $asciiCode <= 122) || mb_substr($itemText, $i, 1) == "(") {
+        break;
+      }
+      ++$i;
+    }
+    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $startPos = $i;
+    if ($i >= mb_strlen($itemText) - 1) {
+      return $tempList;
+    }
+
+    // 4. find the next "(" or Chinese characters
+    while ($i < mb_strlen($itemText)) {
+      $chr = mb_substr($itemText, $i, 1);
+      if ($chr == "(" || mb_ord($chr) >= 19968) {
+        break;
+      }
+      ++$i;
+    }
+    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $startPos = $i;
+    if ($i >= mb_strlen($itemText) - 1) {
+      return $tempList;
+    }
+
+    $tempList[] = mb_substr($itemText, $i);
+    return $tempList;
   }
 
   //pre: 2. Barcode Reader (Model: MS9540) 條碼讀取器 2 Nos. (個)
