@@ -31,25 +31,44 @@ class SavedPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Column(
-            children: <Widget>[
-              Text(S.of(context).saved),
-              Expanded(
-                child: ValueListenableBuilder<Box<SavedAuction>>(
-                  valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-                  builder: (BuildContext context, _, __) {
-                    final List<SavedAuction> savedAuctionList = HiveHelper().getSavedAuctionList();
-                    return ListView.builder(
-                      itemCount: savedAuctionList.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return buildSavedAuctionListItem(context, savedAuctionList[i]);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
+          child: ValueListenableBuilder<Box<SavedAuction>>(
+            valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+            builder: (BuildContext context, _, __) {
+              final List<SavedAuction> savedAuctionList = HiveHelper().getSavedAuctionList();
+              savedAuctionList.sort(SavedAuction.savedDateComparator);
+              
+              return ListView.builder(
+                itemCount: savedAuctionList.length,
+                itemBuilder: (BuildContext context, int i) {
+                  final SavedAuction savedAuction = savedAuctionList[i];
+
+                  return Dismissible(
+                    key: ValueKey<String>(savedAuction.hiveKey),
+                    background: buildDismissibleBackground(context, AlignmentDirectional.centerStart),
+                    secondaryBackground: buildDismissibleBackground(context, AlignmentDirectional.centerEnd),
+                    onDismissed: (DismissDirection direction) {
+                      HiveHelper().deleteSavedAuction(savedAuction);
+                    },
+                    child: buildSavedAuctionListItem(context, savedAuction),
+                  );
+                },
+              );
+            },
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDismissibleBackground(BuildContext context, AlignmentDirectional alignment) {
+    return Container(
+      alignment: alignment,
+      color: Colors.red,
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        child: Icon(
+          MdiIcons.trashCanOutline,
+          color: Colors.white,
         ),
       ),
     );
@@ -67,8 +86,12 @@ class SavedPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(savedAuction.lotNum),
-            Text(utilities.formatDate(savedAuction.savedDate!, S.of(context).lang)),
+            Text(utilities.formatDate(savedAuction.auctionDate, S.of(context).lang)),
             Text(savedAuction.getDescription(S.of(context).lang)),
+            Text(
+              utilities.formatTimeBefore(savedAuction.savedDate!, S.of(context).lang),
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+            ),
           ],
         ),
       ),

@@ -36,7 +36,6 @@ software
   ├ hosting
   ├ sub-domain
   ├ api
-    ├ password protect
     ├ url rewrite
     └ config update
   └ DB

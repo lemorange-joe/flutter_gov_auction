@@ -6,11 +6,33 @@ String formatDate(DateTime dt, String lang) {
 }
 
 String formatTime(DateTime dt, String lang) {
-if (lang == 'sc') {
+  if (lang == 'sc') {
     return DateFormat(config.timeFormatCh, 'zh').format(dt).replaceAll('時', '时');
   } else {
     return DateFormat(lang == 'en' ? config.timeFormatEn : config.timeFormatCh, lang == 'en' ? 'en' : 'zh').format(dt);
   }
+}
+
+String formatTimeBefore(DateTime dt, String lang) {
+  final DateTime now = DateTime.now();
+
+  if (now.difference(dt).inMinutes <= 0) {
+    return 'just';
+  }
+
+  if (now.difference(dt).inHours <= 0) {
+    return '${now.difference(dt).inMinutes} minutes before';
+  }
+
+  if (now.difference(dt).inDays <= 0) {
+    return '${now.difference(dt).inHours} hours before';
+  }
+
+  if (now.difference(dt).inDays <= 5) {
+    return '${now.difference(dt).inDays} days before';
+  }
+
+  return formatDate(dt, lang);
 }
 
 String formatDateTime(DateTime dt, String lang) {

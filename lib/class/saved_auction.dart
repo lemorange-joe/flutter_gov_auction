@@ -51,13 +51,13 @@ class SavedAuction implements Comparable<SavedAuction> {
   }
 
   // TBC how to use comparator, e.g.
-  // Comparator<ComparatorEmployee> employeSalary = (x, y) => x.salary.compareTo(y.salary);
-  // employeesList.sort(employeSalary);
-  Comparator<SavedAuction> savedDateComparator = (SavedAuction a, SavedAuction b) {
+  // Comparator<ComparatorEmployee> employeeSalary = (x, y) => x.salary.compareTo(y.salary);
+  // employeesList.sort(employeeSalary);
+  static Comparator<SavedAuction> savedDateComparator = (SavedAuction a, SavedAuction b) {
     final DateTime thisSavedDate = a.savedDate ?? DateTime(1900);
     final DateTime otherSavedDate = b.savedDate ?? DateTime(1900);
 
-    return thisSavedDate.compareTo(otherSavedDate);
+    return otherSavedDate.compareTo(thisSavedDate); // sort newest first
   };
 
   @override
