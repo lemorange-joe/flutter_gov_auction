@@ -87,7 +87,7 @@ class AuctionProvider with ChangeNotifier {
       }
 
       for (final dynamic jsonLot in jsonLotList) {
-        lotList.add(AuctionLot.fromJson(jsonLot as Map<String, dynamic>));
+        lotList.add(AuctionLot.fromJson(jsonLot as Map<String, dynamic>, lang));
       }
 
       return Auction(

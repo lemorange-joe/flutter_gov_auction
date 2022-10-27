@@ -365,7 +365,7 @@ class AuctionController {
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, 
                     L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
-                    L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_$lang as 'lot_description',
+                    L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author_$lang as 'photo_author', L.photo_author_url,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
@@ -417,7 +417,9 @@ class AuctionController {
           $result[$i]["photo_real"],
           $result[$i]["photo_author"],
           $result[$i]["photo_author_url"],
-          $result[$i]["lot_description"],
+          $result[$i]["description_en"],
+          $result[$i]["description_tc"],
+          $result[$i]["description_sc"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],

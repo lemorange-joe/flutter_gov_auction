@@ -175,7 +175,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
                           builder: (BuildContext context, _, __) {
                             final SavedAuction curAuction = SavedAuction(
-                                widget.auctionId, widget.auctionDate, widget.auctionLot.lotNum, widget.auctionLot.photoUrl, widget.auctionLot.description);
+                              widget.auctionId,
+                              widget.auctionDate,
+                              widget.auctionLot.lotNum,
+                              widget.auctionLot.photoUrl,
+                              widget.auctionLot.descriptionEn,
+                              widget.auctionLot.descriptionTc,
+                              widget.auctionLot.descriptionSc,
+                            );
                             final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
                             return TextButton(

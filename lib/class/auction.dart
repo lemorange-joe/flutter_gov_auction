@@ -64,6 +64,9 @@ class AuctionLot {
       this.remarks,
       this.itemCondition,
       this.description,
+      this.descriptionEn,
+      this.descriptionTc,
+      this.descriptionSc,
       this.featured,
       this.icon,
       this.photoUrl,
@@ -74,7 +77,7 @@ class AuctionLot {
       this.transactionStatus,
       this.lastUpdate);
 
-  factory AuctionLot.fromJson(Map<String, dynamic> json) {
+  factory AuctionLot.fromJson(Map<String, dynamic> json, String lang) {
     final List<dynamic> jsonItemList = json['il'] as List<dynamic>;
     final List<AuctionItem> itemList = <AuctionItem>[];
 
@@ -94,7 +97,11 @@ class AuctionLot {
       json['cl'] as String,
       json['r'] as String,
       json['ic'] as String,
-      json['d'] as String,
+      json['d'] as String, // TODO(joe): temp solution for using demo data
+      // lang == 'tc' ? json['dtc'] as String : (lang == 'sc' ? json['dsc'] as String : json['den'] as String),
+      json['den'] == null ? json['d'] as String : json['den'] as String,  // temp solution for using demo data
+      json['dtc'] == null ? json['d'] as String : json['dtc'] as String,  // remove null check after api is ready on server
+      json['dsc'] == null ? json['d'] as String : json['dsc'] as String,
       json['f'] as int == 1,
       json['i'] as String,
       json['pu'] as String,
@@ -108,7 +115,7 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
   }
 
   final int id;
@@ -123,6 +130,9 @@ class AuctionLot {
   final String remarks;
   final String itemCondition;
   final String description;
+  final String descriptionEn;
+  final String descriptionTc;
+  final String descriptionSc;
   final bool featured;
   final String icon;
   final String photoUrl;
@@ -186,16 +196,14 @@ double jsonToDouble(dynamic val) {
 }
 
 class RelatedAuctionLot {
-  RelatedAuctionLot(this.auctionId, this.startTime, this.auctionStatus, 
-  this.lotId, this.itemType, this.lotNum, this.description, this.icon, this.photoUrl, this.photoReal, 
-  this.transactionCurrency, this.transactionPrice, this.transactionStatus);
+  RelatedAuctionLot(this.auctionId, this.startTime, this.auctionStatus, this.lotId, this.itemType, this.lotNum, this.description, this.icon, this.photoUrl,
+      this.photoReal, this.transactionCurrency, this.transactionPrice, this.transactionStatus);
 
   factory RelatedAuctionLot.fromjson(Map<String, dynamic> json) {
     return RelatedAuctionLot(
       json['aid'] as int,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
       getAuctionStatus(json['as'] as String),
-
       json['lid'] as int,
       json['t'] as String,
       json['ln'] as String,
@@ -203,7 +211,6 @@ class RelatedAuctionLot {
       json['i'] as String,
       json['pu'] as String,
       json['pr'] as int == 1,
-      
       json['tc'] as String,
       jsonToDouble(json['tp']),
       json['ts'] as String,

@@ -49,6 +49,12 @@ Run the following commands:
 > flutter pub get
 > flutter pub run flutter_launcher_icons:main
 
+## 2. To generate hive class
+
+- In "lib/class", create the class OR update the class then remove the .g.dart file
+- Run the following command:
+  > flutter pub run build_runner build
+
 
 # Auction History
 1. 2022-06-16 10:30:00

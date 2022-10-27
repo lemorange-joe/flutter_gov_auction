@@ -4,10 +4,10 @@ part 'saved_auction.g.dart';
 
 @HiveType(typeId: 1)
 class SavedAuction implements Comparable<SavedAuction> {
-  SavedAuction(this.auctionId, this.auctionDate, this.lotNum, this.photoUrl, this.description, [this.savedDate]);
+  SavedAuction(this.auctionId, this.auctionDate, this.lotNum, this.photoUrl, this.descriptionEn, this.descriptionTc, this.descriptionSc, [this.savedDate]);
 
   factory SavedAuction.empty() {
-    return SavedAuction(0, DateTime(1900), '', '', '', DateTime(1900));
+    return SavedAuction(0, DateTime(1900), '', '', '', '', '', DateTime(1900));
   }
 
   @HiveField(0)
@@ -26,10 +26,28 @@ class SavedAuction implements Comparable<SavedAuction> {
   String photoUrl;
 
   @HiveField(5)
-  String description;
+  String descriptionEn;
+
+  @HiveField(6)
+  String descriptionTc;
+
+  @HiveField(7)
+  String descriptionSc;
 
   String get hiveKey {
     return '${auctionId}_$lotNum';
+  }
+
+  String getDescription(String lang) {
+    if (lang == 'tc') {
+      return descriptionTc;
+    }
+
+    if (lang == 'sc') {
+      return descriptionSc;
+    }
+
+    return descriptionEn;
   }
 
   // TBC how to use comparator, e.g.

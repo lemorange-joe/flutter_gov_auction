@@ -280,6 +280,7 @@ class _DebugPageState extends State<DebugPage> {
         child: ValueListenableBuilder<Box<SavedAuction>>(
           valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
           builder: (BuildContext context, _, __) {
+            final String lang = S.of(context).lang;
             return Column(
               children: HiveHelper()
                   .getSavedAuctionList()
@@ -288,7 +289,9 @@ class _DebugPageState extends State<DebugPage> {
                         children: <Widget>[
                           Text(auction.savedDate.toString().replaceAll(' ', '\n'), style: const TextStyle(fontSize: 10.0)),
                           const SizedBox(width: 5.0),
-                          Text('${auction.auctionId}_${auction.lotNum}: ${auction.description}'),
+                          Text(
+                            '${auction.auctionId}_${auction.lotNum}: ${auction.getDescription(lang)}',
+                          ),
                         ],
                       ))
                   .toList(),
