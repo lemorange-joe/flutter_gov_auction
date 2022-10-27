@@ -103,7 +103,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       </select>
     </div>
 
-    <div id="divLotList" style="width: 1600px"></div>
+    <div id="divLotList" style="width: 1400px"></div>
     <div style="margin-top: 10px">
       <button id="btnAddLot" data-lot-count="0" onclick="AddLot()">+ Lot</button>
     </div>
@@ -524,7 +524,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         var divHtml = "<div>";
         
-        divHtml += "<div style='width:900px; float: left'>";
+        divHtml += "<div style='width:800px; float: left'>";
           divHtml += "<div style='display:flex; justify-content: space-between'>";
             divHtml += "<div style='display:flex'>";
               divHtml += "<div style='width:100px'>ID</div><input id='tbLotId_" + i + "' style='width:50px; margin-right: 60px' disabled='disabled' value='" + lotId + "'>";
@@ -539,31 +539,31 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='display:flex'><div style='width:100px'>GLD Ref</div><input id='tbGldRef_" + i + "' style='width:200px' value='" + gldFileRef.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Ref</div><input id='tbRef_" + i + "' style='width:200px' value='" + reference.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Dept</div><input id='tbDeptEn_" + i + "' style='width:750px' value='" + departmentEn.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>部門</div><input id='tbDeptTc_" + i + "' style='width:750px' value='" + departmentTc.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>部门</div><input id='tbDeptSc_" + i + "' style='width:750px' value='" + departmentSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Dept</div><input id='tbDeptEn_" + i + "' style='width:650px' value='" + departmentEn.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>部門</div><input id='tbDeptTc_" + i + "' style='width:650px' value='" + departmentTc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>部门</div><input id='tbDeptSc_" + i + "' style='width:650px' value='" + departmentSc.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Contact</div><input id='tbContactEn_" + i + "' style='width:750px' value='" + contactEn.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>聯絡人</div><input id='tbContactTc_" + i + "' style='width:750px' value='" + contactTc.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>联络人</div><input id='tbContactSc_" + i + "' style='width:750px' value='" + contactSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Contact</div><input id='tbContactEn_" + i + "' style='width:650px' value='" + contactEn.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>聯絡人</div><input id='tbContactTc_" + i + "' style='width:650px' value='" + contactTc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>联络人</div><input id='tbContactSc_" + i + "' style='width:650px' value='" + contactSc.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Number</div><input id='tbNumberEn_" + i + "' style='width:750px' value='" + numberEn.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>電話</div><input id='tbNumberTc_" + i + "' style='width:750px' value='" + numberTc.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>电话</div><input id='tbNumberSc_" + i + "' style='width:750px' value='" + numberSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Number</div><input id='tbNumberEn_" + i + "' style='width:650px' value='" + numberEn.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>電話</div><input id='tbNumberTc_" + i + "' style='width:650px' value='" + numberTc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>电话</div><input id='tbNumberSc_" + i + "' style='width:650px' value='" + numberSc.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Location</div><input id='tbLocationEn_" + i + "' style='width:750px' value='" + locationEn.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>地點</div><input id='tbLocationTc_" + i + "' style='width:750px' value='" + locationTc.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>地点</div><input id='tbLocationSc_" + i + "' style='width:750px' value='" + locationSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Location</div><input id='tbLocationEn_" + i + "' style='width:650px' value='" + locationEn.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>地點</div><input id='tbLocationTc_" + i + "' style='width:650px' value='" + locationTc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>地点</div><input id='tbLocationSc_" + i + "' style='width:650px' value='" + locationSc.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
-          divHtml += "<div style='display:flex;width:860px;height:20px'><div style='width:100px'>Description</div><div style='width:760px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionEn.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
-          divHtml += "<div style='display:flex;width:860px;height:20px'><div style='width:100px'></div><div style='width:760px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionTc.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
-          divHtml += "<div style='display:flex;width:860px;height:20px'><div style='width:100px'></div><div style='width:760px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionSc.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
+          divHtml += "<div style='display:flex;width:760px;height:40px'><div style='width:100px'>Description</div><div style='width:660px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionEn.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
+          divHtml += "<div style='display:flex;width:760px;height:40px'><div style='width:100px'></div><div style='width:660px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionTc.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
+          divHtml += "<div style='display:flex;width:760px;height:40px'><div style='width:100px'></div><div style='width:660px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionSc.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Status</div>" + GetDdl("ddlStatus_"+i, status, "Status") + "</div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Last Update:</div><div id='divLastUpdate_" + i + "'>" + lastUpdate + "</div></div>";
         divHtml += "</div>";
-        divHtml += "<div style='width:700px;float: right;'>";
+        divHtml += "<div style='width:600px;float: right;'>";
           divHtml += "<div style='height:20px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Icon</div><input id='tbLotIcon_" + i + "' value='" + lotIcon.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'>";
@@ -600,7 +600,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         
         divHtml += "<br style='clear: both' />";
         divHtml += "<div style='height:10px'></div>";
-        divHtml += "<div id='divItems_" + i + "' style='width:1500px'>";
+        divHtml += "<div id='divItems_" + i + "' style='width:1400px'>";
         for (var j = 0; j < itemList.length; ++j) {
           divHtml += BuildLotItems(i, j, itemList[j]);
         }

@@ -25,7 +25,7 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
   </div>
   <div class="body">
     <form id="import_form" action="preview_auction_list.php" method="POST">
-      <div style="width:1500px;display:flex;justify-content:space-between">
+      <div style="width:1400px;display:flex;justify-content:space-between">
         <div>
           Auction Num: <input name="auction_num" style="width: 100px" value="<?=$auctionNum?>"/>
           &nbsp;&nbsp;

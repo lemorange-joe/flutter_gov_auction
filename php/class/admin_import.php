@@ -204,8 +204,8 @@ class AdminImport {
     $separatorHeight = "8";
     echo "<div style='display:inline-block;width:".$colWidth."px'>Lot Num:</div><input id='tbLotNum_$lotIndex' value='".str_replace("'", '"', $matchValues["lotNum"])."'>";
     echo "<div style='height:".$separatorHeight."px'></div>";
-    echo "<div style='display:flex;width:1800px'>";
-      echo "<div style='width:900px'>";
+    echo "<div style='display:flex;width:1400px'>";
+      echo "<div style='width:800px'>";
         echo "<div style='display:flex'><div style='width:".$colWidth."px'>GLD Ref</div><input id='tbGldRef_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['gldFileRef'])."'></div>";
         echo "<div style='display:flex'><div style='width:".$colWidth."px'>Ref</div><input id='tbRef_$lotIndex' style='width:".$colWidth2."px' value='".str_replace("'", '"', $matchValues['reference'])."'></div>";
         echo "<div style='height:".$separatorHeight."px'></div>";
@@ -231,12 +231,12 @@ class AdminImport {
         echo "<div style='display:flex'><div style='width:".$colWidth."px'>狀態</div>";
         echo "<textarea id='tbItemConditionTc_$lotIndex' style='width:".$colWidth2."px;height:60px'>".$matchValues['itemConditionTc']."</textarea></div>";
       echo "</div>";
-      echo "<div style='width:600px'>";
+      echo "<div style='width:500px'>";
         echo "<textarea style='width:600px;height:515px' disabled='disabled'>$strAuction</textarea>";    
       echo "</div>";
     echo "</div>";
     echo "<br style='clear: both' />";
-    echo "<div id='divItems_$lotIndex' style='width:1500px'>";
+    echo "<div id='divItems_$lotIndex' style='width:1400px'>";
         $total = $this->extractItems($matchValues["items"], $lotIndex);
     echo "</div>";
     echo "<button id='btnAddItem_$lotIndex' data-total='$total' onclick='AddItem($lotIndex)'>+</button>";
@@ -403,6 +403,7 @@ class AdminImport {
     
     $lotList = array();
     $i = 0;
+
     while ($i < Count($lines)) {
       $line = trim($lines[$i]);
 
