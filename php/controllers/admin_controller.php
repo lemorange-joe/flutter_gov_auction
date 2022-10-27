@@ -1139,6 +1139,44 @@ class AdminController {
   //   echo "DONE!";
   // }
 
+  function batchUpdateAuctionLotImage() {
+    global $conn;
+    $selectSql = "SELECT L.lot_id, I.description_en, I.description_tc
+                  FROM AuctionLot L
+                  INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                  WHERE L.photo_url = '' AND I.seq = 1
+                  ORDER BY L.lot_id";
+    
+    $auctionLotResult = $conn->Execute($selectSql)->GetRows();
+    $total = count($auctionLotResult);
+    echo "Batch update auction lot image<br />Total: $total<hr />";
+
+    for($i = 0; $i < $total; ++$i) {
+      $lotId = $auctionLotResult[$i]['lot_id'];
+      $keywordEn = $this->getSearchKeyword($auctionLotResult[$i]['description_en'], "en");
+      $keywordTc = $this->getSearchKeyword($auctionLotResult[$i]['description_tc'], "tc");
+      
+      $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_en = ? OR keyword_tc = ?";
+      $result = $conn->Execute($selectSql, array($keywordEn, $keywordTc))->GetRows();
+      $rowNum = count($result);
+
+      echo "$lotId: $keywordEn, $keywordTc ";
+      if ($rowNum > 0) {
+        $randIndex = rand(0, $rowNum - 1);
+        $imageUrl = $result[$randIndex]["image_url"];
+
+        $updateSql = "UPDATE AuctionLot SET photo_url = ?, photo_real = 0 WHERE lot_id = ?";
+        $conn->Execute($updateSql, array($imageUrl, $lotId));
+
+        echo "<span style='color: #090'> -> $imageUrl</span><br>";
+      } else {
+        echo "<span style='color: #b00'>NOT FOUND!</span><br>";
+      }
+    }
+
+    echo "<hr />DONE!";
+  }
+
   private function getKeywordPhotoAuthor($keywordEn, $keywordTc) {
     if (empty($keywordEn) && empty($keywordTc)) {
       return new KeywordPhotoAuthor("", "", "", "", "");

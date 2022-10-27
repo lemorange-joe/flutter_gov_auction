@@ -38,7 +38,7 @@ include_once ("../include/config.php");
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   </div>
   <div class="body">
-    <div style="margin:10px 0;text-decoration:underline">Create</div>
+    <div style="margin:10px 0;text-decoration:underline">Create <button style="float: right" onclick="window.open('../en/api/admin-batchUpdateAuctionLotImage', '_blank')">Batch Update Auction Lot Image</button></div>
     <div style="display: flex; justify-content: space-between">
       <div>
         <div>
