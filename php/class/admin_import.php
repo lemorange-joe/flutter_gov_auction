@@ -319,9 +319,9 @@ class AdminImport {
       return $tempList;
     }
 
-    // 2. find the next digit
+    // 2. find the item quantity (i.e. digit followed by a space)
     while ($i < mb_strlen($itemText)) {
-      if (ctype_digit(mb_substr($itemText, $i, 1))) {
+      if (ctype_digit(mb_substr($itemText, $i, 1)) && $this->isNumberFollowedBySpace(mb_substr($itemText, $i))) {
         break;
       }
       ++$i;
@@ -446,6 +446,28 @@ class AdminImport {
     }
     
     return $total;
+  }
+
+  // utility function
+  function isNumberFollowedBySpace($txt) {
+    $i = 1;
+    while ($i < mb_strlen($txt)) {
+      $curChar = mb_substr($txt, $i, 1);
+      if ($curChar == " ") {
+        // find the space, the number is of length $i
+        return $i;
+      }
+
+      if ($curChar != "." && !ctype_digit($curChar)) {
+        // the number is followed by other characters, it is not the item quantity
+        return 0;
+      }
+
+      // it is digit, countinue check the next char
+      ++$i;
+    }
+
+    return $i;
   }
 }
 ?>

@@ -41,7 +41,7 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
         <button id="btnSubmit" class="action-button" onclick="TempDisableButton('btnSubmit');document.getElementById('import_form').submit();">Submit</button>
       </div>
       <br />
-      <textarea name="import_text" style="width: 1500px; height: 600px"></textarea>  
+      <textarea name="import_text" style="width: 1400px; height: 600px"></textarea>  
     </form>
   </div>
   <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
