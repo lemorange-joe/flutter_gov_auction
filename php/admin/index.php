@@ -91,7 +91,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <br /><br />
         <a href="verify_data.php">Verify Data</a>
         <br /><br />
-        <a href="app_data.php">App Data</a>
+        <a href="app_data.php">View / Refresh App Data</a>
       </div>
       <div class="admin-block bgYellow">
         <h3>App Data & Notification</h3>

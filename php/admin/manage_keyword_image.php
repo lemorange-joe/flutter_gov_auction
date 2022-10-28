@@ -64,8 +64,8 @@ include_once ("../include/config.php");
     </div>
     <hr style="width: 90%; margin-left: 0" />
     <div style="height: 40px;line-height: 30px;">
-      Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" placeholder="Input Keyword" />
-      <button style="margin-right:10px" onclick="GetData(document.getElementById('tbKeyword').value)">Get</button>
+      Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" onchange="GetData(this.value.trim())" placeholder="Input Keyword" />
+      <button style="margin-right:10px" onclick="GetData(document.getElementById('tbKeyword').value.trim())">Get</button>
       <button onclick="document.getElementById('tbKeyword').value='';GetData()">Clear</button>
     </div>
     <table>

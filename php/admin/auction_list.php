@@ -32,6 +32,16 @@ if (!isset($_SESSION["admin_user"])) {
       width: 150px;
     }
 
+    a.link-lot-num {
+      color: #15f;
+      font-size: 20px;
+      text-decoration: none;
+    }
+
+    a.link-lot-num:hover {
+      text-decoration: underline;
+    }
+
     .form-row.separate {
       margin-top: 8px;
     }
@@ -58,11 +68,9 @@ if (!isset($_SESSION["admin_user"])) {
           <th style="width: 50px">ID</th>
           <th style="width: 100px">Auction No.</th>
           <th style="width: 100px">Start Time</th>
-          <th style="width: 300px">Auction PDF</th>
-          <th style="width: 300px">Result PDF</th>
           <th style="width: 150px">Auction Status</th>
           <th style="width: 80px">Status</th>
-          <th style="width: 100px"></th>
+          <th style="width: 700px"></th>
         </tr>
       </thead>
       <tbody id="tblAuction">
@@ -176,11 +184,14 @@ if (!isset($_SESSION["admin_user"])) {
         return select;
       }
 
-      function GetTextBox(id, value, type, width) {
+      function GetTextBox(id, value, type, width, placeholder) {
         var input = document.createElement("input");
         input.setAttribute("id", id);
         input.setAttribute("type", type);
         input.setAttribute("value", value);
+        if (placeholder) {
+          input.setAttribute("placeholder", placeholder);
+        }
         if (width) {
           input.style.width = width+"px";
         }
@@ -296,10 +307,12 @@ if (!isset($_SESSION["admin_user"])) {
 
                 var link = document.createElement('a');
                 link.appendChild(document.createTextNode(curAuction.id));
+                link.setAttribute("class", "link-lot-num");
                 link.href = "auction_details.php?id="+curAuction.id;
 
                 var row = tblAuction.insertRow();
                 row.setAttribute("data-index", i);
+                row.setAttribute("style", "height: 40px");
                 row.classList.add(curAuction.status == "A" ? "green" : "red");
 
                 var td0 = row.insertCell(0)
@@ -307,16 +320,8 @@ if (!isset($_SESSION["admin_user"])) {
                 td0.appendChild(GetTextBox("tbAuctionId_"+i, curAuction.id, "hidden"));
                 row.insertCell(1).appendChild(GetTextBox("tbAuctionNum_"+i, curAuction.num, "text", 60));
                 row.insertCell(2).appendChild(GetTextBox("tbAuctionStartTime_"+i, curAuction.start_time, "text", 130));              
-                var td3 = row.insertCell(3);
-                td3.appendChild(GetTextBox("tbAuctionPdfEn_"+i, curAuction.auction_pdf_en, "text", 550));
-                td3.appendChild(GetTextBox("tbAuctionPdfTc_"+i, curAuction.auction_pdf_tc, "text", 550));
-                td3.appendChild(GetTextBox("tbAuctionPdfSc_"+i, curAuction.auction_pdf_sc, "text", 550));
-                var td4 = row.insertCell(4);
-                td4.appendChild(GetTextBox("tbResultPdfEn_"+i, curAuction.result_pdf_en, "text", 550));
-                td4.appendChild(GetTextBox("tbResultPdfTc_"+i, curAuction.result_pdf_tc, "text", 550));
-                td4.appendChild(GetTextBox("tbResultPdfSc_"+i, curAuction.result_pdf_sc, "text", 550));
-                row.insertCell(5).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
-                row.insertCell(6).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
+                row.insertCell(3).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
+                row.insertCell(4).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
                 var btnUpdate = document.createElement("button");
                 btnUpdate.setAttribute("id", "btnUpdate"+i);
                 btnUpdate.innerHTML = "Update";
@@ -324,58 +329,86 @@ if (!isset($_SESSION["admin_user"])) {
                   UpdateAuction(this.parentNode.parentNode.rowIndex - 1);
                   TempDisableButton(this.getAttribute("id"));
                 };
-                row.insertCell(7).appendChild(btnUpdate);
+                row.insertCell(5).appendChild(btnUpdate);
 
                 var row2 = tblAuction.insertRow();
                 row2.classList.add(curAuction.status == "A" ? "green" : "red");
 
                 var cell = row2.insertCell(0);
-                cell.setAttribute("colspan", 8);
+                cell.setAttribute("colspan", 6);
                 cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left;border-bottom:5px double #000");
 
-                  var divRemarks = document.createElement("div");
-                  divRemarks.setAttribute("style", "display:flex");
+                  var divTextBox = document.createElement("div");
+                  divTextBox.setAttribute("style", "display:flex");
+                    
+                    var divTextBoxLeft = document.createElement("div");
+                    divTextBoxLeft.setAttribute("style", "width:50%");
 
-                    var divRemarksEn = document.createElement("div");
-                    var txtRemarksEn = document.createElement("textarea");
-                    txtRemarksEn.setAttribute("id", "tbRemarksEn_"+i);
-                    txtRemarksEn.value = curAuction.remarks_en;
-                    txtRemarksEn.style.width = "500px";
-                    txtRemarksEn.style.height = "45px";
-                    divRemarksEn.appendChild(document.createTextNode("Remarks EN"));
-                    divRemarksEn.appendChild(document.createElement("br"));
-                    divRemarksEn.appendChild(txtRemarksEn);
+                    divTextBoxLeft.appendChild(document.createTextNode("Auction PDF"));
+                    divTextBoxLeft.appendChild(document.createElement("br"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbAuctionPdfEn_"+i, curAuction.auction_pdf_en, "text", 550, "EN"));
+                    divTextBoxLeft.appendChild(document.createElement("br"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbAuctionPdfTc_"+i, curAuction.auction_pdf_tc, "text", 550, "TC"));
+                    divTextBoxLeft.appendChild(document.createElement("br"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbAuctionPdfSc_"+i, curAuction.auction_pdf_sc, "text", 550, "SC"));
 
-                    var divRemarksTc = document.createElement("div");
-                    divRemarksTc.setAttribute("style", "margin:0 10px;");
-                    var txtRemarksTc = document.createElement("textarea");
-                    txtRemarksTc.setAttribute("id", "tbRemarksTc_"+i);
-                    txtRemarksTc.value = curAuction.remarks_tc;
-                    txtRemarksTc.style.width = "500px";
-                    txtRemarksTc.style.height = "45px";
-                    divRemarksTc.appendChild(document.createTextNode("Remarks TC"));
-                    divRemarksTc.appendChild(document.createElement("br"));
-                    divRemarksTc.appendChild(txtRemarksTc);
+                    divTextBoxLeft.appendChild(document.createElement("br"));
+                    divTextBoxLeft.appendChild(document.createElement("br"));
 
-                    var divRemarksSc = document.createElement("div");
-                    var txtRemarksSc = document.createElement("textarea");
-                    txtRemarksSc.setAttribute("id", "tbRemarksSc_"+i);
-                    txtRemarksSc.value = curAuction.remarks_sc;
-                    txtRemarksSc.style.width = "500px";
-                    txtRemarksSc.style.height = "45px";
-                    divRemarksSc.appendChild(document.createTextNode("Remarks SC"));
-                    divRemarksSc.appendChild(document.createElement("br"));
-                    divRemarksSc.appendChild(txtRemarksSc);
+                    divTextBoxLeft.appendChild(document.createTextNode("Result PDF"));
+                    divTextBoxLeft.appendChild(document.createElement("br"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbResultPdfEn_"+i, curAuction.result_pdf_en, "text", 550, "EN"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbResultPdfTc_"+i, curAuction.result_pdf_tc, "text", 550, "TC"));
+                    divTextBoxLeft.appendChild(GetTextBox("tbResultPdfSc_"+i, curAuction.result_pdf_sc, "text", 550, "SC"));
 
-                  divRemarks.appendChild(divRemarksEn);
-                  divRemarks.appendChild(divRemarksTc);
-                  divRemarks.appendChild(divRemarksSc);
+                    var divTextBoxRight = document.createElement("div");
+                    divTextBoxRight.setAttribute("style", "width:50%");
+
+                      var divRemarksEn = document.createElement("div");
+                      var txtRemarksEn = document.createElement("textarea");
+                      txtRemarksEn.setAttribute("id", "tbRemarksEn_"+i);
+                      txtRemarksEn.setAttribute("placeholder", "EN");
+                      txtRemarksEn.value = curAuction.remarks_en;
+                      txtRemarksEn.style.width = "500px";
+                      txtRemarksEn.style.height = "45px";
+                      divRemarksEn.appendChild(txtRemarksEn);
+
+                      var divRemarksTc = document.createElement("div");
+                      var txtRemarksTc = document.createElement("textarea");
+                      txtRemarksTc.setAttribute("id", "tbRemarksTc_"+i);
+                      txtRemarksTc.setAttribute("placeholder", "TC");
+                      txtRemarksTc.value = curAuction.remarks_tc;
+                      txtRemarksTc.style.width = "500px";
+                      txtRemarksTc.style.height = "45px";
+                      divRemarksTc.appendChild(txtRemarksTc);
+
+                      var divRemarksSc = document.createElement("div");
+                      var txtRemarksSc = document.createElement("textarea");
+                      txtRemarksSc.setAttribute("id", "tbRemarksSc_"+i);
+                      txtRemarksSc.setAttribute("placeholder", "SC");
+                      txtRemarksSc.value = curAuction.remarks_sc;
+                      txtRemarksSc.style.width = "500px";
+                      txtRemarksSc.style.height = "45px";
+                      divRemarksSc.appendChild(txtRemarksSc);
+
+                    divTextBoxRight.appendChild(document.createTextNode("Remarks"));
+                    divTextBoxRight.appendChild(document.createElement("br"));
+                    divTextBoxRight.appendChild(divRemarksEn);
+                    divTextBoxRight.appendChild(divRemarksTc);
+                    divTextBoxRight.appendChild(divRemarksSc);
+
+                  divTextBox.appendChild(divTextBoxLeft);
+                  divTextBox.appendChild(divTextBoxRight);
+
+                  var spnSpacer = document.createElement("span");
+                  spnSpacer.setAttribute("style", "display: inline-block; width: 20px");
 
                   var divCount = document.createElement("div");
-                  divCount.style.height = "70px";
                   divCount.style.lineHeight = "30px";
-                  divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count + " | ★ " + curAuction.featured_count));
-                  divCount.appendChild(document.createElement("br"));
+                  divCount.appendChild(document.createTextNode("⭐ " + curAuction.featured_count));
+                  divCount.appendChild(spnSpacer.cloneNode());                  
+                  divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count));
+                  divCount.appendChild(spnSpacer.cloneNode());                  
                   divCount.appendChild(document.createTextNode("📦 " + curAuction.item_count));
 
                   var divLastUpdate = document.createElement("div");
@@ -396,7 +429,7 @@ if (!isset($_SESSION["admin_user"])) {
                   divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
                   divLinks.appendChild(importResultLink);
                 
-                cell.appendChild(divRemarks);
+                cell.appendChild(divTextBox);
                 cell.appendChild(divCount);
                 cell.appendChild(divLastUpdate);
                 cell.appendChild(divLinks);

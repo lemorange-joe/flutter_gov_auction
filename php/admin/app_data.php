@@ -34,7 +34,7 @@ if (isset($_POST["refresh"])) {
     ?>
     <br />
     <form method="POST">
-      <button type="submit" name="refresh">Refresh Data</button>
+      <button type="submit" name="refresh" style="height: 36px">Refresh Data from DB</button>
     </form>
   </div>
 </body>

@@ -38,7 +38,7 @@ if (!isset($_SESSION["admin_user"])) {
     }
 
     .form-row > div {
-      width: 500px;
+      width: 470px;
     }
 
     .form-row input {
@@ -46,7 +46,7 @@ if (!isset($_SESSION["admin_user"])) {
     }
 
     .form-row textarea {
-      width: 480px;
+      width: 450px;
       height: 150px;
       white-space: normal;
     }
