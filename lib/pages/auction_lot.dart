@@ -113,6 +113,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   Widget build(BuildContext context) {
     const double titleFieldWidth = 100.0;
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
+    final bool isLotPhoto = widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute;
 
     return Scaffold(
       appBar: AppBar(
@@ -150,7 +151,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       Center(
                         child: Hero(
                           tag: '${widget.heroTagPrefix}_${widget.auctionLot.id}',
-                          child: (widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute)
+                          child: isLotPhoto
                               ? Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -176,8 +177,10 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           builder: (BuildContext context, _, __) {
                             final SavedAuction curAuction = SavedAuction(
                               widget.auctionId,
+                              widget.auctionLot.id,
                               widget.auctionDate,
                               widget.auctionLot.lotNum,
+                              widget.auctionLot.icon,
                               widget.auctionLot.photoUrl,
                               widget.auctionLot.descriptionEn,
                               widget.auctionLot.descriptionTc,
@@ -197,7 +200,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               style: TextButton.styleFrom(
                                 fixedSize: const Size(50.0, 50.0),
                                 shape: const CircleBorder(),
-                                backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0),
+                                // backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0), // color TBC
+                                backgroundColor: isLotPhoto ? const Color.fromARGB(64, 0, 0, 0) : const Color.fromARGB(190, 255, 255, 255),
                               ),
                               child: Semantics(
                                 label: isSaved ? S.of(context).semanticsSavedItems : S.of(context).semanticsAddToSavedItems,

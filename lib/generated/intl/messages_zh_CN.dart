@@ -36,7 +36,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "孩论脚定，脑告便过面了面乐的子地园响注。多界停看国题的史急文么密李严来传期入也开喜足饭也，很命的重和我么养画，天特务中到更西动金制就将方年人运朋计！"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
         "auctionList": MessageLookupByLibrary.simpleMessage("拍卖列表"),
+        "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
+        "confirmDeleteAllSavedItems":
+            MessageLookupByLibrary.simpleMessage("确定要删除全部收藏项目？"),
+        "deleteSavedItems": MessageLookupByLibrary.simpleMessage("删除收藏项目"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "doubleTapViewDetails": MessageLookupByLibrary.simpleMessage("双击查看详情"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下载"),
@@ -68,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("参与拍卖须知连结:"),
         "noticeToParticipants": MessageLookupByLibrary.simpleMessage("参与拍卖须知"),
+        "ok": MessageLookupByLibrary.simpleMessage("确定"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
@@ -91,8 +96,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
         "semanticsAddToSavedItems":
-            MessageLookupByLibrary.simpleMessage("加至收藏物品"),
+            MessageLookupByLibrary.simpleMessage("加至收藏项目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("关闭"),
+        "semanticsDeleteAllSaved":
+            MessageLookupByLibrary.simpleMessage("删除全部收藏项目"),
         "semanticsDoubleTapViewDetails":
             MessageLookupByLibrary.simpleMessage("双击查看详情"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精选物品"),

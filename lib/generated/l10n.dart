@@ -150,11 +150,41 @@ class S {
     );
   }
 
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Clear search history`
   String get clearSearchHistory {
     return Intl.message(
       'Clear search history',
       name: 'clearSearchHistory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure to delete all saved items?`
+  String get confirmDeleteAllSavedItems {
+    return Intl.message(
+      'Are you sure to delete all saved items?',
+      name: 'confirmDeleteAllSavedItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete saved items`
+  String get deleteSavedItems {
+    return Intl.message(
+      'Delete saved items',
+      name: 'deleteSavedItems',
       desc: '',
       args: [],
     );
@@ -460,6 +490,16 @@ class S {
     );
   }
 
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `* (TBC)photo disclaimer`
   String get photoDisclaimer {
     return Intl.message(
@@ -635,6 +675,16 @@ class S {
     return Intl.message(
       'close',
       name: 'semanticsClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `delete all saved items`
+  String get semanticsDeleteAllSaved {
+    return Intl.message(
+      'delete all saved items',
+      name: 'semanticsDeleteAllSaved',
       desc: '',
       args: [],
     );

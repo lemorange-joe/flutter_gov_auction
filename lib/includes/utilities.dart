@@ -15,21 +15,60 @@ String formatTime(DateTime dt, String lang) {
 
 String formatTimeBefore(DateTime dt, String lang) {
   final DateTime now = DateTime.now();
+   const Map<String, Map<String, String>> langMapping = <String, Map<String, String>>{
+    'en': <String, String>{
+      'just': 'just added',
+      'minute': ' minute before',
+      'minutes': ' minutes before',
+      'hour': ' hour before',
+      'hours': ' hours before',
+      'day': ' day before',
+      'days': ' days before',
+    },
+    'tc': <String, String>{
+      'just': '剛剛加入',
+      'minute': '分鐘前',
+      'minutes': '分鐘前',
+      'hour': '小時前',
+      'hours': '小時前',
+      'day': '天前',
+      'days': '天前',
+    },
+    'sc': <String, String>{
+      'just': '刚刚加入',
+      'minute': '分钟前',
+      'minutes': '分钟前',
+      'hour': '小时前',
+      'hours': '小时前',
+      'day': '天前',
+      'days': '天前',
+    },
+  };
+
+  Map<String, String> selectedLangMapping = langMapping['en']!;
+  if (lang.toLowerCase() == 'tc') {
+    selectedLangMapping = langMapping['tc']!;
+  } else if (lang.toLowerCase() == 'sc') {
+    selectedLangMapping = langMapping['sc']!;
+  }
 
   if (now.difference(dt).inMinutes <= 0) {
-    return 'just';
+    return selectedLangMapping['just']!;
   }
 
   if (now.difference(dt).inHours <= 0) {
-    return '${now.difference(dt).inMinutes} minutes before';
+    final int diff = now.difference(dt).inMinutes;
+    return '$diff${diff > 1 ? selectedLangMapping['minutes'] : selectedLangMapping['minute']}';
   }
 
   if (now.difference(dt).inDays <= 0) {
-    return '${now.difference(dt).inHours} hours before';
+    final int diff = now.difference(dt).inHours;
+    return '$diff${diff > 1 ? selectedLangMapping['hours'] : selectedLangMapping['hour']}';
   }
 
   if (now.difference(dt).inDays <= 5) {
-    return '${now.difference(dt).inDays} days before';
+    final int diff = now.difference(dt).inDays;
+    return '$diff${diff > 1 ? selectedLangMapping['days'] : selectedLangMapping['day']}';
   }
 
   return formatDate(dt, lang);

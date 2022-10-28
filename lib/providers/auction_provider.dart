@@ -94,7 +94,7 @@ class AuctionProvider with ChangeNotifier {
         json['id'] as int,
         json['n'] as String,
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
-        '${json['l'] as String} XXX',
+        json['l'] as String,
         json['ap'] as String,
         json['rp'] as String,
         itemPdfList,

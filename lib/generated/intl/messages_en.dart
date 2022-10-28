@@ -36,8 +36,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum."),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name"),
         "auctionList": MessageLookupByLibrary.simpleMessage("Auction List"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
+        "confirmDeleteAllSavedItems": MessageLookupByLibrary.simpleMessage(
+            "Are you sure to delete all saved items?"),
+        "deleteSavedItems":
+            MessageLookupByLibrary.simpleMessage("Delete saved items"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "doubleTapViewDetails":
             MessageLookupByLibrary.simpleMessage("View details"),
@@ -74,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
         "noticeToParticipants":
             MessageLookupByLibrary.simpleMessage("Notice to Participants"),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
@@ -101,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("add to saved items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
+        "semanticsDeleteAllSaved":
+            MessageLookupByLibrary.simpleMessage("delete all saved items"),
         "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(
             "press and hold to view details"),
         "semanticsFeaturedItems":

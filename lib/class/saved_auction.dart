@@ -4,10 +4,10 @@ part 'saved_auction.g.dart';
 
 @HiveType(typeId: 1)
 class SavedAuction implements Comparable<SavedAuction> {
-  SavedAuction(this.auctionId, this.auctionDate, this.lotNum, this.photoUrl, this.descriptionEn, this.descriptionTc, this.descriptionSc, [this.savedDate]);
+  SavedAuction(this.auctionId, this.lotId, this.auctionDate, this.lotNum, this.lotIcon, this.photoUrl, this.descriptionEn, this.descriptionTc, this.descriptionSc, [this.savedDate]);
 
   factory SavedAuction.empty() {
-    return SavedAuction(0, DateTime(1900), '', '', '', '', '', DateTime(1900));
+    return SavedAuction(0, 0, DateTime(1900), '', 'fontawesome.box', '', '', '', '', DateTime(1900));
   }
 
   @HiveField(0)
@@ -17,21 +17,27 @@ class SavedAuction implements Comparable<SavedAuction> {
   int auctionId;
 
   @HiveField(2)
-  DateTime auctionDate;
+  int lotId;
 
   @HiveField(3)
-  String lotNum;
+  DateTime auctionDate;
 
   @HiveField(4)
-  String photoUrl;
+  String lotNum;
 
   @HiveField(5)
-  String descriptionEn;
+  String lotIcon;
 
   @HiveField(6)
-  String descriptionTc;
+  String photoUrl;
 
   @HiveField(7)
+  String descriptionEn;
+
+  @HiveField(8)
+  String descriptionTc;
+
+  @HiveField(9)
   String descriptionSc;
 
   String get hiveKey {

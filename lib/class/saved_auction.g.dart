@@ -18,12 +18,14 @@ class SavedAuctionAdapter extends TypeAdapter<SavedAuction> {
     };
     return SavedAuction(
       fields[1] as int,
-      fields[2] as DateTime,
-      fields[3] as String,
+      fields[2] as int,
+      fields[3] as DateTime,
       fields[4] as String,
       fields[5] as String,
       fields[6] as String,
       fields[7] as String,
+      fields[8] as String,
+      fields[9] as String,
       fields[0] as DateTime?,
     );
   }
@@ -31,22 +33,26 @@ class SavedAuctionAdapter extends TypeAdapter<SavedAuction> {
   @override
   void write(BinaryWriter writer, SavedAuction obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.savedDate)
       ..writeByte(1)
       ..write(obj.auctionId)
       ..writeByte(2)
-      ..write(obj.auctionDate)
+      ..write(obj.lotId)
       ..writeByte(3)
-      ..write(obj.lotNum)
+      ..write(obj.auctionDate)
       ..writeByte(4)
-      ..write(obj.photoUrl)
+      ..write(obj.lotNum)
       ..writeByte(5)
-      ..write(obj.descriptionEn)
+      ..write(obj.lotIcon)
       ..writeByte(6)
-      ..write(obj.descriptionTc)
+      ..write(obj.photoUrl)
       ..writeByte(7)
+      ..write(obj.descriptionEn)
+      ..writeByte(8)
+      ..write(obj.descriptionTc)
+      ..writeByte(9)
       ..write(obj.descriptionSc);
   }
 
