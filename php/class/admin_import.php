@@ -406,9 +406,9 @@ class AdminImport {
 
     while ($i < Count($lines)) {
       $line = trim($lines[$i]);
-
       if (preg_match($regexLotNum, $line, $matches))
       {
+        // lot num and price are on different line
         $lotNum = "";
         if (count($matches) > 1) {
           $lotNum = $matches[1];
@@ -416,8 +416,21 @@ class AdminImport {
 
         $price = str_replace(",", "", str_replace("$", "", trim($lines[++$i])));
         $lotList[$lotNum] = $price;
+      } else {
+        // multiple lot num and price on the same line
+        $tokenList = explode(" ", $line);
+        $tokenCount = count($tokenList);
+        
+        $j = 0;
+        while ($j < $tokenCount) {
+          if (preg_match($regexLotNum, $tokenList[$j]) && ($j + 1 < $tokenCount) && !preg_match($regexLotNum, $tokenList[$j+1])) {
+            $lotNum = $tokenList[$j];
+            $price = str_replace(",", "", str_replace("$", "", trim($tokenList[++$j])));
+            $lotList[$lotNum] = $price;
+          }
+          ++$j;
+        }
       }
-
       ++$i;
     }
     
