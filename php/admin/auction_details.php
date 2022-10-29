@@ -137,6 +137,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         } else if (type == "Status") {
           values = {
             "A": "Active",
+            "P": "Pending",
             "I": "Inactive",
           };
         } else if (type == "ItemType") {

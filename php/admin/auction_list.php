@@ -139,6 +139,7 @@ if (!isset($_SESSION["admin_user"])) {
         <div>
           <select id="ddlNewStatus">
             <option value="A">Active</option>
+            <option value="P" selected>Pending</option>
             <option value="I" selected>Inactive</option>
           </select>
         </div>
@@ -166,6 +167,7 @@ if (!isset($_SESSION["admin_user"])) {
         } else if (type == "Status") {
           values = {
             "A": "Active",
+            "P": "Pending",
             "I": "Inactive",
           };
         }
@@ -313,7 +315,7 @@ if (!isset($_SESSION["admin_user"])) {
                 var row = tblAuction.insertRow();
                 row.setAttribute("data-index", i);
                 row.setAttribute("style", "height: 40px");
-                row.classList.add(curAuction.status == "A" ? "green" : "red");
+                row.classList.add(curAuction.status == "A" ? "green" : (curAuction.status == "P" ? "yellow" : "red"));
 
                 var td0 = row.insertCell(0)
                 td0.appendChild(link);
@@ -332,7 +334,7 @@ if (!isset($_SESSION["admin_user"])) {
                 row.insertCell(5).appendChild(btnUpdate);
 
                 var row2 = tblAuction.insertRow();
-                row2.classList.add(curAuction.status == "A" ? "green" : "red");
+                row2.classList.add(curAuction.status == "A" ? "green" : (curAuction.status == "P" ? "yellow" : "red"));
 
                 var cell = row2.insertCell(0);
                 cell.setAttribute("colspan", 6);

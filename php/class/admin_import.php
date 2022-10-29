@@ -294,7 +294,7 @@ class AdminImport {
       // check the output of current item first
       // 1. 5 lines;
       // 2. 3rd line (i.e. quantity) is a number; nd
-      // 3. 5th line (i.e. unit in Chinese) has less than 6 characters
+      // 3. 5th line (i.e. unit in Chinese) has <= 6 characters
       $itemCorrect = count($outputList) == 5 && is_numeric(trim($outputList[2])) && mb_strlen(trim($outputList[4])) <= 6;
 
       if (!$itemCorrect) {
@@ -408,7 +408,7 @@ class AdminImport {
     // item correct conditions:
     // 1. 5 lines;
     // 2. 3rd line (i.e. quantity) is a number; nd
-    // 3. 5th line (i.e. unit in Chinese) has less than 6 characters
+    // 3. 5th line (i.e. unit in Chinese) has <= 6 characters
 
     $bgImage = $itemCorrect ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
     $className = $itemCorrect ? "item-textarea" : "item-textarea error";

@@ -33,6 +33,7 @@ abstract class PushStatus
 abstract class Status
 {
     const Active = "A";
+    const Pending = "P";    // pending for review, will show to isDeveloper
     const Inactive = "I";
 }
 

@@ -69,7 +69,12 @@ include_once ("../class/admin_import.php");
         function CheckTextarea(id) {
           var itemNum = parseInt(id.substr(-1)) + 1;
           var textList = document.getElementById(id).value.split("\n");
-          if (textList.length != 5 || !(/^\d*\.?\d+$/.test(textList[2].trim()))) {
+
+          // item correct conditions:
+          // 1. 5 lines;
+          // 2. 3rd line (i.e. quantity) is a number; nd
+          // 3. 5th line (i.e. unit in Chinese) has <= 6 characters
+          if (textList.length != 5 || !(/^\d*\.?\d+$/.test(textList[2].trim())) || textList[4].trim().length > 6) {
             document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/f88/666.png&text=++++++" + itemNum + "')";
             document.getElementById(id).classList.add("error");
           } else {

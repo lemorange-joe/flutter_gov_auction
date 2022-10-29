@@ -65,6 +65,10 @@ tr.green {
   background-color: #efe;
 }
 
+tr.yellow {
+  background-color: #ffe;
+}
+
 tr.red {
   background-color: #fee;
 }
