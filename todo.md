@@ -12,6 +12,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
+- consider AuctionLot.seq is useful, or use AuctionLot.lot_num as default order
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
 - add View All Documents page
 - swipe prev/next auction lot

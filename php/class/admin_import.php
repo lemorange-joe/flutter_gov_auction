@@ -247,6 +247,10 @@ class AdminImport {
   // split item text from the input first
   // then parse to the next method to build items
   function extractItems($strItems, $lotIndex) {
+    // for debug
+    // echo "extractItems: <br>";
+    // echo $strItems;
+    // echo "<hr>";
     $strItemList = array();
     $reachEnd = false;
     $curItemNum = 1;
@@ -287,10 +291,16 @@ class AdminImport {
         }
       }
 
-      if (count($outputList) != 5) {
+      // check the output of current item first
+      // 1. 5 lines;
+      // 2. 3rd line (i.e. quantity) is a number; nd
+      // 3. 5th line (i.e. unit in Chinese) has less than 6 characters
+      $itemCorrect = count($outputList) == 5 && is_numeric(trim($outputList[2])) && mb_strlen(trim($outputList[4])) <= 6;
+
+      if (!$itemCorrect) {
         // cannot copy line break from the PDF file, e.g. Bracelet/Bangle 手鐲/手鏈 59 Nos. (隻)
         // or weird format, e.g. multiple line breaks
-        $outputList = $this->specialFixItemText(implode(" ", $outputList));
+        $outputList = $this->specialFixItemText($this->implodeItemLines($outputList));
       }
       
       $this->buildItems(implode("\n", $outputList), $lotIndex, $itemIndex);
@@ -299,9 +309,35 @@ class AdminImport {
     return $total;
   }
 
+  function implodeItemLines($itemTextList) {
+    // special handle imploding Chinese and English characters
+    
+    $output = trim($itemTextList[0]);
+    for ($i = 1; $i < count($itemTextList); ++$i) {
+      $lastChar = mb_substr($output, -1);
+      $nextChar = mb_substr($itemTextList[$i], 0, 1);
+      $lastCharAsciiCode = mb_ord($lastChar);
+      $nextCharAsciiCode = mb_ord($nextChar);
+      $lastCharIsAscii = $lastChar == ")" || (65 <= $lastCharAsciiCode && $lastCharAsciiCode <= 90) || (97 <= $lastCharAsciiCode && $lastCharAsciiCode <= 122);
+      $nextCharIsAscii = $nextChar == "(" || (65 <= $nextCharAsciiCode && $nextCharAsciiCode <= 90) || (97 <= $nextCharAsciiCode && $nextCharAsciiCode <= 122);
+
+      if (($lastCharIsAscii && $nextCharIsAscii) || ($lastCharIsAscii && ctype_digit($nextChar)) || (ctype_digit($lastChar) && $nextCharAsciiCode)) {
+        // if the end and start of characters are ASCII characters, add space in between
+        $output .= " ";
+      }
+      $output .= trim($itemTextList[$i]);
+    }
+
+    return $output;
+  }
+
   // special handle single line item text or weird format, e.g. Bracelet/Bangle 手鐲/手鏈 59 Nos. (隻)
   // because sometimes cannot copy line break from PDF file
   function specialFixItemText($itemText) {
+    // for debug
+    // echo "special fix: <br>";
+    // Debug_var_dump($itemText);
+    // echo "<hr>";
     $tempList = array();
     $startPos = 0;
     $i = 1;
@@ -326,7 +362,7 @@ class AdminImport {
       }
       ++$i;
     }
-    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $tempList[] = trim(mb_substr($itemText, $startPos, $i - $startPos));
     $startPos = $i;
     if ($i >= mb_strlen($itemText) - 1) {
       return $tempList;
@@ -340,7 +376,7 @@ class AdminImport {
       }
       ++$i;
     }
-    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $tempList[] = trim(mb_substr($itemText, $startPos, $i - $startPos));
     $startPos = $i;
     if ($i >= mb_strlen($itemText) - 1) {
       return $tempList;
@@ -354,13 +390,13 @@ class AdminImport {
       }
       ++$i;
     }
-    $tempList[] = mb_substr($itemText, $startPos, $i - $startPos);
+    $tempList[] = trim(mb_substr($itemText, $startPos, $i - $startPos));
     $startPos = $i;
     if ($i >= mb_strlen($itemText) - 1) {
       return $tempList;
     }
 
-    $tempList[] = mb_substr($itemText, $i);
+    $tempList[] = trim(mb_substr($itemText, $i));
     return $tempList;
   }
 
@@ -368,8 +404,15 @@ class AdminImport {
   function buildItems($strItem, $lotIndex, $itemIndex) {
     $itemPropertyList = array_filter(explode("\n", $strItem));
     $id = "tbItem_$lotIndex"."_$itemIndex";
-    $bgImage = count($itemPropertyList) == 5 ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
-    $className = count($itemPropertyList) == 5 ? "item-textarea" : "item-textarea error";
+    $itemCorrect = count($itemPropertyList) == 5 && is_numeric(trim($itemPropertyList[2])) && mb_strlen(trim($itemPropertyList[4])) <= 6;
+    // item correct conditions:
+    // 1. 5 lines;
+    // 2. 3rd line (i.e. quantity) is a number; nd
+    // 3. 5th line (i.e. unit in Chinese) has less than 6 characters
+
+    $bgImage = $itemCorrect ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
+    $className = $itemCorrect ? "item-textarea" : "item-textarea error";
+
     echo "<div style='display:inline-block;padding: 0 5px 5px 5px'>";
       echo "<textarea id='$id' class='$className' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
       echo trim($strItem);

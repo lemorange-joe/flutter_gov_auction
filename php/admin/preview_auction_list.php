@@ -69,7 +69,7 @@ include_once ("../class/admin_import.php");
         function CheckTextarea(id) {
           var itemNum = parseInt(id.substr(-1)) + 1;
           var textList = document.getElementById(id).value.split("\n");
-          if (textList.length != 5 || !(/^\d+$/.test(textList[2].trim()))) {
+          if (textList.length != 5 || !(/^\d*\.?\d+$/.test(textList[2].trim()))) {
             document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/f88/666.png&text=++++++" + itemNum + "')";
             document.getElementById(id).classList.add("error");
           } else {

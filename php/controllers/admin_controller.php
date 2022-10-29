@@ -153,7 +153,7 @@ class AdminController {
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
                   WHERE A.auction_id = ? AND (T.code = ? OR ? = '')
-                  ORDER BY L.seq, I.seq";
+                  ORDER BY T.seq, L.lot_num, I.seq";
 
     $result = $conn->Execute($selectSql, array($auctionId, $itemType, $itemType))->GetRows();
     $rowNum = count($result);
