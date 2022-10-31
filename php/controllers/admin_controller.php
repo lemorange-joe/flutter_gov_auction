@@ -138,7 +138,7 @@ class AdminController {
 
     // ------ 3. get lot list ------
     $selectSql = "SELECT
-                    L.lot_id, T.code, L.lot_num, L.seq,
+                    L.lot_id, T.code, L.lot_num,
                     gld_file_ref, reference, department_en, department_tc, department_sc,
                     contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                     location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
@@ -175,7 +175,6 @@ class AdminController {
         $curLotOutput->lot_id = intval($result[$i]["lot_id"]);
         $curLotOutput->item_code = $result[$i]["code"];
         $curLotOutput->lot_num = $result[$i]["lot_num"];
-        $curLotOutput->seq = $result[$i]["seq"];
         $curLotOutput->gld_file_ref = $result[$i]["gld_file_ref"];
         $curLotOutput->reference = $result[$i]["reference"];
 
@@ -436,7 +435,7 @@ class AdminController {
         $keywordPhotoAuthor = $this->getKeywordPhotoAuthor($item0SearchKeywordEn, $item0SearchKeywordTc);
 
         $insertSql = "INSERT INTO AuctionLot (
-                        auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
+                        auction_id, type_id, lot_num, gld_file_ref, reference, department_en, department_tc, department_sc,
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
@@ -445,9 +444,8 @@ class AdminController {
                         photo_author_en, photo_author_tc, photo_author_sc, photo_author_url, 
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
-                      )
-                      SELECT
-                        ?, ?, ?, COUNT(*) + 1, ?, ?, ?, ?, ?, 
+                      ) VALUES (
+                        ?, ?, ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, 
@@ -456,8 +454,7 @@ class AdminController {
                         ?, ?, ?, ?, 
                         '', 0, ?,
                         ?, now()
-                      FROM AuctionLot
-                      WHERE auction_id = ?";
+                      )";
         
         $result = $conn->Execute($insertSql, array(
           $auctionId, $typeId, $lotNum, $gldFileRef, $ref, $deptEn, $deptTc, $deptSc,
@@ -467,8 +464,7 @@ class AdminController {
           $keywordPhotoAuthor->photoUrl,
           $keywordPhotoAuthor->authorEn, $keywordPhotoAuthor->authorTc, $keywordPhotoAuthor->authorSc, $keywordPhotoAuthor->authorUrl, 
           TransactionStatus::NotSold,
-          Status::Active,
-          $auctionId
+          Status::Active
         ));
         $lastId = $conn->insert_Id();
 
@@ -599,7 +595,7 @@ class AdminController {
       $lotId = intval($data["lot_id"]);
       if ($lotId == 0) {
         $insertSql = "INSERT INTO AuctionLot (
-                        auction_id, type_id, lot_num, seq, gld_file_ref, reference, department_en, department_tc, department_sc,
+                        auction_id, type_id, lot_num, gld_file_ref, reference, department_en, department_tc, department_sc,
                         contact_en, contact_tc, contact_sc, number_en, number_tc, number_sc,
                         location_en, location_tc, location_sc, remarks_en, remarks_tc, remarks_sc,
                         item_condition_en, item_condition_tc, item_condition_sc,
@@ -609,7 +605,7 @@ class AdminController {
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       ) 
-                      SELECT ?, I.type_id, ?, ?, ?, ?, ?, ?, ?,
+                      SELECT ?, I.type_id, ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, 
@@ -622,7 +618,7 @@ class AdminController {
                       WHERE code = ?;";
 
         $result = $conn->Execute($insertSql, array(
-          intval($data["auction_id"]), trim($data["lot_num"]), intval($data["seq"]), trim($data["gld_file_ref"]), trim($data["reference"]), trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
+          intval($data["auction_id"]), trim($data["lot_num"]), trim($data["gld_file_ref"]), trim($data["reference"]), trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
@@ -636,7 +632,7 @@ class AdminController {
       } else {
         $updateSql = "UPDATE AuctionLot SET
                         type_id = (SELECT type_id FROM ItemType WHERE code = ?),
-                        lot_num = ?, seq = ?, gld_file_ref = ?, reference = ?,
+                        lot_num = ?, gld_file_ref = ?, reference = ?,
                         department_en = ?, department_tc = ?, department_sc = ?,
                         contact_en = ?, contact_tc = ?, contact_sc = ?,
                         number_en = ?, number_tc = ?, number_sc = ?,
@@ -651,7 +647,7 @@ class AdminController {
 
         $result = $conn->Execute($updateSql, array(
           trim($data["item_code"]),
-          trim($data["lot_num"]), trim($data["seq"]), trim($data["gld_file_ref"]), trim($data["reference"]),
+          trim($data["lot_num"]), trim($data["gld_file_ref"]), trim($data["reference"]),
           trim($data["department_en"]), trim($data["department_tc"]), trim($data["department_sc"]),
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]),
           trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),

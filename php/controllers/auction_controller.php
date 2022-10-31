@@ -101,7 +101,7 @@ class AuctionController {
                     INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                     INNER JOIN ItemType T ON L.type_id = T.type_id
                     WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
-                    ORDER BY L.seq, I.seq";
+                    ORDER BY L.lot_num, I.seq";
 
       $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
       $rowNum = count($result);
@@ -183,7 +183,7 @@ class AuctionController {
                     ) as T
                     ON T.lot_id = L.lot_id
                     WHERE A.status = ?
-                    ORDER BY A.start_time DESC, L.seq
+                    ORDER BY A.start_time, T.seq, L.lot_num DESC
                     LIMIT ?, ?";
 
       $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId, $lotId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
@@ -258,7 +258,7 @@ class AuctionController {
                     INNER JOIN AuctionItem I0 ON I.description_en = I0.description_en OR I.description_tc = I0.description_tc OR I.description_sc = I0.description_sc
                     INNER JOIN AuctionLot L0 ON I0.lot_id = L0.lot_id
                     WHERE I0.item_id = ? AND I.item_id <> ? AND A.status = ? AND L.status = ?
-                    ORDER BY A.start_time DESC, L.seq, I.seq
+                    ORDER BY A.start_time DESC, L.lot_num, I.seq
                     LIMIT ?, ?";
 
       $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, $itemId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
@@ -374,7 +374,7 @@ class AuctionController {
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
                   WHERE A.auction_id = ? AND (L.status = ? OR (1 = ? OR L.status = ?))
-                  ORDER BY L.seq, I.seq";
+                  ORDER BY L.lot_num, I.seq";
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $isDeveloper, Status::Pending))->GetRows();
     $rowNum = count($result);

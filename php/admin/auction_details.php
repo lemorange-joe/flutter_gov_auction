@@ -323,7 +323,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var lotId = document.getElementById("tbLotId_"+lotIndex).value;
         var itemCode = document.getElementById("ddlItemType_"+lotIndex).value;
         var lotNum = document.getElementById("tbLotNum_"+lotIndex).value;
-        var seq = document.getElementById("tbSeq_"+lotIndex).value;
         var gldFileRef = document.getElementById("tbGldRef_"+lotIndex).value;
         var reference = document.getElementById("tbRef_"+lotIndex).value;
         var departmentEn = document.getElementById("tbDeptEn_"+lotIndex).value;
@@ -391,7 +390,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           lot_id: lotId,
           item_code: itemCode,
           lot_num: lotNum,
-          seq: seq,
           gld_file_ref: gldFileRef,
           reference: reference,
           department_en: departmentEn,
@@ -435,7 +433,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var lotId = 0;
         var itemType = "";
         var lotNum = "";
-        var seq = i+1;
         var gldFileRef = "";
         var reference = "";
 
@@ -481,7 +478,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           lotId = lotData["lot_id"];
           itemCode = lotData["item_code"];
           lotNum = lotData["lot_num"];
-          seq = lotData["seq"];
           gldFileRef = lotData["gld_file_ref"];
           reference = lotData["reference"];
 
@@ -536,7 +532,6 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
             divHtml += "</div>";
           divHtml += "</div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Seq</div><input id='tbSeq_" + i + "' style='width:100px' value='" + seq + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>GLD Ref</div><input id='tbGldRef_" + i + "' style='width:200px' value='" + gldFileRef.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Ref</div><input id='tbRef_" + i + "' style='width:200px' value='" + reference.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
