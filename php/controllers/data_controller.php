@@ -10,11 +10,14 @@ class DataController {
     $output->status = "fail";
 
     if (!isset($_POST["version"]) || empty($_POST["version"])) {
-      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-      return;
+      // TODO(joe): temp update for testing
+      $output->message = "version is empty";
+      $clientVersion = "1.0.0";
+      // echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      // return;
+    } else {
+      $clientVersion = trim($_POST["version"]);
     }
-
-    $clientVersion = trim($_POST["version"]);
 
     try {
       $data = new stdClass();

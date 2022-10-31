@@ -49,7 +49,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
 
   void loadRelatedLots(int page) {
     ApiHelper()
-        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()], useDemoData: true)
+        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()])
         .then((dynamic result) {
       if (!mounted) {
         return;

@@ -25,7 +25,7 @@ class AuctionProvider with ChangeNotifier {
     final ApiHelper apiHelper = ApiHelper();
 
     try {
-      final List<dynamic> result = await apiHelper.get(lang, 'auction', 'list', useDemoData: true) as List<dynamic>;
+      final List<dynamic> result = await apiHelper.get(lang, 'auction', 'list') as List<dynamic>;
       auctionList = <Auction>[];
       for (final dynamic item in result) {
         auctionList.add(Auction.fromJson(item as Map<String, dynamic>));
@@ -74,7 +74,7 @@ class AuctionProvider with ChangeNotifier {
     final ApiHelper apiHelper = ApiHelper();
     try {
       final Map<String, dynamic> json =
-          await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()], useDemoData: true) as Map<String, dynamic>;
+          await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()]) as Map<String, dynamic>;
 
       final List<dynamic> jsonItemPdfList = json['ipl'] as List<dynamic>;
       final List<dynamic> jsonLotList = json['ll'] as List<dynamic>;
