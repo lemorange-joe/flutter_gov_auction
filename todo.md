@@ -13,6 +13,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 ## TODO:
 - !!! update DB remove AuctionLot.seq (2022-10-31)
+- !!! update DB AppInfo.min_app_version varchar(10)
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
 - appinfo api, check min version first
 - add View All Documents page

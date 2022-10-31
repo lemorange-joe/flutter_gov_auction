@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-// import 'package:logger/logger.dart';
+import 'package:flutter_config/flutter_config.dart';
 import '../class/app_info.dart';
 import '../helpers/api_helper.dart';
 import '../helpers/hive_helper.dart';
@@ -18,8 +18,12 @@ class AppInfoProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final Map<String, dynamic> result = await apiHelper.get(lang, 'data', 'appinfo', useDemoData: true) as Map<String, dynamic>;
-      appInfo = AppInfo.fromJson(result);
+      final Map<String, dynamic> result = await apiHelper.post(lang, 'data', 'appinfo', parameters: <String, dynamic>{'version': FlutterConfig.get('VERSION')}, useDemoData: true) as Map<String, dynamic>;
+      if (result['fu'] != null && result['fu'] as String == 'Y') {
+        appInfo = AppInfo.empty();
+      } else {
+        appInfo = AppInfo.fromJson(result);
+      }
       loaded = true;
       // Logger().d(appInfo);
     } catch (e) {
@@ -30,6 +34,7 @@ class AppInfoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool get forceUpgrade => appInfo.forceUpgrade;
   String get dataVersion => appInfo.dataVersion;
   String get news => appInfo.news;
   DateTime get lastUpdate => appInfo.lastUpdate;

@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 // import 'package:logger/logger.dart';
 
 class AppInfo {
-  AppInfo(this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList);
+  AppInfo(this.forceUpgrade, this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList);
 
   factory AppInfo.fromJson(Map<String, dynamic> json) {
     final List<NoticeLink> noticeLinkList = <NoticeLink>[];
@@ -22,6 +22,7 @@ class AppInfo {
     });
 
     return AppInfo(
+      false,
       json['dv'] as String,
       json['n'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
@@ -32,9 +33,10 @@ class AppInfo {
   }
 
   factory AppInfo.empty() {
-    return AppInfo('', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{});
+    return AppInfo(true, '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{});
   }
 
+  final bool forceUpgrade;
   final String dataVersion;
   final String news;
   final DateTime lastUpdate;

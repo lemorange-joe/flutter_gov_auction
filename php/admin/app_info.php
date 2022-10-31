@@ -24,6 +24,10 @@ if (!isset($_SESSION["admin_user"])) {
   </div>
   <div class="body">
     <div>
+      <span>Min App Version</span>
+      <input id="tbMinAppVersion" style="width: 100px" placeholder="1.0.0" data-reset-value=""/>
+    </div>
+    <div>
       <span>Data Version</span>
       <input id="tbDataVersion" style="width: 100px" placeholder="2201001" data-reset-value=""/>
     </div>
@@ -58,6 +62,8 @@ if (!isset($_SESSION["admin_user"])) {
           if (this.readyState == 4 && this.status == 200) {
             const jsonData = JSON.parse(this.responseText);
 
+            document.getElementById("tbMinAppVersion").value = jsonData["min_app_version"];
+            document.getElementById("tbMinAppVersion").setAttribute("data-reset-value", jsonData["min_app_version"]);
             document.getElementById("tbDataVersion").value = jsonData["data_version"];
             document.getElementById("tbDataVersion").setAttribute("data-reset-value", jsonData["data_version"]);
             document.getElementById("txtNewsEn").value = jsonData["news_en"];
@@ -81,6 +87,7 @@ if (!isset($_SESSION["admin_user"])) {
 
     function SaveForm() {
       var postData = {
+        min_app_version: document.getElementById("tbMinAppVersion").value,
         data_version: document.getElementById("tbDataVersion").value,
         news_en: document.getElementById("txtNewsEn").value,
         news_tc: document.getElementById("txtNewsTc").value,
@@ -110,7 +117,7 @@ if (!isset($_SESSION["admin_user"])) {
     }
 
     function ResetForm() {
-      var inputList = ["tbDataVersion", "txtNewsEn", "txtNewsTc", "txtNewsSc"];
+      var inputList = ["tbMinAppVersion", "tbDataVersion", "txtNewsEn", "txtNewsTc", "txtNewsSc"];
 
       inputList.forEach(function (id, i) {
         var input = document.getElementById(id);

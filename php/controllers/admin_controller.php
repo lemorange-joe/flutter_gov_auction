@@ -1368,12 +1368,13 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $selectSql = "SELECT data_version, news_en, news_tc, news_sc, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
+    $selectSql = "SELECT min_app_version, data_version, news_en, news_tc, news_sc, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
 
     $result = $conn->Execute($selectSql)->GetRows();
     $rowNum = count($result);
 
     if (count($result) > 0) {
+      $output->min_app_version = $result[0]["min_app_version"];
       $output->data_version = $result[0]["data_version"];
       $output->news_en = $result[0]["news_en"];
       $output->news_tc = $result[0]["news_tc"];
@@ -1393,21 +1394,26 @@ class AdminController {
     try {
       $data = json_decode(file_get_contents('php://input'), true);
 
+      if (!isset($data["min_app_version"]) || empty($data["min_app_version"])) {
+        throw new Exception("Min App Version missing!");  
+      }
+
       if (!isset($data["data_version"]) || empty($data["data_version"])) {
         throw new Exception("Data Version missing!");  
       }
 
+      $minAppVersion = trim($data["min_app_version"]);
       $dataVersion = trim($data["data_version"]);
       $newsEn = $data["news_en"];
       $newsTc = $data["news_tc"];
       $newsSc = $data["news_sc"];
 
       $updateSql = "UPDATE AppInfo SET 
-                      data_version = ?, news_en = ?, news_tc = ?, news_sc = ?, last_update = now()
+                      min_app_version = ?,  data_version = ?, news_en = ?, news_tc = ?, news_sc = ?, last_update = now()
                     WHERE id = 1";
 
       $result = $conn->Execute($updateSql, array(
-        $dataVersion, $newsEn, $newsTc, $newsSc
+        $minAppVersion, $dataVersion, $newsEn, $newsTc, $newsSc
       ));
   
         $output->status = "success";

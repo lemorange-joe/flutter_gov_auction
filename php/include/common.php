@@ -263,3 +263,37 @@ function CommonGetLotDescription($description, $quantity, $unit, $lang) {
   return CommonGetSearchKeyword(trim($description), $lang) . trim($quantity) . trim($unit);
 }
 
+function CommonCompareVersion($v1, $v2) {
+	$v1List = explode(".", $v1);
+  $v2List = explode(".", $v2);
+  $v1Length = count($v1List);
+  $v2Length = count($v2List);
+
+  $i = 0;
+  while ($i < $v1Length && $i < $v2Length) {
+    if (!ctype_digit($v1List[$i]) || !ctype_digit($v2List[$i])) {
+      // cannot compare
+      return 0;
+    }
+
+    if (intval($v1List[$i]) < intval($v2List[$i])) {
+      return -1;
+    }
+
+    if (intval($v1List[$i]) > intval($v2List[$i])) {
+      return 1;
+    }
+
+    ++$i;
+  }
+
+  if ($i == $v1Length && $i == $v2Length) {
+    return 0;
+  }
+
+  if ($i == $v1Length) {
+    return -1;
+  }
+
+  return 1;
+}
