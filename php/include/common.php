@@ -230,3 +230,36 @@ if (!function_exists('mysqli_result')) {
 		return '';
 	}
 }
+
+function CommonGetSearchKeyword($description, $lang) {
+  $bracketPos = strpos($description, "(");
+  $bracket2Pos = strpos($description, "（");
+  $commaPos = strpos($description, ",");
+  $pos = ($lang == "en" ? 255 : 60);
+
+  if ($bracketPos !== false && $bracket2Pos !== false && $commaPos !== false) {
+    $pos = min(min($bracketPos, $bracket2Pos), $commaPos);
+  } else if ($bracketPos !== false && $bracket2Pos !== false) {
+    $pos = min($bracketPos, $bracket2Pos);
+  } else if ($bracketPos !== false && $commaPos !== false) {
+    $pos = min($bracketPos, $commaPos);
+  } else if ($bracket2Pos !== false && $commaPos !== false) {
+    $pos = min($bracket2Pos, $commaPos);
+  } else if ($bracketPos !== false) {
+    $pos = $bracketPos;
+  } else if ($bracket2Pos !== false) {
+    $pos = $bracket2Pos;
+  } else if ($commaPos !== false) {
+    $pos = $commaPos;
+  }
+  return trim(mb_substr($description, 0, $pos));
+}
+
+function CommonGetLotDescription($description, $quantity, $unit, $lang) {
+  if ($lang == "en") {
+    return CommonGetSearchKeyword(trim($description), $lang) . " " . trim($quantity) . " " . trim($unit);
+  }
+
+  return CommonGetSearchKeyword(trim($description), $lang) . trim($quantity) . trim($unit);
+}
+

@@ -104,6 +104,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
       <div class="admin-block bgPurple">
         <h3>Supportive Administration</h3>
         <a href="manage_keyword_image.php">Manage Keyword Image</a>
+        <br /><br />
+        <a href="batch_update_lot_description.php">Batch Update Lot Descriptions</a>
       </div>
     </div>
     <div id="divChangePassword" style="display: none;position: absolute;right: 50px; top: 50px; width: 240px; height: 150px; padding: 10px 30px 20px 30px; background-color: #fff; border: solid 2px #444">

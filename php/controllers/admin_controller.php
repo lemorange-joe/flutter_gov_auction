@@ -405,7 +405,7 @@ class AdminController {
 
       $conn->Execute("SET session group_concat_max_len=15000");
 
-      for ($i = 0; $i < Count($lots); ++$i){
+      for ($i = 0; $i < count($lots); ++$i){
         $curLot = $lots[$i];
         $lotNum = trim($curLot["lot_num"]);
         $gldFileRef = trim($curLot["gld_file_ref"]);
@@ -430,8 +430,19 @@ class AdminController {
         $itemConditionSc = str_chinese_simp(trim($curLot["item_condition_tc"]));
         $items = $curLot["items"];
 
-        $item0SearchKeywordEn = count($items) > 0 ? $this->getSearchKeyword($items[0]["description_en"], "en") : "xxx";
-        $item0SearchKeywordTc = count($items) > 0 ? $this->getSearchKeyword($items[0]["description_tc"], "tc") : "xxx";
+        $descriptionEn = "";
+        $descriptionTc = "";
+        for ($j = 0; $j < count($items); ++$j) {
+          $curItem = $items[$j];
+          $descriptionEn .= CommonGetLotDescription($curItem["description_en"], $curItem["quantity"], $curItem["unit_en"], "en") . ", ";
+          $descriptionTc .= CommonGetLotDescription($curItem["description_tc"], $curItem["quantity"], $curItem["unit_tc"], "tc") . ", ";
+        }
+        $descriptionEn = rtrim($descriptionEn, ", ");
+        $descriptionTc = rtrim($descriptionTc, ", ");
+        $descriptionSc = str_chinese_simp($descriptionTc);
+
+        $item0SearchKeywordEn = count($items) > 0 ? CommonGetSearchKeyword($items[0]["description_en"], "en") : "xxx";
+        $item0SearchKeywordTc = count($items) > 0 ? CommonGetSearchKeyword($items[0]["description_tc"], "tc") : "xxx";
         $keywordPhotoAuthor = $this->getKeywordPhotoAuthor($item0SearchKeywordEn, $item0SearchKeywordTc);
 
         $insertSql = "INSERT INTO AuctionLot (
@@ -449,7 +460,7 @@ class AdminController {
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, ?, ?, ?, 
                         ?, ?, ?, 
-                        '', '', '', 
+                        ?, ?, ?,
                         0, 'fontawesome.box', ?, 0,
                         ?, ?, ?, ?, 
                         '', 0, ?,
@@ -461,6 +472,7 @@ class AdminController {
           $contactEn, $contactTc, $contactSc, $numberEn, $numberTc, $numberSc,
           $locationEn, $locationTc, $locationSc, $remarksEn, $remarksTc, $remarksSc,
           $itemConditionEn, $itemConditionTc, $itemConditionSc,
+          $descriptionEn, $descriptionTc, $descriptionSc, 
           $keywordPhotoAuthor->photoUrl,
           $keywordPhotoAuthor->authorEn, $keywordPhotoAuthor->authorTc, $keywordPhotoAuthor->authorSc, $keywordPhotoAuthor->authorUrl, 
           TransactionStatus::NotSold,
@@ -471,20 +483,20 @@ class AdminController {
         $this->importLotItems($lastId, $items);
 
         // update lot description
-        $updateSql = "UPDATE AuctionLot AS L
-                      INNER JOIN (
-                        SELECT
-                          lot_id,
-                          group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
-                          group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
-                          group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
-                        FROM AuctionItem I
-                        WHERE lot_id = ?
-                        GROUP BY lot_id
-                      ) as T
-                      ON L.lot_id = T.lot_id
-                      SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
-        $result = $conn->Execute($updateSql, array($lastId));
+        // $updateSql = "UPDATE AuctionLot AS L
+        //               INNER JOIN (
+        //                 SELECT
+        //                   lot_id,
+        //                   group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
+        //                   group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
+        //                   group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
+        //                 FROM AuctionItem I
+        //                 WHERE lot_id = ?
+        //                 GROUP BY lot_id
+        //               ) as T
+        //               ON L.lot_id = T.lot_id
+        //               SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
+        // $result = $conn->Execute($updateSql, array($lastId));
       }
 
       $output->data = new StdClass();
@@ -593,6 +605,22 @@ class AdminController {
       }
       
       $lotId = intval($data["lot_id"]);
+      $items = $data["item_list"];
+
+      // build the lot description from items first
+      $descriptionEn = "";
+      $descriptionTc = "";
+      $descriptionSc = "";
+      for ($i = 0; $i < count($items); ++$i) {
+        $curItem = $items[$i];
+        $descriptionEn .= CommonGetLotDescription($curItem["description_en"], $curItem["quantity"], $curItem["unit_en"], "en") . ", ";
+        $descriptionTc .= CommonGetLotDescription($curItem["description_tc"], $curItem["quantity"], $curItem["unit_tc"], "tc") . ", ";
+        $descriptionSc .= CommonGetLotDescription($curItem["description_sc"], $curItem["quantity"], $curItem["unit_sc"], "sc") . ", ";
+      }
+      $descriptionEn = rtrim($descriptionEn, ", ");
+      $descriptionTc = rtrim($descriptionTc, ", ");
+      $descriptionSc = rtrim($descriptionSc, ", ");
+
       if ($lotId == 0) {
         $insertSql = "INSERT INTO AuctionLot (
                         auction_id, type_id, lot_num, gld_file_ref, reference, department_en, department_tc, department_sc,
@@ -609,7 +637,7 @@ class AdminController {
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, ?, ?, ?,
                       ?, ?, ?, 
-                      '', '', '', 
+                      ?, ?, ?, 
                       ?, ?, ?, ?, 
                       ?, ?, ?, ?, 
                       ?, ?, ?,
@@ -622,6 +650,7 @@ class AdminController {
           trim($data["contact_en"]), trim($data["contact_tc"]), trim($data["contact_sc"]), trim($data["number_en"]), trim($data["number_tc"]), trim($data["number_sc"]),
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]), trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
+          $descriptionEn, $descriptionTc, $descriptionSc, 
           intval($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), intval($data["photo_real"]), 
           trim($data["photo_author_en"]), trim($data["photo_author_tc"]), trim($data["photo_author_sc"]), trim($data["photo_author_url"]), 
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
@@ -639,6 +668,7 @@ class AdminController {
                         location_en = ?, location_tc = ?, location_sc = ?,
                         remarks_en = ?, remarks_tc = ?, remarks_sc = ?,
                         item_condition_en = ?, item_condition_tc = ?, item_condition_sc = ?,
+                        description_en = ?, description_tc = ?, description_sc = ?, 
                         featured = ?, icon = ?, photo_url = ?, photo_real = ?,
                         photo_author_en = ?, photo_author_tc = ?, photo_author_sc = ?, photo_author_url = ?, 
                         transaction_currency = ?, transaction_price = ?, transaction_status = ?,
@@ -654,6 +684,7 @@ class AdminController {
           trim($data["location_en"]), trim($data["location_tc"]), trim($data["location_sc"]),
           trim($data["remarks_en"]), trim($data["remarks_tc"]), trim($data["remarks_sc"]),
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
+          $descriptionEn, $descriptionTc, $descriptionSc,
           $data["featured"], trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
           $data["photo_author_en"], $data["photo_author_tc"], $data["photo_author_sc"], $data["photo_author_url"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
@@ -667,26 +698,9 @@ class AdminController {
       }
       
       // delete the existing items first, then add back
-      $items = $data["item_list"];
       $deleteSql = "DELETE FROM AuctionItem WHERE lot_id = ?";
       $result = $conn->Execute($deleteSql, array($lotId));
       $this->addLotItems($lotId, $items);
-
-      // update lot description
-      $updateSql = "UPDATE AuctionLot AS L
-                    INNER JOIN (
-                      SELECT
-                        lot_id,
-                        group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
-                        group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
-                        group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
-                      FROM AuctionItem I
-                      WHERE lot_id = ?
-                      GROUP BY lot_id
-                    ) as T
-                    ON L.lot_id = T.lot_id
-                    SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
-      $result = $conn->Execute($updateSql, array($lotId));
 
       $output->status = "success";
     } catch (Exception $e) {
@@ -711,9 +725,9 @@ class AdminController {
       $unitEn = trim($curItem["unit_en"]);
       $unitTc = trim($curItem["unit_tc"]);
       $unitSc = trim($curItem["unit_sc"]);
-      $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
-      $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
-      $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
+      $searchKeywordEn = CommonGetSearchKeyword($descriptionEn, "en");
+      $searchKeywordTc = CommonGetSearchKeyword($descriptionTc, "tc");
+      $searchKeywordSc = CommonGetSearchKeyword($descriptionSc, "sc");
       $insertSql = "INSERT INTO AuctionItem (
                       lot_id, seq, icon, description_en, description_tc, description_sc, 
                       quantity, unit_en, unit_tc, unit_sc,
@@ -745,9 +759,9 @@ class AdminController {
       $unitEn = trim($curItem["unit_en"]);
       $unitTc = trim($curItem["unit_tc"]);
       $unitSc = str_chinese_simp(trim($curItem["unit_tc"]));
-      $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
-      $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
-      $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
+      $searchKeywordEn = CommonGetSearchKeyword($descriptionEn, "en");
+      $searchKeywordTc = CommonGetSearchKeyword($descriptionTc, "tc");
+      $searchKeywordSc = CommonGetSearchKeyword($descriptionSc, "sc");
 
       $insertSql = "INSERT INTO AuctionItem (
                       lot_id, seq, icon, description_en, description_tc, description_sc, 
@@ -1119,9 +1133,9 @@ class AdminController {
   //     $descriptionEn = $result[$i]['description_en'];
   //     $descriptionTc = $result[$i]['description_tc'];
   //     $descriptionSc = $result[$i]['description_sc'];
-  //     $searchKeywordEn = $this->getSearchKeyword($descriptionEn, "en");
-  //     $searchKeywordTc = $this->getSearchKeyword($descriptionTc, "tc");
-  //     $searchKeywordSc = $this->getSearchKeyword($descriptionSc, "sc");
+  //     $searchKeywordEn = CommonGetSearchKeyword($descriptionEn, "en");
+  //     $searchKeywordTc = CommonGetSearchKeyword($descriptionTc, "tc");
+  //     $searchKeywordSc = CommonGetSearchKeyword($descriptionSc, "sc");
 
   //     $updateSql = "UPDATE AuctionItem 
   //                   SET search_keyword_en = ?, search_keyword_tc = ?, search_keyword_sc = ?
@@ -1135,6 +1149,7 @@ class AdminController {
   //   echo "DONE!";
   // }
 
+  // to be called directly from URL
   function batchUpdateAuctionLotImage() {
     global $conn;
     $selectSql = "SELECT L.lot_id, I.description_en, I.description_tc
@@ -1149,8 +1164,8 @@ class AdminController {
 
     for($i = 0; $i < $total; ++$i) {
       $lotId = $auctionLotResult[$i]['lot_id'];
-      $keywordEn = $this->getSearchKeyword($auctionLotResult[$i]['description_en'], "en");
-      $keywordTc = $this->getSearchKeyword($auctionLotResult[$i]['description_tc'], "tc");
+      $keywordEn = CommonGetSearchKeyword($auctionLotResult[$i]['description_en'], "en");
+      $keywordTc = CommonGetSearchKeyword($auctionLotResult[$i]['description_tc'], "tc");
       
       $selectSql = "SELECT image_url FROM KeywordImage WHERE keyword_en = ? OR keyword_tc = ?";
       $result = $conn->Execute($selectSql, array($keywordEn, $keywordTc))->GetRows();
@@ -1191,31 +1206,6 @@ class AdminController {
 
     $randIndex = rand(0, $rowNum - 1);
     return new KeywordPhotoAuthor($result[$randIndex]["image_url"], $result[$randIndex]["author_en"], $result[$randIndex]["author_tc"], $result[$randIndex]["author_sc"], $result[$randIndex]["author_url"]);
-  }
-
-  private function getSearchKeyword($description, $lang) {
-    $bracketPos = strpos($description, "(");
-    $bracket2Pos = strpos($description, "（");
-    $commaPos = strpos($description, ",");
-    $pos = ($lang == "en" ? 255 : 50);
-
-    if ($bracketPos !== false && $bracket2Pos !== false && $commaPos !== false) {
-      $pos = min(min($bracketPos, $bracket2Pos), $commaPos);
-    } else if ($bracketPos !== false && $bracket2Pos !== false) {
-      $pos = min($bracketPos, $bracket2Pos);
-    } else if ($bracketPos !== false && $commaPos !== false) {
-      $pos = min($bracketPos, $commaPos);
-    } else if ($bracket2Pos !== false && $commaPos !== false) {
-      $pos = min($bracket2Pos, $commaPos);
-    } else if ($bracketPos !== false) {
-      $pos = $bracketPos;
-    } else if ($bracket2Pos !== false) {
-      $pos = $bracket2Pos;
-    } else if ($commaPos !== false) {
-      $pos = $commaPos;
-    }
-
-    return trim(substr($description, 0, $pos));
   }
 
   function listKeywordImage($param) {

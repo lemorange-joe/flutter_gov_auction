@@ -55,5 +55,7 @@ class AppData {
     $data = new StdClass();
 		$data->auctionItemTypeList = $this->auctionItemTypeList;
 		file_put_contents($GLOBALS["APP_DATA_FILE"], serialize($data));
+
+    $conn->close();
 	}
 }
