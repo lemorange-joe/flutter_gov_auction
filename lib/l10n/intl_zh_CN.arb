@@ -23,6 +23,7 @@
     "fieldContactNumber": "电话",
     "fieldDeapartment": "部门",
     "fieldGldFileRef": "GLD 编号",
+    "fieldInspectionArrangement": "特别看货安排",
     "fieldItemList": "物品清单",
     "fieldLotNum": "批号",
     "fieldReference": "编号",

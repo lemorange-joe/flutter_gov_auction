@@ -49,8 +49,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
 
   void loadRelatedLots(int page) {
     ApiHelper()
-        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()])
-        .then((dynamic result) {
+        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()]).then((dynamic result) {
       if (!mounted) {
         return;
       }
@@ -267,6 +266,22 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactNumber)),
                         Expanded(child: TelGroup(widget.auctionLot.contactNumber)),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldInspectionArrangement)),
+                        Expanded(
+                          child: widget.auctionLot.inspectionDateList.isEmpty
+                              ? const Text('-')
+                              : Column(
+                                  children: widget.auctionLot.inspectionDateList
+                                      .map((InspectionDate inspect) => Text(
+                                          '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}: ${inspect.startTime} - ${inspect.endTime}'))
+                                      .toList(),
+                                ),
+                        ),
                       ],
                     ),
                     _buildItemList(context),

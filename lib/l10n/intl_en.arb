@@ -23,6 +23,7 @@
     "fieldContactNumber": "Tel",
     "fieldDeapartment": "Department",
     "fieldGldFileRef": "GLD File Ref",
+    "fieldInspectionArrangement": "Special Inspection Arrangement",
     "fieldItemList": "Item List",
     "fieldLotNum": "Lot Num",
     "fieldReference": "Reference",

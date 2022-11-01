@@ -72,6 +72,7 @@ class AuctionLot {
       this.photoUrl,
       this.photoReal,
       this.itemList,
+      this.inspectionDateList,
       this.transactionCurrency,
       this.transactionPrice,
       this.transactionStatus,
@@ -80,9 +81,15 @@ class AuctionLot {
   factory AuctionLot.fromJson(Map<String, dynamic> json, String lang) {
     final List<dynamic> jsonItemList = json['il'] as List<dynamic>;
     final List<AuctionItem> itemList = <AuctionItem>[];
+    final List<dynamic> jsonInspectionDateList = json['idl'] as List<dynamic>;
+    final List<InspectionDate> inspectionDateList = <InspectionDate>[];
 
     for (final dynamic jsonItem in jsonItemList) {
       itemList.add(AuctionItem.fromjson(jsonItem as Map<String, dynamic>));
+    }
+
+    for (final dynamic jsonItem in jsonInspectionDateList) {
+      inspectionDateList.add(InspectionDate.fromjson(jsonItem as Map<String, dynamic>));
     }
 
     return AuctionLot(
@@ -107,6 +114,7 @@ class AuctionLot {
       json['pu'] as String,
       json['pr'] as int == 1,
       itemList,
+      inspectionDateList,
       json['tc'] as String,
       jsonToDouble(json['tp']),
       json['ts'] as String,
@@ -115,7 +123,7 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], <InspectionDate>[], '', 0.0, '', DateTime(1900));
   }
 
   final int id;
@@ -138,6 +146,7 @@ class AuctionLot {
   final String photoUrl;
   final bool photoReal;
   final List<AuctionItem> itemList;
+  final List<InspectionDate> inspectionDateList;
   final String transactionCurrency;
   final double transactionPrice;
   final String transactionStatus;
@@ -232,4 +241,20 @@ class RelatedAuctionLot {
   final String transactionCurrency;
   final double transactionPrice;
   final String transactionStatus;
+}
+
+class InspectionDate {
+  InspectionDate(this.dayOfWeek, this.startTime, this.endTime);
+
+  factory InspectionDate.fromjson(Map<String, dynamic> json) {
+    return InspectionDate(
+      json['dow'] as int,
+      json['st'] as String,
+      json['et'] as String,
+    );
+  }
+
+  final int dayOfWeek;
+  final String startTime;
+  final String endTime;
 }

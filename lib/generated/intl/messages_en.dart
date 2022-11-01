@@ -55,6 +55,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldContactNumber": MessageLookupByLibrary.simpleMessage("Tel"),
         "fieldDeapartment": MessageLookupByLibrary.simpleMessage("Department"),
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD File Ref"),
+        "fieldInspectionArrangement": MessageLookupByLibrary.simpleMessage(
+            "Special Inspection Arrangement"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("Item List"),
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("Lot Num"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("Reference"),

@@ -38,6 +38,7 @@ $auctionJsonFieldMapping = array(
   "descriptionTc" => "dtc",
   "descriptionSc" => "dsc",
   "itemList" => "il",
+  "inspectionDateList" => "idl",
   "tranCurrency" => "tc",
   "tranPrice" => "tp",
   "tranStatus" => "ts",
@@ -49,6 +50,11 @@ $auctionJsonFieldMapping = array(
   "description" => "d",
   "quantity" => "q",
   "unit" => "u",
+  // ------
+  // Inspection Date
+  "dayOfWeek" => "dow",
+  //"startTime" => "st",
+  "endTime" => "et",
   // ------
   // Auction Search
   "auctionId" => "aid",
@@ -128,6 +134,7 @@ class AuctionLot implements JsonSerializable {
   private $photoAuthor;
   private $photoAuthorUrl;
   private $itemList;
+  private $inspectionDateList;
   private $tranCurrency;
   private $tranPrice;
   private $tranStatus;
@@ -160,6 +167,7 @@ class AuctionLot implements JsonSerializable {
     $this->descriptionSc = $descriptionSc;
 
     $this->itemList = array();
+    $this->inspectionDateList = array();
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;
     $this->tranStatus = $tranStatus;
@@ -325,6 +333,37 @@ class AuctionItemSearch implements JsonSerializable {
     $this->quantity = $quantity;
     $this->unit = $unit;
     $this->v = $v;
+  }
+
+  public function __get($property) {
+    if (property_exists($this, $property)) {
+      return $this->$property;
+    }
+  }
+
+  public function __set($property, $value) {
+    if (property_exists($this, $property)) {
+        $this->$property = $value;
+    }
+
+    return $this;
+  }
+
+  public function jsonSerialize() {
+    $vars = get_object_vars($this);
+    return $vars;
+  }
+}
+
+class InspectionDate implements JsonSerializable {
+  private $dayOfWeek;
+  private $startTime;
+  private $endTime;
+
+  public function __construct($day, $start_time, $end_time) {
+    $this->dayOfWeek = $day;
+    $this->startTime = $start_time;
+    $this->endTime = $end_time;
   }
 
   public function __get($property) {

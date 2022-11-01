@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldContactNumber": MessageLookupByLibrary.simpleMessage("電話"),
         "fieldDeapartment": MessageLookupByLibrary.simpleMessage("部門"),
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD 編號"),
+        "fieldInspectionArrangement":
+            MessageLookupByLibrary.simpleMessage("特別看貨安排"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("物品清單"),
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("批號"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("編號"),

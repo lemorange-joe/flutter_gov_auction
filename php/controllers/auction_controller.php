@@ -359,8 +359,35 @@ class AuctionController {
     return $output;
   }
 
+  private function getInspectionDateList($lotId, $inspectionDateList) {
+    $output = array();
+    $rowNum = count($inspectionDateList);
+
+    for ($i = 0; $i < $rowNum; ++$i) {
+      $curInspectionDate = $inspectionDateList[$i];
+
+      if ($curInspectionDate["lot_id"] == $lotId) {
+        $output[] = new InspectionDate($curInspectionDate["inspection_day"], $curInspectionDate["inspection_start_time"], $curInspectionDate["inspection_end_time"]);
+      }
+    }
+
+    return $output;
+  }
+
   private function getAuctionLotList($auctionId) {
     global $conn, $lang, $isDeveloper;
+
+    // select all inspection dates of the auction id first
+    // then assign back to the lot programatically
+    $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+                  FROM InspectionDate I
+                  INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
+                  WHERE L.auction_id = ?
+                  ORDER BY L.lot_id, CASE
+                    WHEN I.inspection_day = 7 THEN 0
+                    ELSE I.inspection_day
+                  END";
+    $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
 
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, 
@@ -388,6 +415,7 @@ class AuctionController {
         if ($i > 0) {
           // add existing to the current lot first
           $curLot->itemList = $curItemList;
+          $curLot->inspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
           $output[] = $curLot;
         }
 
@@ -443,6 +471,7 @@ class AuctionController {
     // add the last item
     if ($curLotNum != "") {
       $curLot->itemList = $curItemList;
+      $curLot->inspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
       $output[] = $curLot;
     }
 

@@ -13,7 +13,9 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 ## TODO:
 - add inspection date
+  - admin auction details handle update inspection date
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
+- add hot search chip
 - appinfo api, check min version first
 - add View All Documents page
 - add random data in API to prevent data theft

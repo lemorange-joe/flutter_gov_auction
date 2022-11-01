@@ -290,6 +290,16 @@ class S {
     );
   }
 
+  /// `Special Inspection Arrangement`
+  String get fieldInspectionArrangement {
+    return Intl.message(
+      'Special Inspection Arrangement',
+      name: 'fieldInspectionArrangement',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Item List`
   String get fieldItemList {
     return Intl.message(
