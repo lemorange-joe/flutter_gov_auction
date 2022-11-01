@@ -104,8 +104,7 @@ class AuctionLot {
       json['cl'] as String,
       json['r'] as String,
       json['ic'] as String,
-      json['d'] as String, // TODO(joe): temp solution for using demo data
-      // lang == 'tc' ? json['dtc'] as String : (lang == 'sc' ? json['dsc'] as String : json['den'] as String),
+      lang == 'tc' ? json['dtc'] as String : (lang == 'sc' ? json['dsc'] as String : json['den'] as String),
       json['den'] == null ? json['d'] as String : json['den'] as String,  // temp solution for using demo data
       json['dtc'] == null ? json['d'] as String : json['dtc'] as String,  // remove null check after api is ready on server
       json['dsc'] == null ? json['d'] as String : json['dsc'] as String,
