@@ -481,23 +481,9 @@ class AdminController {
         $lastId = $conn->insert_Id();
 
         $this->importLotItems($lastId, $items);
-
-        // update lot description
-        // $updateSql = "UPDATE AuctionLot AS L
-        //               INNER JOIN (
-        //                 SELECT
-        //                   lot_id,
-        //                   group_concat(I.description_en ORDER BY I.seq SEPARATOR ', ') as 'description_en',
-        //                   group_concat(I.description_tc ORDER BY I.seq SEPARATOR ', ') as 'description_tc',
-        //                   group_concat(I.description_sc ORDER BY I.seq SEPARATOR ', ') as 'description_sc'
-        //                 FROM AuctionItem I
-        //                 WHERE lot_id = ?
-        //                 GROUP BY lot_id
-        //               ) as T
-        //               ON L.lot_id = T.lot_id
-        //               SET L.description_en = T.description_en, L.description_tc = T.description_tc, L.description_sc = T.description_sc";
-        // $result = $conn->Execute($updateSql, array($lastId));
       }
+
+      $this->importInspectionDate($auctionId, $data["inspection_list"]);
 
       $output->data = new StdClass();
       $output->data->id = $auctionId;
@@ -836,6 +822,37 @@ class AdminController {
     }
 
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function importInspectionDate($auctionId, $inspectionList) {
+    global $conn;
+
+    for ($i = 0; $i < count($inspectionList); ++$i) {
+      $curInspection = $inspectionList[$i];
+      
+      $lotNums = $curInspection["lot_nums"];
+      $day = intval($curInspection["day"]);
+      $startTime = trim($curInspection["start_time"]);
+      $endTime = trim($curInspection["end_time"]);
+
+      $lotNumList = explode(",", $lotNums);
+      foreach($lotNumList as &$lotNum) {
+        $lotNum = "'" . trim($lotNum) ."'";
+      }
+
+      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time)
+                    SELECT L.lot_id, ?, ?, ?
+                    FROM AuctionLot L
+                    WHERE L.auction_id = ? AND L.lot_num IN (" . implode(",", $lotNumList) . ") AND NOT EXISTS (
+                      SELECT 1
+                      FROM InspectionDate I
+                      WHERE I.lot_id = L.lot_id AND I.inspection_day = ?
+                    )";
+
+      $result = $conn->Execute($insertSql, array(
+        $day, substr($startTime, 0, 5), substr($endTime, 0, 5), $auctionId, $day
+      ));
+    }
   }
 
   function listPush($param) {

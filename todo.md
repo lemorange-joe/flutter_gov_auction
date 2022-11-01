@@ -18,6 +18,27 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 - add View All Documents page
 - add random data in API to prevent data theft
 
+CREATE TABLE `InspectionDate` (
+  `inspection_id` int(11) NOT NULL,
+  `lot_id` int(11) NOT NULL,
+  `inspection_day` int(11) NOT NULL COMMENT '1: Mon, 7: Sun',
+  `inspection_start_time` char(5) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `inspection_end_time` char(5) COLLATE utf8mb4_unicode_520_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Indexes for table `InspectionDate`
+--
+ALTER TABLE `InspectionDate`
+  ADD PRIMARY KEY (`inspection_id`);
+
+--
+-- AUTO_INCREMENT for table `InspectionDate`
+--
+ALTER TABLE `InspectionDate`
+  MODIFY `inspection_id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 
 ## Deliverables:
 software
