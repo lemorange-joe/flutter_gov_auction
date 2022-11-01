@@ -1441,6 +1441,66 @@ class AdminController {
     
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
+
+  function deleteInspectionDate() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["inspection_id"]) || empty($data["inspection_id"])) {
+        throw new Exception("Inspection ID missing!");  
+      }
+
+      $inspectionId = intval($data["inspection_id"]);
+      $updateSql = "DELETE FROM InspectionDate WHERE inspection_id = ?";
+      $conn->Execute($updateSql, array($inspectionId));
+  
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function addInspectionDate() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["lot_id"]) || empty($data["lot_id"])) {
+        throw new Exception("Lot ID missing!");  
+      }
+
+      if (!isset($data["day"]) || empty($data["day"])) {
+        throw new Exception("Day of week missing!");  
+      }
+
+      $lotId = intval($data["lot_id"]);
+      $day = intval($data["day"]);
+      $startTime = substr(trim($data["start_time"]), 0, 5);
+      $endTime = substr(trim($data["end_time"]), 0, 5);
+
+      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time) VALUES (?, ?, ?, ?)";
+      $conn->Execute($updateSql, array($lotId, $day, $startTime, $endTime));
+  
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
 }
 
 class KeywordPhotoAuthor {

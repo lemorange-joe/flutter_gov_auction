@@ -318,6 +318,64 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         xhr.send(JSON.stringify(logData));
       }
 
+      function AddInspectionDate() {
+        // TODO(joe): to be completed, TBC!!!
+        var inspectionData = {
+          lot_id: 0,
+          day: 1,
+          start_time: "09:30",
+          end_time: "12:00",
+        };
+        var url = "../en/api/admin-addInspectionDate";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              // TODO(joe): to be completed, TBC!!!
+              if (jsonData.status == "success") {
+              } else {
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(inspectionData));
+      }
+
+      function DeleteInspectionDate(inspectionId) {
+        var inspectionData = {
+          inspection_id: inspectionId,
+        };
+        var url = "../en/api/admin-deleteInspectionDate";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4) {
+            if (this.status == 200) {
+              const jsonData = JSON.parse(this.responseText);
+
+              // TODO(joe): to be completed, TBC!!!
+              if (jsonData.status == "success") {
+              } else {
+              }
+            } else {
+              alert("Error: " + this.responseText);
+            }
+          }
+        };
+
+        xhr.send(JSON.stringify(inspectionData));
+      }
+
       function SaveLot(lotIndex) {
         var auctionId = document.getElementById("tbAuctionId").value;
         var lotId = document.getElementById("tbLotId_"+lotIndex).value;
