@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
+// import 'package:logger/logger.dart';
 import '../class/app_info.dart';
 import '../helpers/api_helper.dart';
 import '../helpers/hive_helper.dart';
@@ -18,7 +19,7 @@ class AppInfoProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final Map<String, dynamic> result = await apiHelper.get(lang, 'data', 'appinfo', parameters: <String, dynamic>{'version': FlutterConfig.get('VERSION')}) as Map<String, dynamic>;
+      final Map<String, dynamic> result = await apiHelper.post(lang, 'data', 'appinfo', parameters: <String, dynamic>{'version': FlutterConfig.get('VERSION')}) as Map<String, dynamic>;
       if (result['fu'] != null && result['fu'] as String == 'Y') {
         appInfo = AppInfo.empty();
       } else {

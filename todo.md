@@ -12,6 +12,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
+- add inspection date
 - favourite auction save descriptions in hive, do not query api when showing favourite list 
 - appinfo api, check min version first
 - add View All Documents page

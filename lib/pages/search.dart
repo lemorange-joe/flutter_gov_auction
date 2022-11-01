@@ -31,7 +31,12 @@ class _SearchPageState extends State<SearchPage> {
 
     if (EasterEggHelper.check(context, _searchKeyword)) {
       final ApiHelper apiHelper = ApiHelper();
-      final String developerGaucId = await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword});
+      String developerGaucId = '';
+      final Map<String, dynamic> jsonResult = await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword}) as Map<String, dynamic>;
+      if (jsonResult['status'] == 'success') {
+        developerGaucId = (jsonResult['data'] as Map<String, dynamic>)['dk'] as String;
+      }
+      
       await HiveHelper().writeDeveloper(developerGaucId);
     }
 

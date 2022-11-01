@@ -89,8 +89,8 @@ class ApiHelper {
         final http.Response response = await client.get(Uri.parse(apiUrl), headers: headers);
         if (response.statusCode == 200) {
           final dynamic jsonResult = jsonDecode(response.body) as dynamic;
-          if ((jsonResult as Map<String, dynamic>)['status'] == 'success') {
-            returnData = jsonResult['data'] as dynamic;
+          if ((jsonResult as Map<String, dynamic>)['s'] == 'success') {
+            returnData = jsonResult['d'] as dynamic;
           } else if (jsonResult['status'] == 'fail') {
             throw Exception('API fail!');
           } else {
@@ -109,7 +109,7 @@ class ApiHelper {
     return returnData;
   }
 
-  Future<String> post(
+  Future<dynamic> post(
     String lang,
     String controller,
     String method, {
@@ -123,10 +123,14 @@ class ApiHelper {
       parameters.forEach((String k, dynamic v) => postData[k] = v);
     }
 
-    final String apiUrl =
-        FlutterConfig.get('API_URL').toString().replaceFirst('{lang}', lang).replaceFirst('{controller}', controller).replaceFirst('{method}', method);
+    final String apiUrl = FlutterConfig.get('API_URL')
+        .toString()
+        .replaceFirst('{lang}', lang)
+        .replaceFirst('{controller}', controller)
+        .replaceFirst('{method}', method)
+        .replaceFirst('{params}', '');
 
-    String result;
+    dynamic returnData;
 
     if (useDemoData) {
       Map<String, String> demoData;
@@ -149,7 +153,7 @@ class ApiHelper {
       final String demoDataKey = '$controller-$method';
 
       if (demoData.containsKey(demoDataKey)) {
-        result = demoData[demoDataKey]!;
+        returnData = jsonDecode(demoData[demoDataKey]!) as dynamic;
       } else {
         throw Exception('Demo data not found!');
       }
@@ -169,7 +173,14 @@ class ApiHelper {
         );
 
         if (response.statusCode == 200) {
-          result = jsonDecode(response.body) as String;
+          final dynamic jsonResult = jsonDecode(response.body) as dynamic;
+          if ((jsonResult as Map<String, dynamic>)['s'] == 'success') {
+            returnData = jsonResult['d'] as dynamic;
+          } else if (jsonResult['s'] == 'fail') {
+            throw Exception('API fail!');
+          } else {
+            throw Exception('API error!');
+          }
         } else {
           throw HttpException('${response.statusCode}');
         }
@@ -180,6 +191,6 @@ class ApiHelper {
       }
     }
 
-    return result;
+    return returnData;
   }
 }

@@ -20,7 +20,7 @@ class DataController {
     }
 
     try {
-      $data = new stdClass();
+      $data = new StdClass();
       $selectSql = "SELECT min_app_version, data_version, news_$lang as news, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
 
       $result = $conn->Execute($selectSql)->GetRows();  // simple query, no need to cache
@@ -42,8 +42,8 @@ class DataController {
         $data->nll = array(); // notice links list
         for($i = 0; $i < $rowNum; ++$i) {
           $noticeLink = new StdClass();
-          $noticeLink->u = $result[$i]["title"];
-          $noticeLink->l = $result[$i]["url"];
+          $noticeLink->t = $result[$i]["title"];
+          $noticeLink->u = $result[$i]["url"];
 
           $data->nll[] = $noticeLink;
         }
@@ -125,15 +125,24 @@ class DataController {
   }
 
   function getDeveloperId() {
-    if (!$GLOBALS["ENABLE_DEVELOPER"]) return;
-    if (!isset($_POST["keyword"])) return;
+    $output = new StdClass();
+    $output->s = "fail";
+
+    if (!$GLOBALS["ENABLE_DEVELOPER"] || !isset($_POST["keyword"])) {
+      echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+      return;
+    }
     
+    $data = new StdClass();
     $base64Keyword = base64_encode($_POST["keyword"]);
     if ($base64Keyword == "6Kyd6Kqe5b+D" || $base64Keyword == "6Kyd6Ku+54S2") {
-      echo $GLOBALS["DEVELOPER_GAUC_ID"];
+      $data->dk = $GLOBALS["DEVELOPER_GAUC_ID"];
     } else {
-      echo "x9LvKM6J80B6qIzOEhdhW8vw";  // just return a fake key
+      $data->dk = "x9LvKM6J80B6qIzOEhdhW8vw";  // just return a fake key
     }
+
+    $output->d = $data;
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 }
 ?>
