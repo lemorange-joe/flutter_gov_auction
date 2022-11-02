@@ -106,6 +106,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <div id="divLotList" style="width: 1400px"></div>
     <div style="margin-top: 10px">
       <button id="btnAddLot" data-lot-count="0" onclick="AddLot()">+ Lot</button>
+      <div class="remarks" style="margin-top:10px">* add inspection dates after adding the lot</div>
     </div>
 
     <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
@@ -318,35 +319,61 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         xhr.send(JSON.stringify(logData));
       }
 
+      function AddInspectionDateRow(i) {
+        var lotId = parseInt(document.getElementById("tbLotId_" + i).value);
+
+        if (document.getElementById("divNewInspectionDateField")) {
+          document.getElementById("divNewInspectionDateField").outerHTML = "";
+        }
+
+        output = '<div id="divNewInspectionDateField">';
+        output += '<input type="hidden" id="tbNewInspectionLotId" value="' + lotId + '">';
+        output += '<input type="radio" id="rdbNewInspectionDay_7" name="rdbNewInspectionDay" value="7">';
+        output += '<label for="rdbNewInspectionDay_7">日</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_1" name="rdbNewInspectionDay" value="1" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_1">一</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_2" name="rdbNewInspectionDay" value="2" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_2">二</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_3" name="rdbNewInspectionDay" value="3" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_3">三</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_4" name="rdbNewInspectionDay" value="4" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_4">四</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_5" name="rdbNewInspectionDay" value="5" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_5">五</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_6" name="rdbNewInspectionDay" value="6" style="margin-left: 10px">';
+        output += '<label for="rdbNewInspectionDay_6">六</label>';
+        output += "&nbsp;&nbsp;";
+        output += '<input id="tbNewInspectionStartTime" type="text" placeholder="09:30" maxlength="5" style="width: 60px">';
+        output += " - ";
+        output += '<input id="tbNewInspectionEndTime" type="text" placeholder="12:30" maxlength="5" style="width: 60px">';
+        output += '<button style="margin-left: 20px" onclick="AddInspectionDate()">Save</button>'
+        output += "</div>";
+
+        document.getElementById("divNewInspectionRow_" + i).innerHTML = output;
+      }      
+
       function AddInspectionDate() {
-        // TODO(joe): to be completed, TBC!!!
+        var selectedRdbDay = Array.prototype.slice.call(document.getElementsByName("rdbNewInspectionDay")).find((rdb) => rdb.checked);
+        if (!selectedRdbDay) {
+          alert("Please select day of week!");
+          return;
+        }
+
+        var lotId = document.getElementById("tbNewInspectionLotId").value;
+        var day = selectedRdbDay.value;
+        var startTime = document.getElementById("tbNewInspectionStartTime").value;
+        var endTime = document.getElementById("tbNewInspectionEndTime").value;
+
         var inspectionData = {
-          lot_id: 0,
-          day: 1,
-          start_time: "09:30",
-          end_time: "12:00",
+          lot_id: lotId,
+          day: day,
+          start_time: startTime,
+          end_time: endTime,
         };
+
         var url = "../en/api/admin-addInspectionDate";
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-          if (this.readyState == 4) {
-            if (this.status == 200) {
-              const jsonData = JSON.parse(this.responseText);
-
-              // TODO(joe): to be completed, TBC!!!
-              if (jsonData.status == "success") {
-              } else {
-              }
-            } else {
-              alert("Error: " + this.responseText);
-            }
-          }
-        };
-
-        xhr.send(JSON.stringify(inspectionData));
+        
+        PostData(url, inspectionData);
       }
 
       function DeleteInspectionDate(inspectionId) {
@@ -355,25 +382,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         };
         var url = "../en/api/admin-deleteInspectionDate";
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-          if (this.readyState == 4) {
-            if (this.status == 200) {
-              const jsonData = JSON.parse(this.responseText);
-
-              // TODO(joe): to be completed, TBC!!!
-              if (jsonData.status == "success") {
-              } else {
-              }
-            } else {
-              alert("Error: " + this.responseText);
-            }
-          }
-        };
-
-        xhr.send(JSON.stringify(inspectionData));
+        PostData(url, inspectionData);
       }
 
       function SaveLot(lotIndex) {
@@ -531,6 +540,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var status = "A";
         var lastUpdate = "";
         var itemList = [];
+        var inspectionDateList = [];
 
         if (lotData){
           lotId = lotData["lot_id"];
@@ -551,6 +561,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           locationEn = lotData["location_en"];
           locationTc = lotData["location_tc"];
           locationSc = lotData["location_sc"];
+          inspectionDateList = lotData["inspection_date_list"];
+
           remarksEn = lotData["remarks_en"];
           remarksTc = lotData["remarks_tc"];
           remarksSc = lotData["remarks_sc"];
@@ -608,6 +620,14 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='display:flex'><div style='width:100px'>Location</div><input id='tbLocationEn_" + i + "' style='width:650px' value='" + locationEn.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>地點</div><input id='tbLocationTc_" + i + "' style='width:650px' value='" + locationTc.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>地点</div><input id='tbLocationSc_" + i + "' style='width:650px' value='" + locationSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='height:10px'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>看貨日期</div>";
+            divHtml += "<div>";
+              divHtml += BuildInspectionDateField(i, inspectionDateList);
+              divHtml += "<div id='divNewInspectionRow_" + i + "'></div>";
+              divHtml += "<button onclick='AddInspectionDateRow("+i+")'>+ Date</button>";
+            divHtml += "</div>";
+          divHtml += "</div>";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex;width:760px;height:40px'><div style='width:100px'>Description</div><div style='width:660px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionEn.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
           divHtml += "<div style='display:flex;width:760px;height:40px'><div style='width:100px'></div><div style='width:660px;overflow-x:scroll;white-space:nowrap'>" + lotDescriptionTc.replace("<", '&lt;').replace(">", '&gt;') + "</div></div>";
@@ -753,6 +773,21 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         }
 
         document.getElementById("btnAddLot").setAttribute("data-lot-count", lotList.length);
+      }
+
+      function BuildInspectionDateField(i, inspectionDateList) {
+        var output = "";
+        for(var i = 0; i < inspectionDateList.length; ++i) {
+          var dayOfWeek = ["日", "一", "二", "三", "四", "五", "六"];
+          var curDate = inspectionDateList[i];
+
+          output += "<div>";
+          output += "星期" + dayOfWeek[curDate["day"] % 7] + " " + curDate["start_time"] + " - " + curDate["end_time"];
+          output += "<a href='#' style='text-decoration: none; margin-left: 6px; font-size: 12px'; onclick='DeleteInspectionDate(" + curDate["inspection_id"] + ");return false;'>❌</a>";
+          output += "</div>";
+        }
+
+        return output;
       }
 
       function GetImageSearchKeyword(itemDesc, lang) {

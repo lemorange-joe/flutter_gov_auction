@@ -88,7 +88,7 @@ include_once ("../class/admin_import.php");
               output += '<label for="rdbInspectionDay_6_' + i + '">六</label>';
             output += "&nbsp;&nbsp;";
             output += '<input id="tbInspectionStartTime_' + i + '" type="text" placeholder="09:30" maxlength="5" style="width: 60px">';
-            output += "&nbsp;";
+            output += " - ";
             output += '<input id="tbInspectionEndTime_' + i + '" type="text" placeholder="12:30" maxlength="5" style="width: 60px">';
           output += "<div>";
 

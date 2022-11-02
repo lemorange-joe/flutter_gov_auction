@@ -158,6 +158,18 @@ class AdminController {
     $result = $conn->Execute($selectSql, array($auctionId, $itemType, $itemType))->GetRows();
     $rowNum = count($result);
 
+    // 4. select all inspection dates of the auction id
+    // then assign back to the lot programatically
+    $selectSql = "SELECT I.inspection_id, I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+                  FROM InspectionDate I
+                  INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
+                  WHERE L.auction_id = ?
+                  ORDER BY L.lot_id, CASE
+                    WHEN I.inspection_day = 7 THEN 0
+                    ELSE I.inspection_day
+                  END";
+    $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+
     $curLotNum = "";
     $curLotOutput = new stdClass();
     $curItemList = array();
@@ -166,6 +178,7 @@ class AdminController {
         if ($i > 0) {
           // add existing to the current lot first
           $curLotOutput->item_list = $curItemList;
+          $curLotOutput->inspection_date_list = $this->getInspectionDateList($curLotOutput->lot_id, $inspectionDateResult);
           $output->lot_list[] = $curLotOutput;
         }
 
@@ -235,6 +248,7 @@ class AdminController {
     // add the last item
     if ($curLotNum != "") {
       $curLotOutput->item_list = $curItemList;
+      $curLotOutput->inspection_date_list = $this->getInspectionDateList($curLotOutput->lot_id, $inspectionDateResult);
       $output->lot_list[] = $curLotOutput;
     }
 
@@ -1205,6 +1219,27 @@ class AdminController {
     echo "<hr />DONE!";
   }
 
+  private function getInspectionDateList($lotId, $inspectionDateList) {
+    $output = array();
+    $rowNum = count($inspectionDateList);
+
+    for ($i = 0; $i < $rowNum; ++$i) {
+      $curInspectionDate = $inspectionDateList[$i];
+
+      if ($curInspectionDate["lot_id"] == $lotId) {
+        $inspectionDate = new StdClass();
+        $inspectionDate->inspection_id = $curInspectionDate["inspection_id"];
+        $inspectionDate->day = $curInspectionDate["inspection_day"];
+        $inspectionDate->start_time = $curInspectionDate["inspection_start_time"];
+        $inspectionDate->end_time = $curInspectionDate["inspection_end_time"];
+
+        $output[] = $inspectionDate;
+      }
+    }
+
+    return $output;
+  }
+
   private function getKeywordPhotoAuthor($keywordEn, $keywordTc) {
     if (empty($keywordEn) && empty($keywordTc)) {
       return new KeywordPhotoAuthor("", "", "", "", "");
@@ -1456,8 +1491,8 @@ class AdminController {
       }
 
       $inspectionId = intval($data["inspection_id"]);
-      $updateSql = "DELETE FROM InspectionDate WHERE inspection_id = ?";
-      $conn->Execute($updateSql, array($inspectionId));
+      $deleteSql = "DELETE FROM InspectionDate WHERE inspection_id = ?";
+      $conn->Execute($deleteSql, array($inspectionId));
   
       $output->status = "success";
     } catch (Exception $e) {
@@ -1491,7 +1526,7 @@ class AdminController {
       $endTime = substr(trim($data["end_time"]), 0, 5);
 
       $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time) VALUES (?, ?, ?, ?)";
-      $conn->Execute($updateSql, array($lotId, $day, $startTime, $endTime));
+      $conn->Execute($insertSql, array($lotId, $day, $startTime, $endTime));
   
       $output->status = "success";
     } catch (Exception $e) {
