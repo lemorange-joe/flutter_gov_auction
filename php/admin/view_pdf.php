@@ -10,7 +10,7 @@ include_once ("../include/common.php");
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin - Verify Data</title>
+  <title>Admin - View PDF Files</title>
   <link rel="stylesheet" href="css/main.css">
   <style>
     .folder {
@@ -41,7 +41,7 @@ include_once ("../include/common.php");
 <body>
   <div class="header bgGreen">
     <div><h2><a href="index.php">« Admin Index</a></h2></div>
-    <div class="title">Verify Data</div>
+    <div class="title">View PDF Files</div>
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   </div>
   <div class="body">

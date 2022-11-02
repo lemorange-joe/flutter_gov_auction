@@ -328,7 +328,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         output = '<div id="divNewInspectionDateField">';
         output += '<input type="hidden" id="tbNewInspectionLotId" value="' + lotId + '">';
-        output += '<input type="radio" id="rdbNewInspectionDay_7" name="rdbNewInspectionDay" value="7">';
+        output += '<input type="radio" id="rdbNewInspectionDay_0" name="rdbNewInspectionDay" value="0">';
+        output += '<label for="rdbNewInspectionDay_0">沒有註明</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_7" name="rdbNewInspectionDay" value="7" style="margin-left: 10px">';
         output += '<label for="rdbNewInspectionDay_7">日</label>';
         output += '<input type="radio" id="rdbNewInspectionDay_1" name="rdbNewInspectionDay" value="1" style="margin-left: 10px">';
         output += '<label for="rdbNewInspectionDay_1">一</label>';
@@ -778,11 +780,11 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
       function BuildInspectionDateField(i, inspectionDateList) {
         var output = "";
         for(var i = 0; i < inspectionDateList.length; ++i) {
-          var dayOfWeek = ["日", "一", "二", "三", "四", "五", "六"];
+          var dayOfWeek = ["全部日子", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
           var curDate = inspectionDateList[i];
 
           output += "<div>";
-          output += "星期" + dayOfWeek[curDate["day"] % 7] + " " + curDate["start_time"] + " - " + curDate["end_time"];
+          output += (1 <= curDate["day"] && curDate["day"] <= 7 ? dayOfWeek[curDate["day"]] : dayOfWeek[0]) + " " + curDate["start_time"] + " - " + curDate["end_time"];
           output += "<a href='#' style='text-decoration: none; margin-left: 6px; font-size: 12px'; onclick='DeleteInspectionDate(" + curDate["inspection_id"] + ");return false;'>❌</a>";
           output += "</div>";
         }

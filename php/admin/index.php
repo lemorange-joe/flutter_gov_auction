@@ -89,7 +89,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <h3>Inspect</h3>
         <a href="view_api.php">View API</a>
         <br /><br />
-        <a href="verify_data.php">Verify Data</a>
+        <a href="view_pdf.php">View PDF Files</a>
         <br /><br />
         <a href="app_data.php">View / Refresh App Data</a>
       </div>

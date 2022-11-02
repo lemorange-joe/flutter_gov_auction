@@ -87,9 +87,13 @@ String formatSimpleDateTime(DateTime dt) {
 }
 
 String formatDayOfWeek(int dow, String lang) {
-  const List<String> langEn = <String>['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const List<String> langCh = <String>['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-  return lang == 'en' ? langEn[dow % 7] : langCh[dow % 7];
+  const List<String> langEn = <String>['All Dates', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const List<String> langCh = <String>['全部日子', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+  if (lang == 'en') {
+    return 1 <= dow && dow <= 7 ? langEn[dow] : langEn[0];
+  }
+
+  return 1 <= dow && dow <= 7 ? langCh[dow] : langCh[0];
 }
 
 double adjustedScale(double scale) {
