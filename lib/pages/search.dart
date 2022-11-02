@@ -33,8 +33,8 @@ class _SearchPageState extends State<SearchPage> {
       final ApiHelper apiHelper = ApiHelper();
       String developerGaucId = '';
       final Map<String, dynamic> jsonResult = await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword}) as Map<String, dynamic>;
-      if (jsonResult['status'] == 'success') {
-        developerGaucId = (jsonResult['data'] as Map<String, dynamic>)['dk'] as String;
+      if (jsonResult['dk'] != null) {
+        developerGaucId = jsonResult['dk'] as String;
       }
       
       await HiveHelper().writeDeveloper(developerGaucId);

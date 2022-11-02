@@ -340,6 +340,26 @@ class S {
     );
   }
 
+  /// `Please upgrade to latest version.`
+  String get forceUpgradeContent {
+    return Intl.message(
+      'Please upgrade to latest version.',
+      name: 'forceUpgradeContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Latest app available`
+  String get forceUpgradeTitle {
+    return Intl.message(
+      'Latest app available',
+      name: 'forceUpgradeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Help`
   String get help {
     return Intl.message(

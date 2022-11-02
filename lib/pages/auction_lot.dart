@@ -276,6 +276,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           child: widget.auctionLot.inspectionDateList.isEmpty
                               ? const Text('-')
                               : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                   children: widget.auctionLot.inspectionDateList
                                       .map((InspectionDate inspect) => Text(
                                           '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}: ${inspect.startTime} - ${inspect.endTime}'))

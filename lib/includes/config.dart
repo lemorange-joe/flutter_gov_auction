@@ -6,6 +6,8 @@ const String appCode = 'GAUC';
 const String appStoreId = 'com.example.app';
 const String appName = 'Example App Name';
 const String lemorangeAppApiUrl = 'https://api.lemorange.studio/apps/?appcode={0}';
+const String appStoreUrl = 'https://lemorange.studio';  // TBC!!!
+const String googlePlayUrl = 'https://lemorange.studio';  // TBC!!!
 const int httpTimeout = 5; // in seconds
 
 const String dateFormatEn = 'd MMMM yyyy (EEEE)';

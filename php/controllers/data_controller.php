@@ -8,13 +8,10 @@ class DataController {
 
     $output = new StdClass();
     $output->status = "fail";
+    $clientVersion = "0";
 
     if (!isset($_POST["version"]) || empty($_POST["version"])) {
-      // TODO(joe): temp update for testing
       $output->message = "version is empty";
-      $clientVersion = "1.0.0";
-      // echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-      // return;
     } else {
       $clientVersion = trim($_POST["version"]);
     }
@@ -141,6 +138,7 @@ class DataController {
       $data->dk = "x9LvKM6J80B6qIzOEhdhW8vw";  // just return a fake key
     }
 
+    $output->s = "success";
     $output->d = $data;
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }

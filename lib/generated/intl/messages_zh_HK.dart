@@ -57,6 +57,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("批號"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("編號"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("注意事項"),
+        "forceUpgradeContent":
+            MessageLookupByLibrary.simpleMessage("請升級到最新版本。"),
+        "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已經推出"),
         "help": MessageLookupByLibrary.simpleMessage("幫助"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("項目詳情"),

@@ -556,7 +556,14 @@ class _DebugPageState extends State<DebugPage> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Expanded(child: Container()),
+          Expanded(
+            child: IconButton(
+              onPressed: () async {
+                await HiveHelper().clearAllLog();
+              },
+              icon: const Icon(MdiIcons.trashCan),
+            ),
+          ),
           const Text(
             'Hive Log',
             style: TextStyle(decoration: TextDecoration.underline),

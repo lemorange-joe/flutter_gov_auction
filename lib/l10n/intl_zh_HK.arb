@@ -28,6 +28,8 @@
     "fieldLotNum": "批號",
     "fieldReference": "編號",
     "fieldRemarks": "注意事項",
+    "forceUpgradeContent": "請升級到最新版本。",
+    "forceUpgradeTitle": "新版本已經推出",
     "help": "幫助",
     "home": "主頁",
     "itemDetails": "項目詳情",

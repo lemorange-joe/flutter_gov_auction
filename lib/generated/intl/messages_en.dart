@@ -61,6 +61,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("Lot Num"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("Reference"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("Remarks"),
+        "forceUpgradeContent": MessageLookupByLibrary.simpleMessage(
+            "Please upgrade to latest version."),
+        "forceUpgradeTitle":
+            MessageLookupByLibrary.simpleMessage("Latest app available"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),

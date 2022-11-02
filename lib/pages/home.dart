@@ -1,11 +1,13 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../class/app_info.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
@@ -16,6 +18,7 @@ import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../tabs/auction.dart';
 import '../tabs/home.dart';
+import '../widgets/common/dialog.dart';
 import '../widgets/push_message_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,8 +39,18 @@ class _HomePageState extends State<HomePage> {
       final AppInfoProvider appInfoProvider = Provider.of<AppInfoProvider>(context, listen: false);
       appInfoProvider.refresh(lang: S.of(context).lang).then((_) {
         if (appInfoProvider.forceUpgrade) {
-          // TODO(joe): complete the force upgrade flow
-          Logger().e('!!! Force upgrade !!!');
+          CommonDialog.show(
+            context,
+            S.of(context).forceUpgradeTitle,
+            S.of(context).forceUpgradeContent,
+            S.of(context).ok,
+            () async {
+              // TODO(joe): check OS first, TBC!!!
+              await launchUrl(Uri.parse(config.appStoreUrl));
+              exit(0);
+            },
+            isModal: true,
+          );
         } else {
           Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
         }
