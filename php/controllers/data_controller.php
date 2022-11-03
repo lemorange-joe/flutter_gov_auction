@@ -65,6 +65,16 @@ class DataController {
           $data->ml[] = $push;
         }
 
+        // include hot search keywords
+        $selectSql = "SELECT keyword_$lang as 'keyword' FROM HotSearch";
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        $rowNum = count($result);
+
+        $data->hsl = array(); // hot search list
+        for($i = 0; $i < $rowNum; ++$i) {
+          $data->hsl[] = $result[$i]["keyword"];
+        }
+
         // item type list, from $_APP
         $data->itm = new StdClass();
         foreach ($_APP->auctionItemTypeList as $auctionItemType) {

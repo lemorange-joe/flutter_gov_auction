@@ -15,6 +15,20 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 - add hot search chip
 - add random data in API to prevent data theft
 
+CREATE TABLE `HotSearch` (
+  `keyword_id` int(11) NOT NULL,
+  `keyword_en` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `keyword_tc` varchar(10) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `keyword_sc` varchar(10) COLLATE utf8mb4_unicode_520_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+ALTER TABLE `HotSearch`
+  ADD PRIMARY KEY (`keyword_id`);
+
+ALTER TABLE `HotSearch`
+  MODIFY `keyword_id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 ## Deliverables:
 software
 ├ app

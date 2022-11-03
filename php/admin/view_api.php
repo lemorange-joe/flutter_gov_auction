@@ -34,6 +34,10 @@ if (!isset($_SESSION["admin_user"])) {
     </select>
     <input id="tbParam" type="text" style="width: 300px">
     <button onclick="GetData()">Get</button>
+    <div style="display: inline-block; border: solid 1px #333; padding: 3px 6px; margin-left: 10px">
+      Version: <input type="text" id="tbVersion" placeholder="1.0.0">
+      <button style="margin-left: 10px" onclick="PostData()">Post</button>
+    </div>
     &nbsp;&nbsp;&nbsp;&nbsp;URL: <a id="lnkApiUrl" href="#" target="_blank"></a>
     <br /><br />
     <textarea id="txtResult" style="width: 1000px; height: 400px"></textarea>
@@ -75,6 +79,26 @@ if (!isset($_SESSION["admin_user"])) {
         }
         
         xhr.send();
+      }
+
+      function PostData(){
+        document.getElementById("txtResult").value = "retrieving...";
+
+        var url = GetApiUrl();
+        SetApiUrl(url);
+
+        var xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append("version", document.getElementById("tbVersion").value.trim());
+        
+        xhr.open("POST", url);
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("txtResult").value = JSON.stringify(JSON.parse(this.responseText), null, "  ");
+          }
+        }
+        
+        xhr.send(formData);
       }
 
       ChangeParamHint();

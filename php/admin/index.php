@@ -105,6 +105,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <h3>Supportive Administration</h3>
         <a href="manage_keyword_image.php">Manage Keyword Image</a>
         <br /><br />
+        <a href="manage_hot_search.php">Manage Hot Search</a>
+        <br /><br />
         <a href="batch_update_lot_description.php">Batch Update Lot Descriptions</a>
       </div>
     </div>
