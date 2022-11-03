@@ -716,10 +716,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
             itemData["unit_sc"] + "\n"
           : "";
 
-        var bgImage = 'url("https://dummyimage.com/250x120/fff/888.png&text=++++++' + (itemIndex + 1) + '")';
+        var className = "auction-item-textarea item" + String(itemIndex + 1).padStart(2, "0");
         var textareaHtml = "<div style='display: inline-block'>";
         textareaHtml += "Icon: <input id='tbItemIcon_" + lotIndex + "_" + itemIndex + "' value='" + itemIcon + "' /><br/>";
-        textareaHtml += "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' style='width:250px;height:120px;background-image:" + bgImage + "'>";
+        textareaHtml += "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' class='" + className + "' style='width:250px;height:120px'>";
         textareaHtml += textareaContent;
         textareaHtml += "</textarea>";
         textareaHtml += "</div>";

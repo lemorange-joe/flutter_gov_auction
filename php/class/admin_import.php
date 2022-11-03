@@ -410,11 +410,13 @@ class AdminImport {
     // 2. 3rd line (i.e. quantity) is a number; nd
     // 3. 5th line (i.e. unit in Chinese) has <= 6 characters
 
-    $bgImage = $itemCorrect ? 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++{i}")' : 'url("https://dummyimage.com/250x100/f88/666.png&text=++++++{i}")';
-    $className = $itemCorrect ? "item-textarea" : "item-textarea error";
+    $className = "auction-item-textarea item" . str_pad($itemIndex+1, 2, "0", STR_PAD_LEFT);
+    if (!$itemCorrect) {
+      $className .= " wrong";
+    }
 
     echo "<div style='display:inline-block;padding: 0 5px 5px 5px'>";
-      echo "<textarea id='$id' class='$className' style='width:250px;height:100px;background-image:" . str_replace('{i}', $itemIndex+1, $bgImage) . "' onkeyup='CheckTextarea(\"$id\")'>";
+      echo "<textarea id='$id' class='$className' style='width:250px;height:100px' onkeyup='CheckTextarea(\"$id\")'>";
       echo trim($strItem);
       echo "</textarea>";
       echo "<div style='display:flex;justify-content:space-around'>";

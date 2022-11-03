@@ -100,10 +100,10 @@ include_once ("../class/admin_import.php");
         }
 
         function FindNextErrorItem() {
-          var total = document.getElementsByClassName("item-textarea error").length;
+          var total = document.getElementsByClassName("auction-item-textarea wrong").length;
           document.getElementById("btnNextErrorItem").innerHTML = total;
           if (total > 0) {
-            document.getElementsByClassName("item-textarea error")[0].focus();
+            document.getElementsByClassName("auction-item-textarea wrong")[0].focus();
           } else {
             alert("No more error item!");
           }
@@ -118,11 +118,9 @@ include_once ("../class/admin_import.php");
           // 2. 3rd line (i.e. quantity) is a number; nd
           // 3. 5th line (i.e. unit in Chinese) has <= 6 characters
           if (textList.length != 5 || !(/^\d*\.?\d+$/.test(textList[2].trim())) || textList[4].trim().length > 6) {
-            document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/f88/666.png&text=++++++" + itemNum + "')";
-            document.getElementById(id).classList.add("error");
+            document.getElementById(id).classList.add("wrong");
           } else {
-            document.getElementById(id).style.backgroundImage = "url('https://dummyimage.com/250x100/fff/888.png&text=++++++" + itemNum + "')";
-            document.getElementById(id).classList.remove("error");
+            document.getElementById(id).classList.remove("wrong");
           }
         }
 
@@ -169,8 +167,8 @@ include_once ("../class/admin_import.php");
         function AddItem(lotIndex) {
           var btnAdd = document.getElementById("btnAddItem_" + lotIndex);
           var itemIndex = parseInt(btnAdd.getAttribute("data-total"));
-          var bgImage = 'url("https://dummyimage.com/250x100/fff/888.png&text=++++++' + (itemIndex + 1) + '")';
-          var textareaHtml = "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' style='width:250px;height:100px;background-image:" + bgImage + "'></textarea>";
+          var className = "auction-item-textarea item" + String(itemIndex + 1).padStart(2, "0");
+          var textareaHtml = "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' class='" + className + "' style='width:250px;height:100px'></textarea>";
           document.getElementById("divItems_"+lotIndex).insertAdjacentHTML("beforeend", textareaHtml);
 
           btnAdd.setAttribute("data-total", itemIndex+1);

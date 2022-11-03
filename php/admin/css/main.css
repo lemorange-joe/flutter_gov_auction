@@ -21,6 +21,124 @@ textarea {
   overflow-x: scroll;
 }
 
+textarea.auction-item-textarea {
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+
+textarea.auction-item-textarea.wrong {
+  background-color: #f88;
+}
+
+textarea.item01 { background-image: url("../images/bg01.png"); }
+textarea.item02 { background-image: url("../images/bg02.png"); }
+textarea.item03 { background-image: url("../images/bg03.png"); }
+textarea.item04 { background-image: url("../images/bg04.png"); }
+textarea.item05 { background-image: url("../images/bg05.png"); }
+textarea.item06 { background-image: url("../images/bg06.png"); }
+textarea.item07 { background-image: url("../images/bg07.png"); }
+textarea.item08 { background-image: url("../images/bg08.png"); }
+textarea.item09 { background-image: url("../images/bg09.png"); }
+textarea.item10 { background-image: url("../images/bg10.png"); }
+
+textarea.item11 { background-image: url("../images/bg11.png"); }
+textarea.item12 { background-image: url("../images/bg12.png"); }
+textarea.item13 { background-image: url("../images/bg13.png"); }
+textarea.item14 { background-image: url("../images/bg14.png"); }
+textarea.item15 { background-image: url("../images/bg15.png"); }
+textarea.item16 { background-image: url("../images/bg16.png"); }
+textarea.item17 { background-image: url("../images/bg17.png"); }
+textarea.item18 { background-image: url("../images/bg18.png"); }
+textarea.item19 { background-image: url("../images/bg19.png"); }
+textarea.item20 { background-image: url("../images/bg20.png"); }
+
+textarea.item21 { background-image: url("../images/bg21.png"); }
+textarea.item22 { background-image: url("../images/bg22.png"); }
+textarea.item23 { background-image: url("../images/bg23.png"); }
+textarea.item24 { background-image: url("../images/bg24.png"); }
+textarea.item25 { background-image: url("../images/bg25.png"); }
+textarea.item26 { background-image: url("../images/bg26.png"); }
+textarea.item27 { background-image: url("../images/bg27.png"); }
+textarea.item28 { background-image: url("../images/bg28.png"); }
+textarea.item29 { background-image: url("../images/bg29.png"); }
+textarea.item30 { background-image: url("../images/bg30.png"); }
+
+textarea.item31 { background-image: url("../images/bg31.png"); }
+textarea.item32 { background-image: url("../images/bg32.png"); }
+textarea.item33 { background-image: url("../images/bg33.png"); }
+textarea.item34 { background-image: url("../images/bg34.png"); }
+textarea.item35 { background-image: url("../images/bg35.png"); }
+textarea.item36 { background-image: url("../images/bg36.png"); }
+textarea.item37 { background-image: url("../images/bg37.png"); }
+textarea.item38 { background-image: url("../images/bg38.png"); }
+textarea.item39 { background-image: url("../images/bg39.png"); }
+textarea.item40 { background-image: url("../images/bg40.png"); }
+
+textarea.item41 { background-image: url("../images/bg41.png"); }
+textarea.item42 { background-image: url("../images/bg42.png"); }
+textarea.item43 { background-image: url("../images/bg43.png"); }
+textarea.item44 { background-image: url("../images/bg44.png"); }
+textarea.item45 { background-image: url("../images/bg45.png"); }
+textarea.item46 { background-image: url("../images/bg46.png"); }
+textarea.item47 { background-image: url("../images/bg47.png"); }
+textarea.item48 { background-image: url("../images/bg48.png"); }
+textarea.item49 { background-image: url("../images/bg49.png"); }
+textarea.item50 { background-image: url("../images/bg50.png"); }
+
+textarea.item51 { background-image: url("../images/bg51.png"); }
+textarea.item52 { background-image: url("../images/bg52.png"); }
+textarea.item53 { background-image: url("../images/bg53.png"); }
+textarea.item54 { background-image: url("../images/bg54.png"); }
+textarea.item55 { background-image: url("../images/bg55.png"); }
+textarea.item56 { background-image: url("../images/bg56.png"); }
+textarea.item57 { background-image: url("../images/bg57.png"); }
+textarea.item58 { background-image: url("../images/bg58.png"); }
+textarea.item59 { background-image: url("../images/bg59.png"); }
+textarea.item60 { background-image: url("../images/bg60.png"); }
+
+textarea.item61 { background-image: url("../images/bg61.png"); }
+textarea.item62 { background-image: url("../images/bg62.png"); }
+textarea.item63 { background-image: url("../images/bg63.png"); }
+textarea.item64 { background-image: url("../images/bg64.png"); }
+textarea.item65 { background-image: url("../images/bg65.png"); }
+textarea.item66 { background-image: url("../images/bg66.png"); }
+textarea.item67 { background-image: url("../images/bg67.png"); }
+textarea.item68 { background-image: url("../images/bg68.png"); }
+textarea.item69 { background-image: url("../images/bg69.png"); }
+textarea.item70 { background-image: url("../images/bg70.png"); }
+
+textarea.item71 { background-image: url("../images/bg71.png"); }
+textarea.item72 { background-image: url("../images/bg72.png"); }
+textarea.item73 { background-image: url("../images/bg73.png"); }
+textarea.item74 { background-image: url("../images/bg74.png"); }
+textarea.item75 { background-image: url("../images/bg75.png"); }
+textarea.item76 { background-image: url("../images/bg76.png"); }
+textarea.item77 { background-image: url("../images/bg77.png"); }
+textarea.item78 { background-image: url("../images/bg78.png"); }
+textarea.item79 { background-image: url("../images/bg79.png"); }
+textarea.item80 { background-image: url("../images/bg80.png"); }
+
+textarea.item81 { background-image: url("../images/bg81.png"); }
+textarea.item82 { background-image: url("../images/bg82.png"); }
+textarea.item83 { background-image: url("../images/bg83.png"); }
+textarea.item84 { background-image: url("../images/bg84.png"); }
+textarea.item85 { background-image: url("../images/bg85.png"); }
+textarea.item86 { background-image: url("../images/bg86.png"); }
+textarea.item87 { background-image: url("../images/bg87.png"); }
+textarea.item88 { background-image: url("../images/bg88.png"); }
+textarea.item89 { background-image: url("../images/bg89.png"); }
+textarea.item90 { background-image: url("../images/bg90.png"); }
+
+textarea.item91 { background-image: url("../images/bg91.png"); }
+textarea.item92 { background-image: url("../images/bg92.png"); }
+textarea.item93 { background-image: url("../images/bg93.png"); }
+textarea.item94 { background-image: url("../images/bg94.png"); }
+textarea.item95 { background-image: url("../images/bg95.png"); }
+textarea.item96 { background-image: url("../images/bg96.png"); }
+textarea.item97 { background-image: url("../images/bg97.png"); }
+textarea.item98 { background-image: url("../images/bg98.png"); }
+textarea.item99 { background-image: url("../images/bg99.png"); }
+
 .remarks {
   font-size: 13px;
   color: #666;
