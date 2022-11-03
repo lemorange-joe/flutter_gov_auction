@@ -45,8 +45,7 @@ class _HomePageState extends State<HomePage> {
             S.of(context).forceUpgradeContent,
             S.of(context).ok,
             () async {
-              // TODO(joe): check OS first, TBC!!!
-              await launchUrl(Uri.parse(config.appStoreUrl));
+              await launchUrl(Uri.parse(Platform.isIOS ? config.appStoreUrl : config.googlePlayUrl));
               exit(0);
             },
             isModal: true,

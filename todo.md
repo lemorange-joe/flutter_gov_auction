@@ -12,7 +12,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- favourite auction save descriptions in hive, do not query api when showing favourite list 
 - add hot search chip
 - add random data in API to prevent data theft
 

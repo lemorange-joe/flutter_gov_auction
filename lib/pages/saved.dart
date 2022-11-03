@@ -118,7 +118,6 @@ class SavedPage extends StatelessWidget {
   }
 
   Widget buildSavedAuctionListItem(BuildContext context, SavedAuction savedAuction) {
-    // TODO(joe): verify getDescription(lang) is working, cannot check using demo data
     final bool isLotPhoto = savedAuction.photoUrl.isNotEmpty && Uri.parse(savedAuction.photoUrl).isAbsolute;
     const String heroTagPrefix = 'saved';
 
