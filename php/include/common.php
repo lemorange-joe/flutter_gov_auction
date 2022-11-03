@@ -232,9 +232,9 @@ if (!function_exists('mysqli_result')) {
 }
 
 function CommonGetSearchKeyword($description, $lang) {
-  $bracketPos = strpos($description, "(");
-  $bracket2Pos = strpos($description, "（");
-  $commaPos = strpos($description, ",");
+  $bracketPos = mb_strpos($description, "(");
+  $bracket2Pos = mb_strpos($description, "（");
+  $commaPos = mb_strpos($description, ",");
   $pos = ($lang == "en" ? 255 : 60);
 
   if ($bracketPos !== false && $bracket2Pos !== false && $commaPos !== false) {
