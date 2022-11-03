@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已經推出"),
         "help": MessageLookupByLibrary.simpleMessage("幫助"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
+        "hotSearch": MessageLookupByLibrary.simpleMessage("熱門搜尋"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("項目詳情"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
         "loading": MessageLookupByLibrary.simpleMessage("載入中..."),
@@ -100,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜尋項目"),
+        "searchHistory": MessageLookupByLibrary.simpleMessage("搜尋記錄"),
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("加至收藏項目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("關閉"),

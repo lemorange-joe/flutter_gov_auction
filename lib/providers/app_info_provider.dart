@@ -41,4 +41,5 @@ class AppInfoProvider with ChangeNotifier {
   DateTime get lastUpdate => appInfo.lastUpdate;
   List<NoticeLink> get noticeLinkList => appInfo.noticeLinkList;
   List<PushMessage> get messageList => appInfo.messageList;
+  List<String> get hotSearchList => appInfo.hotSearchList;
 }

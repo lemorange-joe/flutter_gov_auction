@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../helpers/easter_egg_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
+import '../providers/app_info_provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -32,11 +34,12 @@ class _SearchPageState extends State<SearchPage> {
     if (EasterEggHelper.check(context, _searchKeyword)) {
       final ApiHelper apiHelper = ApiHelper();
       String developerGaucId = '';
-      final Map<String, dynamic> jsonResult = await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword}) as Map<String, dynamic>;
+      final Map<String, dynamic> jsonResult =
+          await apiHelper.post(S.of(context).lang, 'data', 'getDeveloperId', parameters: <String, dynamic>{'keyword': _searchKeyword}) as Map<String, dynamic>;
       if (jsonResult['dk'] != null) {
         developerGaucId = jsonResult['dk'] as String;
       }
-      
+
       await HiveHelper().writeDeveloper(developerGaucId);
     }
 
@@ -72,9 +75,16 @@ class _SearchPageState extends State<SearchPage> {
         final List<String> searchHistoryList = HiveHelper().getSearchHistoryList();
 
         return searchHistoryList.isEmpty
-            ? Text(S.of(context).noSearchHistory)
+            ? Container()
             : Column(
                 children: <Widget>[
+                  Text(
+                  S.of(context).searchHistory,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
                   ...searchHistoryList
                       .map((String searchHistory) => TextButton(
                             onPressed: () {
@@ -93,6 +103,47 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ],
               );
+      },
+    );
+  }
+
+  Widget _buildHotSearch() {
+    return Consumer<AppInfoProvider>(
+      builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+        return appInfo.hotSearchList.isEmpty
+            ? Container()
+            : Column(children: <Widget>[
+                Text(
+                  S.of(context).hotSearch,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                ...appInfo.hotSearchList
+                    .map((String keyword) => OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: _searchKeyword == keyword ? config.green : Theme.of(context).backgroundColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                            side: const BorderSide(color: config.green),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _searchKeyword = keyword;
+                            });
+                          },
+                          child: Text(
+                            keyword,
+                            style: TextStyle(
+                              color: _searchKeyword == keyword ? Colors.white : config.green,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ]);
       },
     );
   }
@@ -143,6 +194,8 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 10.0),
+              _buildHotSearch(),
               const SizedBox(height: 10.0),
               if (_searchKeyword.isEmpty) _buildRecentSearch() else _buildSearchResult(),
             ],

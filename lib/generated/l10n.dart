@@ -380,6 +380,16 @@ class S {
     );
   }
 
+  /// `Hot Search`
+  String get hotSearch {
+    return Intl.message(
+      'Hot Search',
+      name: 'hotSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Item Details`
   String get itemDetails {
     return Intl.message(
@@ -685,6 +695,16 @@ class S {
     return Intl.message(
       '(TBC)Search items',
       name: 'searchAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search History`
+  String get searchHistory {
+    return Intl.message(
+      'Search History',
+      name: 'searchHistory',
       desc: '',
       args: [],
     );

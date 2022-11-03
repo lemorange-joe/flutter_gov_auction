@@ -2,19 +2,23 @@ import 'package:intl/intl.dart';
 // import 'package:logger/logger.dart';
 
 class AppInfo {
-  AppInfo(this.forceUpgrade, this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList);
+  AppInfo(this.forceUpgrade, this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList, this.hotSearchList);
 
   factory AppInfo.fromJson(Map<String, dynamic> json) {
     final List<NoticeLink> noticeLinkList = <NoticeLink>[];
     final List<PushMessage> messageList = <PushMessage>[];
     final Map<String, String> itemTypeMap = <String, String>{};
 
-    for (final dynamic jsonNoticeLink in json['nll'] as List<dynamic>) {
-      noticeLinkList.add(NoticeLink.fromJson(jsonNoticeLink as Map<String, dynamic>));
+    if (json['nll'] != null) {
+      for (final dynamic jsonNoticeLink in json['nll'] as List<dynamic>) {
+        noticeLinkList.add(NoticeLink.fromJson(jsonNoticeLink as Map<String, dynamic>));
+      }
     }
 
-    for (final dynamic jsonMsg in json['ml'] as List<dynamic>) {
-      messageList.add(PushMessage.fromJson(jsonMsg as Map<String, dynamic>));
+    if (json['ml'] != null) {
+      for (final dynamic jsonMsg in json['ml'] as List<dynamic>) {
+        messageList.add(PushMessage.fromJson(jsonMsg as Map<String, dynamic>));
+      }
     }
 
     (json['itm'] as Map<String, dynamic>).forEach((String key, dynamic val) {
@@ -29,11 +33,12 @@ class AppInfo {
       noticeLinkList,
       messageList,
       itemTypeMap,
+      json['hsl'] == null ? <String>[] : json['hsl'] as List<String>,
     );
   }
 
   factory AppInfo.empty() {
-    return AppInfo(true, '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{});
+    return AppInfo(true, '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{}, <String>[]);
   }
 
   final bool forceUpgrade;
@@ -43,6 +48,7 @@ class AppInfo {
   final List<NoticeLink> noticeLinkList;
   final List<PushMessage> messageList;
   final Map<String, String> itemTypeList;
+  final List<String> hotSearchList;
 }
 
 class NoticeLink {

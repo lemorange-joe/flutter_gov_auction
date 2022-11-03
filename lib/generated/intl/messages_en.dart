@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Latest app available"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "hotSearch": MessageLookupByLibrary.simpleMessage("Hot Search"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
@@ -110,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
+        "searchHistory": MessageLookupByLibrary.simpleMessage("Search History"),
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("add to saved items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
