@@ -33,7 +33,7 @@ class AppInfo {
       noticeLinkList,
       messageList,
       itemTypeMap,
-      json['hsl'] == null ? <String>[] : json['hsl'] as List<String>,
+      json['hsl'] == null ? <String>[] : List<String>.from(json['hsl'] as List<dynamic>),
     );
   }
 
