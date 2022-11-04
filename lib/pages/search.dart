@@ -79,12 +79,12 @@ class _SearchPageState extends State<SearchPage> {
             : Column(
                 children: <Widget>[
                   Text(
-                  S.of(context).searchHistory,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+                    S.of(context).searchHistory,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                   ...searchHistoryList
                       .map((String searchHistory) => TextButton(
                             onPressed: () {
@@ -112,38 +112,51 @@ class _SearchPageState extends State<SearchPage> {
       builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
         return appInfo.hotSearchList.isEmpty
             ? Container()
-            : Column(children: <Widget>[
-                Text(
-                  S.of(context).hotSearch,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                ...appInfo.hotSearchList
-                    .map((String keyword) => OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: _searchKeyword == keyword ? config.green : Theme.of(context).backgroundColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+            : Column(
+                children: <Widget>[
+                  Text(
+                    S.of(context).hotSearch,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Wrap(
+                      children: appInfo.hotSearchList
+                          .map(
+                            (String keyword) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _searchKeyword == keyword ? config.green : Theme.of(context).backgroundColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                  side: const BorderSide(color: config.green),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _searchKeyword = keyword;
+                                  });
+                                },
+                                child: Text(
+                                  keyword,
+                                  style: TextStyle(
+                                    color: _searchKeyword == keyword ? Colors.white : config.green,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
                             ),
-                            side: const BorderSide(color: config.green),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _searchKeyword = keyword;
-                            });
-                          },
-                          child: Text(
-                            keyword,
-                            style: TextStyle(
-                              color: _searchKeyword == keyword ? Colors.white : config.green,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ]);
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              );
       },
     );
   }
