@@ -4,17 +4,20 @@ import 'package:clear_all_notifications/clear_all_notifications.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/app_info.dart';
+import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/easter_egg_helper.dart';
 import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
+import '../helpers/reminder_helper.dart';
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
@@ -78,6 +81,8 @@ class _DebugPageState extends State<DebugPage> {
                 ...buildAuctionSection(context),
                 const Divider(),
                 ...buildHiveSection(context),
+                const Divider(),
+                ...buildReminderSection(context),
                 const Divider(),
                 ...buildPushSection(context),
                 const Divider(),
@@ -306,6 +311,100 @@ class _DebugPageState extends State<DebugPage> {
         },
         style: ElevatedButton.styleFrom(backgroundColor: Colors.purple[300]),
         child: const Text('Clear saved auction'),
+      ),
+    ];
+  }
+
+  List<Widget> buildReminderSection(BuildContext context) {
+    return <Widget>[
+      const Text(
+        'Reminder',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      Row(
+        children: <Widget>[
+          Expanded(child: Container()),
+          const Expanded(child: Text('Auction Reminder')),
+          Expanded(
+            child: TextButton(
+              onPressed: () {
+                final AuctionReminder reminder = AuctionReminder(
+                  1234,
+                  DateTime.now().add(const Duration(seconds: 5)),
+                  1,
+                  DateTime.now(),
+                  'C-401',
+                  'fontawesome.box',
+                  '',
+                  'description EN',
+                  'description TC',
+                  'description SC',
+                );
+
+                ReminderHelper().addNotification(reminder);
+                HiveHelper().writeAuctionReminder(reminder);
+              },
+              child: Icon(
+                MdiIcons.plusBox,
+                color: Colors.green[700],
+              ),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 5.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: ValueListenableBuilder<Box<AuctionReminder>>(
+          valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+          builder: (BuildContext context, _, __) {
+            final String lang = S.of(context).lang;
+            return Column(
+              children: HiveHelper()
+                  .getAuctionReminderList()
+                  .map((AuctionReminder reminder) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            reminder.remindTime.toString().replaceAll(' ', '\n'),
+                            style: const TextStyle(fontSize: 10.0),
+                          ),
+                          const SizedBox(width: 5.0),
+                          Expanded(
+                            child: Text(
+                              '(${reminder.lotId}) ${reminder.lotNum}: ${reminder.getDescription(lang)}',
+                            ),
+                          ),
+                          const SizedBox(width: 5.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              ReminderHelper().removeNotification(reminder.lotId);
+                              HiveHelper().deleteAuctionReminder(reminder.lotId);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[600],
+                            ),
+                            child: const Icon(MdiIcons.trashCanOutline),
+                          ),
+                        ],
+                      ))
+                  .toList(),
+            );
+          },
+        ),
+      ),
+      const SizedBox(height: 5.0),
+      ElevatedButton(
+        onPressed: () async {
+          await ReminderHelper().removeAllNotification();
+          await HiveHelper().clearAllAuctionReminder();
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.green[400]),
+        child: const Text(
+          'Clear all reminders\n(from hive and local notifications)',
+          textAlign: TextAlign.center,
+        ),
       ),
     ];
   }

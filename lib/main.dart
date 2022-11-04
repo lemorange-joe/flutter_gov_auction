@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
@@ -16,6 +17,7 @@ import './generated/l10n.dart';
 import './helpers/firebase_analytics_helper.dart';
 import './helpers/hive_helper.dart';
 import './helpers/notification_helper.dart';
+import './helpers/reminder_helper.dart';
 import './includes/global.dart';
 import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
@@ -23,6 +25,13 @@ import './providers/auction_provider.dart';
 import './providers/init_value.dart';
 import './providers/lemorange_app_provider.dart';
 import './routes.dart';
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'Auction channel', // id
+  'High Importance Notifications', // title
+  importance: Importance.max,
+);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class MyHttpOverrides extends HttpOverrides{
   @override
@@ -44,8 +53,11 @@ void main() async {
 
   await NotificationHelper().init();
   NotificationHelper().listenForegroundMessage();
+  await ReminderHelper().init();
   // have to set onBackgroundMessage as top level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
 
   await ClearAllNotifications.clear();
 

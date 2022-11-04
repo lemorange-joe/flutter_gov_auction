@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "孩論腳定，腦告便過面了面樂的子地園響注。多界停看國題的史急文麼密李嚴來傳期入也開喜足飯也，很命的重和我麼養畫，天特務中到更西動金制就將方年人運朋計！"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (HK)"),
         "auctionList": MessageLookupByLibrary.simpleMessage("拍賣列表"),
+        "auctionReminder": MessageLookupByLibrary.simpleMessage("拍賣提醒"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜尋記錄"),
         "confirmDeleteAllSavedItems":

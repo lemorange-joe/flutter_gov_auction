@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../class/auction_reminder.dart';
 import '../generated/l10n.dart';
+import '../helpers/hive_helper.dart';
+import '../helpers/reminder_helper.dart';
 import '../includes/config.dart' as config;
 
 class ReminderPage extends StatelessWidget {
@@ -25,8 +29,44 @@ class ReminderPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Text(S.of(context).reminder),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: ValueListenableBuilder<Box<AuctionReminder>>(
+            valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+            builder: (BuildContext context, _, __) {
+              final String lang = S.of(context).lang;
+              return Column(
+                children: HiveHelper()
+                    .getAuctionReminderList()
+                    .map((AuctionReminder reminder) => Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              reminder.remindTime.toString().replaceAll(' ', '\n'),
+                              style: const TextStyle(fontSize: 10.0),
+                            ),
+                            const SizedBox(width: 5.0),
+                            Expanded(
+                              child: Text(
+                                '(${reminder.lotId}) ${reminder.lotNum}: ${reminder.getDescription(lang)}',
+                              ),
+                            ),
+                            const SizedBox(width: 5.0),
+                            ElevatedButton(
+                              onPressed: () {
+                                ReminderHelper().removeNotification(reminder.lotId);
+                                HiveHelper().deleteAuctionReminder(reminder.lotId);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green[600],
+                              ),
+                              child: const Icon(MdiIcons.trashCanOutline),
+                            ),
+                          ],
+                        ))
+                    .toList(),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -150,6 +150,16 @@ class S {
     );
   }
 
+  /// `Auction Reminder`
+  String get auctionReminder {
+    return Intl.message(
+      'Auction Reminder',
+      name: 'auctionReminder',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get cancel {
     return Intl.message(

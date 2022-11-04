@@ -12,7 +12,8 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- update hot search chip
+- check notification channel names
+- test local notification reminder in ios
 - add random data in API to prevent data theft
 
 ## Deliverables:

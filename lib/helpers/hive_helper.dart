@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 // import 'package:logger/logger.dart';
+import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
@@ -16,6 +17,7 @@ class HiveHelper {
   static final Box<String> _historyBox = Hive.box<String>('history');
   static final Box<String> _searchHistoryBox = Hive.box<String>('search_history');
   static final Box<SavedAuction> _savedAuctionBox = Hive.box<SavedAuction>('saved_auction');
+  static final Box<AuctionReminder> _reminderBox = Hive.box<AuctionReminder>('reminder');
   static final Box<String> _logBox = Hive.box<String>('log');
 
   static bool _enableLog = false;
@@ -23,6 +25,7 @@ class HiveHelper {
 
   Future<void> init(String path, bool enableLog) async {
     Hive.registerAdapter(SavedAuctionAdapter());
+    Hive.registerAdapter(AuctionReminderAdapter());
 
     Hive.init(path);
     _enableLog = enableLog;
@@ -32,6 +35,7 @@ class HiveHelper {
     await Hive.openBox<String>('history');
     await Hive.openBox<String>('search_history');
     await Hive.openBox<SavedAuction>('saved_auction');
+    await Hive.openBox<AuctionReminder>('reminder');
     if (_enableLog) {
       await Hive.openBox<String>('log');
     }
@@ -185,6 +189,30 @@ class HiveHelper {
     _savedAuctionBox.clear();
   }
   // saved auction box:
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // reminder box:
+  Future<void> writeAuctionReminder(AuctionReminder reminder) async {
+    await _reminderBox.put(reminder.lotId, reminder);
+  }
+
+  List<AuctionReminder> getAuctionReminderList() {
+    return _reminderBox.values.toList();
+  }
+
+  List<int> getAuctionReminderIdList() {
+    return _reminderBox.values.map((AuctionReminder reminder) => reminder.lotId).toList();
+  }
+
+  Future<void> deleteAuctionReminder(int lotId) async {
+    _reminderBox.delete(lotId);
+  }
+
+  Future<void> clearAllAuctionReminder() async {
+    _reminderBox.clear();
+  }
+  // reminder box
   // --------------------------------------------
 
   // --------------------------------------------
