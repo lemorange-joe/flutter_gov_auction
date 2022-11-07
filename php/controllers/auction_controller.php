@@ -170,7 +170,7 @@ class AuctionController {
                       ELSE I.inspection_day
                     END";
       $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId))->GetRows();
-      $rowNum = count($inspectionDateList);
+      $rowNum = count($inspectionDateResult);
 
       $inspectionDateList = array();
       for($i = 0; $i < $rowNum; ++$i) {
