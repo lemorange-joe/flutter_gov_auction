@@ -145,6 +145,127 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  function getLot($param) {
+    global $conn, $lang, $isDeveloper;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    $lotId = !empty($param) && is_array($param) ? intval($param[0]) : 0;
+
+    try {
+      if ($lotId == 0) {
+        $output->message = "Invalid id!";
+        echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        return;
+      }
+
+      // select inspection dates first
+      $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+                    FROM InspectionDate I
+                    INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
+                    WHERE L.lot_id = ?
+                    ORDER BY CASE
+                      WHEN I.inspection_day = 7 THEN 0
+                      ELSE I.inspection_day
+                    END";
+      $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId))->GetRows();
+      $rowNum = count($inspectionDateList);
+
+      $inspectionDateList = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $inspectionDateList[] = new InspectionDate(
+          $inspectionDateResult[$i]["inspection_day"],
+          $inspectionDateResult[$i]["inspection_start_time"],
+          $inspectionDateResult[$i]["inspection_end_time"],
+        );
+      }
+
+      // select the auction lot and items
+      $selectSql = "SELECT
+                      L.lot_id, T.code, L.lot_num, 
+                      L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
+                      L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
+                      L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author_$lang as 'photo_author', L.photo_author_url,
+                      L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
+                      I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE L.lot_id = ? AND (A.status = ? OR (1 = ? AND A.status = ?)) AND (L.status = ? OR (1 = ? AND L.status = ?))
+                    ORDER BY I.seq";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(
+        $lotId, Status::Active, $isDeveloper, Status::Pending, Status::Active, $isDeveloper, Status::Pending
+      ))->GetRows();
+      
+      if (count($result) == 0) {
+        $output->message = "Lot ID not found!";
+        echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        return;
+      }
+                
+      $photoUrl = $result[0]["photo_url"];
+      if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+        $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+      }
+
+      $auctionLot = new AuctionLot(
+        intval($result[0]["lot_id"]),
+        $result[0]["code"],
+        $result[0]["lot_num"],
+        $result[0]["gld_file_ref"],
+        $result[0]["reference"],
+        $result[0]["department"],
+        $result[0]["contact"],
+        $result[0]["number"],
+        $result[0]["location"],
+        $result[0]["remarks"],
+        $result[0]["item_condition"],
+        $result[0]["featured"],
+        $result[0]["lot_icon"],
+        $photoUrl,
+        $result[0]["photo_real"],
+        $result[0]["photo_author"],
+        $result[0]["photo_author_url"],
+        $result[0]["description_en"],
+        $result[0]["description_tc"],
+        $result[0]["description_sc"],
+        $result[0]["transaction_currency"],
+        $result[0]["transaction_price"],
+        $result[0]["transaction_status"],
+        $result[0]["status"],
+        $result[0]["last_update"],
+        0,
+      );
+
+      $rowNum = count($result);
+      $itemList = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $itemList[] = new AuctionItem(
+          intval($result[$i]["item_id"]),
+          $result[$i]["item_icon"],
+          $result[$i]["description"],
+          $result[$i]["quantity"],
+          $result[$i]["unit"],
+          0,
+        );
+      }
+
+      $auctionLot->inspectionDateList = $inspectionDateList;
+      $auctionLot->itemList = $itemList;
+      
+      $output->status = "success";
+      $output->data = $auctionLot;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
+
   function relatedLots($param) {
     // pre: $lotId, $page (starting from 1)
     // use $logId to search lots in other auctions that have any same auction items
@@ -396,11 +517,10 @@ class AuctionController {
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author_$lang as 'photo_author', L.photo_author_url,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
-                  FROM Auction A
-                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  FROM AuctionLot L
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE A.auction_id = ? AND (L.status = ? OR (1 = ? OR L.status = ?))
+                  WHERE L.auction_id = ? AND (L.status = ? OR (1 = ? AND L.status = ?))
                   ORDER BY L.lot_num, I.seq";
 
     $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $isDeveloper, Status::Pending))->GetRows();

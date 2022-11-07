@@ -2,14 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import '../class/auction.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
+import '../providers/auction_provider.dart';
 import '../widgets/common/dialog.dart';
 import '../widgets/ui/image_loading_skeleton.dart';
 
@@ -36,7 +39,7 @@ class SavedPage extends StatelessWidget {
               valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
               builder: (BuildContext context, _, __) {
                 final bool deleteAllEnabled = HiveHelper().getSavedAuctionList().isNotEmpty;
-                
+
                 return IconButton(
                   onPressed: deleteAllEnabled
                       ? () async {
@@ -119,21 +122,21 @@ class SavedPage extends StatelessWidget {
 
   Widget buildSavedAuctionListItem(BuildContext context, SavedAuction savedAuction) {
     final bool isLotPhoto = savedAuction.photoUrl.isNotEmpty && Uri.parse(savedAuction.photoUrl).isAbsolute;
-    const String heroTagPrefix = 'saved';
+    const String heroTagPrefix = 'saved_';
 
     return SizedBox(
       height: 150.0 * MediaQuery.of(context).textScaleFactor,
       child: ListTile(
         onTap: () {
-          Logger().d('tapped: ${savedAuction.lotNum}');
-          // TODO(joe): fix auctionLot parameter, TBC
-          // Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
-          //   'title': S.of(context).itemDetails,
-          //   'heroTagPrefix': heroTagPrefix,
-          //   'auctionId': savedAuction.auctionId,
-          //   'auctionDate': savedAuction.auctionDate,
-          //   'auctionLot': curLot,
-          // });
+          Provider.of<AuctionProvider>(context, listen: false).getAuctionLot(savedAuction.lotId, S.of(context).lang).then((AuctionLot curLot) {
+            Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
+              'title': S.of(context).itemDetails,
+              'heroTagPrefix': heroTagPrefix,
+              'auctionId': savedAuction.auctionId,
+              'auctionDate': savedAuction.auctionDate,
+              'auctionLot': curLot,
+            });
+          });
         },
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

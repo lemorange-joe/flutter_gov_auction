@@ -66,15 +66,14 @@ class AuctionProvider with ChangeNotifier {
     initialShowFeatured = true;
     curAuction = latestAuction;
     loadedDetails = true;
-    
+
     notifyListeners();
   }
 
   Future<Auction> getAuctionDetails(int auctionId, String lang) async {
     final ApiHelper apiHelper = ApiHelper();
     try {
-      final Map<String, dynamic> json =
-          await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()]) as Map<String, dynamic>;
+      final Map<String, dynamic> json = await apiHelper.get(lang, 'auction', 'details', urlParameters: <String>[auctionId.toString()]) as Map<String, dynamic>;
 
       final List<dynamic> jsonItemPdfList = json['ipl'] as List<dynamic>;
       final List<dynamic> jsonLotList = json['ll'] as List<dynamic>;
@@ -116,5 +115,19 @@ class AuctionProvider with ChangeNotifier {
     if (curAuction.id > 0) {
       getAuctionDetails(curAuction.id, lang);
     }
+  }
+
+  Future<AuctionLot> getAuctionLot(int lotId, String lang) async {
+    final ApiHelper apiHelper = ApiHelper();
+
+    try {
+      final Map<String, dynamic> json = await apiHelper.get(lang, 'auction', 'getLot', urlParameters: <String>[lotId.toString()]) as Map<String, dynamic>;
+      return AuctionLot.fromJson(json, lang);
+    } catch (e) {
+      Logger().e(e.toString());
+      HiveHelper().writeLog('[Auction] ${e.toString()}');
+    }
+
+    return AuctionLot.empty();
   }
 }
