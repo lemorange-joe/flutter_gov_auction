@@ -551,7 +551,7 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
-  function updateAuctionLotFeatured(){
+  function updateAuctionLotFeatured() {
     global $conn;
 
     $output = new stdClass();
@@ -576,7 +576,44 @@ class AdminController {
       $selectSql = "SELECT last_update FROM AuctionLot WHERE lot_id = ?";
       $result = $conn->Execute($selectSql, array($lotId))->GetRows();
 
-      if (Count($result) > 0) {
+      if (count($result) > 0) {
+        $output->status = "success";
+        $output->data = $result[0]['last_update'];
+      }      
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+    
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function updateAuctionLotIcon() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["lot_id"]) || empty($data["lot_id"]) || !ctype_digit($data["lot_id"])) {
+        throw new Exception("Lot ID missing!");  
+      }
+      if (!isset($data["icon"])) {
+        throw new Exception("Icon missing!");  
+      }
+      
+      $lotId = intval($data["lot_id"]);
+      $icon = $data["icon"];
+      
+      $updateSql = "UPDATE AuctionLot SET icon = ?, last_update = now() WHERE lot_id = ?";
+      $result = $conn->Execute($updateSql, array($icon, $lotId));
+
+      $selectSql = "SELECT last_update FROM AuctionLot WHERE lot_id = ?";
+      $result = $conn->Execute($selectSql, array($lotId))->GetRows();
+
+      if (count($result) > 0) {
         $output->status = "success";
         $output->data = $result[0]['last_update'];
       }      
@@ -1289,6 +1326,77 @@ class AdminController {
       
       $output[] = $keywordImage;
     }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  function listLotIcon($param) {
+    global $conn;
+
+    // $param: <auction id>-<show all>-<keyword>-<page no.>
+    // e.g.
+    // 3-N-車-2
+    // 0-Y-12
+    // 7-Y-car
+    $auctionId = 0;
+    $showAll = false;
+    $keyword = "";
+    $page = 1;
+    $pageSize = 50;
+
+    if (isset($param) && is_array($param)) {
+      $auctionId = intval($param[0]);
+      $showAll = strtoupper($param[1]) == "Y";
+      if (ctype_digit($param[2])) {
+        $page = intval($param[2]);
+      } else {
+        $keyword = trim($param[2]);
+        $page = count($param) == 4 ? intval($param[3]) : 1;
+      }
+    }
+
+    $selectSql = "SELECT
+                    A.start_time, L.lot_id, L.lot_num, L.featured, L.icon, L.description_en, L.description_tc, A.status as 'auction_status', L.status
+                  FROM Auction A
+                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND 
+                        (L.description_en LIKE ? OR L.description_tc LIKE ?)
+                  ORDER BY A.auction_id DESC, L.lot_num
+                  LIMIT ?, ?";
+
+    $result = $conn->Execute($selectSql, array(
+      $auctionId, $auctionId, $showAll ? 1 : 0, $keyword."%", $keyword."%", ($page-1)*$pageSize, $pageSize
+    ))->GetRows();
+    $rowNum = count($result);
+
+    $lotList = array();
+    for($i = 0; $i < $rowNum; ++$i) {
+      $lot = new stdClass();
+      $lot->start_time = $result[$i]["start_time"];
+      $lot->lot_id = $result[$i]["lot_id"];
+      $lot->lot_num = $result[$i]["lot_num"];
+      $lot->featured = $result[$i]["featured"];
+      $lot->icon = $result[$i]["icon"];
+      $lot->description_en = $result[$i]["description_en"];
+      $lot->description_tc = $result[$i]["description_tc"];
+      $lot->auction_status = $result[$i]["auction_status"];
+      $lot->status = $result[$i]["status"];
+      
+      $lotList[] = $lot;
+    }
+
+    // using count(*) again is faster and more compatible than SQL_CALC_FOUND_ROWS() and FOUND_ROWS()
+    $selectSql = "SELECT COUNT(*) as 'total'
+                  FROM Auction A
+                  INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND 
+                        (L.description_en LIKE ? OR L.description_tc LIKE ?)";
+    $result = $conn->Execute($selectSql, array($auctionId, $auctionId, $showAll ? 1 : 0, $keyword."%", $keyword."%"))->GetRows();
+    $total = $result[0]["total"];
+
+    $output = new StdClass();
+    $output->lot_list = $lotList;
+    $output->total = $total;
 
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
