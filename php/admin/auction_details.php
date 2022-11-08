@@ -416,9 +416,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var lotIcon = document.getElementById("tbLotIcon_"+lotIndex).value;
         var photoUrl = document.getElementById("tbPhotoUrl_"+lotIndex).value;
         var photoReal = document.getElementById("chkPhotoReal_"+lotIndex).checked ? 1 : 0;
-        var photoAuthorEn = document.getElementById("tbPhotoAuthorEn_"+lotIndex).value;
-        var photoAuthorTc = document.getElementById("tbPhotoAuthorTc_"+lotIndex).value;
-        var photoAuthorSc = document.getElementById("tbPhotoAuthorSc_"+lotIndex).value;
+        var photoAuthor = document.getElementById("tbPhotoAuthor_"+lotIndex).value;
         var photoAuthorUrl = document.getElementById("tbPhotoAuthorUrl_"+lotIndex).value;
         var tranCurrency = document.getElementById("tbTranCurrency"+lotIndex).value;
         var tranPrice = document.getElementById("tbTranPrice_"+lotIndex).value;
@@ -483,9 +481,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           lot_icon: lotIcon,
           photo_url: photoUrl,
           photo_real: photoReal,
-          photo_author_en: photoAuthorEn,
-          photo_author_tc: photoAuthorTc,
-          photo_author_sc: photoAuthorSc,
+          photo_author: photoAuthor,
           photo_author_url: photoAuthorUrl,
           transaction_currency: tranCurrency,
           transaction_price: tranPrice,
@@ -531,9 +527,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var lotIcon = "fontawesome.box";
         var photoUrl = "";
         var photoReal = false;
-        var photoAuthorEn = "";
-        var photoAuthorTc = "";
-        var photoAuthorSc = "";
+        var photoAuthor = "";
         var photoAuthorUrl = "";
 
         var transactionCurrency = "HKD";
@@ -579,9 +573,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           lotIcon = lotData["lot_icon"];
           photoUrl = lotData["photo_url"];
           photoReal = lotData["photo_real"];
-          photoAuthorEn = lotData["photo_author_en"];
-          photoAuthorTc = lotData["photo_author_tc"];
-          photoAuthorSc = lotData["photo_author_sc"];
+          photoAuthor = lotData["photo_author"];
           photoAuthorUrl = lotData["photo_author_url"];
           transactionCurrency = lotData["transaction_currency"];
           transactionPrice = lotData["transaction_price"];
@@ -649,9 +641,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
               divHtml += "<input id='tbPhotoUrl_" + i + "' style='width:490px' value='" + photoUrl.replace("'", '"') + "'>";
             divHtml += "</div>";
           divHtml += "</div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Author (EN)</div><input id='tbPhotoAuthorEn_" + i + "' style='width:200px' value='" + photoAuthorEn.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Author (TC)</div><input id='tbPhotoAuthorTc_" + i + "' style='width:200px' value='" + photoAuthorTc.replace("'", '"') + "'></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Author (SC)</div><input id='tbPhotoAuthorSc_" + i + "' style='width:200px' value='" + photoAuthorSc.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'>Author</div><input id='tbPhotoAuthor_" + i + "' style='width:200px' value='" + photoAuthor.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Author Url</div><input id='tbPhotoAuthorUrl_" + i + "' style='width:499px' value='" + photoAuthorUrl.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Photo Real</div><input id='chkPhotoReal_" + i + "' type='checkbox' " + (photoReal ? "checked" : "") + "></div>";
           divHtml += "<div style='height:10px'></div>";
@@ -832,9 +822,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
             if (jsonData && jsonData.length > 0) {
               var rndIndex = Math.floor(Math.random() * jsonData.length);
               document.getElementById("tbPhotoUrl_"+i).value = jsonData[rndIndex]['image_url'];
-              document.getElementById("tbPhotoAuthorEn_"+i).value = jsonData[rndIndex]['author_en'];
-              document.getElementById("tbPhotoAuthorTc_"+i).value = jsonData[rndIndex]['author_tc'];
-              document.getElementById("tbPhotoAuthorSc_"+i).value = jsonData[rndIndex]['author_sc'];
+              document.getElementById("tbPhotoAuthor_"+i).value = jsonData[rndIndex]['author'];
               document.getElementById("tbPhotoAuthorUrl_"+i).value = jsonData[rndIndex]['author_url'];
             } else {
               alert(keywordEn + ", " + keywordTc + " image not found!");

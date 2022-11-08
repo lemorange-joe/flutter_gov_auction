@@ -144,7 +144,7 @@ class AdminController {
                     location_en, location_tc, location_sc, L.remarks_en, L.remarks_tc, L.remarks_sc,
                     item_condition_en, item_condition_tc, item_condition_sc,
                     L.description_en as 'lot_description_en', L.description_tc as 'lot_description_tc', L.description_sc as 'lot_description_sc',
-                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author_en, L.photo_author_tc, L.photo_author_sc, L.photo_author_url, 
+                    L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author, L.photo_author_url, 
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_en, I.description_tc, I.description_sc,
                     I.quantity, I.unit_en, I.unit_tc, I.unit_sc
@@ -217,9 +217,7 @@ class AdminController {
         $curLotOutput->lot_icon = $result[$i]["lot_icon"];
         $curLotOutput->photo_url = $result[$i]["photo_url"];
         $curLotOutput->photo_real = $result[$i]["photo_real"];
-        $curLotOutput->photo_author_en = $result[$i]["photo_author_en"];
-        $curLotOutput->photo_author_tc = $result[$i]["photo_author_tc"];
-        $curLotOutput->photo_author_sc = $result[$i]["photo_author_sc"];
+        $curLotOutput->photo_author = $result[$i]["photo_author"];
         $curLotOutput->photo_author_url = $result[$i]["photo_author_url"];
 
         $curLotOutput->transaction_currency = $result[$i]["transaction_currency"];
@@ -466,7 +464,7 @@ class AdminController {
                         item_condition_en, item_condition_tc, item_condition_sc,
                         description_en, description_tc, description_sc,
                         featured, icon, photo_url, photo_real,
-                        photo_author_en, photo_author_tc, photo_author_sc, photo_author_url, 
+                        photo_author, photo_author_url, 
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       ) VALUES (
@@ -476,7 +474,7 @@ class AdminController {
                         ?, ?, ?, 
                         ?, ?, ?,
                         0, 'fontawesome.box', ?, 0,
-                        ?, ?, ?, ?, 
+                        ?, ?, 
                         '', 0, ?,
                         ?, now()
                       )";
@@ -488,7 +486,7 @@ class AdminController {
           $itemConditionEn, $itemConditionTc, $itemConditionSc,
           $descriptionEn, $descriptionTc, $descriptionSc, 
           $keywordPhotoAuthor->photoUrl,
-          $keywordPhotoAuthor->authorEn, $keywordPhotoAuthor->authorTc, $keywordPhotoAuthor->authorSc, $keywordPhotoAuthor->authorUrl, 
+          $keywordPhotoAuthor->author, $keywordPhotoAuthor->authorUrl, 
           TransactionStatus::NotSold,
           Status::Active
         ));
@@ -666,7 +664,7 @@ class AdminController {
                         item_condition_en, item_condition_tc, item_condition_sc,
                         description_en, description_tc, description_sc,
                         featured, icon, photo_url, photo_real, 
-                        photo_author_en, photo_author_tc, photo_author_sc, photo_author_url,  
+                        photo_author, photo_author_url,  
                         transaction_currency, transaction_price, transaction_status,
                         status, last_update
                       ) 
@@ -676,7 +674,7 @@ class AdminController {
                       ?, ?, ?, 
                       ?, ?, ?, 
                       ?, ?, ?, ?, 
-                      ?, ?, ?, ?, 
+                      ?, ?, 
                       ?, ?, ?,
                       ?, now()
                       FROM ItemType I
@@ -689,7 +687,7 @@ class AdminController {
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
           $descriptionEn, $descriptionTc, $descriptionSc, 
           intval($data["featured"]), trim($data["lot_icon"]), trim($data["photo_url"]), intval($data["photo_real"]), 
-          trim($data["photo_author_en"]), trim($data["photo_author_tc"]), trim($data["photo_author_sc"]), trim($data["photo_author_url"]), 
+          trim($data["photo_author"]), trim($data["photo_author_url"]), 
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]), trim($data["item_code"])
         ));
@@ -707,7 +705,7 @@ class AdminController {
                         item_condition_en = ?, item_condition_tc = ?, item_condition_sc = ?,
                         description_en = ?, description_tc = ?, description_sc = ?, 
                         featured = ?, icon = ?, photo_url = ?, photo_real = ?,
-                        photo_author_en = ?, photo_author_tc = ?, photo_author_sc = ?, photo_author_url = ?, 
+                        photo_author = ?, photo_author_url = ?, 
                         transaction_currency = ?, transaction_price = ?, transaction_status = ?,
                         status = ?, last_update = now()
                       WHERE lot_id = ?;";
@@ -723,7 +721,7 @@ class AdminController {
           trim($data["item_condition_en"]), trim($data["item_condition_tc"]), trim($data["item_condition_sc"]),
           $descriptionEn, $descriptionTc, $descriptionSc,
           $data["featured"], trim($data["lot_icon"]), trim($data["photo_url"]), $data["photo_real"],
-          $data["photo_author_en"], $data["photo_author_tc"], $data["photo_author_sc"], $data["photo_author_url"],
+          $data["photo_author"], $data["photo_author_url"],
           trim($data["transaction_currency"]), trim($data["transaction_price"]), trim($data["transaction_status"]),
           trim($data["status"]),
           $lotId
@@ -1279,22 +1277,22 @@ class AdminController {
 
   private function getKeywordPhotoAuthor($keywordEn, $keywordTc) {
     if (empty($keywordEn) && empty($keywordTc)) {
-      return new KeywordPhotoAuthor("", "", "", "", "");
+      return new KeywordPhotoAuthor("", "", "");
     }
 
     global $conn;
 
-    $selectSql = "SELECT image_url, author_en, author_tc, author_sc, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
+    $selectSql = "SELECT image_url, author, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
 
     $result = $conn->Execute($selectSql, array("%".$keywordEn."%", "%".$keywordTc."%"))->GetRows();
     $rowNum = count($result);
 
     if ($rowNum == 0) {
-      return new KeywordPhotoAuthor("", "", "", "", "");
+      return new KeywordPhotoAuthor("", "", "");
     }
 
     $randIndex = rand(0, $rowNum - 1);
-    return new KeywordPhotoAuthor($result[$randIndex]["image_url"], $result[$randIndex]["author_en"], $result[$randIndex]["author_tc"], $result[$randIndex]["author_sc"], $result[$randIndex]["author_url"]);
+    return new KeywordPhotoAuthor($result[$randIndex]["image_url"], $result[$randIndex]["author"], $result[$randIndex]["author_url"]);
   }
 
   function listKeywordImage($param) {
@@ -1303,7 +1301,7 @@ class AdminController {
     $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
 
     $selectSql = "SELECT
-                    keyword_image_id, keyword_en, keyword_tc, image_url, author_en, author_tc, author_sc, author_url
+                    keyword_image_id, keyword_en, keyword_tc, image_url, author, author_url
                   FROM KeywordImage
                   WHERE ? = '' OR keyword_en LIKE ? OR keyword_tc LIKE ?";
 
@@ -1319,9 +1317,7 @@ class AdminController {
       $keywordImage->keyword_en = $result[$i]["keyword_en"];
       $keywordImage->keyword_tc = $result[$i]["keyword_tc"];
       $keywordImage->image_url = $result[$i]["image_url"];
-      $keywordImage->author_en = $result[$i]["author_en"];
-      $keywordImage->author_tc = $result[$i]["author_tc"];
-      $keywordImage->author_sc = $result[$i]["author_sc"];
+      $keywordImage->author = $result[$i]["author"];
       $keywordImage->author_url = $result[$i]["author_url"];
       
       $output[] = $keywordImage;
@@ -1415,7 +1411,7 @@ class AdminController {
     
     $output = array();
     if (!empty($keywordEn) || !empty($keywordTc)) {
-      $selectSql = "SELECT image_url, author_en, author_tc, author_sc, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
+      $selectSql = "SELECT image_url, author, author_url FROM KeywordImage WHERE keyword_en LIKE ? OR keyword_tc LIKE ?";
 
       $result = $conn->Execute($selectSql, array("%".$keywordEn."%", "%".$keywordTc."%"))->GetRows();
       $rowNum = count($result);
@@ -1423,9 +1419,7 @@ class AdminController {
       for($i = 0; $i < $rowNum; ++$i) {
         $imageKeyword = new StdClass();
         $imageKeyword->image_url = $result[$i]["image_url"];
-        $imageKeyword->author_en = $result[$i]["author_en"];
-        $imageKeyword->author_tc = $result[$i]["author_tc"];
-        $imageKeyword->author_sc = $result[$i]["author_sc"];
+        $imageKeyword->author = $result[$i]["author"];
         $imageKeyword->author_url = $result[$i]["author_url"];
 
         $output[] = $imageKeyword;
@@ -1449,9 +1443,7 @@ class AdminController {
       $keywordEn = empty(trim($_POST["keyword_en"])) ? "-" : trim($_POST["keyword_en"]);
       $keywordTc = empty(trim($_POST["keyword_tc"])) ? "-" : trim($_POST["keyword_tc"]);
       $imageUrl = trim($_POST["image_url"]);
-      $authorEn = trim($_POST["author_en"]);
-      $authorTc = trim($_POST["author_tc"]);
-      $authorSc = trim($_POST["author_sc"]);
+      $author = trim($_POST["author"]);
       $authorUrl = trim($_POST["author_url"]);
       $md5FileName = "";
 
@@ -1472,10 +1464,10 @@ class AdminController {
         }
       }
 
-      $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url, author_en, author_tc, author_sc, author_url) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+      $insertSql = "INSERT INTO KeywordImage (keyword_en, keyword_tc, image_url, author, author_url) 
+                    VALUES (?, ?, ?, ?, ?)";
       
-      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, empty($md5FileName) ? $imageUrl : $md5FileName, $authorEn, $authorTc, $authorSc, $authorUrl));
+      $result = $conn->Execute($insertSql, array($keywordEn, $keywordTc, empty($md5FileName) ? $imageUrl : $md5FileName, $author, $authorUrl));
 
       $output->status = "success";
     } catch (Exception $e) {
@@ -1650,16 +1642,12 @@ class AdminController {
 
 class KeywordPhotoAuthor {
   public $photoUrl;
-  public $authorEn;
-  public $authorTc;
-  public $authorSc;
+  public $author;
   public $authorUrl;
 
-  public function __construct($photoUrl, $authorEn, $authorTc, $authorSc, $authorUrl) {
+  public function __construct($photoUrl, $author, $authorUrl) {
     $this->photoUrl = $photoUrl;
-    $this->authorEn = $authorEn;
-    $this->authorTc = $authorTc;
-    $this->authorSc = $authorSc;
+    $this->author = $author;
     $this->authorUrl = $authorUrl;
   }
 }

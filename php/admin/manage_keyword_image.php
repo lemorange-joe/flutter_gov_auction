@@ -50,10 +50,7 @@ include_once ("../include/config.php");
             <input type="file" name="fileImage" id="fileImage" />
           </div>
         </div>
-        <div>Author</div>
-        <div>EN: <input type="text" id="tbAuthorEn" style="width: 200px"></div>
-        <div>TC: <input type="text" id="tbAuthorTc" style="width: 200px"></div>
-        <div>SC: <input type="text" id="tbAuthorSc" style="width: 200px"></div>
+        <div>Author<input type="text" id="tbAuthor" style="width: 200px"></div>
         <div>URL <input type="text" id="tbAuthorUrl" style="width: 500px"></div>
       </div>
       <div style="align-self: center; width: 200px">
@@ -153,9 +150,7 @@ include_once ("../include/config.php");
           btnDelete.setAttribute("data-keyword-en", keywordImage.keyword_en);
           btnDelete.setAttribute("data-keyword-tc", keywordImage.keyword_tc);
           btnDelete.setAttribute("data-image-url", keywordImage.image_url);
-          btnDelete.setAttribute("data-author-en", keywordImage.author_en);
-          btnDelete.setAttribute("data-author-tc", keywordImage.author_tc);
-          btnDelete.setAttribute("data-author-sc", keywordImage.author_sc);
+          btnDelete.setAttribute("data-author", keywordImage.author);
           btnDelete.setAttribute("data-author-url", keywordImage.author_url);
           btnDelete.onclick = function () {
             DeleteKeywordImage(this);
@@ -171,23 +166,17 @@ include_once ("../include/config.php");
           lnkAuthorUrl.setAttribute("href", keywordImage.author_url);
           lnkAuthorUrl.setAttribute("target", "_blank");
 
-          td5.appendChild(document.createTextNode(keywordImage.author_en));
-          td5.appendChild(document.createElement("br"));
-          td5.appendChild(document.createTextNode(keywordImage.author_tc));
-          td5.appendChild(document.createElement("br"));
-          td5.appendChild(document.createTextNode(keywordImage.author_sc));
+          td5.appendChild(document.createTextNode(keywordImage.author));
           td5.appendChild(document.createElement("br"));
           td5.appendChild(lnkAuthorUrl);
         }
       }
 
-      function ResetData(keywordEn, keywordTc, imageUrl, authorEn, authorTc, authorSc, authorUrl) {
+      function ResetData(keywordEn, keywordTc, imageUrl, author, authorUrl) {
         document.getElementById("tbKeywordEn").value = keywordEn ? keywordEn : "";
         document.getElementById("tbKeywordTc").value = keywordTc ? keywordTc : "";
         document.getElementById("tbImageUrl").value = imageUrl ? imageUrl : "";
-        document.getElementById("tbAuthorEn").value = authorEn ? authorEn : "";
-        document.getElementById("tbAuthorTc").value = authorTc ? authorTc : "";
-        document.getElementById("tbAuthorSc").value = authorSc ? authorSc : "";
+        document.getElementById("tbAuthor").value = author ? author : "";
         document.getElementById("tbAuthorUrl").value = authorUrl ? authorUrl : "";
         document.getElementById("fileImage").value = "";
       }
@@ -198,9 +187,7 @@ include_once ("../include/config.php");
         var formData = new FormData();
         formData.append("keyword_en", document.getElementById("tbKeywordEn").value.trim());
         formData.append("keyword_tc", document.getElementById("tbKeywordTc").value.trim());
-        formData.append("author_en", document.getElementById("tbAuthorEn").value.trim());
-        formData.append("author_tc", document.getElementById("tbAuthorTc").value.trim());
-        formData.append("author_sc", document.getElementById("tbAuthorSc").value.trim());
+        formData.append("author", document.getElementById("tbAuthor").value.trim());
         formData.append("author_url", document.getElementById("tbAuthorUrl").value.trim());
 
         if (document.getElementById("fileImage").files.length > 0) {
@@ -238,9 +225,7 @@ include_once ("../include/config.php");
         var keywordEn = btn.getAttribute("data-keyword-en");
         var keywordTc = btn.getAttribute("data-keyword-tc");
         var imageUrl = btn.getAttribute("data-image-url");
-        var authorEn = btn.getAttribute("data-author-en");
-        var authorTc = btn.getAttribute("data-author-tc");
-        var authorSc = btn.getAttribute("data-author-sc");
+        var author = btn.getAttribute("data-author");
         var authorUrl = btn.getAttribute("data-author-url");
 
         if (!confirm("Confirm to delete image for " + keywordTc + ", " + keywordEn + "?")) {
@@ -260,7 +245,7 @@ include_once ("../include/config.php");
               const jsonData = JSON.parse(this.responseText);
 
               if (jsonData.status == "success") {
-                ResetData(keywordEn, keywordTc, imageUrl, authorEn, authorTc, authorSc, authorUrl);
+                ResetData(keywordEn, keywordTc, imageUrl, author, authorUrl);
                 GetData();
                 document.getElementById("tbKeywordEn").focus();
               } else {
