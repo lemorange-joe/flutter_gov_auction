@@ -29,6 +29,11 @@ include_once ("../include/config.php");
     #tblLotIcon td.center {
       text-align: center;
     }
+    
+    a.pager-link {
+      color: #17d;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -72,6 +77,11 @@ include_once ("../include/config.php");
       <tbody id="tblLotIcon"></tbody>
     </table>
   </div>
+  <div style="padding-left: 10px; height: 25px">
+    <a href="#" class="pager-link" onclick="GoPage(-1);return false">&lt; Prev</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#" class="pager-link" onclick="GoPage(1);return false">Next &gt;</a>
+  </div>
   <div class="remarks" style="padding-left: 8px">
     *If lot description is empty, go to <a href="batch_update_lot_description.php">Batch Update Lot Descriptions</a> to update the descriptions first.
   </div>
@@ -81,11 +91,23 @@ include_once ("../include/config.php");
   <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
   <script src="js/main.js"></script>
   <script>
+    const pageSize = 50;
     const statusMapping = {
       "A": "Active",
       "P": "Pending",
       "I": "Inactive",
     };
+
+    function GoPage(d) {
+      var page = parseInt(document.getElementById("tbPage").value, 10);
+
+      if (page <= 1 && d < 0) return;
+      
+      document.getElementById("tbPage").value = page + d;
+      GetData();
+      window.scrollTo(0, 0);
+    }
+
     function GetData() {
       document.getElementById("tblLotIcon").innerHTML = "<tr><td colspan='10' style='text-align: center; height: 80px'>Loading...</td></tr>";
 
@@ -126,12 +148,13 @@ include_once ("../include/config.php");
       var tblLotIcon = document.getElementById("tblLotIcon");
       tblLotIcon.innerHTML = "";
       
+      var itemOffset = (parseInt(document.getElementById("tbPage").value, 10) - 1) * pageSize;
       for (var i = 0; i < lotIconList.length; ++i) {
         const lotIcon = lotIconList[i];
         
         var row = tblLotIcon.insertRow();
         var td0 = row.insertCell(0)
-        td0.appendChild(document.createTextNode((i+1)));
+        td0.appendChild(document.createTextNode((itemOffset+i+1)));
         td0.classList.add("center");
 
         var td1 = row.insertCell(1);
