@@ -11,6 +11,7 @@ include_once ("../include/appdata.php");
 $_APP = AppData::getInstance();
 
 $id = $_GET["id"];
+$featuredOnly = isset($_GET["featuredOnly"]) ? ($_GET["featuredOnly"] == 1) : false;
 $type = isset($_GET["type"]) ? $_GET["type"] : "";
 ?>
 <!DOCTYPE html>
@@ -93,7 +94,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     
     <div style="padding: 10px 0; background-color: #ccc">
       <span style="font-weight: bold">Show lots:</span>
-      <select id="ddlAuctionType" onchange="GetData(<?=$id?>, this.value)">
+      <select id="ddlAuctionType" onchange="GetData(<?=$id?>, document.getElementById('chkFeaturedOnly').checked, this.value)">
         <option value="" <?=$type=="" ? "selected" : ""?>>All</option>
         <?php
           foreach ($_APP->auctionItemTypeList as $auctionItemType) {
@@ -101,6 +102,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           }
         ?>
       </select>
+      <input id="chkFeaturedOnly" type="checkbox" style="margin: 0 5px 0 15px" onchange="GetData(<?=$id?>, this.checked, document.getElementById('ddlAuctionType').value)"><label for="chkFeaturedOnly">Featured Only</label>
     </div>
 
     <div id="divLotList" style="width: 1400px"></div>
@@ -166,9 +168,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         return select.outerHTML;
       }
 
-      function GetData(auctionId, type)
+      function GetData(auctionId, featuredOnly, type)
       {
-        var apiUrl = '../en/api/admin-getAuction-' + auctionId + "-" + type;
+        var apiUrl = '../en/api/admin-getAuction-' + auctionId + "-" + (featuredOnly ? "1" : "0") + "-" + type;
         var xhr = new XMLHttpRequest();
         
         xhr.open("GET", apiUrl);
@@ -179,6 +181,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           }
 
           document.getElementById("tbAuctionId").value = auctionId;
+          document.getElementById("chkFeaturedOnly").checked = featuredOnly;
           document.getElementById("ddlAuctionType").value = type;
         }
 
@@ -195,7 +198,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
               const jsonData = JSON.parse(this.responseText);
 
               if (jsonData.status == "success") {
-                GetData(document.getElementById("tbAuctionId").value, document.getElementById("ddlAuctionType").value);
+                GetData(document.getElementById("tbAuctionId").value, document.getElementById("chkFeaturedOnly").checked, document.getElementById("ddlAuctionType").value);
               } else {
                 alert("Update failed: " + jsonData.error);  
               }
@@ -833,7 +836,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         xhr.send();
       }
 
-      GetData(<?=$id?>, "<?=$type?>");
+      GetData(<?=$id?>, <?=$featuredOnly?"1":'0'?>, "<?=$type?>");
     </script>
   </div>
 </body>

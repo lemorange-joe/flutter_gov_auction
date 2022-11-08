@@ -50,8 +50,8 @@ include_once ("../include/config.php");
             <input type="file" name="fileImage" id="fileImage" />
           </div>
         </div>
-        <div>Author<input type="text" id="tbAuthor" style="width: 200px"></div>
-        <div>URL <input type="text" id="tbAuthorUrl" style="width: 500px"></div>
+        <div><div style="display: inline-block; width: 60px">Author</div><input type="text" id="tbAuthor" style="width: 200px"></div>
+        <div><div style="display: inline-block; width: 60px">URL</div><input type="text" id="tbAuthorUrl" style="width: 500px"></div>
       </div>
       <div style="align-self: center; width: 200px">
         <button id="btnCreate" style="vertical-align: top; width: 65px; height: 30px;" onclick="CreateKeywordImage()">Create</button>

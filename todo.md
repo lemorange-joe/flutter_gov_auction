@@ -17,9 +17,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
   - test local notification reminder in ios
   - decide reminder message in ReminderHelper
   - update reminder page layout
-- only save 1 lang for keyword image author
-  - AuctionLot.photo_author
-  - KeywordImage.author
 - test saved page -> auction lot page
 - add random data in API to prevent data theft
 

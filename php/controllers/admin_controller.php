@@ -75,7 +75,8 @@ class AdminController {
     global $conn;
 
     $auctionId = $param[0];
-    $itemType = $param[1];
+    $featuredOnly = $param[1];
+    $itemType = $param[2];
     $output = new stdClass();
 
     // ------ 1. get auction ------
@@ -152,10 +153,10 @@ class AdminController {
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
-                  WHERE A.auction_id = ? AND (T.code = ? OR ? = '')
+                  WHERE A.auction_id = ? AND (L.featured = 1 OR ? = 0) AND (T.code = ? OR ? = '')
                   ORDER BY T.seq, L.lot_num, I.seq";
 
-    $result = $conn->Execute($selectSql, array($auctionId, $itemType, $itemType))->GetRows();
+    $result = $conn->Execute($selectSql, array($auctionId, $featuredOnly, $itemType, $itemType))->GetRows();
     $rowNum = count($result);
 
     // 4. select all inspection dates of the auction id
