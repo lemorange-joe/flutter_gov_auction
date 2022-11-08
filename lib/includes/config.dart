@@ -30,3 +30,5 @@ const double mdBorderRadius = 10.0;
 const double smBorderRadius = 6.0;
 
 const String searchSeparatorChar = '|';
+
+const List<int> reminderMinutesBefore = <int>[15, 30, 60, 120, 1440, 2880];

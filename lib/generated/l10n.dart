@@ -170,6 +170,16 @@ class S {
     );
   }
 
+  /// `Clear reminder`
+  String get clearReminder {
+    return Intl.message(
+      'Clear reminder',
+      name: 'clearReminder',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Clear search history`
   String get clearSearchHistory {
     return Intl.message(
@@ -185,6 +195,26 @@ class S {
     return Intl.message(
       'Are you sure to delete all saved items?',
       name: 'confirmDeleteAllSavedItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` day before`
+  String get dayBefore {
+    return Intl.message(
+      ' day before',
+      name: 'dayBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` days before`
+  String get daysBefore {
+    return Intl.message(
+      ' days before',
+      name: 'daysBefore',
       desc: '',
       args: [],
     );
@@ -400,6 +430,26 @@ class S {
     );
   }
 
+  /// ` hour before`
+  String get hourBefore {
+    return Intl.message(
+      ' hour before',
+      name: 'hourBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` hours before`
+  String get hoursBefore {
+    return Intl.message(
+      ' hours before',
+      name: 'hoursBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Item Details`
   String get itemDetails {
     return Intl.message(
@@ -415,6 +465,16 @@ class S {
     return Intl.message(
       'Loading...',
       name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` minutes before`
+  String get minutesBefore {
+    return Intl.message(
+      ' minutes before',
+      name: 'minutesBefore',
       desc: '',
       args: [],
     );

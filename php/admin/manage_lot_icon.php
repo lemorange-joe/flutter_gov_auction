@@ -42,7 +42,7 @@ include_once ("../include/config.php");
     <div class="title">Auction Lot Icon</div>
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   </div>
-  <div id="divLastUpdate" style="display: none; position: fixed; top: 0; right: 0; color: #080; background-color: #fff; padding: 8px; border: solid 1px #888; border-top-width: 0; border-right-width: 0" onclick="this.style.display='none'"></div>
+  <div id="divLastUpdate" style="display: none; position: fixed; top: 50px; right: 0; color: #080; background-color: #fff; padding: 8px; border: solid 1px #888; border-right-width: 0" onclick="this.style.display='none'"></div>
   <div class="body">
     <div style="height: 40px;line-height: 30px;">
       <span style="text-decoration: underline">Search</span>
@@ -102,7 +102,7 @@ include_once ("../include/config.php");
       var page = parseInt(document.getElementById("tbPage").value, 10);
 
       if (page <= 1 && d < 0) return;
-      
+
       document.getElementById("tbPage").value = page + d;
       GetData();
       window.scrollTo(0, 0);

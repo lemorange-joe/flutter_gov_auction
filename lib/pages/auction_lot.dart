@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
+import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
@@ -12,16 +13,17 @@ import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
+import '../widgets/reminder_button.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class AuctionLotPage extends StatefulWidget {
-  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionDate, this.auctionLot, {super.key});
+  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, {super.key});
 
   final String title;
   final String heroTagPrefix;
   final int auctionId;
-  final DateTime auctionDate;
+  final DateTime auctionStartTime;
   final AuctionLot auctionLot;
 
   @override
@@ -113,6 +115,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     const double titleFieldWidth = 100.0;
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
     final bool isLotPhoto = widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute;
+    final AuctionReminder reminder = AuctionReminder.fromAuctionLot(widget.auctionId, widget.auctionStartTime, widget.auctionLot); 
+    // final AuctionReminder reminder = AuctionReminder.fromAuctionLot(widget.auctionId, DateTime.now().add(const Duration(days: 3)), widget.auctionLot); // for testing reminder
 
     return Scaffold(
       appBar: AppBar(
@@ -171,47 +175,60 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       Positioned(
                         right: 0.0,
                         bottom: 8.0,
-                        child: ValueListenableBuilder<Box<SavedAuction>>(
-                          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-                          builder: (BuildContext context, _, __) {
-                            final SavedAuction curAuction = SavedAuction(
-                              widget.auctionId,
-                              widget.auctionLot.id,
-                              widget.auctionDate,
-                              widget.auctionLot.lotNum,
-                              widget.auctionLot.icon,
-                              widget.auctionLot.photoUrl,
-                              widget.auctionLot.descriptionEn,
-                              widget.auctionLot.descriptionTc,
-                              widget.auctionLot.descriptionSc,
-                            );
-                            final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            ValueListenableBuilder<Box<SavedAuction>>(
+                              valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                              builder: (BuildContext context, _, __) {
+                                final SavedAuction curAuction = SavedAuction(
+                                  widget.auctionId,
+                                  widget.auctionLot.id,
+                                  widget.auctionStartTime,
+                                  widget.auctionLot.lotNum,
+                                  widget.auctionLot.icon,
+                                  widget.auctionLot.photoUrl,
+                                  widget.auctionLot.descriptionEn,
+                                  widget.auctionLot.descriptionTc,
+                                  widget.auctionLot.descriptionSc,
+                                );
+                                final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
-                            return TextButton(
-                              onPressed: () async {
-                                if (isSaved) {
-                                  await HiveHelper().deleteSavedAuction(curAuction);
-                                } else {
-                                  curAuction.savedDate = DateTime.now();
-                                  await HiveHelper().writeSavedAuction(curAuction);
-                                }
+                                return TextButton(
+                                  onPressed: () async {
+                                    if (isSaved) {
+                                      await HiveHelper().deleteSavedAuction(curAuction);
+                                    } else {
+                                      curAuction.savedDate = DateTime.now();
+                                      await HiveHelper().writeSavedAuction(curAuction);
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    fixedSize: const Size(50.0, 50.0),
+                                    shape: const CircleBorder(),
+                                    // backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0), // color TBC
+                                    backgroundColor: isLotPhoto ? const Color.fromARGB(64, 0, 0, 0) : const Color.fromARGB(190, 255, 255, 255),
+                                  ),
+                                  child: Semantics(
+                                    label: isSaved ? S.of(context).semanticsSavedItems : S.of(context).semanticsAddToSavedItems,
+                                    child: Icon(
+                                      isSaved ? MdiIcons.heart : MdiIcons.heartOutline,
+                                      color: config.green,
+                                      size: 28.0,
+                                    ),
+                                  ),
+                                );
                               },
-                              style: TextButton.styleFrom(
-                                fixedSize: const Size(50.0, 50.0),
-                                shape: const CircleBorder(),
-                                // backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0), // color TBC
-                                backgroundColor: isLotPhoto ? const Color.fromARGB(64, 0, 0, 0) : const Color.fromARGB(190, 255, 255, 255),
-                              ),
-                              child: Semantics(
-                                label: isSaved ? S.of(context).semanticsSavedItems : S.of(context).semanticsAddToSavedItems,
-                                child: Icon(
-                                  isSaved ? MdiIcons.heart : MdiIcons.heartOutline,
-                                  color: config.green,
-                                  size: 28.0,
-                                ),
-                              ),
-                            );
-                          },
+                            ),
+                            ValueListenableBuilder<Box<AuctionReminder>>(
+                              valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+                              builder: (BuildContext context, _, __) {
+                                return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auctionLot.id));
+                              }
+                            ),
+                            const SizedBox(width: 20.0),
+                          ],
                         ),
                       )
                     ],
@@ -276,7 +293,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           child: widget.auctionLot.inspectionDateList.isEmpty
                               ? const Text('-')
                               : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: widget.auctionLot.inspectionDateList
                                       .map((InspectionDate inspect) => Text(
                                           '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}: ${inspect.startTime} - ${inspect.endTime}'))

@@ -49,9 +49,9 @@ class ReminderHelper {
   Future<int> addNotification(AuctionReminder reminder) async {
     try {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        reminder.lotId,
+        reminder.lotId, // use lotId as the notification ID
         S.current.auctionReminder,
-        '[${DateFormat('HH:mm').format(reminder.remindTime)}] Lot: ${reminder.lotNum} @ ${DateFormat('yyyy-MM-dd HH:mm').format(reminder.auctionDate)}',
+        '[${DateFormat('HH:mm').format(reminder.remindTime)}] Lot: ${reminder.lotNum} @ ${DateFormat('yyyy-MM-dd HH:mm').format(reminder.auctionStartTime)}',
         tz.TZDateTime.from(reminder.remindTime, location),
         notificationDetails,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
@@ -65,6 +65,7 @@ class ReminderHelper {
     return 1;
   }
 
+  // use lotId as the notification ID
   Future<int> removeNotification(int id) async {
     try {
       await flutterLocalNotificationsPlugin.cancel(id);

@@ -39,10 +39,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "auctionReminder":
             MessageLookupByLibrary.simpleMessage("Auction Reminder"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "confirmDeleteAllSavedItems": MessageLookupByLibrary.simpleMessage(
             "Are you sure to delete all saved items?"),
+        "dayBefore": MessageLookupByLibrary.simpleMessage(" day before"),
+        "daysBefore": MessageLookupByLibrary.simpleMessage(" days before"),
         "deleteSavedItems":
             MessageLookupByLibrary.simpleMessage("Delete saved items"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
@@ -70,9 +73,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "hotSearch": MessageLookupByLibrary.simpleMessage("Hot Search"),
+        "hourBefore": MessageLookupByLibrary.simpleMessage(" hour before"),
+        "hoursBefore": MessageLookupByLibrary.simpleMessage(" hours before"),
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "minutesBefore":
+            MessageLookupByLibrary.simpleMessage(" minutes before"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
         "myItems": MessageLookupByLibrary.simpleMessage("My Items"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network Error"),

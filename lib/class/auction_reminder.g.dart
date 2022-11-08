@@ -41,7 +41,7 @@ class AuctionReminderAdapter extends TypeAdapter<AuctionReminder> {
       ..writeByte(2)
       ..write(obj.auctionId)
       ..writeByte(3)
-      ..write(obj.auctionDate)
+      ..write(obj.auctionStartTime)
       ..writeByte(4)
       ..write(obj.lotNum)
       ..writeByte(5)

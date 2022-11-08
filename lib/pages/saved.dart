@@ -133,7 +133,7 @@ class SavedPage extends StatelessWidget {
               'title': S.of(context).itemDetails,
               'heroTagPrefix': heroTagPrefix,
               'auctionId': savedAuction.auctionId,
-              'auctionDate': savedAuction.auctionDate,
+              'auctionStartTime': savedAuction.auctionStartTime,
               'auctionLot': curLot,
             });
           });
@@ -177,7 +177,7 @@ class SavedPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(savedAuction.lotNum),
-                    Text(utilities.formatDate(savedAuction.auctionDate, S.of(context).lang)),
+                    Text(utilities.formatDate(savedAuction.auctionStartTime, S.of(context).lang)),
                     Flexible(
                       child: Text(
                         savedAuction.getDescription(S.of(context).lang),

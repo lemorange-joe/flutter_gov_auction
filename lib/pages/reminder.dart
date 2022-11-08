@@ -47,7 +47,7 @@ class ReminderPage extends StatelessWidget {
                             const SizedBox(width: 5.0),
                             Expanded(
                               child: Text(
-                                '(${reminder.lotId}) ${reminder.lotNum}: ${reminder.getDescription(lang)}',
+                                '(${reminder.lotId}) Date: ${reminder.auctionStartTime} \n${reminder.lotNum}: ${reminder.getDescription(lang)}',
                               ),
                             ),
                             const SizedBox(width: 5.0),
