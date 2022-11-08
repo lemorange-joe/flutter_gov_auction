@@ -1335,11 +1335,12 @@ class AdminController {
 
     // $param: <auction id>-<show all>-<keyword>-<page no.>
     // e.g.
-    // 3-N-車-2
-    // 0-Y-12
-    // 7-Y-car
+    // 3-N-Y-車-2
+    // 0-Y-N-12
+    // 7-Y-Y-car
     $auctionId = 0;
     $showAll = false;
+    $includeFeatured = false;
     $keyword = "";
     $page = 1;
     $pageSize = 50;
@@ -1347,11 +1348,12 @@ class AdminController {
     if (isset($param) && is_array($param)) {
       $auctionId = intval($param[0]);
       $showAll = strtoupper($param[1]) == "Y";
-      if (ctype_digit($param[2])) {
-        $page = intval($param[2]);
+      $includeFeatured = strtoupper($param[2]) == "Y";
+      if (ctype_digit($param[3])) {
+        $page = intval($param[3]);
       } else {
-        $keyword = trim($param[2]);
-        $page = count($param) == 4 ? intval($param[3]) : 1;
+        $keyword = trim($param[3]);
+        $page = count($param) == 4 ? intval($param[4]) : 1;
       }
     }
 
@@ -1359,13 +1361,13 @@ class AdminController {
                     A.start_time, L.lot_id, L.lot_num, L.featured, L.icon, L.description_en, L.description_tc, A.status as 'auction_status', L.status
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND 
+                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND (featured = 0 OR ? = 1) AND 
                         (L.description_en LIKE ? OR L.description_tc LIKE ?)
                   ORDER BY A.auction_id DESC, L.lot_num
                   LIMIT ?, ?";
 
     $result = $conn->Execute($selectSql, array(
-      $auctionId, $auctionId, $showAll ? 1 : 0, $keyword."%", $keyword."%", ($page-1)*$pageSize, $pageSize
+      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, $keyword."%", $keyword."%", ($page-1)*$pageSize, $pageSize
     ))->GetRows();
     $rowNum = count($result);
 

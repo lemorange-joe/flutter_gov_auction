@@ -45,7 +45,9 @@ include_once ("../include/config.php");
         Auction ID: <input id="tbAuctionId" type="number" style="width: 50px" value="0" min="0"/>
       </div>
       <input id="chkShowAll" type="checkbox" style="margin-left: 10px" />
-      <label for="chkShowAll">Show All</label>
+      <label for="chkShowAll">Show All)</label>
+      <input id="chkIncludeFeatured" type="checkbox" style="margin-left: 10px" />
+      <label for="chkIncludeFeatured">Include Featured</label>
       <input id="tbKeyword" type="text" style="width: 120px; margin-left: 10px" onchange="GetData()" placeholder="Input Keyword" />
       <div style="display: inline-block; margin-left: 10px">
         Page: <input id="tbPage" type="number" style="width: 30px" value="1" min="1"/>
@@ -89,12 +91,14 @@ include_once ("../include/config.php");
 
       var auctionId = document.getElementById("tbAuctionId").value;
       var showAll = document.getElementById("chkShowAll").checked;
+      var includeFeatured = document.getElementById("chkIncludeFeatured").checked;
       var keyword = document.getElementById("tbKeyword").value.trim();
       var page = document.getElementById("tbPage").value;
 
       var apiUrl = "../en/api/admin-listLotIcon";
       apiUrl += "-" + auctionId;
       apiUrl += "-" + (showAll ? "Y" : "N");
+      apiUrl += "-" + (includeFeatured ? "Y" : "N");
       if (keyword.length > 0) {
         apiUrl += "-" + encodeURIComponent(keyword);
       }
@@ -137,7 +141,7 @@ include_once ("../include/config.php");
         row.insertCell(2).appendChild(document.createTextNode(lotIcon.lot_num));
         
         var td3 = row.insertCell(3);
-        td3.appendChild(document.createTextNode(lotIcon.featured ? "Y": "N"));
+        td3.appendChild(document.createTextNode(lotIcon.featured ? "★": "-"));
         td3.classList.add("center");
 
         var td4 = row.insertCell(4)
