@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `Are you sure to delete all saved items?`
+  /// `Are you sure to delete all saved items under comming and past auctions?`
   String get confirmDeleteAllSavedItems {
     return Intl.message(
-      'Are you sure to delete all saved items?',
+      'Are you sure to delete all saved items under comming and past auctions?',
       name: 'confirmDeleteAllSavedItems',
       desc: '',
       args: [],

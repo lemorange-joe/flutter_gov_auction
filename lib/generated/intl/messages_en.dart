@@ -44,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "comingAuction": MessageLookupByLibrary.simpleMessage("Coming Auction"),
         "confirmDeleteAllSavedItems": MessageLookupByLibrary.simpleMessage(
-            "Are you sure to delete all saved items?"),
+            "Are you sure to delete all saved items under comming and past auctions?"),
         "dayBefore": MessageLookupByLibrary.simpleMessage(" day before"),
         "daysBefore": MessageLookupByLibrary.simpleMessage(" days before"),
         "deleteSavedItems":

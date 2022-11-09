@@ -42,7 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
         "comingAuction": MessageLookupByLibrary.simpleMessage("下次拍卖"),
         "confirmDeleteAllSavedItems":
-            MessageLookupByLibrary.simpleMessage("确定要删除全部收藏项目？"),
+            MessageLookupByLibrary.simpleMessage("确定要删除下次拍卖及过往拍卖的全部收藏项目？"),
         "dayBefore": MessageLookupByLibrary.simpleMessage("天前"),
         "daysBefore": MessageLookupByLibrary.simpleMessage("天前"),
         "deleteSavedItems": MessageLookupByLibrary.simpleMessage("删除收藏项目"),
