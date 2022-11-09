@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("清除拍賣提醒"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜尋記錄"),
+        "comingAuction": MessageLookupByLibrary.simpleMessage("下次拍賣"),
         "confirmDeleteAllSavedItems":
             MessageLookupByLibrary.simpleMessage("確定要刪除全部收藏項目？"),
         "dayBefore": MessageLookupByLibrary.simpleMessage("天前"),
@@ -86,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeLinks": MessageLookupByLibrary.simpleMessage("參與拍賣須知連結:"),
         "noticeToParticipants": MessageLookupByLibrary.simpleMessage("參與拍賣須知"),
         "ok": MessageLookupByLibrary.simpleMessage("確定"),
+        "pastAuction": MessageLookupByLibrary.simpleMessage("過往的拍賣"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍賣"),
@@ -107,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reload": MessageLookupByLibrary.simpleMessage("重新載入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
+        "savedAuctionEmpty": MessageLookupByLibrary.simpleMessage("沒有已收藏項目"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜尋項目"),
         "searchHistory": MessageLookupByLibrary.simpleMessage("搜尋記錄"),
         "semanticsAddToSavedItems":

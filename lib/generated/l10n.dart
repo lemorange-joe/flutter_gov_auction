@@ -190,6 +190,16 @@ class S {
     );
   }
 
+  /// `Coming Auction`
+  String get comingAuction {
+    return Intl.message(
+      'Coming Auction',
+      name: 'comingAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure to delete all saved items?`
   String get confirmDeleteAllSavedItems {
     return Intl.message(
@@ -610,6 +620,16 @@ class S {
     );
   }
 
+  /// `Past Auction`
+  String get pastAuction {
+    return Intl.message(
+      'Past Auction',
+      name: 'pastAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `* (TBC)photo disclaimer`
   String get photoDisclaimer {
     return Intl.message(
@@ -755,6 +775,16 @@ class S {
     return Intl.message(
       'Saved',
       name: 'saved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No saved items`
+  String get savedAuctionEmpty {
+    return Intl.message(
+      'No saved items',
+      name: 'savedAuctionEmpty',
       desc: '',
       args: [],
     );

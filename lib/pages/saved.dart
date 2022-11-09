@@ -21,87 +21,140 @@ class SavedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: config.green,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Semantics(
-            label: S.of(context).semanticsGoBack,
-            button: true,
-            enabled: true,
-            child: const Icon(MdiIcons.arrowLeft, color: Colors.white),
+    final TabBar tabBar = TabBar(
+      tabs: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            S.of(context).comingAuction,
+            style: const TextStyle(color: config.blue, fontSize: 16.0),
           ),
         ),
-        title: Text(S.of(context).saved, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
-        actions: <Widget>[
-          ValueListenableBuilder<Box<SavedAuction>>(
-              valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-              builder: (BuildContext context, _, __) {
-                final bool deleteAllEnabled = HiveHelper().getSavedAuctionList().isNotEmpty;
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            S.of(context).pastAuction,
+            style: const TextStyle(color: config.blue, fontSize: 16.0),
+          ),
+        ),
+      ],
+    );
 
-                return IconButton(
-                  onPressed: deleteAllEnabled
-                      ? () async {
-                          await CommonDialog.show2(
-                            context,
-                            S.of(context).deleteSavedItems,
-                            S.of(context).confirmDeleteAllSavedItems,
-                            S.of(context).ok,
-                            () {
-                              HiveHelper().clearAllSavedAuction();
-                              Navigator.of(context).pop();
-                            },
-                            S.of(context).cancel,
-                            () {
-                              Navigator.of(context).pop();
-                            },
-                          );
-                        }
-                      : null,
-                  icon: Semantics(
-                    label: S.of(context).semanticsDeleteAllSaved,
-                    button: true,
-                    enabled: deleteAllEnabled,
-                    child: Icon(
-                      MdiIcons.deleteForeverOutline,
-                      color: deleteAllEnabled ? Colors.white : Colors.grey[400],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor) + 16.0),
+          child: AppBar(
+            backgroundColor: config.green,
+            leading: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Semantics(
+                label: S.of(context).semanticsGoBack,
+                button: true,
+                enabled: true,
+                child: const Icon(MdiIcons.arrowLeft, color: Colors.white),
+              ),
+            ),
+            title: Text(S.of(context).saved, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
+            bottom: PreferredSize(
+              preferredSize: tabBar.preferredSize,
+              child: Material(
+                color: Theme.of(context).backgroundColor,
+                child: tabBar,
+              ),
+            ),
+            actions: <Widget>[
+              ValueListenableBuilder<Box<SavedAuction>>(
+                valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                builder: (BuildContext context, _, __) {
+                  final bool deleteAllEnabled = HiveHelper().getSavedAuctionList().isNotEmpty;
+
+                  return IconButton(
+                    onPressed: deleteAllEnabled
+                        ? () async {
+                            await CommonDialog.show2(
+                              context,
+                              S.of(context).deleteSavedItems,
+                              S.of(context).confirmDeleteAllSavedItems,
+                              S.of(context).ok,
+                              () {
+                                HiveHelper().clearAllSavedAuction();
+                                Navigator.of(context).pop();
+                              },
+                              S.of(context).cancel,
+                              () {
+                                Navigator.of(context).pop();
+                              },
+                            );
+                          }
+                        : null,
+                    icon: Semantics(
+                      label: S.of(context).semanticsDeleteAllSaved,
+                      button: true,
+                      enabled: deleteAllEnabled,
+                      child: Icon(
+                        MdiIcons.deleteForeverOutline,
+                        color: deleteAllEnabled ? Colors.white : Colors.grey[400],
+                      ),
                     ),
-                  ),
-                );
-              }),
-        ],
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: ValueListenableBuilder<Box<SavedAuction>>(
-            valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-            builder: (BuildContext context, _, __) {
-              final List<SavedAuction> savedAuctionList = HiveHelper().getSavedAuctionList();
-              savedAuctionList.sort(SavedAuction.savedDateComparator);
-
-              return ListView.builder(
-                itemCount: savedAuctionList.length,
-                itemBuilder: (BuildContext context, int i) {
-                  final SavedAuction savedAuction = savedAuctionList[i];
-
-                  return Dismissible(
-                    key: ValueKey<String>(savedAuction.hiveKey),
-                    background: buildDismissibleBackground(context, AlignmentDirectional.centerStart),
-                    secondaryBackground: buildDismissibleBackground(context, AlignmentDirectional.centerEnd),
-                    onDismissed: (DismissDirection direction) {
-                      HiveHelper().deleteSavedAuction(savedAuction);
-                    },
-                    child: buildSavedAuctionListItem(context, savedAuction),
                   );
                 },
-              );
-            },
+              ),
+            ],
+            centerTitle: true,
           ),
         ),
+        body: ValueListenableBuilder<Box<SavedAuction>>(
+          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+          builder: (BuildContext context, _, __) {
+            final List<SavedAuction> savedAuctionList = HiveHelper().getSavedAuctionList();
+            final List<SavedAuction> comingAuctionList = savedAuctionList
+                .where((SavedAuction auction) => DateTime.now().add(const Duration(hours: 2)).compareTo(auction.auctionStartTime) <= 0)
+                .toList();
+            final List<SavedAuction> pastAuctionList =
+                savedAuctionList.where((SavedAuction auction) => DateTime.now().add(const Duration(hours: 2)).compareTo(auction.auctionStartTime) > 0).toList();
+            comingAuctionList.sort(SavedAuction.savedDateComparator);
+            pastAuctionList.sort(SavedAuction.savedDateComparator);
+
+            return TabBarView(
+              children: <Widget>[
+                buildSavedAuctionTab(context, comingAuctionList),
+                buildSavedAuctionTab(context, pastAuctionList),
+              ],
+            );
+          },
+        ),
       ),
+    );
+  }
+
+  Widget buildSavedAuctionTab(BuildContext context, List<SavedAuction> savedAuctionList) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: savedAuctionList.isEmpty
+          ? Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.3),
+                child: Text(S.of(context).savedAuctionEmpty),
+              ),
+            )
+          : ListView.builder(
+              itemCount: savedAuctionList.length,
+              itemBuilder: (BuildContext context, int i) {
+                final SavedAuction savedAuction = savedAuctionList[i];
+
+                return Dismissible(
+                  key: ValueKey<String>(savedAuction.hiveKey),
+                  background: buildDismissibleBackground(context, AlignmentDirectional.centerStart),
+                  secondaryBackground: buildDismissibleBackground(context, AlignmentDirectional.centerEnd),
+                  onDismissed: (DismissDirection direction) {
+                    HiveHelper().deleteSavedAuction(savedAuction);
+                  },
+                  child: buildSavedAuctionListItem(context, savedAuction),
+                );
+              },
+            ),
     );
   }
 

@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("清除拍卖提醒"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
+        "comingAuction": MessageLookupByLibrary.simpleMessage("下次拍卖"),
         "confirmDeleteAllSavedItems":
             MessageLookupByLibrary.simpleMessage("确定要删除全部收藏项目？"),
         "dayBefore": MessageLookupByLibrary.simpleMessage("天前"),
@@ -86,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeLinks": MessageLookupByLibrary.simpleMessage("参与拍卖须知连结:"),
         "noticeToParticipants": MessageLookupByLibrary.simpleMessage("参与拍卖须知"),
         "ok": MessageLookupByLibrary.simpleMessage("确定"),
+        "pastAuction": MessageLookupByLibrary.simpleMessage("过往的拍卖"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
@@ -107,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reload": MessageLookupByLibrary.simpleMessage("重新载入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
+        "savedAuctionEmpty": MessageLookupByLibrary.simpleMessage("没有已收藏项目"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
         "searchHistory": MessageLookupByLibrary.simpleMessage("搜寻记录"),
         "semanticsAddToSavedItems":

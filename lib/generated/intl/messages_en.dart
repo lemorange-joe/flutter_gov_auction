@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
+        "comingAuction": MessageLookupByLibrary.simpleMessage("Coming Auction"),
         "confirmDeleteAllSavedItems": MessageLookupByLibrary.simpleMessage(
             "Are you sure to delete all saved items?"),
         "dayBefore": MessageLookupByLibrary.simpleMessage(" day before"),
@@ -96,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeToParticipants":
             MessageLookupByLibrary.simpleMessage("Notice to Participants"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "pastAuction": MessageLookupByLibrary.simpleMessage("Past Auction"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
@@ -118,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "reload": MessageLookupByLibrary.simpleMessage("Reload"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
+        "savedAuctionEmpty":
+            MessageLookupByLibrary.simpleMessage("No saved items"),
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
         "searchHistory": MessageLookupByLibrary.simpleMessage("Search History"),
