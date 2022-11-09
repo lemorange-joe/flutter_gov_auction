@@ -1364,7 +1364,7 @@ class AdminController {
                   LIMIT ?, ?";
 
     $result = $conn->Execute($selectSql, array(
-      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, $keyword."%", $keyword."%", ($page-1)*$pageSize, $pageSize
+      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, "%".$keyword."%", "%".$keyword."%", ($page-1)*$pageSize, $pageSize
     ))->GetRows();
     $rowNum = count($result);
 
@@ -1388,9 +1388,11 @@ class AdminController {
     $selectSql = "SELECT COUNT(*) as 'total'
                   FROM Auction A
                   INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND 
+                  WHERE (A.auction_id = ? OR ? = 0) AND (L.icon = '' OR L.icon = 'fontawesome.box' OR ? = 1) AND (featured = 0 OR ? = 1) AND 
                         (L.description_en LIKE ? OR L.description_tc LIKE ?)";
-    $result = $conn->Execute($selectSql, array($auctionId, $auctionId, $showAll ? 1 : 0, $keyword."%", $keyword."%"))->GetRows();
+    $result = $conn->Execute($selectSql, array(
+      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, "%".$keyword."%", "%".$keyword."%")
+    )->GetRows();
     $total = $result[0]["total"];
 
     $output = new StdClass();
