@@ -294,8 +294,17 @@ class _DebugPageState extends State<DebugPage> {
                         children: <Widget>[
                           Text(auction.savedDate.toString().replaceAll(' ', '\n'), style: const TextStyle(fontSize: 10.0)),
                           const SizedBox(width: 5.0),
-                          Text(
-                            '${auction.auctionId}_${auction.lotNum}: ${auction.getDescription(lang)}',
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                auction.auctionStartTime.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${auction.auctionId}_${auction.lotNum}: ${auction.getDescription(lang)}',
+                              ),
+                            ],
                           ),
                         ],
                       ))
@@ -332,14 +341,7 @@ class _DebugPageState extends State<DebugPage> {
                 final AuctionReminder reminder = AuctionReminder(
                   1234,
                   DateTime.now().add(const Duration(seconds: 5)),
-                  1,
-                  DateTime.now(),
-                  'C-401',
-                  'fontawesome.box',
-                  '',
-                  'description EN',
-                  'description TC',
-                  'description SC',
+                  DateTime.now().add(const Duration(days: 3)),
                 );
 
                 ReminderHelper().addNotification(reminder);
@@ -359,7 +361,6 @@ class _DebugPageState extends State<DebugPage> {
         child: ValueListenableBuilder<Box<AuctionReminder>>(
           valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
           builder: (BuildContext context, _, __) {
-            final String lang = S.of(context).lang;
             return Column(
               children: HiveHelper()
                   .getAuctionReminderList()
@@ -373,14 +374,14 @@ class _DebugPageState extends State<DebugPage> {
                           const SizedBox(width: 5.0),
                           Expanded(
                             child: Text(
-                              '(${reminder.lotId}) ${reminder.lotNum}: ${reminder.getDescription(lang)}',
+                              '(${reminder.auctionId}) ${reminder.auctionStartTime}',
                             ),
                           ),
                           const SizedBox(width: 5.0),
                           ElevatedButton(
                             onPressed: () {
-                              ReminderHelper().removeNotification(reminder.lotId);
-                              HiveHelper().deleteAuctionReminder(reminder.lotId);
+                              ReminderHelper().removeNotification(reminder.auctionId);
+                              HiveHelper().deleteAuctionReminder(reminder.auctionId);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green[600],

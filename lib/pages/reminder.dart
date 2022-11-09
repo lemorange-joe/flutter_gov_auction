@@ -6,6 +6,8 @@ import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/reminder_helper.dart';
 import '../includes/config.dart' as config;
+import '../widgets/common/dialog.dart';
+import '../widgets/reminder_button.dart';
 
 class ReminderPage extends StatelessWidget {
   const ReminderPage({super.key});
@@ -24,7 +26,45 @@ class ReminderPage extends StatelessWidget {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(S.of(context).reminder, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
+        title: Text(S.of(context).auctionReminder, style: const TextStyle(color: Colors.white, fontSize: 20.0)),
+        actions: <Widget>[
+          ValueListenableBuilder<Box<AuctionReminder>>(
+            valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+            builder: (BuildContext context, _, __) {
+              final bool deleteAllEnabled = HiveHelper().getAuctionReminderList().isNotEmpty;
+
+              return deleteAllEnabled
+                  ? IconButton(
+                      onPressed: () async {
+                        await CommonDialog.show2(
+                          context,
+                          S.of(context).deleteReminders,
+                          S.of(context).confirmDeleteAllReminders,
+                          S.of(context).ok,
+                          () {
+                            HiveHelper().clearAllAuctionReminder();
+                            ReminderHelper().removeAllNotification();
+                            Navigator.of(context).pop();
+                          },
+                          S.of(context).cancel,
+                          () {
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      },
+                      icon: Semantics(
+                        label: S.of(context).semanticsDeleteAllSaved,
+                        button: true,
+                        child: const Icon(
+                          MdiIcons.deleteForeverOutline,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : Container();
+            },
+          ),
+        ],
         centerTitle: true,
       ),
       body: SafeArea(
@@ -33,42 +73,69 @@ class ReminderPage extends StatelessWidget {
           child: ValueListenableBuilder<Box<AuctionReminder>>(
             valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
             builder: (BuildContext context, _, __) {
-              final String lang = S.of(context).lang;
-              return Column(
-                children: HiveHelper()
-                    .getAuctionReminderList()
-                    .map((AuctionReminder reminder) => Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              reminder.remindTime.toString().replaceAll(' ', '\n'),
-                              style: const TextStyle(fontSize: 10.0),
-                            ),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                              child: Text(
-                                '(${reminder.lotId}) Date: ${reminder.auctionStartTime} \n${reminder.lotNum}: ${reminder.getDescription(lang)}',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            ElevatedButton(
-                              onPressed: () {
-                                ReminderHelper().removeNotification(reminder.lotId);
-                                HiveHelper().deleteAuctionReminder(reminder.lotId);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green[600],
-                              ),
-                              child: const Icon(MdiIcons.trashCanOutline),
-                            ),
-                          ],
-                        ))
-                    .toList(),
-              );
+              final List<AuctionReminder> reminderList = HiveHelper().getAuctionReminderList();
+
+              return reminderList.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.3),
+                        child: Text(S.of(context).auctionReminderEmpty),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: reminderList.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return Dismissible(
+                          key: ValueKey<int>(reminderList[i].auctionId),
+                          background: buildDismissibleBackground(context, AlignmentDirectional.centerStart),
+                          secondaryBackground: buildDismissibleBackground(context, AlignmentDirectional.centerEnd),
+                          onDismissed: (DismissDirection direction) {
+                            ReminderHelper().removeNotification(reminderList[i].auctionId);
+                            HiveHelper().deleteAuctionReminder(reminderList[i].auctionId);
+                          },
+                          child: buildReminderListItem(context, reminderList[i]),
+                        );
+                      },
+                    );
             },
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildDismissibleBackground(BuildContext context, AlignmentDirectional alignment) {
+    return Container(
+      alignment: alignment,
+      color: Colors.red,
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        child: Icon(
+          MdiIcons.trashCanOutline,
+          color: Colors.white,
+          size: 32.0,
+        ),
+      ),
+    );
+  }
+
+  Widget buildReminderListItem(BuildContext context, AuctionReminder reminder) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          reminder.remindTime.toString().replaceAll(' ', '\n'),
+          style: const TextStyle(fontSize: 10.0),
+        ),
+        const SizedBox(width: 5.0),
+        Expanded(
+          child: Text(
+            '(${reminder.auctionId}) Date: ${reminder.auctionStartTime}',
+          ),
+        ),
+        const SizedBox(width: 5.0),
+        ReminderButton(reminder, true),
+      ],
     );
   }
 }

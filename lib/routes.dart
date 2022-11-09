@@ -23,9 +23,9 @@ class Routes {
         final String title = (args as Map<String, dynamic>)['title'] as String;
         final String heroTagPrefix = args['heroTagPrefix'] as String;
         final int auctionId = args['auctionId'] as int;
-        final DateTime auctionDate = args['auctionDate'] as DateTime;
+        final DateTime auctionStartTime = args['auctionStartTime'] as DateTime;
         final AuctionLot auctionLot = args['auctionLot'] as AuctionLot;
-        return _buildRoute(settings, AuctionLotPage(title, heroTagPrefix, auctionId, auctionDate, auctionLot));
+        return _buildRoute(settings, AuctionLotPage(title, heroTagPrefix, auctionId, auctionStartTime, auctionLot));
       case 'agreement':
         final dynamic args = settings.arguments;
         final String exitPage = (args == null || (args as Map<String, dynamic>)['exitPage'] == null) ? '' : args['exitPage'] as String;

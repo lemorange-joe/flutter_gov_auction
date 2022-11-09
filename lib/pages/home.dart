@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             getCustomListTile(MdiIcons.heartOutline, listItemColor, S.of(context).saved, 'saved'),
-            getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).reminder, 'reminder'),
+            getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).auctionReminder, 'reminder'),
             getCustomListTile(MdiIcons.cogOutline, listItemColor, S.of(context).settings, 'settings'),
             const Divider(),
             getCustomListTile(MdiIcons.bulletinBoard, listItemColor, S.of(context).noticeToParticipants, 'noticeToParticipants'),

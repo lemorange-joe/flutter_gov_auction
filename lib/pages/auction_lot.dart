@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../class/auction.dart';
-import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
@@ -13,7 +12,6 @@ import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
-import '../widgets/reminder_button.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
@@ -115,8 +113,6 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     const double titleFieldWidth = 100.0;
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
     final bool isLotPhoto = widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute;
-    final AuctionReminder reminder = AuctionReminder.fromAuctionLot(widget.auctionId, widget.auctionStartTime, widget.auctionLot); 
-    // final AuctionReminder reminder = AuctionReminder.fromAuctionLot(widget.auctionId, DateTime.now().add(const Duration(days: 3)), widget.auctionLot); // for testing reminder
 
     return Scaffold(
       appBar: AppBar(
@@ -221,13 +217,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                 );
                               },
                             ),
-                            ValueListenableBuilder<Box<AuctionReminder>>(
-                              valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
-                              builder: (BuildContext context, _, __) {
-                                return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auctionLot.id));
-                              }
-                            ),
-                            const SizedBox(width: 20.0),
+                            const SizedBox(width: 10.0),
                           ],
                         ),
                       )

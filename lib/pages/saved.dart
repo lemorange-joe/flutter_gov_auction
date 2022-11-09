@@ -24,14 +24,14 @@ class SavedPage extends StatelessWidget {
     final TabBar tabBar = TabBar(
       tabs: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Text(
             S.of(context).comingAuction,
             style: const TextStyle(color: config.blue, fontSize: 16.0),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Text(
             S.of(context).pastAuction,
             style: const TextStyle(color: config.blue, fontSize: 16.0),
@@ -44,7 +44,7 @@ class SavedPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor) + 16.0),
+          preferredSize: Size.fromHeight(80.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor) + 20.0),
           child: AppBar(
             backgroundColor: config.green,
             leading: IconButton(
@@ -70,9 +70,9 @@ class SavedPage extends StatelessWidget {
                 builder: (BuildContext context, _, __) {
                   final bool deleteAllEnabled = HiveHelper().getSavedAuctionList().isNotEmpty;
 
-                  return IconButton(
-                    onPressed: deleteAllEnabled
-                        ? () async {
+                  return deleteAllEnabled
+                      ? IconButton(
+                          onPressed: () async {
                             await CommonDialog.show2(
                               context,
                               S.of(context).deleteSavedItems,
@@ -87,18 +87,18 @@ class SavedPage extends StatelessWidget {
                                 Navigator.of(context).pop();
                               },
                             );
-                          }
-                        : null,
-                    icon: Semantics(
-                      label: S.of(context).semanticsDeleteAllSaved,
-                      button: true,
-                      enabled: deleteAllEnabled,
-                      child: Icon(
-                        MdiIcons.deleteForeverOutline,
-                        color: deleteAllEnabled ? Colors.white : Colors.grey[400],
-                      ),
-                    ),
-                  );
+                          },
+                          icon: Semantics(
+                            label: S.of(context).semanticsDeleteAllSaved,
+                            button: true,
+                            enabled: deleteAllEnabled,
+                            child: const Icon(
+                              MdiIcons.deleteForeverOutline,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Container();
                 },
               ),
             ],

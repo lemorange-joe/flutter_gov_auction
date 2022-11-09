@@ -38,15 +38,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "auctionList": MessageLookupByLibrary.simpleMessage("Auction List"),
         "auctionReminder":
             MessageLookupByLibrary.simpleMessage("Auction Reminder"),
+        "auctionReminderEmpty":
+            MessageLookupByLibrary.simpleMessage("No auction reminders"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "comingAuction": MessageLookupByLibrary.simpleMessage("Coming Auction"),
+        "confirmDeleteAllReminders": MessageLookupByLibrary.simpleMessage(
+            "Are you sure to delete all auction reminders"),
         "confirmDeleteAllSavedItems": MessageLookupByLibrary.simpleMessage(
             "Are you sure to delete all saved items under comming and past auctions?"),
         "dayBefore": MessageLookupByLibrary.simpleMessage(" day before"),
         "daysBefore": MessageLookupByLibrary.simpleMessage(" days before"),
+        "deleteReminders":
+            MessageLookupByLibrary.simpleMessage("Delete reminders"),
         "deleteSavedItems":
             MessageLookupByLibrary.simpleMessage("Delete saved items"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
@@ -128,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("add to saved items"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("close"),
+        "semanticsDeleteAllReminders":
+            MessageLookupByLibrary.simpleMessage("delete all reminders"),
         "semanticsDeleteAllSaved":
             MessageLookupByLibrary.simpleMessage("delete all saved items"),
         "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(

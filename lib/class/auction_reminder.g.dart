@@ -19,41 +19,20 @@ class AuctionReminderAdapter extends TypeAdapter<AuctionReminder> {
     return AuctionReminder(
       fields[0] as int,
       fields[1] as DateTime,
-      fields[2] as int,
-      fields[3] as DateTime,
-      fields[4] as String,
-      fields[5] as String,
-      fields[6] as String,
-      fields[7] as String,
-      fields[8] as String,
-      fields[9] as String,
+      fields[2] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, AuctionReminder obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.lotId)
+      ..write(obj.auctionId)
       ..writeByte(1)
       ..write(obj.remindTime)
       ..writeByte(2)
-      ..write(obj.auctionId)
-      ..writeByte(3)
-      ..write(obj.auctionStartTime)
-      ..writeByte(4)
-      ..write(obj.lotNum)
-      ..writeByte(5)
-      ..write(obj.lotIcon)
-      ..writeByte(6)
-      ..write(obj.photoUrl)
-      ..writeByte(7)
-      ..write(obj.descriptionEn)
-      ..writeByte(8)
-      ..write(obj.descriptionTc)
-      ..writeByte(9)
-      ..write(obj.descriptionSc);
+      ..write(obj.auctionStartTime);
   }
 
   @override

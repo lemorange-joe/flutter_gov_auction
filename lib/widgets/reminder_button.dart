@@ -17,6 +17,7 @@ class ReminderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool auctionExpired = DateTime.now().compareTo(auctionReminder.auctionStartTime) > 0;
+    // final bool auctionExpired = false; // for testing reminder
     final bool isAfterRemindTime = isSaved && DateTime.now().compareTo(auctionReminder.remindTime) > 0;
 
     return PopupMenuButton<int>(
@@ -27,25 +28,26 @@ class ReminderButton extends StatelessWidget {
             // can shake the PopupMenuButton? TBC
             // Logger().w('reminder time is before now!');
           } else {
-            // final DateTime newRemindTime = auctionReminder.auctionStartTime.add(Duration(minutes: -minutesBefore));  // for testing reminder
-            final DateTime newRemindTime = DateTime.now().add(const Duration(seconds: 5));
+            final DateTime newRemindTime = auctionReminder.auctionStartTime.add(Duration(minutes: -minutesBefore));
+            // final DateTime newRemindTime = DateTime.now().add(const Duration(seconds: 5));  // for testing reminder
             final AuctionReminder newReminder = auctionReminder.copyWith(remindTime: newRemindTime);
 
             if (isSaved) {
-              await ReminderHelper().removeNotification(auctionReminder.lotId);
+              await ReminderHelper().removeNotification(auctionReminder.auctionId);
             }
             await ReminderHelper().addNotification(newReminder);
             await HiveHelper().writeAuctionReminder(newReminder);
           }
         } else if (isSaved) {
-          await HiveHelper().deleteAuctionReminder(auctionReminder.lotId);
-          await ReminderHelper().removeNotification(auctionReminder.lotId);
+          await HiveHelper().deleteAuctionReminder(auctionReminder.auctionId);
+          await ReminderHelper().removeNotification(auctionReminder.auctionId);
         }
       },
       itemBuilder: (BuildContext context) {
         final List<int> minutesBeforeList = List<int>.from(config.reminderMinutesBefore)..add(0);
         final List<PopupMenuEntry<int>> menuItemList = minutesBeforeList.map((int minute) {
           final bool reminderExpired = auctionReminder.auctionStartTime.add(Duration(minutes: -minute)).isBefore(DateTime.now());
+          // const bool reminderExpired = false; // for testing reminder
           String itemText = '';
           if (minute == 0) {
             itemText = S.of(context).clearReminder;

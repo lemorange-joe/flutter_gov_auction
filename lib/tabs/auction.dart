@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
+import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
@@ -15,6 +16,7 @@ import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
+import '../widgets/reminder_button.dart';
 // import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/calendar.dart';
@@ -80,19 +82,40 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                             title: Column(
                               children: <Widget>[
                                 const SizedBox(height: 60.0),
-                                Calendar(widget.auction.startTime),
-                                if (widget.auction.id == 0)
-                                  const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
-                                else
-                                  Text(
-                                    'id: ${widget.auction.id}, ${widget.auction.startTime}',
-                                    style: const TextStyle(fontSize: 12.0),
-                                  ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    widget.showHome();
-                                  },
-                                  child: Text(S.of(context).home),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Calendar(widget.auction.startTime),
+                                    if (widget.auction.id == 0)
+                                      const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
+                                    else
+                                      Text(
+                                        'id: ${widget.auction.id}, ${widget.auction.startTime}',
+                                        style: const TextStyle(fontSize: 12.0),
+                                      ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        widget.showHome();
+                                      },
+                                      child: Text(S.of(context).home),
+                                    ),
+                                    ValueListenableBuilder<Box<AuctionReminder>>(
+                                      valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+                                      builder: (BuildContext context, _, __) {
+                                        // no need to set the reminder time here, even the reminder was set in hive
+                                        // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
+                                        final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
+                                        // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
+
+                                        return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -221,7 +244,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                 'title': S.of(context).itemDetails,
                 'heroTagPrefix': heroTagPrefix,
                 'auctionId': widget.auction.id,
-                'auctionDate': widget.auction.startTime,
+                'auctionStartTime': widget.auction.startTime,
                 'auctionLot': curLot,
               });
             },

@@ -160,6 +160,16 @@ class S {
     );
   }
 
+  /// `No auction reminders`
+  String get auctionReminderEmpty {
+    return Intl.message(
+      'No auction reminders',
+      name: 'auctionReminderEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get cancel {
     return Intl.message(
@@ -200,6 +210,16 @@ class S {
     );
   }
 
+  /// `Are you sure to delete all auction reminders`
+  String get confirmDeleteAllReminders {
+    return Intl.message(
+      'Are you sure to delete all auction reminders',
+      name: 'confirmDeleteAllReminders',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Are you sure to delete all saved items under comming and past auctions?`
   String get confirmDeleteAllSavedItems {
     return Intl.message(
@@ -225,6 +245,16 @@ class S {
     return Intl.message(
       ' days before',
       name: 'daysBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete reminders`
+  String get deleteReminders {
+    return Intl.message(
+      'Delete reminders',
+      name: 'deleteReminders',
       desc: '',
       args: [],
     );
@@ -825,6 +855,16 @@ class S {
     return Intl.message(
       'close',
       name: 'semanticsClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `delete all reminders`
+  String get semanticsDeleteAllReminders {
+    return Intl.message(
+      'delete all reminders',
+      name: 'semanticsDeleteAllReminders',
       desc: '',
       args: [],
     );

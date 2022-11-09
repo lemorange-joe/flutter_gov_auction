@@ -37,14 +37,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (HK)"),
         "auctionList": MessageLookupByLibrary.simpleMessage("拍賣列表"),
         "auctionReminder": MessageLookupByLibrary.simpleMessage("拍賣提醒"),
+        "auctionReminderEmpty": MessageLookupByLibrary.simpleMessage("沒有拍賣提醒"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("清除拍賣提醒"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜尋記錄"),
         "comingAuction": MessageLookupByLibrary.simpleMessage("下次拍賣"),
+        "confirmDeleteAllReminders":
+            MessageLookupByLibrary.simpleMessage("確定要刪除全部拍賣提醒？"),
         "confirmDeleteAllSavedItems":
             MessageLookupByLibrary.simpleMessage("確定要刪除下次拍賣及過往拍賣的全部收藏項目？"),
         "dayBefore": MessageLookupByLibrary.simpleMessage("天前"),
         "daysBefore": MessageLookupByLibrary.simpleMessage("天前"),
+        "deleteReminders": MessageLookupByLibrary.simpleMessage("刪除拍賣提醒"),
         "deleteSavedItems": MessageLookupByLibrary.simpleMessage("刪除收藏項目"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
         "doubleTapViewDetails": MessageLookupByLibrary.simpleMessage("雙擊查看詳情"),
@@ -115,6 +119,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("加至收藏項目"),
         "semanticsClose": MessageLookupByLibrary.simpleMessage("關閉"),
+        "semanticsDeleteAllReminders":
+            MessageLookupByLibrary.simpleMessage("刪除全部拍賣提醒"),
         "semanticsDeleteAllSaved":
             MessageLookupByLibrary.simpleMessage("刪除全部收藏項目"),
         "semanticsDoubleTapViewDetails":

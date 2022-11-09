@@ -194,7 +194,7 @@ class HiveHelper {
   // --------------------------------------------
   // reminder box:
   Future<void> writeAuctionReminder(AuctionReminder reminder) async {
-    await _reminderBox.put(reminder.lotId, reminder);
+    await _reminderBox.put(reminder.auctionId, reminder);
   }
 
   List<AuctionReminder> getAuctionReminderList() {
@@ -202,11 +202,11 @@ class HiveHelper {
   }
 
   List<int> getAuctionReminderIdList() {
-    return _reminderBox.values.map((AuctionReminder reminder) => reminder.lotId).toList();
+    return _reminderBox.values.map((AuctionReminder reminder) => reminder.auctionId).toList();
   }
 
-  Future<void> deleteAuctionReminder(int lotId) async {
-    _reminderBox.delete(lotId);
+  Future<void> deleteAuctionReminder(int auctionId) async {
+    _reminderBox.delete(auctionId);
   }
 
   Future<void> clearAllAuctionReminder() async {

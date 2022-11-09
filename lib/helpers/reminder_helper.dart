@@ -49,9 +49,9 @@ class ReminderHelper {
   Future<int> addNotification(AuctionReminder reminder) async {
     try {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        reminder.lotId, // use lotId as the notification ID
+        reminder.auctionId, // use auctionId as the notification ID
         S.current.auctionReminder,
-        '[${DateFormat('HH:mm').format(reminder.remindTime)}] Lot: ${reminder.lotNum} @ ${DateFormat('yyyy-MM-dd HH:mm').format(reminder.auctionStartTime)}',
+        '[${DateFormat('HH:mm').format(reminder.remindTime)}] Auction Reminder @ ${DateFormat('yyyy-MM-dd HH:mm').format(reminder.auctionStartTime)}',
         tz.TZDateTime.from(reminder.remindTime, location),
         notificationDetails,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
