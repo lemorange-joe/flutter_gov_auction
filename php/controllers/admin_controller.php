@@ -1461,6 +1461,11 @@ class AdminController {
         }
 
         try {
+          while (file_exists($targetFile)) {
+            usleep(100);
+            $md5FileName = md5(basename($uploadFileName, $ext)."_".time()) . "." . $ext;
+            $targetFile = $GLOBALS["AUCTION_IMAGE_FOLDER"] . $md5FileName;
+          }
           move_uploaded_file($_FILES["image_file"]["tmp_name"], $targetFile);
         } catch (Exception $e) {
           throw $e;
