@@ -22,6 +22,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accessibilityDesign": MessageLookupByLibrary.simpleMessage("無障礙設計"),
+        "accessibilityParagraph1": MessageLookupByLibrary.simpleMessage(
+            "(TBC)本流動應用程式已採用適當的無障礙設計。本流動應用程式已採用適當的無障礙設計。本流動應用程式已採用適當的無障礙設計。"),
+        "accessibilityParagraph2Android": MessageLookupByLibrary.simpleMessage(
+            "(TBC)您可以使用 Android 的 TalkBack 功能。您可以使用 Android 的 TalkBack 功能。您可以使用 Android 的 TalkBack 功能。"),
+        "accessibilityParagraph2Ios": MessageLookupByLibrary.simpleMessage(
+            "(TBC)您可以使用 iOS 的「旁白」功能。您可以使用 iOS 的「旁白」功能。您可以使用 iOS 的「旁白」功能。"),
+        "accessibilityParagraph3After":
+            MessageLookupByLibrary.simpleMessage("與我們聯絡。"),
+        "accessibilityParagraph3Before":
+            MessageLookupByLibrary.simpleMessage("如您對本應用程式的無障礙設計有任何意見或查詢，請電郵至"),
         "agree": MessageLookupByLibrary.simpleMessage("同意"),
         "agreement": MessageLookupByLibrary.simpleMessage("使用條款"),
         "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
@@ -125,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("刪除全部收藏項目"),
         "semanticsDoubleTapViewDetails":
             MessageLookupByLibrary.simpleMessage("雙擊查看詳情"),
+        "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("發送電郵至"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精選物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),

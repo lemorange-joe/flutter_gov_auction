@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './class/auction.dart';
+import './pages/accessibility.dart';
 import './pages/agreement.dart';
 import './pages/auction_lot.dart';
 import './pages/debug.dart';
@@ -18,6 +19,8 @@ enum PageSlideDirection { up, down, left, right }
 class Routes {
   PageRoute<Widget> getRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case 'accessibility':
+        return _buildRoute(settings, const AccessibilityPage());
       case 'auction_lot':
         final dynamic args = settings.arguments;
         final String title = (args as Map<String, dynamic>)['title'] as String;

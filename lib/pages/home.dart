@@ -246,10 +246,11 @@ class _HomePageState extends State<HomePage> {
             getCustomListTile(MdiIcons.bellOutline, listItemColor, S.of(context).auctionReminder, 'reminder'),
             getCustomListTile(MdiIcons.cogOutline, listItemColor, S.of(context).settings, 'settings'),
             const Divider(),
-            getCustomListTile(MdiIcons.bulletinBoard, listItemColor, S.of(context).noticeToParticipants, 'noticeToParticipants'),
             getCustomListTile(MdiIcons.bookOpenOutline, listItemColor, S.of(context).agreement, 'agreement'),
+            getCustomListTile(MdiIcons.bulletinBoard, listItemColor, S.of(context).noticeToParticipants, 'noticeToParticipants'),
             getCustomListTile(MdiIcons.navigationOutline, listItemColor, S.of(context).tour, 'tour'),
             getCustomListTile(MdiIcons.frequentlyAskedQuestions, listItemColor, S.of(context).faq, 'faq'),
+            getCustomListTile(MdiIcons.human, listItemColor, S.of(context).accessibilityDesign, 'accessibility'),
             getCustomListTile(MdiIcons.helpCircleOutline, listItemColor, S.of(context).help, 'help'),
             const Divider(),
             ValueListenableBuilder<Box<dynamic>>(

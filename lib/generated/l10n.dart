@@ -70,6 +70,66 @@ class S {
     );
   }
 
+  /// `Accessibility Design`
+  String get accessibilityDesign {
+    return Intl.message(
+      'Accessibility Design',
+      name: 'accessibilityDesign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC)This mobile app has adopted accessibility design. This mobile app has adopted accessibility design. This mobile app has adopted accessibility design.`
+  String get accessibilityParagraph1 {
+    return Intl.message(
+      '(TBC)This mobile app has adopted accessibility design. This mobile app has adopted accessibility design. This mobile app has adopted accessibility design.',
+      name: 'accessibilityParagraph1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC)You can use the "TalkBack" function of Android to... You can use the "TalkBack" function of Android to... You can use the "TalkBack" function of Android to...`
+  String get accessibilityParagraph2Android {
+    return Intl.message(
+      '(TBC)You can use the "TalkBack" function of Android to... You can use the "TalkBack" function of Android to... You can use the "TalkBack" function of Android to...',
+      name: 'accessibilityParagraph2Android',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC)You can use the "VoiceOver" function of iOS to... You can use the "VoiceOver" function of iOS to... You can use the "VoiceOver" function of iOS to...`
+  String get accessibilityParagraph2Ios {
+    return Intl.message(
+      '(TBC)You can use the "VoiceOver" function of iOS to... You can use the "VoiceOver" function of iOS to... You can use the "VoiceOver" function of iOS to...',
+      name: 'accessibilityParagraph2Ios',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `.`
+  String get accessibilityParagraph3After {
+    return Intl.message(
+      '.',
+      name: 'accessibilityParagraph3After',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Should you have any enquiries or comments regarding the accessibility issues, please contact us at `
+  String get accessibilityParagraph3Before {
+    return Intl.message(
+      'Should you have any enquiries or comments regarding the accessibility issues, please contact us at ',
+      name: 'accessibilityParagraph3Before',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Agree`
   String get agree {
     return Intl.message(
@@ -720,10 +780,10 @@ class S {
     );
   }
 
-  /// ` In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula.`
+  /// `In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula.`
   String get privacyPolicyParagraph4 {
     return Intl.message(
-      ' In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula.',
+      'In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula.',
       name: 'privacyPolicyParagraph4',
       desc: '',
       args: [],
@@ -880,6 +940,26 @@ class S {
     );
   }
 
+  /// `press and hold to view details`
+  String get semanticsDoubleTapViewDetails {
+    return Intl.message(
+      'press and hold to view details',
+      name: 'semanticsDoubleTapViewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `email to `
+  String get semanticsEmailTo {
+    return Intl.message(
+      'email to ',
+      name: 'semanticsEmailTo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `featured items`
   String get semanticsFeaturedItems {
     return Intl.message(
@@ -905,16 +985,6 @@ class S {
     return Intl.message(
       'read news',
       name: 'semanticsOpenNews',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `press and hold to view details`
-  String get semanticsDoubleTapViewDetails {
-    return Intl.message(
-      'press and hold to view details',
-      name: 'semanticsDoubleTapViewDetails',
       desc: '',
       args: [],
     );

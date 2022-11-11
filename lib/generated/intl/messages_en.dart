@@ -22,6 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accessibilityDesign":
+            MessageLookupByLibrary.simpleMessage("Accessibility Design"),
+        "accessibilityParagraph1": MessageLookupByLibrary.simpleMessage(
+            "(TBC)This mobile app has adopted accessibility design. This mobile app has adopted accessibility design. This mobile app has adopted accessibility design."),
+        "accessibilityParagraph2Android": MessageLookupByLibrary.simpleMessage(
+            "(TBC)You can use the \"TalkBack\" function of Android to... You can use the \"TalkBack\" function of Android to... You can use the \"TalkBack\" function of Android to..."),
+        "accessibilityParagraph2Ios": MessageLookupByLibrary.simpleMessage(
+            "(TBC)You can use the \"VoiceOver\" function of iOS to... You can use the \"VoiceOver\" function of iOS to... You can use the \"VoiceOver\" function of iOS to..."),
+        "accessibilityParagraph3After":
+            MessageLookupByLibrary.simpleMessage("."),
+        "accessibilityParagraph3Before": MessageLookupByLibrary.simpleMessage(
+            "Should you have any enquiries or comments regarding the accessibility issues, please contact us at "),
         "agree": MessageLookupByLibrary.simpleMessage("Agree"),
         "agreement": MessageLookupByLibrary.simpleMessage("Agreement"),
         "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
@@ -115,7 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "privacyPolicyParagraph3": MessageLookupByLibrary.simpleMessage(
             "Morbi maximus nibh blandit augue posuere porttitor. Proin malesuada hendrerit ex et iaculis. Fusce eget euismod turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec mollis volutpat enim eu malesuada. Donec sit amet odio nisl. Suspendisse sit amet lorem faucibus, pretium quam nec, commodo mauris. Quisque placerat lorem in odio pellentesque auctor. Mauris at elementum felis. Nulla facilisi."),
         "privacyPolicyParagraph4": MessageLookupByLibrary.simpleMessage(
-            " In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula."),
+            "In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula."),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "Nullam fringilla suscipit tellus, nec dapibus eros porttitor at. Quisque rutrum cursus ipsum nec dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris eros lorem, vulputate sit amet turpis sed, condimentum volutpat leo. Aenean sed libero id risus volutpat rutrum eget sit amet est. Sed non neque mollis, lacinia lacus id, scelerisque elit. Aliquam lacus diam, pellentesque eget diam vitae, cursus pulvinar justo."),
         "recentSearch": MessageLookupByLibrary.simpleMessage("Recent search"),
@@ -140,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("delete all saved items"),
         "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(
             "press and hold to view details"),
+        "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("email to "),
         "semanticsFeaturedItems":
             MessageLookupByLibrary.simpleMessage("featured items"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),

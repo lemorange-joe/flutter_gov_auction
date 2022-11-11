@@ -8,6 +8,7 @@ const String appName = 'Example App Name';
 const String lemorangeAppApiUrl = 'https://api.lemorange.studio/apps/?appcode={0}';
 const String appStoreUrl = 'https://lemorange.studio';  // TBC!!!
 const String googlePlayUrl = 'https://lemorange.studio';  // TBC!!!
+const String supportEmail = 'info@lemorange.studio';
 const int httpTimeout = 5; // in seconds
 
 const String dateFormatEn = 'd MMMM yyyy (EEEE)';
