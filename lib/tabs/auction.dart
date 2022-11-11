@@ -166,12 +166,11 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                                 .map((SavedAuction auction) => auction.lotNum)
                                 .toList();
 
-                            return _buildLotList(
-                              '3',
-                              widget.auction.lotList.where((AuctionLot auctionLot) {
-                                return savedLotNums.contains(auctionLot.lotNum);
-                              }).toList(),
-                            );
+                            final List<AuctionLot> savedAuctionLotList = widget.auction.lotList.where((AuctionLot auctionLot) {
+                              return savedLotNums.contains(auctionLot.lotNum);
+                            }).toList();
+
+                            return savedAuctionLotList.isEmpty ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1)) : _buildLotList('3', savedAuctionLotList);
                           },
                         ),
                         ...itemTypes.entries

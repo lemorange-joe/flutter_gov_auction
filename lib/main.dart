@@ -18,6 +18,7 @@ import './helpers/firebase_analytics_helper.dart';
 import './helpers/hive_helper.dart';
 import './helpers/notification_helper.dart';
 import './helpers/reminder_helper.dart';
+// import './includes/config.dart' as config;
 import './includes/global.dart';
 import './includes/theme_data.dart';
 import './providers/app_info_provider.dart';
@@ -27,8 +28,8 @@ import './providers/lemorange_app_provider.dart';
 import './routes.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'Auction channel', // id
-  'High Importance Notifications', // title
+  'studio.lemorange.gauc.reminder', // id
+  'Auction Reminders', // title
   importance: Importance.max,
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

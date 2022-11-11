@@ -20,6 +20,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool _savingFirebaseMessaging = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 final String localeCode = HiveHelper().getLocaleCode();
                 final int fontSize = HiveHelper().getFontSize();
                 final String theme = HiveHelper().getTheme();
-          
+
                 return Column(
                   children: <Widget>[
                     const SizedBox(height: 20.0),
@@ -60,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             final HiveHelper hiveHelper = HiveHelper();
                             await S.load(const Locale('en', 'US'));
                             await hiveHelper.writeLocaleCode('en_US');
-          
+
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {
                               final NotificationHelper notificationHelper = NotificationHelper();
@@ -68,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               final String newTopic = await notificationHelper.subscribeNewsTopic('en'); // 2. subscribe the topic in new lang
                               hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
                             }
-          
+
                             if (!mounted) {
                               return;
                             }
@@ -87,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             final HiveHelper hiveHelper = HiveHelper();
                             await S.load(const Locale('zh', 'HK'));
                             await HiveHelper().writeLocaleCode('zh_HK');
-          
+
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {
                               final NotificationHelper notificationHelper = NotificationHelper();
@@ -95,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               final String newTopic = await notificationHelper.subscribeNewsTopic('tc'); // 2. subscribe the topic in new lang
                               hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
                             }
-          
+
                             if (!mounted) {
                               return;
                             }
@@ -114,7 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             final HiveHelper hiveHelper = HiveHelper();
                             await S.load(const Locale('zh', 'CN'));
                             await hiveHelper.writeLocaleCode('zh_CN');
-          
+
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {
                               final NotificationHelper notificationHelper = NotificationHelper();
@@ -122,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               final String newTopic = await notificationHelper.subscribeNewsTopic('sc'); // 2. subscribe the topic in new lang
                               hiveHelper.writeSubscribeTopic(newTopic); // 3. save the new topic in hive
                             }
-          
+
                             if (!mounted) {
                               return;
                             }
@@ -206,24 +208,39 @@ class _SettingsPageState extends State<SettingsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('Receive notification'),
+                        Text(S.of(context).receiveNotification),
                         ValueListenableBuilder<Box<dynamic>>(
                           valueListenable: Hive.box<dynamic>('notification').listenable(),
                           builder: (BuildContext context, _, __) {
                             final String subscribedTopic = HiveHelper().getSubscribeTopic();
-                            return Switch(
-                              value: subscribedTopic.isNotEmpty,
-                              activeColor: Colors.green,
-                              onChanged: (bool value) async {
-                                if (value) {
-                                  final String newTopic = await NotificationHelper().subscribeNewsTopic(S.of(context).lang);
-                                  await HiveHelper().writeSubscribeTopic(newTopic);
-                                } else {
-                                  await NotificationHelper().unsubscribeTopic(subscribedTopic);
-                                  await HiveHelper().writeSubscribeTopic('');
-                                }
-                              },
-                            );
+                            return _savingFirebaseMessaging
+                                ? const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: CircularProgressIndicator.adaptive(),
+                                    ),
+                                  )
+                                : Switch(
+                                    value: subscribedTopic.isNotEmpty,
+                                    activeColor: Colors.green,
+                                    onChanged: (bool value) async {
+                                      setState(() {
+                                        _savingFirebaseMessaging = true;
+                                      });
+                                      if (value) {
+                                        final String newTopic = await NotificationHelper().subscribeNewsTopic(S.of(context).lang);
+                                        await HiveHelper().writeSubscribeTopic(newTopic);
+                                      } else {
+                                        await NotificationHelper().unsubscribeTopic(subscribedTopic);
+                                        await HiveHelper().writeSubscribeTopic('');
+                                      }
+                                      setState(() {
+                                        _savingFirebaseMessaging = false;
+                                      });
+                                    },
+                                  );
                           },
                         ),
                       ],
@@ -232,7 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('Allow analytics:'),
+                        Text(S.of(context).allowAnalytics),
                         ValueListenableBuilder<Box<dynamic>>(
                           valueListenable: Hive.box<dynamic>('preferences').listenable(),
                           builder: (BuildContext context, _, __) {

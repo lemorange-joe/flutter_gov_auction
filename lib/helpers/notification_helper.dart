@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logger/logger.dart';
 // import '../widgets/common/snackbar.dart';
+import '../includes/config.dart' as config;
 
 class NotificationHelper {
   factory NotificationHelper() {
@@ -47,9 +48,9 @@ class NotificationHelper {
       return;
     }
     channel = const AndroidNotificationChannel(
-      'auction_news', // id
+      'studio.lemorange.gauc.news', // id
       'Latest Auction News', // title
-      description: 'This channel is used for receiving latest auction news.', // description
+      description: '${config.appName} channel: for receiving latest auction news', // description
       importance: Importance.high,
     );
 

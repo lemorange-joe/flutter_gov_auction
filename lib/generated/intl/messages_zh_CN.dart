@@ -45,6 +45,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "于不元是还点作快告，记场已美没竟一的增农的对请制的来本石是往因接即心须起需。湾四没动……场只业现学……比球西水口得……们音育是什人、印也功转从关外算，话有回子台要脑关样出是，样为失望路光已理活乡关时是上，量书得方此，易很后球国此收，因发明马着及然有界、他如手府年上们么统完？"),
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "孩论脚定，脑告便过面了面乐的子地园响注。多界停看国题的史急文么密李严来传期入也开喜足饭也，很命的重和我么养画，天特务中到更西动金制就将方年人运朋计！"),
+        "allowAnalytics": MessageLookupByLibrary.simpleMessage("(TBC) 允許資料分析"),
+        "allowAnalyticsDescription":
+            MessageLookupByLibrary.simpleMessage("(TBC) 允許資料分析，于不元是还点作快告"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
         "auctionList": MessageLookupByLibrary.simpleMessage("拍卖列表"),
         "auctionReminder": MessageLookupByLibrary.simpleMessage("拍卖提醒"),
@@ -117,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("包曾价共什飞区从检也要的问，连该游小形台好自。"),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "了方奇风业这业，界成但际高案生政其的光来……一明发友病确日经力意不是该总年异天等不又。"),
+        "receiveNotification": MessageLookupByLibrary.simpleMessage("接收通知"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜寻"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相关Apps"),
         "relatedLots": MessageLookupByLibrary.simpleMessage("相关项目"),

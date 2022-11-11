@@ -13,10 +13,10 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 ## TODO:
 - reminders:
-  - check notification channel names
   - test local notification reminder in ios
   - decide reminder message in ReminderHelper
   - update reminder page layout
+- auto request push notification permission when start app
 - add random data in API to prevent data theft
 
 ## Deliverables:
