@@ -7,6 +7,10 @@ function AutoScroll(d) {
   }, 20);
 }
 
+function JumpScroll(d) {
+  window.scrollBy({top: d});
+}
+
 function StopScroll() {
   clearTimeout(scrollTimeout);
 }

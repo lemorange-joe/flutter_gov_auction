@@ -55,8 +55,8 @@ include_once ("../class/admin_import.php");
       </div>
       <button id="btnNextErrorItem" style="position: fixed; right: 20px; bottom: 200px; width:36px; height: 36px; font-size: 18px; background-color: #f88; color: #fff; border: solid 1px #888" onclick="FindNextErrorItem()"  onmouseover="this.style.backgroundColor='#f99'" onmouseout="this.style.backgroundColor='#f88'">⮕</button>
       <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
-      <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
-      <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
+      <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
+      <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
       <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
       <script src="js/main.js"></script>
       <script>
