@@ -6,6 +6,16 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/common.php");
+$jsonString = file_get_contents("./pdf_source/auction_lot.json");
+$lotData = json_decode($jsonString, true);
+
+$lotMapping = array();
+foreach($lotData as $key => $auctionLot) {
+  $lotMapping[] = $key;
+  $lotMapping[$key] = new StdClass();
+  $lotMapping[$key]->lotNum = $auctionLot["lot-num"];
+  $lotMapping[$key]->stat = $auctionLot["stat"];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,8 +24,10 @@ include_once ("../include/common.php");
   <link rel="stylesheet" href="css/main.css">
   <style>
     .folder {
-      width: 250px;
+      width: 300px;
+      height: 500px;
       margin-right: 10px;
+      overflow-y: scroll;
     }
 
     .folder-title {
@@ -49,15 +61,35 @@ include_once ("../include/common.php");
       <div class="folder">
       <?php
         function buildPdfFolder($folderName) {
+          global $lotMapping;
+
           $curFolder = __dir__."/pdf_source/".$folderName;
           $pdfFiles = scandir($curFolder);
-          echo "<div class='folder-title' onclick='showFolder(this)' data-folder='".$folderName."'>" . $folderName . "</div>";
-          echo "<div id='divContent_".$folderName."' class='folder-content' style='display: none'>";
+          $displayFolderName = $folderName;
+          $lotStat = "-";
+          if (isset($lotMapping[$folderName])) {
+            $curLot = $lotMapping[$folderName];
+            $displayFolderName = $curLot->lotNum;
+            $lotStat = "";
+            foreach ($curLot->stat as $itemType => $stat) {
+              $lotStat .= "<div style='background-color: #eee; padding: 1px 3px; font-size: 14px'>$itemType: $stat</div>";
+            }
+          }
+          $lotStat = rtrim($lotStat, ", ");
+
+          echo "<div class='folder-title' onclick='showFolder(this)' data-folder='$folderName' style='display: flex'>";
+            echo "<div>$displayFolderName</div>";
+            echo "<div style='width: 8px'></div>";
+            echo "<div style='flex-grow: 1'>";
+              echo "<div style='display: flex; justify-content: space-between'>$lotStat</div>";
+            echo "</div>";
+          echo "</div>";
+          echo "<div id='divContent_$folderName' class='folder-content' style='display: none'>";
           foreach($pdfFiles as $pdfFile) {
             $curFile = $curFolder."/".$pdfFile;
             if (!is_dir($curFile) && strtolower(substr($pdfFile, -4)) == ".pdf") {
               $relativeFilePath = "pdf_source/".$folderName."/".$pdfFile;
-              echo "<a href='#' onclick='openPdf(\"".$relativeFilePath."\");return false'>".$pdfFile."</a>";
+              echo "<a href='#' onclick='openPdf(\"$relativeFilePath\");return false'>$pdfFile</a>";
             }
           }
           echo "</div>";
