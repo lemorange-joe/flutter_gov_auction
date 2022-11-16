@@ -200,9 +200,15 @@ class AdminImport {
     }
     
     $colWidth = "100";
-    $colWidth2 = "800";
+    $colWidth2 = "680";
     $separatorHeight = "8";
-    echo "<div style='display:inline-block;width:".$colWidth."px'>Lot Num:</div><input id='tbLotNum_$lotIndex' value='".str_replace("'", '"', $matchValues["lotNum"])."'>";
+
+    echo "<div style='display:flex; justify-content: space-between; width: 800px'>";
+      echo "<div><div style='display:inline-block;width:".$colWidth."px'>Lot Num:</div><input id='tbLotNum_$lotIndex' value='".str_replace("'", '"', $matchValues["lotNum"])."'></div>";
+      if ($lotIndex > 0) {
+        echo "<button onclick='CopyInfo($lotIndex)' style='margin-right: 12px'>Copy from above</button>";
+      }
+    echo "</div>";
     echo "<div style='height:".$separatorHeight."px'></div>";
     echo "<div style='display:flex;width:1400px'>";
       echo "<div style='width:800px'>";

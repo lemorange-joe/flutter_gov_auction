@@ -598,7 +598,12 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
               divHtml += featured ? "★" : "☆";
             divHtml += "</div>";
           divHtml += "</div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
+          divHtml += "<div style='display:flex; justify-content: space-between'>";
+            divHtml += "<div><div style='display:inline-block;width:100px'>Lot Num</div><input id='tbLotNum_" + i + "' style='width:100px' value='" + lotNum.replace("'", '"') + "'></div>";
+            if (i > 0) { 
+              divHtml += "<button onclick='CopyInfo(" + i + ")' style='margin-right: 40px'>Copy from above</button>";
+            }
+          divHtml += "</div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>GLD Ref</div><input id='tbGldRef_" + i + "' style='width:200px' value='" + gldFileRef.replace("'", '"') + "'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Ref</div><input id='tbRef_" + i + "' style='width:200px' value='" + reference.replace("'", '"') + "'></div>";
           divHtml += "<div style='height:10px'></div>";
@@ -834,6 +839,22 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         }
 
         xhr.send();
+      }
+
+      function CopyInfo(num) {
+        var fieldList = [
+          "tbGldRef_", "tbRef_",
+          "tbDeptEn_", "tbDeptTc_", "tbDeptSc_", "tbContactEn_", "tbContactTc_", "tbContactSc_", 
+          "tbNumberEn_", "tbNumberTc_", "tbNumberSc_", "tbLocationEn_", "tbLocationTc_", "tbLocationSc_"
+        ];
+          
+        for (var i = 0; i < fieldList.length; ++i) {
+          var prevFieldId = fieldList[i] + (num - 1);
+          var curFieldId = fieldList[i] + num;
+          if (document.getElementById(curFieldId).value.trim() == "") {
+            document.getElementById(curFieldId).value = document.getElementById(prevFieldId).value;
+          }
+        }
       }
 
       GetData(<?=$id?>, <?=$featuredOnly?"1":'0'?>, "<?=$type?>");

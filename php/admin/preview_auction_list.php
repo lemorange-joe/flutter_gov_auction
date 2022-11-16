@@ -271,6 +271,22 @@ include_once ("../class/admin_import.php");
 
           xhr.send(JSON.stringify(auctionData));
         }
+
+        function CopyInfo(num) {
+          var fieldList = [
+            "tbGldRef_", "tbRef_",
+            "tbDeptEn_", "tbDeptTc_", "tbContactEn_", "tbContactTc_", 
+            "tbNumberEn_", "tbNumberTc_", "tbLocationEn_", "tbLocationTc_"
+          ];
+            
+          for (var i = 0; i < fieldList.length; ++i) {
+            var prevFieldId = fieldList[i] + (num - 1);
+            var curFieldId = fieldList[i] + num;
+            if (document.getElementById(curFieldId).value.trim() == "") {
+              document.getElementById(curFieldId).value = document.getElementById(prevFieldId).value;
+            }
+          }
+        }
       </script>
     <?php
     }
