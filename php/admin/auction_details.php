@@ -700,6 +700,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         document.getElementById("btnAddItem_" + lotIndex).setAttribute("data-total", itemIndex + 1);
         document.getElementById("divItems_" + lotIndex).insertAdjacentHTML("beforeend", divHtml);
+        document.getElementById("tbItem_" + lotIndex + "_" + itemIndex).focus();
       }
 
       function BuildLotItems(lotIndex, itemIndex, itemData) {

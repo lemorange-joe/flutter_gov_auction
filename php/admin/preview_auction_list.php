@@ -168,8 +168,9 @@ include_once ("../class/admin_import.php");
           var btnAdd = document.getElementById("btnAddItem_" + lotIndex);
           var itemIndex = parseInt(btnAdd.getAttribute("data-total"));
           var className = "auction-item-textarea item" + String(itemIndex + 1).padStart(2, "0");
-          var textareaHtml = "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' class='" + className + "' style='width:250px;height:100px'></textarea>";
+          var textareaHtml = "<textarea id='tbItem_" + lotIndex + "_" + itemIndex + "' class='" + className + "' style='width:250px;height:100px;margin-bottom:17px'></textarea>";
           document.getElementById("divItems_"+lotIndex).insertAdjacentHTML("beforeend", textareaHtml);
+          document.getElementById("tbItem_" + lotIndex + "_" + itemIndex).focus();
 
           btnAdd.setAttribute("data-total", itemIndex+1);
         }
