@@ -296,6 +296,8 @@ class AdminImport {
           $outputList[] = $textList[$i];
         }
       }
+      // remove empty items from the array and re-index it from 0
+      $outputList = array_values(array_filter($outputList));
 
       // check the output of current item first
       // 1. 5 lines;
@@ -317,7 +319,6 @@ class AdminImport {
 
   function implodeItemLines($itemTextList) {
     // special handle imploding Chinese and English characters
-    
     $output = trim($itemTextList[0]);
     for ($i = 1; $i < count($itemTextList); ++$i) {
       $lastChar = mb_substr($output, -1);
