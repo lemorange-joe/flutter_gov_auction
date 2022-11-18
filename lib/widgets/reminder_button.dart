@@ -88,6 +88,7 @@ class ReminderButton extends StatelessWidget {
           child: Icon(
             isSaved ? (isAfterRemindTime ? MdiIcons.bellRing : MdiIcons.bell) : MdiIcons.bellOutline,
             color: auctionExpired ? Theme.of(context).disabledColor : Colors.yellow[800]!,
+            size: 20.0,
           ),
         ),
       ),

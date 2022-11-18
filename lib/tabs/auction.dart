@@ -34,6 +34,7 @@ class AuctionTab extends StatefulWidget {
 
 class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
   late TabController _tabController;
+  double _denseHeaderHeight = 56.0;
 
   @override
   void dispose() {
@@ -54,8 +55,99 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
         : GetListView(listIndex, widget.auction, lotList);
   }
 
+  Widget _buildHeader() {
+    final double appBarHeight = AppBar().preferredSize.height + 10.0;
+    return DefaultTextStyle(
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 12.0,
+      ),
+      child: Row(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(height: appBarHeight),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Calendar(widget.auction.startTime),
+              ),
+              const SizedBox(height: 10.0),
+              ValueListenableBuilder<Box<AuctionReminder>>(
+                valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+                builder: (BuildContext context, _, __) {
+                  // no need to set the reminder time here, even the reminder was set in hive
+                  // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
+                  final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
+                  // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
+
+                  return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
+                },
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(height: appBarHeight),
+              Text(
+                S.of(context).time,
+              ),
+              Text(
+                S.of(context).location,
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: appBarHeight),
+                Text(
+                  utilities.formatTime(widget.auction.startTime, S.of(context).lang),
+                ),
+                Text(
+                  widget.auction.location,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
+                        widget.showHome();
+                      },
+                      child: Text(S.of(context).home),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDenseHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      width: double.infinity,
+      height: _denseHeaderHeight,
+      child: Center(
+        child: Text(
+          utilities.formatDateTime(widget.auction.startTime, S.of(context).lang),
+          style: const TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    _denseHeaderHeight = 56.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor);
+
     return Scaffold(
       body: Consumer<AppInfoProvider>(
         builder: (BuildContext context, AppInfoProvider appInfoProvider, Widget? _) {
@@ -77,49 +169,16 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                           pinned: true,
                           snap: true,
                           backgroundColor: config.blue,
-                          flexibleSpace: FlexibleSpaceBar(
-                            centerTitle: true,
-                            title: Column(
-                              children: <Widget>[
-                                const SizedBox(height: 60.0),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Calendar(widget.auction.startTime),
-                                    if (widget.auction.id == 0)
-                                      const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
-                                    else
-                                      Text(
-                                        'id: ${widget.auction.id}, ${widget.auction.startTime}',
-                                        style: const TextStyle(fontSize: 12.0),
-                                      ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        widget.showHome();
-                                      },
-                                      child: Text(S.of(context).home),
-                                    ),
-                                    ValueListenableBuilder<Box<AuctionReminder>>(
-                                      valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
-                                      builder: (BuildContext context, _, __) {
-                                        // no need to set the reminder time here, even the reminder was set in hive
-                                        // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
-                                        final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
-                                        // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
+                          flexibleSpace: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+                            final double top = constraints.biggest.height * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor);
 
-                                        return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                            return FlexibleSpaceBar(
+                              centerTitle: true,
+                              title: widget.auction.id == 0
+                                  ? const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
+                                  : (top > _denseHeaderHeight + MediaQuery.of(context).padding.top ? _buildHeader() : _buildDenseHeader()),
+                            );
+                          }),
                         ),
                         SliverPersistentHeader(
                           delegate: _SliverAppBarDelegate(
@@ -170,7 +229,9 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                               return savedLotNums.contains(auctionLot.lotNum);
                             }).toList();
 
-                            return savedAuctionLotList.isEmpty ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1)) : _buildLotList('3', savedAuctionLotList);
+                            return savedAuctionLotList.isEmpty
+                                ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1))
+                                : _buildLotList('3', savedAuctionLotList);
                           },
                         ),
                         ...itemTypes.entries

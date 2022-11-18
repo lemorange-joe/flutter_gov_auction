@@ -91,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "itemDetails": MessageLookupByLibrary.simpleMessage("项目详情"),
         "lang": MessageLookupByLibrary.simpleMessage("sc"),
         "loading": MessageLookupByLibrary.simpleMessage("载入中..."),
+        "location": MessageLookupByLibrary.simpleMessage("地点: "),
         "minutesBefore": MessageLookupByLibrary.simpleMessage("分钟前"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("我的最爱"),
         "myItems": MessageLookupByLibrary.simpleMessage("我的项目"),
@@ -106,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeToParticipants": MessageLookupByLibrary.simpleMessage("参与拍卖须知"),
         "ok": MessageLookupByLibrary.simpleMessage("确定"),
         "pastAuction": MessageLookupByLibrary.simpleMessage("过往的拍卖"),
+        "pastAuctionList": MessageLookupByLibrary.simpleMessage("过往的拍卖物品清单"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
@@ -155,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeM": MessageLookupByLibrary.simpleMessage("废弃物品及剩余物品"),
         "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之废弃物品及剩余物品"),
         "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("无人认领物品"),
+        "time": MessageLookupByLibrary.simpleMessage("时间: "),
         "tour": MessageLookupByLibrary.simpleMessage("导览"),
         "tourContent1":
             MessageLookupByLibrary.simpleMessage("湾在同分不活。角选和石车马人经。"),

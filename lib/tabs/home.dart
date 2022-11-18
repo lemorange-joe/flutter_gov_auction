@@ -88,16 +88,16 @@ class _HomeTabState extends State<HomeTab> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).auctionList, style: titleStyle),
+            Text(S.of(context).pastAuctionList, style: titleStyle),
             if (auctionProvider.loaded)
               ...auctionProvider.auctionList
                   .map(
-                    (Auction auction) => ListTile(
+                    (Auction auction) => InkWell(
                       onTap: () {
                         Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
                         widget.showAuction();
                       },
-                      title: AuctionListItem(auction),
+                      child: AuctionListItem(auction),
                     ),
                   )
                   .toList()

@@ -101,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "location": MessageLookupByLibrary.simpleMessage("Location: "),
         "minutesBefore":
             MessageLookupByLibrary.simpleMessage(" minutes before"),
         "myFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
@@ -120,6 +121,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notice to Participants"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "pastAuction": MessageLookupByLibrary.simpleMessage("Past Auction"),
+        "pastAuctionList":
+            MessageLookupByLibrary.simpleMessage("Past Auction Lists"),
         "photoDisclaimer":
             MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
@@ -179,6 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Surplus Serviceable Stores"),
         "tabItemTypeUP":
             MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
+        "time": MessageLookupByLibrary.simpleMessage("Time: "),
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),
         "tourContent1": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),

@@ -590,6 +590,16 @@ class S {
     );
   }
 
+  /// `Location: `
+  String get location {
+    return Intl.message(
+      'Location: ',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// ` minutes before`
   String get minutesBefore {
     return Intl.message(
@@ -735,6 +745,16 @@ class S {
     return Intl.message(
       'Past Auction',
       name: 'pastAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Past Auction Lists`
+  String get pastAuctionList {
+    return Intl.message(
+      'Past Auction Lists',
+      name: 'pastAuctionList',
       desc: '',
       args: [],
     );
@@ -1125,6 +1145,16 @@ class S {
     return Intl.message(
       'Unclaimed Properties',
       name: 'tabItemTypeUP',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time: `
+  String get time {
+    return Intl.message(
+      'Time: ',
+      name: 'time',
       desc: '',
       args: [],
     );
