@@ -5,6 +5,7 @@ if (!isset($_SESSION["admin_user"])) {
   exit;
 }
 
+include_once ("../include/config.php");
 include_once ("../include/enum.php");
 include_once ("../include/appdata.php");
 $_APP = AppData::getInstance();
@@ -15,7 +16,7 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
 <html>
 <head>
   <title>Admin - Input Auction List</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
 </head>
 <body>
   <div class="header bgBlue">
@@ -45,6 +46,6 @@ $auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
     </form>
   </div>
   <button style="position: fixed; right: 20px; bottom: 20px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
 </body>
 </html>

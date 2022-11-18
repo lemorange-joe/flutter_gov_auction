@@ -5,6 +5,7 @@ if (!isset($_SESSION["admin_user"])) {
   exit;
 }
 
+include_once ("../include/config.php");
 include_once ("../include/common.php");
 
 $jsonFilePath = "./pdf_source/auction_lot.json";
@@ -32,7 +33,7 @@ foreach($lotData as $key => $auctionLot) {
 <html>
 <head>
   <title>Admin - View PDF Files</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     .folder {
       width: 300px;
@@ -140,7 +141,7 @@ foreach($lotData as $key => $auctionLot) {
   <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
   <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
   <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
   <script>
     function showFolder(el) {
       var contentId = "divContent_" + el.getAttribute("data-folder");

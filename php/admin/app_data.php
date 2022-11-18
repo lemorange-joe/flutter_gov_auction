@@ -17,7 +17,7 @@ if (isset($_POST["refresh"])) {
 <html>
 <head>
   <title>Admin - App Data</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style></style>
 </head>
 <body>

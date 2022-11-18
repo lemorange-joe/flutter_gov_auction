@@ -4,12 +4,14 @@ if (!isset($_SESSION["admin_user"])) {
   header("Location: index.php");
   exit;
 }
+
+include_once ("../include/config.php");
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Admin - XXX</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style></style>
 </head>
 <body>
@@ -24,7 +26,7 @@ if (!isset($_SESSION["admin_user"])) {
   <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
   <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
   <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
   <script>
     
   </script>

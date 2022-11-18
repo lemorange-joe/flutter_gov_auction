@@ -4,12 +4,14 @@ if (!isset($_SESSION["admin_user"])) {
   header("Location: index.php");
   exit;
 }
+
+include_once ("../include/config.php");
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Admin - Manage Auction</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     table, th, td {
       border: 1px solid;
@@ -151,7 +153,7 @@ if (!isset($_SESSION["admin_user"])) {
     </div>
     <button style="position: fixed; right: 20px; bottom: 60px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
     <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
     <script>
       function GetDdl(id, selectedValue, type) {
         var select = document.createElement("select");

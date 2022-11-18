@@ -67,7 +67,7 @@ if (isset($_POST["update_description"])) {
 <html>
 <head>
   <title>Admin - Keyword Image</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
   </style>
 </head>

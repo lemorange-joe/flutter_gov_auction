@@ -18,7 +18,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 <html>
 <head>
   <title>Admin - Auction Details</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
 </head>
 <body>
   <div class="header">
@@ -115,7 +115,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
     <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)"  onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
     <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
     <script>
       var photoRootUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>";
 

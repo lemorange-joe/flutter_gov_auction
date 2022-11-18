@@ -4,12 +4,14 @@ if (!isset($_SESSION["admin_user"])) {
   header("Location: index.php");
   exit;
 }
+
+include_once ("../include/config.php");
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Admin - App Info</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     textarea {
       white-space: normal;
@@ -51,7 +53,7 @@ if (!isset($_SESSION["admin_user"])) {
     <button id="btnSave" class="action-button" onclick="TempDisableButton('btnSave');SaveForm()">Save</button>
     <button onclick="ResetForm()" style="margin-left: 20px">Reset</button>
   </div>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
   <script>
     function GetData() {
       var apiUrl = '../en/api/admin-getAppInfo';

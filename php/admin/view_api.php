@@ -9,7 +9,7 @@ if (!isset($_SESSION["admin_user"])) {
 <html>
 <head>
   <title>Admin - View API</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
 </head>
 <body>
   <div class="header bgGreen">

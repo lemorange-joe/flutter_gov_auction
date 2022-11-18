@@ -36,7 +36,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 <html>
 <head>
   <title>Admin - Index</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     .admin-block {
       display: inline-block;
@@ -121,15 +121,18 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
       <button style="margin-left: 20px" onclick="document.getElementById('divChangePassword').style.display='none'">Cancel</button>
     </div>
     <hr style="clear: both; margin: 0 5px 20px 5px" />
-    <div style="font-size: 11px; padding: 0 10px">
-      Before Launch:
-      <ul style="margin-top: 3px; padding-left: 20px;">
-        <li>select featured</li>
-        <li>set photos for featured lots</li>
-        <li>update fontawesome icons</li>
-      </ul>
+    <div style="display: flex; justify-content: space-between">
+      <div style="font-size: 11px; padding: 0 10px">
+        Before Launch:
+        <ul style="margin-top: 3px; padding-left: 20px;">
+          <li>select featured</li>
+          <li>set photos for featured lots</li>
+          <li>update fontawesome icons</li>
+        </ul>
+      </div>
+      <div class="remarks" style="padding-right: 10px">v<?=$ADMIN_VERSION?></div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
     <script>
       function OpenChangePassword() {
         document.getElementById("tbOldPassword").value = "";
@@ -207,7 +210,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             echo "<div style='font-size: 14px;color: #f33'>$loginError</div>";
           }
         ?>
-        <button type="submit" style="margin-top: 15px">Login</button>
+        <div style="display: flex; justify-content: space-between; margin-top: 15px">
+          <button type="submit">Login</button>
+          <div style="font-size: 12px; color: #333; margin-top: 8px; margin-right: -10px">v<?=$ADMIN_VERSION?></div>
+        </div>
       </div>
     </form>
   <?php

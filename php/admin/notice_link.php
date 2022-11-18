@@ -9,7 +9,7 @@ if (!isset($_SESSION["admin_user"])) {
 <html>
 <head>
   <title>Admin - Notice Links</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     table, th, td {
       border: 1px solid;

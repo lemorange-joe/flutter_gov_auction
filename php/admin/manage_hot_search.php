@@ -54,7 +54,7 @@ $conn->close();
 <html>
 <head>
   <title>Admin - Hot Search</title>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
   <style>
     table, th, td {
       border: 1px solid;
@@ -124,6 +124,6 @@ $conn->close();
       </tbody>
     </table>
   </div>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
 </body>
 </html>

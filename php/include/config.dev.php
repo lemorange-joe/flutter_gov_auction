@@ -1,6 +1,7 @@
 <?php
 // home dev
 $ENV = 'dev';
+$ADMIN_VERSION = '0.0.1';
 
 $DB_HOST = "localhost";
 $DB_USERNAME = "root";
