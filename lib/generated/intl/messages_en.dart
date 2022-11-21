@@ -117,6 +117,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
+        "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
+            "Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam."),
+        "noticeParagraph2": MessageLookupByLibrary.simpleMessage(
+            "List of the goods available for sale and other information are obtainable from Government Logistics Department\'s webpage and the following places one week prior to the Auction:"),
+        "noticeParagraph3": MessageLookupByLibrary.simpleMessage(
+            "hasellus quis nisi faucibus, molestie est non, tempor felis. Duis quam nibh, tristique gravida risus sit amet, malesuada condimentum risus. Vivamus id dapibus nibh. Praesent porttitor ultrices tellus, sed varius lorem viverra et. Pellentesque orci elit, malesuada ut erat ac, rutrum feugiat ex. Cras vehicula turpis magna. Nullam feugiat orci vitae urna molestie, id iaculis massa iaculis. Nulla facilisi. Vestibulum efficitur dolor nulla, at cursus dui accumsan vel. Phasellus vulputate sem non augue fermentum, eleifend egestas leo faucibus. Fusce id hendrerit nibh. Nunc tempor nunc aliquam nisl ornare euismod."),
+        "noticeParagraph4": MessageLookupByLibrary.simpleMessage(
+            "Nullam pharetra, nibh et vehicula eleifend, dui justo ornare odio, vitae varius turpis diam at urna. Ut at dolor vulputate, molestie lectus nec, aliquam sapien. In vestibulum tristique augue non placerat. Pellentesque a libero magna. Cras sed tortor in leo commodo maximus id sagittis nulla."),
+        "noticeParagraph5": MessageLookupByLibrary.simpleMessage(
+            "Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum."),
         "noticeToParticipants":
             MessageLookupByLibrary.simpleMessage("Notice to Participants"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
@@ -165,6 +175,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFeaturedItems":
             MessageLookupByLibrary.simpleMessage("featured items"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
+        "semanticsOpenInMap":
+            MessageLookupByLibrary.simpleMessage(", click to open in map "),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("red"),
         "semanticsSavedItems":

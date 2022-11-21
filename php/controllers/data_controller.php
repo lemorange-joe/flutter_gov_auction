@@ -75,6 +75,19 @@ class DataController {
           $data->hsl[] = $result[$i]["keyword"];
         }
 
+        // get catalog locations
+        $selectSql = "SELECT address_$lang as 'address', map_address FROM Location WHERE is_catalog = 1 ORDER BY seq";
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        $rowNum = count($result);
+
+        $data->cll = array(); // catalog location list
+        for($i = 0; $i < $rowNum; ++$i) {
+          $l = new StdClass();
+          $l->a = $result[$i]["address"];
+          $l->m = $result[$i]["map_address"];
+          $data->cll[] = $l;
+        }
+
         // item type list, from $_APP
         $data->itm = new StdClass();
         foreach ($_APP->auctionItemTypeList as $auctionItemType) {

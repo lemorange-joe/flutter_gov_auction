@@ -35,7 +35,7 @@ if (!isset($_SESSION["admin_user"])) {
     <input id="tbParam" type="text" style="width: 300px">
     <button onclick="GetData()">Get</button>
     <div style="display: inline-block; border: solid 1px #333; padding: 3px 6px; margin-left: 10px">
-      Version: <input type="text" id="tbVersion" placeholder="1.0.0">
+      Version: <input type="text" id="tbVersion" value="1.0.0">
       <button style="margin-left: 10px" onclick="PostData()">Post</button>
     </div>
     &nbsp;&nbsp;&nbsp;&nbsp;URL: <a id="lnkApiUrl" href="#" target="_blank"></a>

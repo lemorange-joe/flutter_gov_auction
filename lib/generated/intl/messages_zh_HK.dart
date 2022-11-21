@@ -104,6 +104,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("沒有搜尋記錄"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("參與拍賣須知連結:"),
+        "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
+            "可人道斯心土書日媽走何……拿中失朋精還的務象規以……手是方造皮升病法自城甚品我總經基在看，險地歷考生不別人方保的。問照毛見一能高今廠學人險作光這實格。破陽生是……林民布為：高心一來提更慢。"),
+        "noticeParagraph2": MessageLookupByLibrary.simpleMessage(
+            "公開拍賣貨物的目錄表及其它有關詳情，可在該拍賣日期前一星期於政府物流服務署網頁下載及下列地點索取："),
+        "noticeParagraph3": MessageLookupByLibrary.simpleMessage(
+            "同動量之業說研樂心不子商人識對量吃：先子神能；持物的方上收向兒公而道務遠城在沒快大與受呢哥地終戲沒天電放總商斯起公一切改相語、下我海歡陸心不怎長去三百，們黑是發車！會氣山而活們細……熱孩一小民時本用第。於應集在下在，的意實經型直度實算。"),
+        "noticeParagraph4": MessageLookupByLibrary.simpleMessage(
+            "於不元是還點作快告，記場已美沒竟一的增農的對請制的來本石是往因接即心須起需。灣四沒動……場只業現學……比球西水口得……們音育是什人、印也功轉從關外算，話有回子臺要腦關樣出是，樣為失望路光已理活鄉關時是上，量書得方此，易很後球國此收，因發明馬著及然有界、他如手府年上們麼統完？"),
+        "noticeParagraph5": MessageLookupByLibrary.simpleMessage(
+            "孩論腳定，腦告便過面了面樂的子地園響注。多界停看國題的史急文麼密李嚴來傳期入也開喜足飯也，很命的重和我麼養畫，天特務中到更西動金制就將方年人運朋計！"),
         "noticeToParticipants": MessageLookupByLibrary.simpleMessage("參與拍賣須知"),
         "ok": MessageLookupByLibrary.simpleMessage("確定"),
         "pastAuction": MessageLookupByLibrary.simpleMessage("過往的拍賣"),
@@ -145,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("發送電郵至"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精選物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
+        "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，點擊在地圖打開"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),
         "semanticsSavedItems": MessageLookupByLibrary.simpleMessage("已收藏物品"),

@@ -720,6 +720,56 @@ class S {
     );
   }
 
+  /// `Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam.`
+  String get noticeParagraph1 {
+    return Intl.message(
+      'Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam.',
+      name: 'noticeParagraph1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `List of the goods available for sale and other information are obtainable from Government Logistics Department's webpage and the following places one week prior to the Auction:`
+  String get noticeParagraph2 {
+    return Intl.message(
+      'List of the goods available for sale and other information are obtainable from Government Logistics Department\'s webpage and the following places one week prior to the Auction:',
+      name: 'noticeParagraph2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hasellus quis nisi faucibus, molestie est non, tempor felis. Duis quam nibh, tristique gravida risus sit amet, malesuada condimentum risus. Vivamus id dapibus nibh. Praesent porttitor ultrices tellus, sed varius lorem viverra et. Pellentesque orci elit, malesuada ut erat ac, rutrum feugiat ex. Cras vehicula turpis magna. Nullam feugiat orci vitae urna molestie, id iaculis massa iaculis. Nulla facilisi. Vestibulum efficitur dolor nulla, at cursus dui accumsan vel. Phasellus vulputate sem non augue fermentum, eleifend egestas leo faucibus. Fusce id hendrerit nibh. Nunc tempor nunc aliquam nisl ornare euismod.`
+  String get noticeParagraph3 {
+    return Intl.message(
+      'hasellus quis nisi faucibus, molestie est non, tempor felis. Duis quam nibh, tristique gravida risus sit amet, malesuada condimentum risus. Vivamus id dapibus nibh. Praesent porttitor ultrices tellus, sed varius lorem viverra et. Pellentesque orci elit, malesuada ut erat ac, rutrum feugiat ex. Cras vehicula turpis magna. Nullam feugiat orci vitae urna molestie, id iaculis massa iaculis. Nulla facilisi. Vestibulum efficitur dolor nulla, at cursus dui accumsan vel. Phasellus vulputate sem non augue fermentum, eleifend egestas leo faucibus. Fusce id hendrerit nibh. Nunc tempor nunc aliquam nisl ornare euismod.',
+      name: 'noticeParagraph3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nullam pharetra, nibh et vehicula eleifend, dui justo ornare odio, vitae varius turpis diam at urna. Ut at dolor vulputate, molestie lectus nec, aliquam sapien. In vestibulum tristique augue non placerat. Pellentesque a libero magna. Cras sed tortor in leo commodo maximus id sagittis nulla.`
+  String get noticeParagraph4 {
+    return Intl.message(
+      'Nullam pharetra, nibh et vehicula eleifend, dui justo ornare odio, vitae varius turpis diam at urna. Ut at dolor vulputate, molestie lectus nec, aliquam sapien. In vestibulum tristique augue non placerat. Pellentesque a libero magna. Cras sed tortor in leo commodo maximus id sagittis nulla.',
+      name: 'noticeParagraph4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum.`
+  String get noticeParagraph5 {
+    return Intl.message(
+      'Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum.',
+      name: 'noticeParagraph5',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notice to Participants`
   String get noticeToParticipants {
     return Intl.message(
@@ -1025,6 +1075,16 @@ class S {
     return Intl.message(
       'go back',
       name: 'semanticsGoBack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `, click to open in map `
+  String get semanticsOpenInMap {
+    return Intl.message(
+      ', click to open in map ',
+      name: 'semanticsOpenInMap',
       desc: '',
       args: [],
     );

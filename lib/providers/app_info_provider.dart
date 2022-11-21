@@ -42,4 +42,5 @@ class AppInfoProvider with ChangeNotifier {
   List<NoticeLink> get noticeLinkList => appInfo.noticeLinkList;
   List<PushMessage> get messageList => appInfo.messageList;
   List<String> get hotSearchList => appInfo.hotSearchList;
+  List<CatalogLocation> get catalogLocationList => appInfo.catalogLocationList;
 }

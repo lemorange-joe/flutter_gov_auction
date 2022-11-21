@@ -19,6 +19,18 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 - auto request push notification permission when start app
 - add random data in API to prevent data theft
 
+=================================================================
+SQL:
+----
+
+ALTER TABLE Location ADD map_address VARCHAR(100) NOT NULL AFTER address_sc;
+ALTER TABLE Location ADD seq INT NOT NULL AFTER map_address;
+ALTER TABLE Location ADD is_catalog BIT(1) NOT NULL AFTER seq;
+UPDATE Location SET map_address = '333 Java Road, North Point', is_catalog = 1 WHERE location_id = 1;
+UPDATE Location SET map_address = '11 Chong Fu Road, Chai Wan', is_catalog = 1 WHERE location_id = 2;
+UPDATE Location SET seq = location_id;
+=================================================================
+
 ## Deliverables:
 software
 ├ app
