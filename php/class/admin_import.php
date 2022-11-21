@@ -52,10 +52,25 @@ class AdminImport {
   }
 
   function parseData($itemType, $importText) {
+    $firstLotNum = "";
+    $lastLotNum = "";
+    $curLotNum = "";
     $strAuctionList = $this->splitAuctionListText($importText, $itemType);
     for ($lotIndex = 0; $lotIndex < Count($strAuctionList); ++$lotIndex) {
-      $this->extractAuctionListText($strAuctionList[$lotIndex], $itemType, $lotIndex);
+      $this->extractAuctionListText($strAuctionList[$lotIndex], $itemType, $lotIndex, $curLotNum);
+      if ($lotIndex == 0) {
+        $firstLotNum = $curLotNum;
+      }
     }
+    $lastLotNum = $curLotNum;
+    echo "<div style='display: inline-block; background-color: #bfb; height: 30px; line-height: 30px; padding: 0px 10px'>";
+    echo "$firstLotNum ➔ $lastLotNum";
+    echo "</div>";
+    echo "&nbsp;&nbsp;";
+    echo "<div style='display: inline-block; background-color: #ffb; height: 30px; line-height: 30px; padding: 0px 10px; font-weight: bold'>";
+    echo "Total: " . Count($strAuctionList);
+    echo "</div>";
+    echo "<hr />";
   }
 
   function splitAuctionListText($txt, $itemType) {
@@ -139,7 +154,7 @@ class AdminImport {
     return $output;
   }
 
-  function extractAuctionListText($strAuction, $itemType, $lotIndex) {
+  function extractAuctionListText($strAuction, $itemType, $lotIndex, &$outputLotNum) {
     $matchValues = array();
     $regexDataPatterns = array(
       "lotNum" => '/^' . $itemType . '-(\d+)[\s|\n]1\./im',
@@ -202,6 +217,7 @@ class AdminImport {
     $colWidth = "100";
     $colWidth2 = "680";
     $separatorHeight = "8";
+    $outputLotNum = $matchValues["lotNum"];
 
     echo "<div style='display:flex; justify-content: space-between; width: 800px'>";
       echo "<div><div style='display:inline-block;width:".$colWidth."px'>Lot Num:</div><input id='tbLotNum_$lotIndex' value='".str_replace("'", '"', $matchValues["lotNum"])."'></div>";
