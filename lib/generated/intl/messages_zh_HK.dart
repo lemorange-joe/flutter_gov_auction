@@ -83,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forceUpgradeContent":
             MessageLookupByLibrary.simpleMessage("請升級到最新版本。"),
         "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已經推出"),
+        "gldWebsite": MessageLookupByLibrary.simpleMessage("政府物流服務署網頁"),
+        "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("zh-hk"),
         "help": MessageLookupByLibrary.simpleMessage("幫助"),
         "home": MessageLookupByLibrary.simpleMessage("主頁"),
         "hotSearch": MessageLookupByLibrary.simpleMessage("熱門搜尋"),
@@ -107,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
             "可人道斯心土書日媽走何……拿中失朋精還的務象規以……手是方造皮升病法自城甚品我總經基在看，險地歷考生不別人方保的。問照毛見一能高今廠學人險作光這實格。破陽生是……林民布為：高心一來提更慢。"),
         "noticeParagraph2": MessageLookupByLibrary.simpleMessage(
-            "公開拍賣貨物的目錄表及其它有關詳情，可在該拍賣日期前一星期於政府物流服務署網頁下載及下列地點索取："),
+            "公開拍賣貨物的目錄表及其它有關詳情，可在該拍賣日期前一星期於[gld_website]下載及下列地點索取："),
         "noticeParagraph3": MessageLookupByLibrary.simpleMessage(
             "同動量之業說研樂心不子商人識對量吃：先子神能；持物的方上收向兒公而道務遠城在沒快大與受呢哥地終戲沒天電放總商斯起公一切改相語、下我海歡陸心不怎長去三百，們黑是發車！會氣山而活們細……熱孩一小民時本用第。於應集在下在，的意實經型直度實算。"),
         "noticeParagraph4": MessageLookupByLibrary.simpleMessage(
@@ -155,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("發送電郵至"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精選物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
+        "semanticsOpen": MessageLookupByLibrary.simpleMessage("開啟"),
         "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，點擊在地圖打開"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),

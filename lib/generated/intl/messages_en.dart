@@ -93,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please upgrade to latest version."),
         "forceUpgradeTitle":
             MessageLookupByLibrary.simpleMessage("Latest app available"),
+        "gldWebsite": MessageLookupByLibrary.simpleMessage(
+            "Government Logistics Department webpage"),
+        "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("en"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "hotSearch": MessageLookupByLibrary.simpleMessage("Hot Search"),
@@ -120,7 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
             "Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam."),
         "noticeParagraph2": MessageLookupByLibrary.simpleMessage(
-            "List of the goods available for sale and other information are obtainable from Government Logistics Department\'s webpage and the following places one week prior to the Auction:"),
+            "List of the goods available for sale and other information are obtainable from [gld_website] and the following places one week prior to the Auction:"),
         "noticeParagraph3": MessageLookupByLibrary.simpleMessage(
             "hasellus quis nisi faucibus, molestie est non, tempor felis. Duis quam nibh, tristique gravida risus sit amet, malesuada condimentum risus. Vivamus id dapibus nibh. Praesent porttitor ultrices tellus, sed varius lorem viverra et. Pellentesque orci elit, malesuada ut erat ac, rutrum feugiat ex. Cras vehicula turpis magna. Nullam feugiat orci vitae urna molestie, id iaculis massa iaculis. Nulla facilisi. Vestibulum efficitur dolor nulla, at cursus dui accumsan vel. Phasellus vulputate sem non augue fermentum, eleifend egestas leo faucibus. Fusce id hendrerit nibh. Nunc tempor nunc aliquam nisl ornare euismod."),
         "noticeParagraph4": MessageLookupByLibrary.simpleMessage(
@@ -175,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFeaturedItems":
             MessageLookupByLibrary.simpleMessage("featured items"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
+        "semanticsOpen": MessageLookupByLibrary.simpleMessage("open"),
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),

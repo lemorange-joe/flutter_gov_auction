@@ -520,6 +520,26 @@ class S {
     );
   }
 
+  /// `Government Logistics Department webpage`
+  String get gldWebsite {
+    return Intl.message(
+      'Government Logistics Department webpage',
+      name: 'gldWebsite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `en`
+  String get gldWebsiteLang {
+    return Intl.message(
+      'en',
+      name: 'gldWebsiteLang',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Help`
   String get help {
     return Intl.message(
@@ -730,10 +750,10 @@ class S {
     );
   }
 
-  /// `List of the goods available for sale and other information are obtainable from Government Logistics Department's webpage and the following places one week prior to the Auction:`
+  /// `List of the goods available for sale and other information are obtainable from [gld_website] and the following places one week prior to the Auction:`
   String get noticeParagraph2 {
     return Intl.message(
-      'List of the goods available for sale and other information are obtainable from Government Logistics Department\'s webpage and the following places one week prior to the Auction:',
+      'List of the goods available for sale and other information are obtainable from [gld_website] and the following places one week prior to the Auction:',
       name: 'noticeParagraph2',
       desc: '',
       args: [],
@@ -1075,6 +1095,16 @@ class S {
     return Intl.message(
       'go back',
       name: 'semanticsGoBack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `open`
+  String get semanticsOpen {
+    return Intl.message(
+      'open',
+      name: 'semanticsOpen',
       desc: '',
       args: [],
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 // import 'package:logger/logger.dart';
@@ -7,14 +8,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../class/app_info.dart';
 import '../generated/l10n.dart';
 import '../includes/config.dart' as config;
-import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
+import '../widgets/ui/open_external_icon.dart';
 
 class NoticePage extends StatelessWidget {
   const NoticePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<String> paragraph2 = S.of(context).noticeParagraph2.split('[gld_website]');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: config.blue,
@@ -41,7 +44,31 @@ class NoticePage extends StatelessWidget {
                   children: <Widget>[
                     Text(S.of(context).noticeParagraph1),
                     const SizedBox(height: 20.0),
-                    Text(S.of(context).noticeParagraph2),
+                    RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
+                        children: <InlineSpan>[
+                          TextSpan(text: paragraph2[0]),
+                          TextSpan(
+                            text: S.of(context).gldWebsite,
+                            style: const TextStyle(color: config.blue),
+                            semanticsLabel: '${S.of(context).semanticsOpen}${S.of(context).gldWebsite}',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(
+                                  Uri.parse(FlutterConfig.get('GLD_WEBSITE').toString().replaceAll('{lang}', S.of(context).gldWebsiteLang)),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                          ),
+                          const WidgetSpan(
+                            alignment: PlaceholderAlignment.top,
+                            child: OpenExternalIcon(),
+                          ),
+                          TextSpan(text: paragraph2[1]),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 12.0),
                     Row(
                       children: <Widget>[
@@ -62,7 +89,9 @@ class NoticePage extends StatelessWidget {
                                           label: '${locationEntry.value.address}${S.of(context).semanticsOpenInMap}',
                                           child: InkWell(
                                             onTap: () async {
-                                              final String url = FlutterConfig.get('MAP_URL').toString().replaceAll('{address}', Uri.encodeComponent(locationEntry.value.mapAddress));
+                                              final String url = FlutterConfig.get('MAP_URL')
+                                                  .toString()
+                                                  .replaceAll('{address}', Uri.encodeComponent(locationEntry.value.mapAddress));
                                               await launchUrl(
                                                 Uri.parse(url),
                                                 mode: LaunchMode.externalApplication,
@@ -72,13 +101,9 @@ class NoticePage extends StatelessWidget {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(locationEntry.value.address),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 8.0, top: 2.0),
-                                                  child: Icon(
-                                                    MdiIcons.openInNew,
-                                                    color: Colors.grey[600],
-                                                    size: 18.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                                                  ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                                                  child: OpenExternalIcon(),
                                                 ),
                                               ],
                                             ),
