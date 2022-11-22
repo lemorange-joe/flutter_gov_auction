@@ -50,7 +50,7 @@ include_once ("../include/config.php");
         Auction ID: <input id="tbAuctionId" type="number" style="width: 50px" value="0" min="0"/>
       </div>
       <input id="chkShowAll" type="checkbox" style="margin-left: 10px" />
-      <label for="chkShowAll">Show All)</label>
+      <label for="chkShowAll">Show All</label>
       <input id="chkIncludeFeatured" type="checkbox" style="margin-left: 10px" />
       <label for="chkIncludeFeatured">Include Featured</label>
       <div style="display: inline-block; margin-left: 10px">
