@@ -71,7 +71,7 @@ include_once ("../class/admin_import.php");
         
         function GetInspectionDateFormRow(i) {
           var output = "<div>";
-            output += '<input id="tbInspectionLotNum_' + i + '" type="text" placeholder="C-401,C-402,UP-205,MS-123" style="width: 400px">';
+            output += '<input id="tbInspectionLotNum_' + i + '" type="text" placeholder="C-401,C-402,UP-205,MS-123" style="width: 400px" onchange="AutoFormatInspectionDate(this)">';
             output += "&nbsp;&nbsp;";
               output += '<input type="radio" id="rdbInspectionDay_0_' + i + '" name="rdbInspectionDay_' + i + '" value="0">';
               output += '<label for="rdbInspectionDay_0_' + i + '">全部</label>';
@@ -90,14 +90,26 @@ include_once ("../class/admin_import.php");
               output += '<input type="radio" id="rdbInspectionDay_6_' + i + '" name="rdbInspectionDay_' + i + '" value="6" style="margin-left: 10px">';
               output += '<label for="rdbInspectionDay_6_' + i + '">六</label>';
             output += "&nbsp;&nbsp;";
-            output += '<input id="tbInspectionStartTime_' + i + '" type="text" placeholder="09:30" maxlength="5" style="width: 60px">';
+            output += '<input id="tbInspectionStartTime_' + i + '" type="text" placeholder="09:30" maxlength="5" style="width: 60px" onchange="AutoFormatInspectionTime(this)">';
             output += " - ";
-            output += '<input id="tbInspectionEndTime_' + i + '" type="text" placeholder="12:30" maxlength="5" style="width: 60px">';
+            output += '<input id="tbInspectionEndTime_' + i + '" type="text" placeholder="12:30" maxlength="5" style="width: 60px" onchange="AutoFormatInspectionTime(this)">';
           output += "<div>";
 
           var returnDiv = document.createElement("div");
           returnDiv.innerHTML = output;
           return returnDiv;
+        }
+
+        function AutoFormatInspectionDate(el) {
+          el.value = el.value.replaceAll("and", ",").replaceAll("及", ",").replaceAll(/[^a-z\d\,]/ig, "");
+        }
+
+        function AutoFormatInspectionTime(el) {
+          var text = el.value.replaceAll(/[^\d:]/ig, "");
+          if (text.length == 4) {
+            text = text.substr(0, 2) + ":" + text.substr(2);
+          }
+          el.value = text;
         }
 
         function FindNextErrorItem() {
