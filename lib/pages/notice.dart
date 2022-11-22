@@ -85,27 +85,29 @@ class NoticePage extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         SizedBox(width: 40.0, child: Text('${locationEntry.key + 1}.')),
-                                        Semantics(
-                                          label: '${locationEntry.value.address}${S.of(context).semanticsOpenInMap}',
-                                          child: InkWell(
-                                            onTap: () async {
-                                              final String url = FlutterConfig.get('MAP_URL')
-                                                  .toString()
-                                                  .replaceAll('{address}', Uri.encodeComponent(locationEntry.value.mapAddress));
-                                              await launchUrl(
-                                                Uri.parse(url),
-                                                mode: LaunchMode.externalApplication,
-                                              );
-                                            },
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(locationEntry.value.address),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(left: 8.0, top: 2.0),
-                                                  child: OpenExternalIcon(),
-                                                ),
-                                              ],
+                                        Expanded(
+                                          child: Semantics(
+                                            label: '${locationEntry.value.address}${S.of(context).semanticsOpenInMap}',
+                                            child: InkWell(
+                                              onTap: () async {
+                                                final String url = FlutterConfig.get('MAP_URL')
+                                                    .toString()
+                                                    .replaceAll('{address}', Uri.encodeComponent(locationEntry.value.mapAddress));
+                                                await launchUrl(
+                                                  Uri.parse(url),
+                                                  mode: LaunchMode.externalApplication,
+                                                );
+                                              },
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Flexible(child: Text(locationEntry.value.address)),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(left: 8.0, top: 2.0),
+                                                    child: OpenExternalIcon(),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),

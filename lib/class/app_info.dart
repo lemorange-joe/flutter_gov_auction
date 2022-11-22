@@ -23,11 +23,6 @@ class AppInfo {
       }
     }
 
-    json['cll'] = <dynamic>[  // TODO(joe): for testing only, to be removed!
-      <String, dynamic>{'a': '香港北角\r\n渣華道333號\r\n北角政府合署10樓\r\n政府物流服務署接待處', 'm': '333 Java Road, North Point'}, 
-      <String, dynamic>{'a': '香港柴灣\r\n創富道11號\r\n政府物料營運中心1樓', 'm': '11 Chong Fu Road, Chai Wan'}, 
-      <String, dynamic>{'a': '香港中區立法會道1號\n立法會綜合大樓', 'm': '1 Legislative Council Road, Central'}, 
-    ];
     if (json['cll'] != null) {
       for (final dynamic jsonMsg in json['cll'] as List<dynamic>) {
         catalogLocationList.add(CatalogLocation.fromJson(jsonMsg as Map<String, dynamic>));
