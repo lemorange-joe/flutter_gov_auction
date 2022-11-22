@@ -53,11 +53,15 @@ include_once ("../include/config.php");
       <label for="chkShowAll">Show All)</label>
       <input id="chkIncludeFeatured" type="checkbox" style="margin-left: 10px" />
       <label for="chkIncludeFeatured">Include Featured</label>
-      <input id="tbKeyword" type="text" style="width: 120px; margin-left: 10px" onchange="GetData()" placeholder="Input Keyword" />
       <div style="display: inline-block; margin-left: 10px">
         Page: <input id="tbPage" type="number" style="width: 30px" value="1" min="1"/>
       </div>
-      <button style="margin-left:30px" onclick="GetData()">Get</button>
+      <div style="display: inline-block; margin-left: 10px; background-color: #e6e6e6; padding: 0 10px">
+        <input id="tbKeyword" type="text" style="width: 120px" onchange="GetData()" placeholder="Input Keyword" />
+        <input id="chkMatchFirstItem" type="checkbox" style="margin-left: 10px" />
+        <label for="chkMatchFirstItem">Match 1<sup>st</sup> Item only</label>
+      </div>
+      <button style="margin-left:20px" onclick="GetData()">Get</button>
     </div>
     <table>
       <thead>
@@ -114,6 +118,7 @@ include_once ("../include/config.php");
       var auctionId = document.getElementById("tbAuctionId").value;
       var showAll = document.getElementById("chkShowAll").checked;
       var includeFeatured = document.getElementById("chkIncludeFeatured").checked;
+      var matchFirstItem = document.getElementById("chkMatchFirstItem").checked;
       var keyword = document.getElementById("tbKeyword").value.trim();
       var page = document.getElementById("tbPage").value;
 
@@ -121,10 +126,11 @@ include_once ("../include/config.php");
       apiUrl += "-" + auctionId;
       apiUrl += "-" + (showAll ? "Y" : "N");
       apiUrl += "-" + (includeFeatured ? "Y" : "N");
+      apiUrl += "-" + page;
       if (keyword.length > 0) {
         apiUrl += "-" + encodeURIComponent(keyword);
+        apiUrl += "-" + (matchFirstItem ? "Y" : "N");
       }
-      apiUrl += "-" + page;
       
       var xhr = new XMLHttpRequest();
       

@@ -1330,15 +1330,16 @@ class AdminController {
   function listLotIcon($param) {
     global $conn;
 
-    // $param: <auction id>-<show all>-<keyword>-<page no.>
+    // $param: <auction id>-<show all>-<include feature>-<page no.>-<keyword>-<match 1st item>
     // e.g.
-    // 3-N-Y-車-2
     // 0-Y-N-12
-    // 7-Y-Y-car
+    // 3-N-Y-2-車-Y
+    // 7-Y-Y-1-car-N
     $auctionId = 0;
     $showAll = false;
     $includeFeatured = false;
     $keyword = "";
+    $match1stItem = false;
     $page = 1;
     $pageSize = 50;
 
@@ -1346,14 +1347,17 @@ class AdminController {
       $auctionId = intval($param[0]);
       $showAll = strtoupper($param[1]) == "Y";
       $includeFeatured = strtoupper($param[2]) == "Y";
+      
       if (ctype_digit($param[3])) {
-        $page = intval($param[3]);
-      } else {
-        $keyword = trim($param[3]);
-        $page = count($param) == 4 ? intval($param[4]) : 1;
+        $page = intval($param[3]);  
+      }
+      if (count($param) >= 5) {
+        $keyword = trim($param[4]);
+        $match1stItem = (count($param) >= 6 ? strtoupper($param[5]) == "Y" : false);
       }
     }
 
+    $likeKeyword = $match1stItem ? $keyword."%" : "%".$keyword."%";
     $selectSql = "SELECT
                     A.start_time, L.lot_id, L.lot_num, L.featured, L.icon, L.description_en, L.description_tc, A.status as 'auction_status', L.status
                   FROM Auction A
@@ -1364,7 +1368,7 @@ class AdminController {
                   LIMIT ?, ?";
 
     $result = $conn->Execute($selectSql, array(
-      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, "%".$keyword."%", "%".$keyword."%", ($page-1)*$pageSize, $pageSize
+      $auctionId, $auctionId, $showAll ? 1 : 0, $includeFeatured ? 1 : 0, $likeKeyword, $likeKeyword, ($page-1)*$pageSize, $pageSize
     ))->GetRows();
     $rowNum = count($result);
 

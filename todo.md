@@ -16,6 +16,14 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
   - test local notification reminder in ios
   - decide reminder message in ReminderHelper
   - update reminder page layout
+- list item widget:
+  - shown as forever scroll at the bottom of home page and auction lot page
+  - recently sold
+  - hot categories:
+    - used cars
+    - jewellery
+    - digital products
+    - books
 - auto request push notification permission when start app
 - add random data in API to prevent data theft
 
