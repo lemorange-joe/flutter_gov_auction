@@ -20,6 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(collection_deadline) =>
+      "A Buyer shall collect and remove the Lot purchased from the Location on or before ${collection_deadline} or as otherwise specified in the Special Conditions of Auction Sale.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessibilityDesign":
@@ -60,6 +63,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
+        "collectionDeadline":
+            MessageLookupByLibrary.simpleMessage("Collection Deadline"),
+        "collectionDeadlineStatement": m0,
         "comingAuction": MessageLookupByLibrary.simpleMessage("Coming Auction"),
         "confirmDeleteAllReminders": MessageLookupByLibrary.simpleMessage(
             "Are you sure to delete all auction reminders"),

@@ -22,6 +22,8 @@
     "cancel": "取消",
     "clearReminder": "清除拍賣提醒",
     "clearSearchHistory": "清除搜尋記錄",
+    "collectionDeadline": "提貨期限",
+    "collectionDeadlineStatement": "承購人須要在{collection_deadline}前或特別拍賣條款的指定時間從指定地點提取及運走所承購的拍賣品批次。",
     "comingAuction": "下次拍賣",
     "confirmDeleteAllReminders": "確定要刪除全部拍賣提醒？",
     "confirmDeleteAllSavedItems": "確定要刪除下次拍賣及過往拍賣的全部收藏項目？",

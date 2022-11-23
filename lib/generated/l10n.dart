@@ -280,6 +280,26 @@ class S {
     );
   }
 
+  /// `Collection Deadline`
+  String get collectionDeadline {
+    return Intl.message(
+      'Collection Deadline',
+      name: 'collectionDeadline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A Buyer shall collect and remove the Lot purchased from the Location on or before {collection_deadline} or as otherwise specified in the Special Conditions of Auction Sale.`
+  String collectionDeadlineStatement(Object collection_deadline) {
+    return Intl.message(
+      'A Buyer shall collect and remove the Lot purchased from the Location on or before $collection_deadline or as otherwise specified in the Special Conditions of Auction Sale.',
+      name: 'collectionDeadlineStatement',
+      desc: '',
+      args: [collection_deadline],
+    );
+  }
+
   /// `Coming Auction`
   String get comingAuction {
     return Intl.message(

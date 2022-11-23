@@ -62,65 +62,69 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
         color: Colors.white,
         fontSize: 12.0,
       ),
-      child: Row(
+      child: Column(
         children: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.min,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: appBarHeight),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Calendar(widget.auction.startTime),
-              ),
-              const SizedBox(height: 10.0),
-              ValueListenableBuilder<Box<AuctionReminder>>(
-                valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
-                builder: (BuildContext context, _, __) {
-                  // no need to set the reminder time here, even the reminder was set in hive
-                  // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
-                  final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
-                  // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(height: appBarHeight),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Calendar(widget.auction.startTime),
+                  ),
+                  ValueListenableBuilder<Box<AuctionReminder>>(
+                    valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+                    builder: (BuildContext context, _, __) {
+                      // no need to set the reminder time here, even the reminder was set in hive
+                      // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
+                      final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
+                      // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
 
-                  return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
-                },
+                      return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              SizedBox(height: appBarHeight),
-              Text(
-                S.of(context).time,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: appBarHeight),
+                  Text(S.of(context).time),
+                  Text(S.of(context).location),
+                ],
               ),
-              Text(
-                S.of(context).location,
-              ),
-            ],
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: appBarHeight),
-                Text(
-                  utilities.formatTime(widget.auction.startTime, S.of(context).lang),
-                ),
-                Text(
-                  widget.auction.location,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.showHome();
-                      },
-                      child: Text(S.of(context).home),
-                    ),
+                    SizedBox(height: appBarHeight),
+                    Text(utilities.formatTime(widget.auction.startTime, S.of(context).lang)),
+                    Text(widget.auction.location),
                   ],
                 ),
-              ],
+              ),
+            ],
+          ),
+          Text(
+            S.of(context).collectionDeadlineStatement(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang)),
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  color: Colors.white,
+                  fontSize: 8.0,
+                ),
+          ),
+          SizedBox(
+            height: 13.0,
+            child: ElevatedButton(
+              onPressed: () {
+                widget.showHome();
+              },
+              child: Text(
+                S.of(context).home,
+                style: const TextStyle(fontSize: 10.0),
+              ),
             ),
           ),
         ],

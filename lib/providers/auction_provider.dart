@@ -93,6 +93,7 @@ class AuctionProvider with ChangeNotifier {
         json['id'] as int,
         json['n'] as String,
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
+        json['cd'] == null ? DateTime(1900) : DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['cd'] as String),  // TODO(joe): null check for testing
         json['l'] as String,
         json['ap'] as String,
         json['rp'] as String,

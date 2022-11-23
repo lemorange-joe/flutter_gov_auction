@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 import '../includes/enums.dart';
 
 class Auction {
-  Auction(this.id, this.auctionNum, this.startTime, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList, this.remarks, this.lotList,
+  Auction(this.id, this.auctionNum, this.startTime, this.collectionDeadline, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList, this.remarks, this.lotList,
       this.status, this.lastUpdate);
 
   factory Auction.empty() {
-    return Auction(0, '', DateTime(1900), '', '', '', <AuctionItemPdf>[], '', <AuctionLot>[], AuctionStatus.None, DateTime(1900));
+    return Auction(0, '', DateTime(1900), DateTime(1900), '', '', '', <AuctionItemPdf>[], '', <AuctionLot>[], AuctionStatus.None, DateTime(1900));
   }
 
   factory Auction.fromJson(Map<String, dynamic> json) {
@@ -17,6 +17,7 @@ class Auction {
       json['id'] as int,
       json['n'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
+      json['cd'] == null ? DateTime(1900) : DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['cd'] as String),  // TODO(joe): null check for testing
       json['l'] as String,
       json['ap'] as String,
       json['rp'] as String,
@@ -40,6 +41,7 @@ class Auction {
   final int id;
   final String auctionNum;
   final DateTime startTime;
+  final DateTime collectionDeadline;
   final String location;
   final String auctionPdfUrl;
   final String resultPdfUrl;
