@@ -141,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "了方奇風業這業，界成但際高案生政其的光來……一明發友病確日經力意不是該總年異天等不又。"),
         "receiveNotification": MessageLookupByLibrary.simpleMessage("接收通知"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜尋"),
+        "recentlySold": MessageLookupByLibrary.simpleMessage("最近售出"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相關Apps"),
         "relatedLots": MessageLookupByLibrary.simpleMessage("相關項目"),
         "relatedLotsEmpty": MessageLookupByLibrary.simpleMessage("沒有更多相關項目"),

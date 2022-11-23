@@ -940,6 +940,16 @@ class S {
     );
   }
 
+  /// `Recently sold`
+  String get recentlySold {
+    return Intl.message(
+      'Recently sold',
+      name: 'recentlySold',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Recent search`
   String get recentSearch {
     return Intl.message(

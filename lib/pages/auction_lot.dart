@@ -55,7 +55,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
       }
       final List<dynamic> resultList = result as List<dynamic>;
       final List<RelatedAuctionLot> newRelatedAuctionLot =
-          resultList.map((dynamic jsonData) => RelatedAuctionLot.fromjson(jsonData as Map<String, dynamic>)).toList();
+          resultList.map((dynamic jsonData) => RelatedAuctionLot.fromJson(jsonData as Map<String, dynamic>)).toList();
       setState(() {
         relatedPageNum = page;
         if (newRelatedAuctionLot.isEmpty) {

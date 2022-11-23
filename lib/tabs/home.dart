@@ -4,11 +4,12 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../generated/l10n.dart';
-// import '../helpers/api_helper.dart';
+import '../helpers/api_helper.dart';
 import '../includes/config.dart' as config;
 // import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/auction_list_item.dart';
+import '../widgets/auction_lot_grid_view.dart';
 import '../widgets/featured_list_view.dart';
 import '../widgets/ui/animated_loading.dart';
 
@@ -75,6 +76,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
+            _buildAuctionLotGrid(),
             ..._buildOtherSection1(),
           ],
         ),
@@ -106,6 +108,29 @@ class _HomeTabState extends State<HomeTab> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildAuctionLotGrid() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 400.0,  // TODO(joe): TBC
+      child: FutureBuilder<dynamic>(
+        future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>['sold', config.gridItemCount.toString()]),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          final List<dynamic> result = snapshot.data as List<dynamic>;
+          if (snapshot.connectionState != ConnectionState.done) {
+            return LemorangeLoading();
+          }
+
+          final List<AuctionLotGridItem> itemList = <AuctionLotGridItem>[];
+          for (final dynamic item in result) {
+            itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
+          }
+
+          return AuctionLotGridView(S.of(context).recentlySold, itemList);
+        },
+      ),
     );
   }
 

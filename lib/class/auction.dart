@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import '../includes/enums.dart';
 
 class Auction {
-  Auction(this.id, this.auctionNum, this.startTime, this.collectionDeadline, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList, this.remarks, this.lotList,
-      this.status, this.lastUpdate);
+  Auction(this.id, this.auctionNum, this.startTime, this.collectionDeadline, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList,
+      this.remarks, this.lotList, this.status, this.lastUpdate);
 
   factory Auction.empty() {
     return Auction(0, '', DateTime(1900), DateTime(1900), '', '', '', <AuctionItemPdf>[], '', <AuctionLot>[], AuctionStatus.None, DateTime(1900));
@@ -17,7 +17,7 @@ class Auction {
       json['id'] as int,
       json['n'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
-      json['cd'] == null ? DateTime(1900) : DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['cd'] as String),  // TODO(joe): null check for testing
+      json['cd'] == null ? DateTime(1900) : DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['cd'] as String), // TODO(joe): null check for testing
       json['l'] as String,
       json['ap'] as String,
       json['rp'] as String,
@@ -87,11 +87,11 @@ class AuctionLot {
     final List<InspectionDate> inspectionDateList = <InspectionDate>[];
 
     for (final dynamic jsonItem in jsonItemList) {
-      itemList.add(AuctionItem.fromjson(jsonItem as Map<String, dynamic>));
+      itemList.add(AuctionItem.fromJson(jsonItem as Map<String, dynamic>));
     }
 
     for (final dynamic jsonItem in jsonInspectionDateList) {
-      inspectionDateList.add(InspectionDate.fromjson(jsonItem as Map<String, dynamic>));
+      inspectionDateList.add(InspectionDate.fromJson(jsonItem as Map<String, dynamic>));
     }
 
     return AuctionLot(
@@ -107,8 +107,8 @@ class AuctionLot {
       json['r'] as String,
       json['ic'] as String,
       lang == 'tc' ? json['dtc'] as String : (lang == 'sc' ? json['dsc'] as String : json['den'] as String),
-      json['den'] == null ? json['d'] as String : json['den'] as String,  // temp solution for using demo data
-      json['dtc'] == null ? json['d'] as String : json['dtc'] as String,  // remove null check after api is ready on server
+      json['den'] == null ? json['d'] as String : json['den'] as String, // temp solution for using demo data
+      json['dtc'] == null ? json['d'] as String : json['dtc'] as String, // remove null check after api is ready on server
       json['dsc'] == null ? json['d'] as String : json['dsc'] as String,
       json['f'] as int == 1,
       json['i'] as String,
@@ -124,7 +124,8 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], <InspectionDate>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(
+        0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], <InspectionDate>[], '', 0.0, '', DateTime(1900));
   }
 
   final int id;
@@ -174,7 +175,7 @@ class AuctionLot {
 class AuctionItem {
   AuctionItem(this.id, this.icon, this.description, this.quantity, this.unit);
 
-  factory AuctionItem.fromjson(Map<String, dynamic> json) {
+  factory AuctionItem.fromJson(Map<String, dynamic> json) {
     return AuctionItem(
       json['id'] as int,
       json['i'] as String,
@@ -205,11 +206,12 @@ double jsonToDouble(dynamic val) {
   return val as double;
 }
 
+// TODO(joe): review RelatedAuctionLot class after completed AuctionLotGridItem
 class RelatedAuctionLot {
   RelatedAuctionLot(this.auctionId, this.startTime, this.auctionStatus, this.lotId, this.itemType, this.lotNum, this.description, this.icon, this.photoUrl,
       this.photoReal, this.transactionCurrency, this.transactionPrice, this.transactionStatus);
 
-  factory RelatedAuctionLot.fromjson(Map<String, dynamic> json) {
+  factory RelatedAuctionLot.fromJson(Map<String, dynamic> json) {
     return RelatedAuctionLot(
       json['aid'] as int,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
@@ -244,10 +246,72 @@ class RelatedAuctionLot {
   final String transactionStatus;
 }
 
+class AuctionLotGridItem {
+  AuctionLotGridItem(
+      this.auctionId,
+      this.auctionNum,
+      this.startTime,
+      this.auctionStatus,
+      this.lotId,
+      this.lotNum,
+      this.itemType,
+      this.description,
+      this.featured,
+      this.icon,
+      this.photoUrl,
+      this.photoReal,
+      this.photoAuthor,
+      this.photoAuthorUrl,
+      this.transactionCurrency,
+      this.transactionPrice,
+      this.transactionStatus);
+
+  factory AuctionLotGridItem.fromJson(Map<String, dynamic> json) {
+    return AuctionLotGridItem(
+      json['aid'] as int,
+      json['an'] as String,
+      DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
+      getAuctionStatus(json['as'] as String),
+      json['lid'] as int,
+      json['ln'] as String,
+      json['t'] as String,
+      json['d'] as String,
+      json['f'] as int == 1,
+      json['i'] as String,
+      json['pu'] as String,
+      json['pr'] as int == 1,
+      json['pa'] as String,
+      json['pau'] as String,
+      json['tc'] as String,
+      jsonToDouble(json['tp']),
+      json['ts'] as String,
+    );
+  }
+
+  final int auctionId;
+  final String auctionNum;
+  final DateTime startTime;
+  final AuctionStatus auctionStatus;
+  final int lotId;
+  final String lotNum;
+  final String itemType;
+  final String description;
+  final bool featured;
+  final String icon;
+
+  final String photoUrl;
+  final bool photoReal;
+  final String photoAuthor;
+  final String photoAuthorUrl;
+  final String transactionCurrency;
+  final double transactionPrice;
+  final String transactionStatus;
+}
+
 class InspectionDate {
   InspectionDate(this.dayOfWeek, this.startTime, this.endTime);
 
-  factory InspectionDate.fromjson(Map<String, dynamic> json) {
+  factory InspectionDate.fromJson(Map<String, dynamic> json) {
     return InspectionDate(
       json['dow'] as int,
       json['st'] as String,

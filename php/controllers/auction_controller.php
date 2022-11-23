@@ -92,6 +92,7 @@ class AuctionController {
     }
 
     try {
+      // TODO(joe): review the SQL after searchGrid is done
       list($auctionId, $keyword, $type) = array_pad($param, 3, "");
       $selectSql = "SELECT
                       A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, 
@@ -132,6 +133,79 @@ class AuctionController {
           $result[$i]["description"],
           $result[$i]["quantity"],
           $result[$i]["unit"],
+          0
+        );
+      }
+
+      $output->status = "success";
+      $output->data = $data;
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
+
+  function searchGrid($param) {
+    // pre: $type, $count
+    global $conn, $lang;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    if (count($param) < 2) {
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      return;
+    }
+
+    try {
+      $type = $param[0];  // TODO(joe): handle other types later
+      $count = intval($param[1]);
+
+      $selectSql = "SELECT
+                      A.auction_id, A.auction_num, A.start_time, A.auction_status, L.lot_id, L.lot_num, T.code, 
+                      L.description_$lang as 'description', L.featured, L.icon, 
+                      L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
+                      L.transaction_currency, L.transaction_price, L.transaction_status
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE A.status = ? AND L.status = ? AND L.transaction_status = ?
+                    ORDER BY A.start_time DESC, T.seq, L.lot_num
+                    LIMIT 0, ?";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, TransactionStatus::Sold, $count))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
+
+        $data[] = new AuctionLotGridItem(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["auction_num"],
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["lot_num"],
+          $result[$i]["code"],
+
+          $result[$i]["description"],
+          $result[$i]["featured"],
+          $result[$i]["icon"],
+
+          $photoUrl,
+          $result[$i]["photo_real"],
+          $result[$i]["photo_author"],
+          $result[$i]["photo_author_url"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"],
           0
         );
       }

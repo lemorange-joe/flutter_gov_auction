@@ -159,6 +159,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "receiveNotification":
             MessageLookupByLibrary.simpleMessage("Receive notification"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("Recent search"),
+        "recentlySold": MessageLookupByLibrary.simpleMessage("Recently sold"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("Related Apps"),
         "relatedLots": MessageLookupByLibrary.simpleMessage("Related Items"),
         "relatedLotsEmpty":
