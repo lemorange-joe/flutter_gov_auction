@@ -68,7 +68,7 @@ class AdminImport {
     echo "</div>";
     echo "&nbsp;&nbsp;";
     echo "<div style='display: inline-block; background-color: #ffb; height: 30px; line-height: 30px; padding: 0px 10px; font-weight: bold'>";
-    echo "Total: " . Count($strAuctionList);
+    echo "Found: " . Count($strAuctionList);
     echo "</div>";
     echo "<hr />";
   }
