@@ -27,13 +27,15 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <div><?=$_SESSION["admin_user"]?> | <a href="logout.php">Logout</a></div>
   </div>
   <div class="body">
-    <div style="display: flex; justify-content: space-between; width: 450px">
-      <div style="width: 300px; display: flex; justify-content: space-between; border: solid 1px #000; margin-top: 10px; padding: 5px;">
+    <div style="display: flex; justify-content: space-between; width: 600px">
+      <div style="width: 450px; display: flex; justify-content: space-between; border: solid 1px #000; margin-top: 10px; padding: 5px;">
         <div>ID: <input id="tbAuctionId" style="width: 30px" type="text" disabled="disabled"/></div>
         <div>|</div>
         <div id="divAuctionNum" style="font-weight: bold"></div>
         <div>|</div>
         <div id="divStartTime" style="text-decoration: underline"></div>
+        <div>❯</div>
+        <div id="divCollectionDeadline" style="text-decoration: underline"></div>
       </div>
       <a id="lnkImportNewLot" href="#" style="margin-top: 15px">Import New Lot</a>
     </div>
@@ -730,6 +732,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         document.getElementById("tbAuctionId").value = jsonData["auction_id"];
         document.getElementById("divAuctionNum").innerHTML = jsonData["auction_num"];
         document.getElementById("divStartTime").innerHTML = jsonData["start_time"];
+        document.getElementById("divCollectionDeadline").innerHTML = jsonData["collection_deadline"];
         document.getElementById("lnkImportNewLot").setAttribute("href", "import_auction_list.php?auction_num="+encodeURIComponent(jsonData["auction_num"]));
         
         document.getElementById("lnkAuctionPdfEn").setAttribute("href", jsonData["auction_pdf_en"]);

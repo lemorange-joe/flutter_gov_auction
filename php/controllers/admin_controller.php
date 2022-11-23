@@ -11,7 +11,7 @@ class AdminController {
     $selectSql = "SELECT T.*, GROUP_CONCAT(C2.total ORDER BY C2.seq SEPARATOR ', ') as item_count
                     FROM (
                       SELECT
-                        A.auction_id, A.auction_num, A.start_time, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
+                        A.auction_id, A.auction_num, A.start_time, A.collection_deadline, A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
                         A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, A.remarks_en, A.remarks_tc, A.remarks_sc, 
                         A.auction_status, A.status, A.last_update,
                         (
@@ -49,6 +49,7 @@ class AdminController {
       $auction->id = $result[$i]["auction_id"];
       $auction->num = $result[$i]["auction_num"];
       $auction->start_time = $result[$i]["start_time"];
+      $auction->collection_deadline = $result[$i]["collection_deadline"];
       $auction->auction_pdf_en = $result[$i]["auction_pdf_en"];
       $auction->auction_pdf_tc = $result[$i]["auction_pdf_tc"];
       $auction->auction_pdf_sc = $result[$i]["auction_pdf_sc"];
@@ -81,7 +82,7 @@ class AdminController {
 
     // ------ 1. get auction ------
     $selectSql = "SELECT
-                    A.auction_id, A.auction_num, A.start_time, L.address_en, L.address_tc, L.address_sc,
+                    A.auction_id, A.auction_num, A.start_time, A.collection_deadline, L.address_en, L.address_tc, L.address_sc,
                     A.auction_pdf_en, A.auction_pdf_tc, A.auction_pdf_sc,
                     A.result_pdf_en, A.result_pdf_tc, A.result_pdf_sc, 
                     A.remarks_en, A.remarks_tc, A.remarks_sc, 
@@ -97,6 +98,7 @@ class AdminController {
       $output->auction_num = $result[0]["auction_num"];
 
       $output->start_time = $result[0]["start_time"];
+      $output->collection_deadline = $result[0]["collection_deadline"];
       $output->address_en = $result[0]["address_en"];
       $output->address_tc = $result[0]["address_tc"];
       $output->address_sc = $result[0]["address_sc"];
@@ -278,6 +280,7 @@ class AdminController {
       $id = intval($data["id"]);
       $auctionNum = trim($data["auction_num"]);
       $startTime = $data["start_time"];
+      $collectionDeadline = $data["collection_deadline"];
       $auctionPdfEn = trim($data["auction_pdf_en"]);
       $auctionPdfTc = trim($data["auction_pdf_tc"]);
       $auctionPdfSc = trim($data["auction_pdf_sc"]);
@@ -293,6 +296,7 @@ class AdminController {
       $updateSql = "UPDATE Auction SET
                       auction_num = ?,
                       start_time = ?,
+                      collection_deadline = ?,
                       auction_pdf_en = ?,
                       auction_pdf_tc = ?,
                       auction_pdf_sc = ?,
@@ -308,7 +312,7 @@ class AdminController {
                     WHERE auction_id = ?";
 
     $result = $conn->Execute($updateSql, array(
-      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, 
+      $auctionNum, $startTime, $collectionDeadline, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, $resultPdfEn, $resultPdfTc, $resultPdfSc, 
       $remarksEn, $remarksTc, $remarksSc, $auctionStatus, $status, $id
     ));
 
@@ -341,6 +345,7 @@ class AdminController {
 
       $auctionNum = trim($data["auction_num"]);
       $startTime = $data["start_time"];
+      $collectionDeadline = $data["collection_deadline"];
       $auctionPdfEn = trim($data["auction_pdf_en"]);
       $auctionPdfTc = trim($data["auction_pdf_tc"]);
       $auctionPdfSc = trim($data["auction_pdf_sc"]);
@@ -354,17 +359,17 @@ class AdminController {
       $status = trim($data["status"]);
 
       $insertSql = "INSERT INTO Auction (
-                      auction_num, start_time, location_id, auction_pdf_en, auction_pdf_tc, auction_pdf_sc, 
+                      auction_num, start_time, collection_deadline, location_id, auction_pdf_en, auction_pdf_tc, auction_pdf_sc, 
                       result_pdf_en, result_pdf_tc, result_pdf_sc, remarks_en, remarks_tc, remarks_sc, 
                       auction_status, status, last_update
                     ) VALUES (
-                      ?, ?, 1, ?, ?, ?, 
+                      ?, ?, ?, 1, ?, ?, ?, 
                       ?, ?, ?, ?, ?, ?, 
                       ?, ?, now()
                     );";
 
     $result = $conn->Execute($insertSql, array(
-      $auctionNum, $startTime, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, 
+      $auctionNum, $startTime, $collectionDeadline, $auctionPdfEn, $auctionPdfTc, $auctionPdfSc, 
       $resultPdfEn, $resultPdfTc, $resultPdfSc, $remarksEn, $remarksTc, $remarksSc, 
       $auctionStatus, $status
     ));

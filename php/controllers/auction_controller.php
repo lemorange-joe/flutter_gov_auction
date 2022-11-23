@@ -9,7 +9,7 @@ class AuctionController {
 
     try {
       $selectSql = "SELECT
-                      auction_id, auction_num, start_time, auction_pdf_$lang as 'auction_pdf',
+                      auction_id, auction_num, start_time, collection_deadline, auction_pdf_$lang as 'auction_pdf',
                       result_pdf_$lang as 'result_pdf', remarks_$lang as 'remarks', auction_status, status, last_update 
                     FROM Auction
                     WHERE (status = ? OR (1 = ? AND status = ?))
@@ -24,6 +24,7 @@ class AuctionController {
           intval($result[$i]["auction_id"]),
           $result[$i]["auction_num"],
           $result[$i]["start_time"],
+          $result[$i]["collection_deadline"],
           "",
           $result[$i]["auction_pdf"],
           $result[$i]["result_pdf"],
@@ -428,7 +429,7 @@ class AuctionController {
     global $conn, $lang;
 
     $selectSql = "SELECT
-                    A.auction_id, A.auction_num, A.start_time, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
+                    A.auction_id, A.auction_num, A.start_time, A.collection_deadline, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
                     A.result_pdf_$lang as 'result_pdf', A.remarks_$lang as 'remarks', A.auction_status, status, last_update 
                   FROM Auction A
                   INNER JOIN Location L ON A.location_id = L.location_id
@@ -442,6 +443,7 @@ class AuctionController {
         intval($result[0]["auction_id"]),
         $result[0]["auction_num"],
         $result[0]["start_time"],
+        $result[0]["collection_deadline"],
         $result[0]["address"],
         $result[0]["auction_pdf"],
         $result[0]["result_pdf"],

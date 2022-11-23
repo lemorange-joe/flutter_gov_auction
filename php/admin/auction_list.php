@@ -69,10 +69,11 @@ include_once ("../include/config.php");
         <tr>
           <th style="width: 50px">ID</th>
           <th style="width: 100px">Auction No.</th>
-          <th style="width: 100px">Start Time</th>
+          <th style="width: 135px">Start Time</th>
+          <th style="width: 135px">Collection Deadline</th>
           <th style="width: 150px">Auction Status</th>
           <th style="width: 80px">Status</th>
-          <th style="width: 700px"></th>
+          <th style="width: 600px"></th>
         </tr>
       </thead>
       <tbody id="tblAuction">
@@ -88,6 +89,10 @@ include_once ("../include/config.php");
       <div class="form-row">
         <div>Start Time</div>
         <div><input id="tbNewStartTime" placeholder="2022-08-11 10:30:00"/></div>
+      </div>
+      <div class="form-row">
+        <div>Collection Deadline</div>
+        <div><input id="tbNewCollectionDeadline" placeholder="2022-09-01 16:00:00"/></div>
       </div>
       <div class="form-row separate">
         <div>Auction PDF (EN)</div>
@@ -233,6 +238,7 @@ include_once ("../include/config.php");
         var auctionData = {
           "auction_num": document.getElementById("tbNewAuctionNum").value,
           "start_time": document.getElementById("tbNewStartTime").value,
+          "collection_deadline": document.getElementById("tbNewCollectionDeadline").value,
           "auction_pdf_en": document.getElementById("tbNewAuctionPdfEn").value,
           "auction_pdf_tc": document.getElementById("tbNewAuctionPdfTc").value,
           "auction_pdf_sc": document.getElementById("tbNewAuctionPdfSc").value,
@@ -262,6 +268,7 @@ include_once ("../include/config.php");
           "id": document.getElementById("tbAuctionId_"+i).value,
           "auction_num": document.getElementById("tbAuctionNum_"+i).value,
           "start_time": document.getElementById("tbAuctionStartTime_"+i).value,
+          "collection_deadline": document.getElementById("tbAuctionCollectionDeadline_"+i).value,
           "auction_pdf_en": document.getElementById("tbAuctionPdfEn_"+i).value,
           "auction_pdf_tc": document.getElementById("tbAuctionPdfTc_"+i).value,
           "auction_pdf_sc": document.getElementById("tbAuctionPdfSc_"+i).value,
@@ -281,6 +288,7 @@ include_once ("../include/config.php");
       function ResetAuction() {
         document.getElementById("tbNewAuctionNum").value = "";
         document.getElementById("tbNewStartTime").value = "";
+        document.getElementById("tbNewCollectionDeadline").value = "";
         document.getElementById("tbNewAuctionPdfEn").value = "";
         document.getElementById("tbNewAuctionPdfTc").value = "";
         document.getElementById("tbNewAuctionPdfSc").value = "";
@@ -324,9 +332,10 @@ include_once ("../include/config.php");
                 td0.appendChild(link);
                 td0.appendChild(GetTextBox("tbAuctionId_"+i, curAuction.id, "hidden"));
                 row.insertCell(1).appendChild(GetTextBox("tbAuctionNum_"+i, curAuction.num, "text", 60));
-                row.insertCell(2).appendChild(GetTextBox("tbAuctionStartTime_"+i, curAuction.start_time, "text", 130));              
-                row.insertCell(3).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
-                row.insertCell(4).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
+                row.insertCell(2).appendChild(GetTextBox("tbAuctionStartTime_"+i, curAuction.start_time, "text", 125));
+                row.insertCell(3).appendChild(GetTextBox("tbAuctionCollectionDeadline_"+i, curAuction.collection_deadline, "text", 125));
+                row.insertCell(4).appendChild(GetDdl("ddlAuctionStatus_"+i, curAuction.auction_status, "AuctionStatus"));
+                row.insertCell(5).appendChild(GetDdl("ddlStatus_"+i, curAuction.status, "Status"));
                 var btnUpdate = document.createElement("button");
                 btnUpdate.setAttribute("id", "btnUpdate"+i);
                 btnUpdate.innerHTML = "Update";
@@ -334,13 +343,13 @@ include_once ("../include/config.php");
                   UpdateAuction(this.parentNode.parentNode.rowIndex - 1);
                   TempDisableButton(this.getAttribute("id"));
                 };
-                row.insertCell(5).appendChild(btnUpdate);
+                row.insertCell(6).appendChild(btnUpdate);
 
                 var row2 = tblAuction.insertRow();
                 row2.classList.add(curAuction.status == "A" ? "green" : (curAuction.status == "P" ? "yellow" : "red"));
 
                 var cell = row2.insertCell(0);
-                cell.setAttribute("colspan", 6);
+                cell.setAttribute("colspan", 7);
                 cell.setAttribute("style", "height:30px;vertical-align:top;text-align:left;border-bottom:5px double #000");
 
                   var divTextBox = document.createElement("div");

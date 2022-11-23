@@ -7,6 +7,7 @@ $auctionJsonFieldMapping = array(
   // Auction
   "num" => "n",
   "startTime" => "st",
+  "collectionDeadline" => "cd",
   "location" => "l",
   "auctionPdf" => "ap",
   "resultPdf" => "rp",
@@ -66,6 +67,7 @@ class Auction implements JsonSerializable {
   private $id;
   private $num;
   private $startTime;
+  private $collectionDeadline;
   private $location;
   private $auctionPdf;
   private $resultPdf;
@@ -76,10 +78,11 @@ class Auction implements JsonSerializable {
   private $status;
   private $lastUpdate;
 
-  public function __construct($id, $num, $startTime, $location, $auctionPdf, $resultPdf, $remarks, $auctionStatus, $status, $lastUpdate) {
+  public function __construct($id, $num, $startTime, $collectionDeadline, $location, $auctionPdf, $resultPdf, $remarks, $auctionStatus, $status, $lastUpdate) {
     $this->id = $id;
     $this->num = $num;
     $this->startTime = $startTime;
+    $this->collectionDeadline = $collectionDeadline;
     $this->location = $location;
     $this->auctionPdf = $auctionPdf;
     $this->resultPdf = $resultPdf;
