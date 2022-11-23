@@ -15,7 +15,7 @@ include_once ("../class/admin_import.php");
   <title>Admin - Preview Auction List</title>
   <link rel="stylesheet" href="css/main.css?v=<?=$ADMIN_VERSION?>">
 </head>
-<body>
+<body onkeydown="return CheckShortcut()">
   <div class="header">
     <div><h2><a href="index.php">« Admin Index</a></h2></div>
     <div class="title">Import Auction List (2/2)</div>
@@ -54,13 +54,29 @@ include_once ("../class/admin_import.php");
         <button id="btnImport" class="action-button" onclick="ImportData()">Import</button>
         <a href="import_auction_list.php" style="line-height: 28px">Cancel</a>
       </div>
-      <button id="btnNextErrorItem" style="position: fixed; right: 20px; bottom: 200px; width:36px; height: 36px; font-size: 18px; background-color: #f88; color: #fff; border: solid 1px #888" onclick="FindNextErrorItem()"  onmouseover="this.style.backgroundColor='#f99'" onmouseout="this.style.backgroundColor='#f88'">⮕</button>
+      
+      <button id="btnNextEmptyData" style="position: fixed; right: 20px; bottom: 232px; width:36px; height: 36px; font-size: 18px; background-color: #ffbd88; color: #fff; border: solid 1px #888; border-radius: 8px;" onclick="FindNextEmptyData()"  onmouseover="this.style.backgroundColor='#ffc999'" onmouseout="this.style.backgroundColor='#ffbd88'">∅</button>
+      <button id="btnNextErrorItem" style="position: fixed; right: 20px; bottom: 190px; width:36px; height: 36px; font-size: 18px; background-color: #f88; color: #fff; border: solid 1px #888" onclick="FindNextErrorItem()"  onmouseover="this.style.backgroundColor='#f99'" onmouseout="this.style.backgroundColor='#f88'">⮕</button>
       <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
       <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
       <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
       <button style="position: fixed; right: 20px; bottom: 20px; width:36px; height: 36px; font-size: 20px" onclick="window.scrollTo(0, document.body.scrollHeight)">⟱</button>
       <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
       <script>
+        function CheckShortcut() {
+          if (event.target.type != "text" && event.target.type != "textarea") {
+            if (event.keyCode == 49) {  // "1"
+              FindNextEmptyData();
+              return false;
+            } else if (event.keyCode == 50) {  // "2"
+              FindNextErrorItem();
+              return false;
+            }
+          }
+
+          return true;
+        }
+
         function AddInspectionDate() {
           var btnAdd = document.getElementById("btnAddInspectionDate");
           var count = parseInt(btnAdd.getAttribute("data-count"));
@@ -110,6 +126,32 @@ include_once ("../class/admin_import.php");
             text = text.substr(0, 2) + ":" + text.substr(2);
           }
           el.value = text;
+        }
+
+        function FindNextEmptyData() {
+          var i = 0;
+          var total = 0;
+          var firstEmptyId = "";
+          var checkFieldList = ["tbGldRef", "tbRef", "tbDeptEn", "tbDeptTc", "tbContactEn", "tbContactTc", "tbNumberEn", "tbNumberTc", "tbLocationEn", "tbLocationTc"];
+
+          while (document.getElementById(checkFieldList[0]+"_"+i)) {  // if there is lot i, check its fields
+            for (var j = 0; j < checkFieldList.length; ++j) {
+              if (document.getElementById(checkFieldList[j]+"_"+i).value.trim() == "") {
+                firstEmptyId = firstEmptyId == "" ? checkFieldList[j]+"_"+i : firstEmptyId;
+                ++total;
+                break;
+              }
+            }
+
+            ++i;
+          }
+
+          document.getElementById("btnNextEmptyData").innerHTML = total;
+          if (total > 0) {
+            document.getElementById(firstEmptyId).focus();
+          } else {
+            alert("No more empty data!");
+          }
         }
 
         function FindNextErrorItem() {
