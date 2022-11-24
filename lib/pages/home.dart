@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
         appBar: buildAppBar(context),
         drawer: buildDrawer(context),
         body: Opacity(
-          opacity: 0.03,
+          opacity: 0.01,
           child: ColorFiltered(
             colorFilter: ColorFilter.mode(
               // Colors.transparent,

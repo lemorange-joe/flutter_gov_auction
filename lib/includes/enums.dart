@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_classes_with_only_static_members
+
 enum AuctionStatus {
   None,
   Pending,
@@ -34,4 +36,9 @@ AuctionStatus getAuctionStatus(String code) {
   }
 
   return AuctionStatus.None;
+}
+
+class TransactionStatus {
+  static String Sold = 'S';
+  static String NotSold = 'N';
 }

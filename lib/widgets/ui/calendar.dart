@@ -3,9 +3,10 @@ import '../../generated/l10n.dart';
 import '../../includes/config.dart' as config;
 
 class Calendar extends StatelessWidget {
-  const Calendar(this.dt, {Key? key}) : super(key: key);
+  const Calendar(this.dt, {Key? key, this.showBorder = false}) : super(key: key);
 
   final DateTime dt;
+  final bool showBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +54,14 @@ class Calendar extends StatelessWidget {
                   bottomLeft: Radius.circular(config.smBorderRadius),
                   bottomRight: Radius.circular(config.smBorderRadius),
                 ),
+                border: showBorder
+                    ? const Border(
+                        left: BorderSide(),
+                        right: BorderSide(),
+                        bottom: BorderSide(),
+                        top: BorderSide(),
+                      )
+                    : null,
               ),
               child: Center(
                 child: Text(

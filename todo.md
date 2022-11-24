@@ -12,19 +12,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- add collection deadline:
-ALTER TABLE `Auction` ADD collection_deadline datetime NULL AFTER start_time;
-UPDATE `Auction` SET collection_deadline = '2022-07-08 16:00' WHERE auction_id = 1 AND auction_num = '1/2022';
-UPDATE `Auction` SET collection_deadline = '2022-08-04 16:00' WHERE auction_id = 2 AND auction_num = '2/2022';
-UPDATE `Auction` SET collection_deadline = '2022-09-01 16:00' WHERE auction_id = 3 AND auction_num = '3/2022';
-UPDATE `Auction` SET collection_deadline = '2022-09-16 16:00' WHERE auction_id = 4 AND auction_num = '4/2022';
-UPDATE `Auction` SET collection_deadline = '2022-09-30 16:00' WHERE auction_id = 5 AND auction_num = '5/2022';
-UPDATE `Auction` SET collection_deadline = '2022-10-14 16:00' WHERE auction_id = 6 AND auction_num = '6/2022';
-UPDATE `Auction` SET collection_deadline = '2022-10-27 16:00' WHERE auction_id = 7 AND auction_num = '7/2022';
-UPDATE `Auction` SET collection_deadline = '2022-11-10 16:00' WHERE auction_id = 8 AND auction_num = '8/2022';
-UPDATE `Auction` SET collection_deadline = '2022-11-24 16:00' WHERE auction_id = 9 AND auction_num = '9/2022';
-UPDATE `Auction` SET collection_deadline = '2022-12-08 16:00' WHERE auction_id = 10 AND auction_num = '10/2022';
-ALTER TABLE `Auction` MODIFY collection_deadline datetime NOT NULL;
 - reminders:
   - test local notification reminder in ios
   - decide reminder message in ReminderHelper

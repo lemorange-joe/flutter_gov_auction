@@ -112,25 +112,21 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Widget _buildAuctionLotGrid() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 400.0,  // TODO(joe): TBC
-      child: FutureBuilder<dynamic>(
-        future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>['sold', config.gridItemCount.toString()]),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          final List<dynamic> result = snapshot.data as List<dynamic>;
-          if (snapshot.connectionState != ConnectionState.done) {
-            return LemorangeLoading();
-          }
+    return FutureBuilder<dynamic>(
+      future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>['sold', config.gridItemCount.toString()]),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return LemorangeLoading();
+        }
 
-          final List<AuctionLotGridItem> itemList = <AuctionLotGridItem>[];
-          for (final dynamic item in result) {
-            itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
-          }
+        final List<dynamic> result = snapshot.data as List<dynamic>;
+        final List<AuctionLotGridItem> itemList = <AuctionLotGridItem>[];
+        for (final dynamic item in result) {
+          itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
+        }
 
-          return AuctionLotGridView(S.of(context).recentlySold, itemList);
-        },
-      ),
+        return AuctionLotGridView(S.of(context).recentlySold, itemList, showSoldIcon: true);
+      },
     );
   }
 
