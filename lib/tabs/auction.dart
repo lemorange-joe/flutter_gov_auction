@@ -305,7 +305,6 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
           child: ListTile(
             onTap: () {
               Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
-                'title': S.of(context).itemDetails,
                 'heroTagPrefix': heroTagPrefix,
                 'auctionId': widget.auction.id,
                 'auctionStartTime': widget.auction.startTime,

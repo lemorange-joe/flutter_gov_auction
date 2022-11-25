@@ -183,7 +183,7 @@ class SavedPage extends StatelessWidget {
         onTap: () {
           Provider.of<AuctionProvider>(context, listen: false).getAuctionLot(savedAuction.lotId, S.of(context).lang).then((AuctionLot curLot) {
             Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
-              'title': S.of(context).itemDetails,
+              'title': '${S.of(context).itemDetails}: ',
               'heroTagPrefix': heroTagPrefix,
               'auctionId': savedAuction.auctionId,
               'auctionStartTime': savedAuction.auctionStartTime,

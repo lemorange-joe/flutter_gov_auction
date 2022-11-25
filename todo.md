@@ -24,6 +24,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
     - jewellery
     - digital products
     - books
+- try: flutter_native_splash
 - auto request push notification permission when start app
 - add statistics page
   - chart widget: https://pub.dev/packages/fl_chart

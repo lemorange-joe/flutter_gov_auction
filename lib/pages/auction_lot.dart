@@ -12,17 +12,19 @@ import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
+import '../providers/auction_provider.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class AuctionLotPage extends StatefulWidget {
-  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, {super.key});
+  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, this.loadAuctionLotId, {super.key});
 
   final String title;
   final String heroTagPrefix;
   final int auctionId;
   final DateTime auctionStartTime;
   final AuctionLot auctionLot;
+  final int loadAuctionLotId;
 
   @override
   State<AuctionLotPage> createState() => _AuctionLotPageState();
@@ -34,10 +36,22 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   int relatedPageNum = 0;
   bool noMoreRelatedLots = false;
   String moreText = 'xxx';
+  late AuctionLot _auctionLot;
 
   @override
   void initState() {
     super.initState();
+
+    _auctionLot = widget.auctionLot;
+    if (_auctionLot.id == 0 && widget.loadAuctionLotId > 0) {
+      Future<void>.delayed(Duration.zero, () {
+        AuctionProvider().getAuctionLot(widget.loadAuctionLotId, S.of(context).lang).then((AuctionLot result) {
+          setState(() {
+            _auctionLot = result;
+          });
+        });
+      });
+    }
 
     _scrollController = ScrollController();
     _scrollController.addListener(() {
@@ -48,8 +62,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   void loadRelatedLots(int page) {
-    ApiHelper()
-        .get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[widget.auctionLot.id.toString(), page.toString()]).then((dynamic result) {
+    ApiHelper().get(S.of(context).lang, 'auction', 'relatedLots', urlParameters: <String>[_auctionLot.id.toString(), page.toString()]).then((dynamic result) {
       if (!mounted) {
         return;
       }
@@ -83,7 +96,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        ...widget.auctionLot.itemList
+        ..._auctionLot.itemList
             .asMap()
             .entries
             .map((MapEntry<int, AuctionItem> entry) => Text('${entry.key + 1}. ${entry.value.description} ${entry.value.quantity} ${entry.value.unit}'))
@@ -112,7 +125,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   Widget build(BuildContext context) {
     const double titleFieldWidth = 100.0;
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
-    final bool isLotPhoto = widget.auctionLot.photoUrl.isNotEmpty && Uri.parse(widget.auctionLot.photoUrl).isAbsolute;
+    final bool isLotPhoto = _auctionLot.photoUrl.isNotEmpty && Uri.parse(_auctionLot.photoUrl).isAbsolute;
 
     return Scaffold(
       appBar: AppBar(
@@ -127,14 +140,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
-          '${S.of(context).fieldLotNum} ${widget.auctionLot.lotNum}',
+        title: _auctionLot.id == 0 ? Text(S.of(context).loading) : Text(
+          '${widget.title}${S.of(context).fieldLotNum} ${_auctionLot.lotNum}',
           style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: _auctionLot.id == 0 ? Center(child: LemorangeLoading(size: 60.0)) : SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           controller: _scrollController,
           child: Column(
@@ -149,12 +162,12 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     children: <Widget>[
                       Center(
                         child: Hero(
-                          tag: '${widget.heroTagPrefix}_${widget.auctionLot.id}',
+                          tag: '${widget.heroTagPrefix}_${_auctionLot.id}',
                           child: isLotPhoto
                               ? Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: CachedNetworkImageProvider(widget.auctionLot.photoUrl),
+                                      image: CachedNetworkImageProvider(_auctionLot.photoUrl),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -163,7 +176,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                   widthFactor: 0.618,
                                   heightFactor: 0.618,
                                   child: FittedBox(
-                                    child: FaIcon(dynamic_icon_helper.getIcon(widget.auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
+                                    child: FaIcon(dynamic_icon_helper.getIcon(_auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
                                   ),
                                 ),
                         ),
@@ -180,14 +193,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               builder: (BuildContext context, _, __) {
                                 final SavedAuction curAuction = SavedAuction(
                                   widget.auctionId,
-                                  widget.auctionLot.id,
+                                  _auctionLot.id,
                                   widget.auctionStartTime,
-                                  widget.auctionLot.lotNum,
-                                  widget.auctionLot.icon,
-                                  widget.auctionLot.photoUrl,
-                                  widget.auctionLot.descriptionEn,
-                                  widget.auctionLot.descriptionTc,
-                                  widget.auctionLot.descriptionSc,
+                                  _auctionLot.lotNum,
+                                  _auctionLot.icon,
+                                  _auctionLot.photoUrl,
+                                  _auctionLot.descriptionEn,
+                                  _auctionLot.descriptionTc,
+                                  _auctionLot.descriptionSc,
                                 );
                                 final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
@@ -236,7 +249,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldGldFileRef)),
                         Expanded(
-                          child: Text(widget.auctionLot.gldFileRef),
+                          child: Text(_auctionLot.gldFileRef),
                         ),
                       ],
                     ),
@@ -244,35 +257,35 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldDeapartment)),
-                        Expanded(child: Text(widget.auctionLot.department)),
+                        Expanded(child: Text(_auctionLot.department)),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldReference)),
-                        Expanded(child: Text(widget.auctionLot.reference)),
+                        Expanded(child: Text(_auctionLot.reference)),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactLocation)),
-                        Expanded(child: Text(widget.auctionLot.contactLocation)),
+                        Expanded(child: Text(_auctionLot.contactLocation)),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContact)),
-                        Expanded(child: Text(widget.auctionLot.contact)),
+                        Expanded(child: Text(_auctionLot.contact)),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactNumber)),
-                        Expanded(child: TelGroup(widget.auctionLot.contactNumber)),
+                        Expanded(child: TelGroup(_auctionLot.contactNumber)),
                       ],
                     ),
                     Row(
@@ -280,11 +293,11 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       children: <Widget>[
                         SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldInspectionArrangement)),
                         Expanded(
-                          child: widget.auctionLot.inspectionDateList.isEmpty
+                          child: _auctionLot.inspectionDateList.isEmpty
                               ? const Text('-')
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: widget.auctionLot.inspectionDateList
+                                  children: _auctionLot.inspectionDateList
                                       .map((InspectionDate inspect) => Text(
                                           '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}: ${inspect.startTime} - ${inspect.endTime}'))
                                       .toList(),
