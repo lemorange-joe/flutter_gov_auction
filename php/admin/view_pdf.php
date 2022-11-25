@@ -25,7 +25,7 @@ $lotMapping = array();
 foreach($lotData as $key => $auctionLot) {
   $lotMapping[] = $key;
   $lotMapping[$key] = new StdClass();
-  $lotMapping[$key]->lotNum = $auctionLot["lot-num"];
+  $lotMapping[$key]->auctionNum = $auctionLot["auction-num"];
   $lotMapping[$key]->stat = $auctionLot["stat"];
 }
 ?>
@@ -63,7 +63,7 @@ foreach($lotData as $key => $auctionLot) {
   </style>
 </head>
 <body>
-  <div id="divStatJson" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6)">
+  <div id="divStatJson" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6)">
     <form method="POST">
       <div style="background-color: #fff; position: absolute; left: 50%; top: 50%; margin-left: -400px; margin-top: -250px; width: 800px; height: 450px">
         <textarea name="txtStatJson" style="width: 790px; height: 400px"><?=$jsonString?></textarea>
@@ -94,7 +94,7 @@ foreach($lotData as $key => $auctionLot) {
             $lotStat = "-";
             if (isset($lotMapping[$folderName])) {
               $curLot = $lotMapping[$folderName];
-              $displayFolderName = $curLot->lotNum;
+              $displayFolderName = $curLot->auctionNum;
               $lotStat = "";
               foreach ($curLot->stat as $itemType => $stat) {
                 $lotStat .= "<div style='background-color: #eee; padding: 1px 3px; font-size: 14px'>$itemType: $stat</div>";

@@ -25,6 +25,8 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
     - digital products
     - books
 - auto request push notification permission when start app
+- add statistics page
+  - chart widget: https://pub.dev/packages/fl_chart
 - add random data in API to prevent data theft
 
 =================================================================
