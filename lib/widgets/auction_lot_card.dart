@@ -10,9 +10,10 @@ import '../includes/enums.dart';
 import '../widgets/ui/calendar.dart';
 
 class AuctionLotCard extends StatelessWidget {
-  const AuctionLotCard(this.auctionLot, this.showSoldIcon, {super.key});
+  const AuctionLotCard(this.auctionLot, this.auctionLotPageTitlePrefix, this.showSoldIcon, {super.key});
 
   final AuctionLotGridItem auctionLot;
+  final String auctionLotPageTitlePrefix;
   final bool showSoldIcon;
 
   @override
@@ -23,7 +24,7 @@ class AuctionLotCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
-          'title': '${S.of(context).recentlySold}: ',
+          'title': auctionLotPageTitlePrefix,
           'heroTagPrefix': heroTagPrefix,
           'auctionId': auctionLot.auctionId,
           'auctionStartTime': auctionLot.startTime,

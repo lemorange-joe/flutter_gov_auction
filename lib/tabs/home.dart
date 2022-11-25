@@ -23,6 +23,27 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void onScroll() {
+    // trying lazy load the auction lot grids
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.9 ) {
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextStyle titleStyle = TextStyle(
@@ -34,6 +55,7 @@ class _HomeTabState extends State<HomeTab> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -78,25 +100,17 @@ class _HomeTabState extends State<HomeTab> {
             _buildAuctionList(titleStyle),
             Consumer<AppInfoProvider>(
               builder: (BuildContext context, AppInfoProvider appInfoProvider, Widget? _) {
-                // TODO(joe): add lazy load all categories
-                return appInfoProvider.loaded ? 
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: _buildAuctionLotGrid(0, titleStyle),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: _buildAuctionLotGrid(1, titleStyle),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: _buildAuctionLotGrid(2, titleStyle),
-                      ),
-                    ],
-                  )
-                : Container();
+                return appInfoProvider.loaded
+                    ? Column(
+                        // TODO(joe): lazy load the grids
+                        children: List<int>.generate(appInfoProvider.gridCategoryList.length, (int i) => i)
+                            .map((int i) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: _buildAuctionLotGrid(i, titleStyle),
+                                ))
+                            .toList()
+                        )
+                    : Container();
               },
             ),
             ..._buildOtherSection1(),
@@ -137,7 +151,8 @@ class _HomeTabState extends State<HomeTab> {
     final Map<String, String> gridCategoryMap = Provider.of<AppInfoProvider>(context, listen: false).gridCategoryList;
     final String gridCategoryKey = gridCategoryMap.keys.toList()[gridCategoryIndex];
     final String gridCategoryTitle = gridCategoryMap[gridCategoryKey]!;
-    final String gridViewTitle = gridCategoryTitle.isEmpty ? S.of(context).recentlySold : gridCategoryTitle;
+    final String gridViewTitle = gridCategoryTitle.isEmpty ? S.of(context).recentlySold : '${S.of(context).searchGridBefore}$gridCategoryTitle${S.of(context).searchGridAfter}';
+    final String auctionLotPageTitlePrefix = gridCategoryTitle.isEmpty ? '${S.of(context).recentlySold}: ' : '$gridCategoryTitle: ';
 
     return FutureBuilder<dynamic>(
       future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]),
@@ -152,7 +167,7 @@ class _HomeTabState extends State<HomeTab> {
           itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
         }
 
-        return AuctionLotGridView(gridViewTitle, itemList, titleStyle, showSoldIcon: true);
+        return AuctionLotGridView(gridViewTitle, itemList, titleStyle, auctionLotPageTitlePrefix, showSoldIcon: true);
       },
     );
   }

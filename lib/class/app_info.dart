@@ -34,12 +34,15 @@ class AppInfo {
       itemTypeMap.addAll(<String, String>{key: val as String});
     });
 
-    // TODO: null check for testing
+    // TODO(joe): null check for testing
     if (json['gcm'] == null) {
       json['gcm'] = <String, String> {
         'sold': '',
         'mobile_phone': '手提電話',
         'used_car': 'Used Private Car',
+        'television': '电视机',
+        'air_conditioner': '冷氣機',
+        'fan': 'a',
       };
     }
     (json['gcm'] as Map<String, dynamic>).forEach((String key, dynamic val) {
