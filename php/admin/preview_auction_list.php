@@ -31,7 +31,7 @@ include_once ("../class/admin_import.php");
     <?php
     } else {
     ?>
-      <div style="width:400px;display:flex;justify-content:space-between">
+      <div style="width:350px;display:flex;justify-content:space-between">
         <div>
         <span style="display:inline-block;width:100px">Item type:</span><input id="tbItemType" value="<?=$_POST["item_type"]?>" style="width:60px" />
         <br /><span style="display:inline-block;width:100px">Num:</span><input id="tbAuctionNum" value="<?=$_POST["auction_num"]?>" style="width:60px" />

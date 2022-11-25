@@ -63,14 +63,15 @@ class AdminImport {
       }
     }
     $lastLotNum = $curLotNum;
-    echo "<div style='display: inline-block; background-color: #bfb; height: 30px; line-height: 30px; padding: 0px 10px'>";
-    echo "$firstLotNum ➔ $lastLotNum";
+    echo "<div style='position: absolute; top: 60px; left: 50%; margin-left: -120px'>";
+      echo "<div style='display: inline-block; background-color: #bfb; height: 30px; line-height: 30px; padding: 0px 10px'>";
+      echo "$firstLotNum ➔ $lastLotNum";
+      echo "</div>";
+      echo "&nbsp;&nbsp;";
+      echo "<div style='display: inline-block; background-color: #ffb; height: 30px; line-height: 30px; padding: 0px 10px; font-weight: bold'>";
+      echo "Found: " . Count($strAuctionList);
+      echo "</div>";
     echo "</div>";
-    echo "&nbsp;&nbsp;";
-    echo "<div style='display: inline-block; background-color: #ffb; height: 30px; line-height: 30px; padding: 0px 10px; font-weight: bold'>";
-    echo "Found: " . Count($strAuctionList);
-    echo "</div>";
-    echo "<hr />";
   }
 
   function splitAuctionListText($txt, $itemType) {
