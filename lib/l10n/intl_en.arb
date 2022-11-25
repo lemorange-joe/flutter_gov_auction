@@ -98,6 +98,8 @@
     "saved": "Saved",
     "savedAuctionEmpty": "No saved items",
     "searchAuction": "(TBC)Search items",
+    "searchGridAfter": "\"",
+    "searchGridBefore": "Items related to \"",
     "searchHistory": "Search History",
     "semanticsAddToSavedItems": "add to saved items",
     "semanticsClose": "close",

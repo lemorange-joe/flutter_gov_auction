@@ -1040,6 +1040,26 @@ class S {
     );
   }
 
+  /// `"`
+  String get searchGridAfter {
+    return Intl.message(
+      '"',
+      name: 'searchGridAfter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Items related to "`
+  String get searchGridBefore {
+    return Intl.message(
+      'Items related to "',
+      name: 'searchGridBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search History`
   String get searchHistory {
     return Intl.message(

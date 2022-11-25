@@ -150,6 +150,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "savedAuctionEmpty": MessageLookupByLibrary.simpleMessage("没有已收藏项目"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
+        "searchGridAfter": MessageLookupByLibrary.simpleMessage("」的项目"),
+        "searchGridBefore": MessageLookupByLibrary.simpleMessage("有关「"),
         "searchHistory": MessageLookupByLibrary.simpleMessage("搜寻记录"),
         "semanticsAddToSavedItems":
             MessageLookupByLibrary.simpleMessage("加至收藏项目"),

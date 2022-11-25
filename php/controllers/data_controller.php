@@ -2,6 +2,15 @@
 include_once ("../include/appdata.php");
 
 class DataController {
+  public static $searchGridCategoryKeywords = array(
+    "sold" => array("en" => "", "tc" => "", "sc" => ""),  // leave keywords empty for api to search for sold and flutter to display S.of(context).recentlySold 
+    "mobile_phone" => array("en" => "Mobile Phone", "tc" => "手提電話", "sc" => "手提电话"),
+    "used_car" => array("en" => "Used Private Car", "tc" => "舊私家車", "sc" => "旧私家车"),
+    "television" => array("en" => "Television", "tc" => "電視機", "sc" => "电视机"),
+    "air_conditioner" => array("en" => "Air Conditioner", "tc" => "冷氣機", "sc" => "冷气机"),
+    "fan" => array("en" => "Fan", "tc" => "風扇", "sc" => "风扇"), 
+  );
+
   function appInfo() {
     global $conn, $lang;
     $_APP = AppData::getInstance();
@@ -87,6 +96,13 @@ class DataController {
           $l->m = $result[$i]["map_address"];
           $data->cll[] = $l;
         }
+
+        // grid category map
+        $gridCategoryList = array();
+        foreach(DataController::$searchGridCategoryKeywords as $category => $categoryKeyword) {
+          $gridCategoryList[$category] = $categoryKeyword[$lang];
+        }
+        $data->gcm = $gridCategoryList;
 
         // item type list, from $_APP
         $data->itm = new StdClass();

@@ -4,17 +4,22 @@ import './auction_lot_card.dart';
 import '../class/auction.dart';
 
 class AuctionLotGridView extends StatelessWidget {
-  const AuctionLotGridView(this.title, this.auctionLotList, {super.key, this.showSoldIcon = false});
+  const AuctionLotGridView(this.title, this.auctionLotList, this.titleStyle, {super.key, this.showSoldIcon = false});
 
   final String title;
   final List<AuctionLotGridItem> auctionLotList;
+  final TextStyle titleStyle;
   final bool showSoldIcon;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: getListItem(context, auctionLotList),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(title, style: titleStyle),
+        ...getListItem(context, auctionLotList),
+      ],
     );
   }
 

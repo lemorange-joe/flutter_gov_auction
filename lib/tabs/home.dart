@@ -6,7 +6,7 @@ import '../class/auction.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../includes/config.dart' as config;
-// import '../providers/app_info_provider.dart';
+import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/auction_list_item.dart';
 import '../widgets/auction_lot_grid_view.dart';
@@ -76,7 +76,29 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
-            _buildAuctionLotGrid(),
+            Consumer<AppInfoProvider>(
+              builder: (BuildContext context, AppInfoProvider appInfoProvider, Widget? _) {
+                // TODO(joe): add lazy load all categories
+                return appInfoProvider.loaded ? 
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: _buildAuctionLotGrid(0, titleStyle),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: _buildAuctionLotGrid(1, titleStyle),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: _buildAuctionLotGrid(2, titleStyle),
+                      ),
+                    ],
+                  )
+                : Container();
+              },
+            ),
             ..._buildOtherSection1(),
           ],
         ),
@@ -111,9 +133,14 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  Widget _buildAuctionLotGrid() {
+  Widget _buildAuctionLotGrid(int gridCategoryIndex, TextStyle titleStyle) {
+    final Map<String, String> gridCategoryMap = Provider.of<AppInfoProvider>(context, listen: false).gridCategoryList;
+    final String gridCategoryKey = gridCategoryMap.keys.toList()[gridCategoryIndex];
+    final String gridCategoryTitle = gridCategoryMap[gridCategoryKey]!;
+    final String gridViewTitle = gridCategoryTitle.isEmpty ? S.of(context).recentlySold : gridCategoryTitle;
+
     return FutureBuilder<dynamic>(
-      future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>['sold', config.gridItemCount.toString()]),
+      future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LemorangeLoading();
@@ -125,7 +152,7 @@ class _HomeTabState extends State<HomeTab> {
           itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
         }
 
-        return AuctionLotGridView(S.of(context).recentlySold, itemList, showSoldIcon: true);
+        return AuctionLotGridView(gridViewTitle, itemList, titleStyle, showSoldIcon: true);
       },
     );
   }

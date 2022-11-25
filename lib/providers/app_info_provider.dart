@@ -43,4 +43,5 @@ class AppInfoProvider with ChangeNotifier {
   List<PushMessage> get messageList => appInfo.messageList;
   List<String> get hotSearchList => appInfo.hotSearchList;
   List<CatalogLocation> get catalogLocationList => appInfo.catalogLocationList;
+  Map<String, String> get gridCategoryList => appInfo.gridCategoryList;
 }
