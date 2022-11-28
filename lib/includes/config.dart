@@ -11,6 +11,7 @@ const String googlePlayUrl = 'https://lemorange.studio';  // TBC!!!
 const String supportEmail = 'info@lemorange.studio';
 const int httpTimeout = 5; // in seconds
 const int gridItemCount = 20;
+const int relatedLotPageSize = 12;
 
 const String dateFormatEn = 'd MMMM yyyy (EEEE)';
 const String dateFormatCh = 'yyyy年M月d日 (EEEE)';

@@ -37,10 +37,31 @@ class AuctionLotCard extends StatelessWidget {
           children: <Widget>[
             Stack(
               children: <Widget>[
+                Center(
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: isLotPhoto
+                        ? Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(auctionLot.photoUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : FractionallySizedBox(
+                            widthFactor: 0.618,
+                            heightFactor: 0.618,
+                            child: FittedBox(
+                              child: FaIcon(dynamic_icon_helper.getIcon(auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
+                            ),
+                          ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                    padding: const EdgeInsets.only(left: 4.0, top: 4.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -63,29 +84,8 @@ class AuctionLotCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    padding: const EdgeInsets.only(top: 4.0, right: 4.0),
                     child: Calendar(auctionLot.startTime, showBorder: true),
-                  ),
-                ),
-                Center(
-                  child: AspectRatio(
-                    aspectRatio: 1.0,
-                    child: isLotPhoto
-                        ? Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(auctionLot.photoUrl),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                        : FractionallySizedBox(
-                            widthFactor: 0.618,
-                            heightFactor: 0.618,
-                            child: FittedBox(
-                              child: FaIcon(dynamic_icon_helper.getIcon(auctionLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
-                            ),
-                          ),
                   ),
                 ),
               ],

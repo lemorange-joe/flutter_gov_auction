@@ -352,14 +352,14 @@ class AuctionController {
   }
 
   function relatedLots($param) {
-    // pre: $lotId, $page (starting from 1)
+    // pre: $lotId, $page (starting from 1), $pageSize
     // use $logId to search lots in other auctions that have any same auction items
     global $conn, $lang;
 
     $output = new StdClass();
     $output->status = "fail";
 
-    if (count($param) < 2) {
+    if (count($param) < 3) {
       $output->message = "Invalid parameters!";
       echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
       return;
@@ -368,7 +368,7 @@ class AuctionController {
     try {
       $lotId = intval(array_shift($param));
       $page = intval(array_shift($param));
-      $pageSize = $GLOBALS["RELATED_RECORD_PAGE_SIZE"];
+      $pageSize = intval(array_shift($param));
       $start = ($page - 1) * $pageSize;
       
       $selectSql = "SELECT

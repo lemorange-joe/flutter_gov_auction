@@ -16,7 +16,6 @@ $AUCTION_IMAGE_ROOT_URL = "http://gauc.local/images/";
 
 $CACHE_DIR = "/tmp";
 $CACHE_PERIOD = 1 * 60;  // seconds
-$RELATED_RECORD_PAGE_SIZE = 5;
 $APP_DATA_FILE = "/tmp/gauc.data";
 
 $LOGIN_SALT = "lX9#30er";

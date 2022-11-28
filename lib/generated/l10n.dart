@@ -940,20 +940,20 @@ class S {
     );
   }
 
-  /// `Recently sold`
+  /// `Recently Sold`
   String get recentlySold {
     return Intl.message(
-      'Recently sold',
+      'Recently Sold',
       name: 'recentlySold',
       desc: '',
       args: [],
     );
   }
 
-  /// `Recent search`
+  /// `Recent Search`
   String get recentSearch {
     return Intl.message(
-      'Recent search',
+      'Recent Search',
       name: 'recentSearch',
       desc: '',
       args: [],
@@ -970,21 +970,31 @@ class S {
     );
   }
 
-  /// `Related Items`
-  String get relatedLots {
-    return Intl.message(
-      'Related Items',
-      name: 'relatedLots',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `No more related items`
   String get relatedLotsEmpty {
     return Intl.message(
       'No more related items',
       name: 'relatedLotsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Related items of this auction`
+  String get relatedLotsOfThisAuction {
+    return Intl.message(
+      'Related items of this auction',
+      name: 'relatedLotsOfThisAuction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Related items: `
+  String get relatedLotsPrefix {
+    return Intl.message(
+      'Related items: ',
+      name: 'relatedLotsPrefix',
       desc: '',
       args: [],
     );

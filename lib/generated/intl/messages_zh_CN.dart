@@ -143,8 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜寻"),
         "recentlySold": MessageLookupByLibrary.simpleMessage("最近售出"),
         "relatedApps": MessageLookupByLibrary.simpleMessage("相关Apps"),
-        "relatedLots": MessageLookupByLibrary.simpleMessage("相关项目"),
         "relatedLotsEmpty": MessageLookupByLibrary.simpleMessage("没有更多相关项目"),
+        "relatedLotsOfThisAuction":
+            MessageLookupByLibrary.simpleMessage("本次拍卖的相关项目"),
+        "relatedLotsPrefix": MessageLookupByLibrary.simpleMessage("相关项目: "),
         "reload": MessageLookupByLibrary.simpleMessage("重新载入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
