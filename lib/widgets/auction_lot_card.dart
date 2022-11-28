@@ -12,7 +12,7 @@ import '../widgets/ui/calendar.dart';
 class AuctionLotCard extends StatelessWidget {
   const AuctionLotCard(this.auctionLot, this.auctionLotPageTitlePrefix, this.showSoldIcon, {super.key});
 
-  final AuctionLotGridItem auctionLot;
+  final RelatedAuctionLot auctionLot;
   final String auctionLotPageTitlePrefix;
   final bool showSoldIcon;
 

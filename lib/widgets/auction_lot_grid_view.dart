@@ -7,7 +7,7 @@ class AuctionLotGridView extends StatelessWidget {
   const AuctionLotGridView(this.title, this.auctionLotList, this.titleStyle, this.auctionLotPageTitlePrefix, {super.key, this.showSoldIcon = false});
 
   final String title;
-  final List<AuctionLotGridItem> auctionLotList;
+  final List<RelatedAuctionLot> auctionLotList;
   final TextStyle titleStyle;
   final String auctionLotPageTitlePrefix;
   final bool showSoldIcon;
@@ -24,7 +24,7 @@ class AuctionLotGridView extends StatelessWidget {
     );
   }
 
-  List<Widget> getListItem(BuildContext context, List<AuctionLotGridItem> auctionLotList) {
+  List<Widget> getListItem(BuildContext context, List<RelatedAuctionLot> auctionLotList) {
     const double minItemWidth = 200.0;
     const double itemHeight = 220.0;
     final int crossAxisCount = MediaQuery.of(context).size.width >= (minItemWidth + 12.0) * 3 ? 3 : 2;

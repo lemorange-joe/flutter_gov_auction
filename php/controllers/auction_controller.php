@@ -198,7 +198,7 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
-        $data[] = new AuctionLotGridItem(
+        $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["auction_num"],
           $result[$i]["start_time"],
@@ -206,11 +206,9 @@ class AuctionController {
           intval($result[$i]["lot_id"]),
           $result[$i]["lot_num"],
           $result[$i]["code"],
-
           $result[$i]["description"],
           $result[$i]["featured"],
           $result[$i]["icon"],
-
           $photoUrl,
           $result[$i]["photo_real"],
           $result[$i]["photo_author"],
@@ -374,8 +372,9 @@ class AuctionController {
       $start = ($page - 1) * $pageSize;
       
       $selectSql = "SELECT
-                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.lot_num, L.description_$lang as 'lot_description', 
-                      L.featured, L.icon, L.photo_url, L.photo_real, L.photo_author, L.photo_author_url, 
+                      A.auction_id, A.auction_num, A.start_time, A.auction_status, L.lot_id, L.lot_num, T.code, 
+                      L.description_$lang as 'description', L.featured, L.icon, 
+                      L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
                       L.transaction_currency, L.transaction_price, L.transaction_status
                     FROM Auction A
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
@@ -406,12 +405,13 @@ class AuctionController {
 
         $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
+          $result[$i]["auction_num"],
           $result[$i]["start_time"],
           $result[$i]["auction_status"],
           intval($result[$i]["lot_id"]),
-          $result[$i]["code"],
           $result[$i]["lot_num"],
-          $result[$i]["lot_description"],
+          $result[$i]["code"],
+          $result[$i]["description"],
           $result[$i]["featured"],
           $result[$i]["icon"],
           $photoUrl,

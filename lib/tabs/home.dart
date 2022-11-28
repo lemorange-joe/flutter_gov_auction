@@ -162,9 +162,9 @@ class _HomeTabState extends State<HomeTab> {
         }
 
         final List<dynamic> result = snapshot.data as List<dynamic>;
-        final List<AuctionLotGridItem> itemList = <AuctionLotGridItem>[];
+        final List<RelatedAuctionLot> itemList = <RelatedAuctionLot>[];
         for (final dynamic item in result) {
-          itemList.add(AuctionLotGridItem.fromJson(item as Map<String, dynamic>));
+          itemList.add(RelatedAuctionLot.fromJson(item as Map<String, dynamic>));
         }
 
         return AuctionLotGridView(gridViewTitle, itemList, titleStyle, auctionLotPageTitlePrefix, showSoldIcon: true);
