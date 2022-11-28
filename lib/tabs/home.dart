@@ -24,6 +24,10 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   late ScrollController _scrollController;
+  final List<Widget> _hotCategoryGridList = <Widget>[]; // store the list of hot category auction grid, append items during onScroll event
+  int _hotCategoryIndex = -1; // TODO(joe): always load the "sold" category first after appInfo is loaded, then randomize others
+  bool _loadingHotCategory = false;
+  bool _noMoreHotCategory = false;
 
   @override
   void initState() {
@@ -38,10 +42,58 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   void onScroll() {
-    // trying lazy load the auction lot grids
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.9 ) {
-
+    if (!_noMoreHotCategory && _scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200.0 && !_loadingHotCategory) {
+      setState(() {
+        _loadingHotCategory = true;
+      });
+      _loadHotCategoryGrid(_hotCategoryIndex + 1);
     }
+  }
+
+  void _loadHotCategoryGrid(int i) {
+    final TextStyle titleStyle = TextStyle(
+      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue,
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+    );
+
+    final Map<String, String> gridCategoryMap = Provider.of<AppInfoProvider>(context, listen: false).gridCategoryList;
+    if (i >= gridCategoryMap.keys.length) {
+      setState(() {
+        _noMoreHotCategory = true;
+        _loadingHotCategory = false;
+      });
+      return;
+    }
+
+    final String gridCategoryKey = gridCategoryMap.keys.toList()[i];
+    final String gridCategoryTitle = gridCategoryMap[gridCategoryKey]!;
+    final String gridViewTitle =
+        gridCategoryTitle.isEmpty ? S.of(context).recentlySold : '${S.of(context).searchGridBefore}$gridCategoryTitle${S.of(context).searchGridAfter}';
+    final String auctionLotPageTitlePrefix = gridCategoryTitle.isEmpty ? '${S.of(context).recentlySold}: ' : '$gridCategoryTitle: ';
+
+    ApiHelper()
+        .get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]).then((dynamic result) {
+      if (!mounted) {
+        return;
+      }
+
+      final List<RelatedAuctionLot> itemList = <RelatedAuctionLot>[];
+      for (final dynamic item in result as List<dynamic>) {
+        itemList.add(RelatedAuctionLot.fromJson(item as Map<String, dynamic>));
+      }
+
+      setState(() {
+        _hotCategoryGridList.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: AuctionLotGridView(gridViewTitle, itemList, titleStyle, auctionLotPageTitlePrefix, showSoldIcon: true),
+          ),
+        );
+        _hotCategoryIndex = i;
+        _loadingHotCategory = false;
+      });
+    });
   }
 
   @override
@@ -98,21 +150,9 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
-            Consumer<AppInfoProvider>(
-              builder: (BuildContext context, AppInfoProvider appInfoProvider, Widget? _) {
-                return appInfoProvider.loaded
-                    ? Column(
-                        // TODO(joe): lazy load the grids
-                        children: List<int>.generate(appInfoProvider.gridCategoryList.length, (int i) => i)
-                            .map((int i) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 20.0),
-                                  child: _buildAuctionLotGrid(i, titleStyle),
-                                ))
-                            .toList()
-                        )
-                    : Container();
-              },
-            ),
+            const SizedBox(height: 200.0),  // to be removed after auto loading the sold "category" to ensure scrolling
+            ..._hotCategoryGridList,
+            if (_loadingHotCategory) Center(child: LemorangeLoading()),
             ..._buildOtherSection1(),
           ],
         ),
@@ -143,31 +183,6 @@ class _HomeTabState extends State<HomeTab> {
               LemorangeLoading(),
           ],
         );
-      },
-    );
-  }
-
-  Widget _buildAuctionLotGrid(int gridCategoryIndex, TextStyle titleStyle) {
-    final Map<String, String> gridCategoryMap = Provider.of<AppInfoProvider>(context, listen: false).gridCategoryList;
-    final String gridCategoryKey = gridCategoryMap.keys.toList()[gridCategoryIndex];
-    final String gridCategoryTitle = gridCategoryMap[gridCategoryKey]!;
-    final String gridViewTitle = gridCategoryTitle.isEmpty ? S.of(context).recentlySold : '${S.of(context).searchGridBefore}$gridCategoryTitle${S.of(context).searchGridAfter}';
-    final String auctionLotPageTitlePrefix = gridCategoryTitle.isEmpty ? '${S.of(context).recentlySold}: ' : '$gridCategoryTitle: ';
-
-    return FutureBuilder<dynamic>(
-      future: ApiHelper().get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return LemorangeLoading();
-        }
-
-        final List<dynamic> result = snapshot.data as List<dynamic>;
-        final List<RelatedAuctionLot> itemList = <RelatedAuctionLot>[];
-        for (final dynamic item in result) {
-          itemList.add(RelatedAuctionLot.fromJson(item as Map<String, dynamic>));
-        }
-
-        return AuctionLotGridView(gridViewTitle, itemList, titleStyle, auctionLotPageTitlePrefix, showSoldIcon: true);
       },
     );
   }
