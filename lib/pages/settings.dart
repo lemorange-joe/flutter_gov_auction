@@ -13,7 +13,9 @@ import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage(this.changeLangCallback, {Key? key}) : super(key: key);
+
+  final Function? changeLangCallback;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -62,6 +64,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             final HiveHelper hiveHelper = HiveHelper();
                             await S.load(const Locale('en', 'US'));
                             await hiveHelper.writeLocaleCode('en_US');
+                            
+                            if (widget.changeLangCallback != null) {
+                              final Function callback = widget.changeLangCallback!;
+                              Function.apply(callback, null); // to prevent linting issue: avoid_dynamic_calls
+                            }
 
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {
@@ -90,6 +97,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             await S.load(const Locale('zh', 'HK'));
                             await HiveHelper().writeLocaleCode('zh_HK');
 
+                            if (widget.changeLangCallback != null) {
+                              final Function callback = widget.changeLangCallback!;
+                              Function.apply(callback, null); // to prevent linting issue: avoid_dynamic_calls
+                            }
+
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {
                               final NotificationHelper notificationHelper = NotificationHelper();
@@ -116,6 +128,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             final HiveHelper hiveHelper = HiveHelper();
                             await S.load(const Locale('zh', 'CN'));
                             await hiveHelper.writeLocaleCode('zh_CN');
+
+                            if (widget.changeLangCallback != null) {
+                              final Function callback = widget.changeLangCallback!;
+                              Function.apply(callback, null); // to prevent linting issue: avoid_dynamic_calls
+                            }
 
                             final String subscribedTopic = hiveHelper.getSubscribeTopic();
                             if (subscribedTopic.isNotEmpty) {

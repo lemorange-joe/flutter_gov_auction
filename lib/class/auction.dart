@@ -227,10 +227,9 @@ class RelatedAuctionLot {
       this.transactionStatus);
 
   factory RelatedAuctionLot.fromJson(Map<String, dynamic> json) {
-    // TODO(joe): null check for testing
     return RelatedAuctionLot(
       json['aid'] as int,
-      json['an'] == null ? '' : json['an'] as String,
+      json['an'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['st'] as String),
       getAuctionStatus(json['as'] as String),
       json['lid'] as int,

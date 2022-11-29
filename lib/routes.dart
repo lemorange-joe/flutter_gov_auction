@@ -51,7 +51,9 @@ class Routes {
       case 'search':
         return _buildRoute(settings, const SearchPage());
       case 'settings':
-        return _buildRoute(settings, const SettingsPage());
+        final dynamic args = settings.arguments;
+        final Function? changeLangCallback = (args as Map<String, dynamic>)['changeLangCallback'] == null ? null : args['changeLangCallback'] as Function;
+        return _buildRoute(settings, SettingsPage(changeLangCallback));
       case 'tour':
         final dynamic args = settings.arguments;
         final bool popPage = args != null && (args as Map<String, dynamic>)['popPage'] != null && args['popPage'] as bool;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../class/auction.dart';
+import '../class/home_controller.dart';
 import '../generated/l10n.dart';
 import '../helpers/api_helper.dart';
 import '../includes/config.dart' as config;
@@ -14,9 +15,10 @@ import '../widgets/featured_list_view.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab(this.showAuction, {Key? key}) : super(key: key);
+  const HomeTab(this.showAuction, this.homeController, {Key? key}) : super(key: key);
 
   final void Function() showAuction;
+  final HomeController homeController;
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -33,12 +35,20 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(onScroll);
+    widget.homeController.clearHotCategoryList = clearHotCategoryList;
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void clearHotCategoryList() {
+    setState(() {
+      _hotCategoryIndex = -1;
+      _hotCategoryGridList.clear();
+    });
   }
 
   void onScroll() {

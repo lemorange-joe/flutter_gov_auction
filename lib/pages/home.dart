@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../class/app_info.dart';
 import '../class/auction.dart';
+import '../class/home_controller.dart';
 import '../generated/l10n.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
@@ -30,6 +31,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _tabIndex = 0;
+  final HomeController homeController = HomeController();
 
   @override
   void initState() {
@@ -106,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 index: _tabIndex,
                 key: ValueKey<int>(_tabIndex),
                 children: <Widget>[
-                  HomeTab(showAuction),
+                  HomeTab(showAuction, homeController),
                   Consumer<AuctionProvider>(
                     builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
                       return AuctionTab(
@@ -314,7 +316,7 @@ class _HomePageState extends State<HomePage> {
             if (route == 'news') {
               openMessageList(context);
             } else if (!isCurrentRoute) {
-              Navigator.pushNamed(context, route);
+              Navigator.pushNamed(context, route, arguments: route == 'settings' ? <String, dynamic>{'changeLangCallback': changeLangCallback} : null);
             } else if (route == 'home' && _tabIndex != 0) {
               setState(() {
                 _tabIndex = 0;
@@ -342,6 +344,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void changeLangCallback() {
+    homeController.clearHotCategoryList();
   }
 }
 
