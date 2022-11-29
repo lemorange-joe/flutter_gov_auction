@@ -111,7 +111,6 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   Widget _buildRelatedLotList() {
     final int totalLot = relatedLots.length;
     const double minItemWidth = 200.0;
-    const double itemHeight = 220.0;
     final int crossAxisCount = MediaQuery.of(context).size.width >= (minItemWidth + 12.0) * 3 ? 3 : 2;
 
     return Column(
@@ -126,13 +125,13 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         ),
         ...List<int>.generate((totalLot / crossAxisCount).ceil(), (int i) => i) // count how many number of rows needed first
             .map((int i) => SizedBox(
-                  height: itemHeight,
+                  height: config.auctionLotCardHeight,
                   width: double.infinity,
                   child: Row(
                     children: List<int>.generate(crossAxisCount, (int j) => j)  // for each row, get the required number of items from relatedLots
                         .map((int j) => Expanded(
                               child: i * crossAxisCount + j < totalLot
-                                  ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix, true)
+                                  ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix, showLotNum: true)
                                   : Container(),
                             ))
                         .toList(),

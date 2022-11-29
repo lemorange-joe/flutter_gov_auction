@@ -27,7 +27,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   late ScrollController _scrollController;
   final List<Widget> _hotCategoryGridList = <Widget>[]; // store the list of hot category auction grid, append items during onScroll event
-  int _hotCategoryIndex = -1; // TODO(joe): always load the "sold" category first after appInfo is loaded, then randomize others
+  int _hotCategoryIndex = -1;
   bool _loadingHotCategory = false;
   bool _noMoreHotCategory = false;
 
@@ -36,6 +36,15 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _scrollController = ScrollController()..addListener(onScroll);
     widget.homeController.clearHotCategoryList = clearHotCategoryList;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future<void>.delayed(
+        const Duration(seconds: 1),
+        () {
+          _loadHotCategoryGrid(0);
+        },
+      );
+    });
   }
 
   @override
@@ -46,9 +55,11 @@ class _HomeTabState extends State<HomeTab> {
 
   void clearHotCategoryList() {
     setState(() {
-      _hotCategoryIndex = -1;
+      _loadingHotCategory = false;
+      _noMoreHotCategory = false;
       _hotCategoryGridList.clear();
     });
+    _loadHotCategoryGrid(0);
   }
 
   void onScroll() {
@@ -160,7 +171,6 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
-            const SizedBox(height: 200.0),  // to be removed after auto loading the sold "category" to ensure scrolling
             ..._hotCategoryGridList,
             if (_loadingHotCategory) Center(child: LemorangeLoading()),
             ..._buildOtherSection1(),

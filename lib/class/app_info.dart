@@ -10,7 +10,7 @@ class AppInfo {
     final List<PushMessage> messageList = <PushMessage>[];
     final List<CatalogLocation> catalogLocationList = <CatalogLocation>[];
     final Map<String, String> itemTypeMap = <String, String>{};
-    final Map<String, String> gridCategoryMap = <String, String>{};
+    final Map<String, String> tempGridCategoryMap = <String, String>{};
 
     if (json['nll'] != null) {
       for (final dynamic jsonNoticeLink in json['nll'] as List<dynamic>) {
@@ -35,8 +35,20 @@ class AppInfo {
     });
 
     (json['gcm'] as Map<String, dynamic>).forEach((String key, dynamic val) {
-      gridCategoryMap.addAll(<String, String>{key: val as String});
+      tempGridCategoryMap.addAll(<String, String>{key: val as String});
     });
+
+    final Map<String, String> gridCategoryMap = <String, String>{};
+    if (tempGridCategoryMap.isNotEmpty) {
+      //shuffle gridCategoryMap
+      final List<String> tempCategoryKeyList = tempGridCategoryMap.keys.skip(1).toList(); // skip the "sold" category, and shuffle the rest of the list
+      tempCategoryKeyList.shuffle();
+      tempCategoryKeyList.insert(0, tempGridCategoryMap.keys.first); // put back the "sold" category at the beginning
+
+      for (final String key in tempCategoryKeyList) {
+        gridCategoryMap.addAll(<String, String>{key: tempGridCategoryMap[key]!});
+      }
+    }
 
     return AppInfo(
       false,
