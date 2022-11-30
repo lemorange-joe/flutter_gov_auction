@@ -165,13 +165,22 @@ class AuctionController {
       $categoryKeywordList = DataController::$searchGridCategoryKeywords;
 
       $tranStatus = "";
-      $searchKeyword = "";
+      $searchKeywordList = array();
+      $searchDescriptionTc = "";
       if (array_key_exists($param[0], $categoryKeywordList)) {
-        $searchKeyword = $categoryKeywordList[$param[0]]["tc"];
+        $searchKeywordList = $categoryKeywordList[$param[0]]["query"];
       }
 
-      if ($searchKeyword == "") {
+      if (empty($searchKeywordList)) {
         $tranStatus = TransactionStatus::Sold;
+      } else {
+        $keywordCount = count($searchKeywordList);
+
+        $searchDescriptionTc = "AND (";
+        for ($i = 0; $i < $keywordCount; ++$i) {
+          $searchDescriptionTc .= "L.description_tc LIKE '" . $searchKeywordList[$i] . "'" . ($i < $keywordCount - 1 ? " OR " : "");
+        }
+        $searchDescriptionTc .= ")";
       }
 
       $count = intval($param[1]);
@@ -184,11 +193,11 @@ class AuctionController {
                     FROM Auction A
                     INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
                     INNER JOIN ItemType T ON L.type_id = T.type_id
-                    WHERE A.status = ? AND L.status = ? AND (? = '' OR L.transaction_status = ?) AND (? = '' OR L.description_tc LIKE ?)
+                    WHERE A.status = ? AND L.status = ? AND (? = '' OR L.transaction_status = ?) ". $searchDescriptionTc . "
                     ORDER BY A.start_time DESC, T.seq, L.lot_num
                     LIMIT 0, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $searchKeyword, "%".$searchKeyword."%", $count))->GetRows();
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
       $rowNum = count($result);
 
       $data = array();

@@ -3,12 +3,51 @@ include_once ("../include/appdata.php");
 
 class DataController {
   public static $searchGridCategoryKeywords = array(
-    "sold" => array("en" => "", "tc" => "", "sc" => ""),  // leave keywords empty for api to search for sold and flutter to display S.of(context).recentlySold 
-    "mobile_phone" => array("en" => "Mobile Phone", "tc" => "手提電話", "sc" => "手提电话"),
-    "used_car" => array("en" => "Used Private Car", "tc" => "舊私家車", "sc" => "旧私家车"),
-    "television" => array("en" => "Television", "tc" => "電視機", "sc" => "电视机"),
-    "air_conditioner" => array("en" => "Air Conditioner", "tc" => "冷氣機", "sc" => "冷气机"),
-    "fan" => array("en" => "Fan", "tc" => "風扇", "sc" => "风扇"), 
+    "sold" => array("en" => "", "tc" => "", "sc" => "", "query" => array()),  // leave keywords empty for api to search for sold and flutter to display S.of(context).recentlySold 
+    "mobile_phone" => array(
+      "en" => "Mobile Phone", "tc" => "手提電話", "sc" => "手提电话", 
+      "query" => array("%手提電話%")
+    ),
+    "used_car" => array(
+      "en" => "Used Private Car", "tc" => "舊私家車", "sc" => "旧私家车",
+      "query" => array("%舊私家車%")
+    ),
+    "television" => array(
+      "en" => "Television", "tc" => "電視機", "sc" => "电视机",
+      "query" => array("%電視機%")
+    ),
+    "air_conditioner" => array(
+      "en" => "Air Conditioner", "tc" => "冷氣機", "sc" => "冷气机",
+      "query" => array("%冷氣機%")
+    ),
+    "digital_camera" => array(
+      "en" => "Digital Camera", "tc" => "數碼相機", "sc" => "数码相机",
+      "query" => array("%數碼相機%")
+    ),
+    "refrigerator" => array(
+      "en" => "Refrigerator", "tc" => "雪櫃", "sc" => "雪櫃",
+      "query" => array("%雪櫃%")
+    ),
+    "bicycle" => array(
+      "en" => "Bicycle", "tc" => "單車", "sc" => "单车",
+      "query" => array("%單車%")
+    ),
+    "shredder" => array(
+      "en" => "Shredder", "tc" => "碎紙機", "sc" => "碎纸机",
+      "query" => array("%碎紙機%")
+    ),
+    "charger" => array(
+      "en" => "Charger", "tc" => "充電器", "sc" => "充电器",
+      "query" => array("%充電器%")
+    ),
+    "fan" => array(
+      "en" => "Fan", "tc" => "風扇", "sc" => "风扇",
+      "query" => array("%風扇%")
+    ),
+    "jewellery" => array(
+      "en" => "Jewellery", "tc" => "珠寶首飾", "sc" => "珠宝首饰",
+      "query" => array("%頸鏈%", "%耳環%", "%戒指%", "%手鐲%", "%鑽石%", "%玉石%")
+    ),
   );
 
   function appInfo() {
