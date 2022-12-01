@@ -54,6 +54,9 @@ class _HomePageState extends State<HomePage> {
           );
         } else {
           Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+          Future<void>.delayed(const Duration(seconds: 1), () {
+            homeController.clearHotCategoryList();
+          });
         }
       });
     });

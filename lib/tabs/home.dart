@@ -36,15 +36,6 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _scrollController = ScrollController()..addListener(onScroll);
     widget.homeController.clearHotCategoryList = clearHotCategoryList;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future<void>.delayed(
-        const Duration(seconds: 1),
-        () {
-          _loadHotCategoryGrid(0);
-        },
-      );
-    });
   }
 
   @override
