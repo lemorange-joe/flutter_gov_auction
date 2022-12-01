@@ -140,20 +140,20 @@ class S {
     );
   }
 
-  /// `Agreement`
+  /// `Terms of Use and Disclaimer`
   String get agreement {
     return Intl.message(
-      'Agreement',
+      'Terms of Use and Disclaimer',
       name: 'agreement',
       desc: '',
       args: [],
     );
   }
 
-  /// `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum, lectus ut congue consectetur, odio quam pharetra mi, ac bibendum massa mi nec est. Quisque quis tristique odio. Ut imperdiet libero arcu, vel tempor eros laoreet ut. Sed vehicula urna nec laoreet tristique. Integer ac tellus at nisl dapibus commodo. Maecenas accumsan ut neque in luctus. Donec a luctus ipsum, quis tincidunt arcu. Sed blandit vulputate arcu. Pellentesque non urna erat.`
+  /// `(TBC) This is not an official app. All auction information in this app, unless otherwise stated, is acquired from the open data provided by DATA.GOV.HK and Government Logistics Department. Any differences of data, the website of the Information and Logistics Services Department shall prevail. The Government of the Hong Kong Special Administrative Region is the intellectual property owner of the data.`
   String get agreementParagraph1 {
     return Intl.message(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum, lectus ut congue consectetur, odio quam pharetra mi, ac bibendum massa mi nec est. Quisque quis tristique odio. Ut imperdiet libero arcu, vel tempor eros laoreet ut. Sed vehicula urna nec laoreet tristique. Integer ac tellus at nisl dapibus commodo. Maecenas accumsan ut neque in luctus. Donec a luctus ipsum, quis tincidunt arcu. Sed blandit vulputate arcu. Pellentesque non urna erat.',
+      '(TBC) This is not an official app. All auction information in this app, unless otherwise stated, is acquired from the open data provided by DATA.GOV.HK and Government Logistics Department. Any differences of data, the website of the Information and Logistics Services Department shall prevail. The Government of the Hong Kong Special Administrative Region is the intellectual property owner of the data.',
       name: 'agreementParagraph1',
       desc: '',
       args: [],

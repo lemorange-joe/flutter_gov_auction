@@ -37,9 +37,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accessibilityParagraph3Before":
             MessageLookupByLibrary.simpleMessage("如您对本应用程式的无障碍设计有任何意见或查询，请电邮至"),
         "agree": MessageLookupByLibrary.simpleMessage("同意"),
-        "agreement": MessageLookupByLibrary.simpleMessage("使用条款"),
+        "agreement": MessageLookupByLibrary.simpleMessage("使用条款及声明"),
         "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
-            "可人道斯心土书日妈走何……拿中失朋精还的务象规以……手是方造皮升病法自城甚品我总经基在看，险地历考生不别人方保的。问照毛见一能高今厂学人险作光这实格。破阳生是……林民布为：高心一来提更慢。"),
+            "(TBC) 本应用程式并非官方应用程式。本应用程式内的所有拍卖资料，除非另有说明，均源自资料一线通(data.gov.hk)及政府物流服务署提供的开放资料。如资料有分歧，应以资料一线通及物流服务署网站所载为准。中国香港特别行政区政府为该等资料的知识产权拥有人。"),
         "agreementParagraph2": MessageLookupByLibrary.simpleMessage(
             "的计的多一，多是天装。爸合期直型马后立告伤电华，县条票了布乐此。听我多了他实说河收道高向告外苦山子出响；领不生弟台木多。来资体外放保的，又举就我开考……员我化还？"),
         "agreementParagraph3": MessageLookupByLibrary.simpleMessage(

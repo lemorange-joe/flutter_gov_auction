@@ -38,9 +38,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "accessibilityParagraph3Before": MessageLookupByLibrary.simpleMessage(
             "Should you have any enquiries or comments regarding the accessibility issues, please contact us at "),
         "agree": MessageLookupByLibrary.simpleMessage("Agree"),
-        "agreement": MessageLookupByLibrary.simpleMessage("Agreement"),
+        "agreement":
+            MessageLookupByLibrary.simpleMessage("Terms of Use and Disclaimer"),
         "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum, lectus ut congue consectetur, odio quam pharetra mi, ac bibendum massa mi nec est. Quisque quis tristique odio. Ut imperdiet libero arcu, vel tempor eros laoreet ut. Sed vehicula urna nec laoreet tristique. Integer ac tellus at nisl dapibus commodo. Maecenas accumsan ut neque in luctus. Donec a luctus ipsum, quis tincidunt arcu. Sed blandit vulputate arcu. Pellentesque non urna erat."),
+            "(TBC) This is not an official app. All auction information in this app, unless otherwise stated, is acquired from the open data provided by DATA.GOV.HK and Government Logistics Department. Any differences of data, the website of the Information and Logistics Services Department shall prevail. The Government of the Hong Kong Special Administrative Region is the intellectual property owner of the data."),
         "agreementParagraph2": MessageLookupByLibrary.simpleMessage(
             "Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam."),
         "agreementParagraph3": MessageLookupByLibrary.simpleMessage(

@@ -37,9 +37,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accessibilityParagraph3Before":
             MessageLookupByLibrary.simpleMessage("如您對本應用程式的無障礙設計有任何意見或查詢，請電郵至"),
         "agree": MessageLookupByLibrary.simpleMessage("同意"),
-        "agreement": MessageLookupByLibrary.simpleMessage("使用條款"),
+        "agreement": MessageLookupByLibrary.simpleMessage("使用條款及聲明"),
         "agreementParagraph1": MessageLookupByLibrary.simpleMessage(
-            "可人道斯心土書日媽走何……拿中失朋精還的務象規以……手是方造皮升病法自城甚品我總經基在看，險地歷考生不別人方保的。問照毛見一能高今廠學人險作光這實格。破陽生是……林民布為：高心一來提更慢。"),
+            "(TBC) 本應用程式並非官方應用程式。本應用程式內的所有拍賣資料，除非另有說明，均源自資料一線通(data.gov.hk)及政府物流服務署提供的開放資料。如資料有分歧，應以資料一線通及物流服務署網站所載為準。中國香港特別行政區政府為該等資料的知識產權擁有人。"),
         "agreementParagraph2": MessageLookupByLibrary.simpleMessage(
             "的計的多一，多是天裝。爸合期直型馬後立告傷電華，縣條票了布樂此。聽我多了他實說河收道高向告外苦山子出響；領不生弟臺木多。來資體外放保的，又舉就我開考……員我化還？"),
         "agreementParagraph3": MessageLookupByLibrary.simpleMessage(
