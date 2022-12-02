@@ -179,7 +179,7 @@ textarea.item99 { background-image: url("../images/bg99.png"); }
   padding: 10px;
 }
 
-tr.green {
+tr.green, div.green {
   background-color: #efe;
 }
 
