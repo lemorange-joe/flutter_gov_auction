@@ -297,14 +297,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactLocation)),
-                              Expanded(child: Text(_auctionLot.contactLocation)),
+                              Expanded(child: _buildContactLocationItem()),
                             ],
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContact)),
-                              Expanded(child: Text(_auctionLot.contact)),
+                              Expanded(child: _buildContactItem()),
                             ],
                           ),
                           Row(
@@ -370,7 +370,15 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     );
   }
 
-  Row _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {
+  Widget _buildContactLocationItem() {
+    return Text(_auctionLot.contactLocation);
+  }
+
+  Widget _buildContactItem() {
+    return Text(_auctionLot.contact);
+  }
+
+  Widget _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {
     final int temp = int.parse(inspect.startTime.substring(0, 2));
     final String typhoonStartTime = temp.toString().padLeft(2, '0') + inspect.startTime.substring(2);
 
