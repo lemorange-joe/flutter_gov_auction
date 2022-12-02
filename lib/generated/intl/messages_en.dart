@@ -143,8 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "pastAuction": MessageLookupByLibrary.simpleMessage("Past Auction"),
         "pastAuctionList":
             MessageLookupByLibrary.simpleMessage("Past Auction Lists"),
-        "photoDisclaimer":
-            MessageLookupByLibrary.simpleMessage("* (TBC)photo disclaimer"),
+        "photoCopyright":
+            MessageLookupByLibrary.simpleMessage("Photo Copyright"),
+        "photoDisclaimer": MessageLookupByLibrary.simpleMessage(
+            "not the actual product, the photo is for reference only"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("Last auction"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(

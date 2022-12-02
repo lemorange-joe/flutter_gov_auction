@@ -1,0 +1,88 @@
+keyword_en	keyword_tc	image_url	author	author_url
+water heater	熱水爐	89982f21e735a701eb074b021eb77f6c.jpg	DryPot	https://commons.wikimedia.org/wiki/User:DryPot
+water heater	熱水爐	6d7022de549a9139a4f5b2e3da257e72.jpg	BOO109	https://commons.wikimedia.org/wiki/User:BOO109
+electric water heater	電熱水爐	70b750149e4f372c6947abe9508a85d0.jpg	DryPot	https://commons.wikimedia.org/wiki/User:DryPot
+electric water heater	電熱水爐	439e888018e012457b8992ec7f7f10bf.jpg	BOO109	https://commons.wikimedia.org/wiki/User:BOO109
+charger	充電器	7775bf05f1ce32ab4ed62944c928001b.jpg    Dinkun Chen https://commons.wikimedia.org/wiki/User:Dinkun_Chen
+charger	充電器	513e734ed204f5776d7b8ab45faecd74.jpg    Dinkun Chen https://commons.wikimedia.org/wiki/User:Dinkun_Chen
+charger	充電器	f9eb5800cc2b7ba5d4f433361e533991.jpg    Medvedev    https://commons.wikimedia.org/wiki/User:Medvedev
+charger	充電器	d5e2ad6773bd0e936c6280135f4997a1.jpg    Tinh tế Photo   https://www.flickr.com/people/131065080@N05
+charger	充電器	72e23c87ca14a2c38f335855f68a6225.jpg    Superusergeneric    https://commons.wikimedia.org/w/index.php?title=User:Superusergeneric&action=edit&redlink=1
+charger	充電器	66104676735573f4a45c59fd224b5967.jpg    Raimond Spekking    https://commons.wikimedia.org/wiki/User:Raymond
+charger	充電器	b8e827dcd1362cffb68d04927a6bb5e0.jpg    Raimond Spekking    https://commons.wikimedia.org/wiki/User:Raymond
+charger	充電器	eed0b5c914b7b5ec49067517cfe19a1b.jpg    Hans Haase  https://commons.wikimedia.org/wiki/User:Hans_Haase
+charger	充電器	b1bd7e1a0e0ffc42a9bd263878b78427.jpg    Simon Speed https://commons.wikimedia.org/wiki/User:Simonxag
+
+---------
+
+="INSERT INTO `KeywordImage` (keyword_en, keyword_tc, image_url, author, author_url) VALUES ('" & A2 & "', '" & B2 & "', '" & C2 & "', '" & D2 & "', '" & E2 & "');"
+
+used private car 舊私家車
+air-conditioner 冷氣機
+split type air-conditioner 分體式冷氣機
+paper shredding machine 碎紙機
+shredder 碎紙機
+
+
+Vacuum Cleaner with Carton Box 吸塵機連紙箱 
+Washing Machine 洗衣機
+Cooking Stove (Brand: TGC, Model:
+RJ22) (Dismantled)
+煮食爐(
+Towngas Double Burner Hotplate
+(Brand: Simpa, Model: SRTH2-S)
+(Dismantled)
+煤氣雙頭煮食爐
+Telephone (Brand: TCL) 電話
+Range Hood (Brand: Giggas, Model:
+抽油煙機(已
+PT-750) (Dismantled)
+Microwave Oven (Brand: Toshiba,
+Model: ER-N6)
+微波爐
+Foot Massager Machine (Brand: Osim) 腳部按摩機
+Cooking Blender (Brand: Echome,
+Model: MCG320)
+煮食攪拌器
+Induction Cooker (Brand: Imarflex)
+(Dismantled)
+電磁爐(已拆下) 1
+Amplifier 擴音機
+Split Type Air-conditioner (Brand:
+General, Model: ASG 17 ASE-W)
+(Dismantled)
+分體式冷氣機
+Electric Fan (Type: Table) (Brand:
+Midea, Model: FT30-8MB)
+電風扇(座檯) 
+Electric Heater (Brand: Midea, Model:
+NS10)
+電暖爐
+Monitor (Flat-panel) (Brand: Vdigi) 顯示屏(平面)
+Oil-filled Heater 充油式電暖爐 
+Heater Fan (Brand: Midea) 暖風機 
+Rice Cooker (Brand: Panasonic) 電飯煲
+Laminating Machine (Brand: BMP,
+Model: LAMEX-325)
+過膠機
+Sofa (3 Seaters) 三座位梳化
+
+
+================
+https://www.tehplayground.com/
+
+$count = 5;
+$keywordEn = "digital camera";
+$keywordTc = "數碼相機";
+$keyword = str_replace(" ", "-", $keywordEn);
+
+$t = 0;
+$nt = time();
+for ($i = 0; $i < $count; ++$i) {
+    while ($nt == $t) {
+        usleep(100);
+        $nt = time();
+    }
+    echo $keywordEn . "\t" . $keywordTc . "\t" . md5($keyword."_".$nt) . ".jpg\n";
+    $t = $nt;
+}

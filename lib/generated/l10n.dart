@@ -850,10 +850,20 @@ class S {
     );
   }
 
-  /// `* (TBC)photo disclaimer`
+  /// `Photo Copyright`
+  String get photoCopyright {
+    return Intl.message(
+      'Photo Copyright',
+      name: 'photoCopyright',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `not the actual product, the photo is for reference only`
   String get photoDisclaimer {
     return Intl.message(
-      '* (TBC)photo disclaimer',
+      'not the actual product, the photo is for reference only',
       name: 'photoDisclaimer',
       desc: '',
       args: [],

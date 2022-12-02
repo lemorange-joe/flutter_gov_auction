@@ -125,8 +125,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("确定"),
         "pastAuction": MessageLookupByLibrary.simpleMessage("过往的拍卖"),
         "pastAuctionList": MessageLookupByLibrary.simpleMessage("过往的拍卖物品清单"),
-        "photoDisclaimer":
-            MessageLookupByLibrary.simpleMessage("*(待定)photo disclaimer"),
+        "photoCopyright": MessageLookupByLibrary.simpleMessage("相片著作权"),
+        "photoDisclaimer": MessageLookupByLibrary.simpleMessage("并非实物，相片只供参考"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("私隐政策"),
         "privacyPolicyParagraph1": MessageLookupByLibrary.simpleMessage(
