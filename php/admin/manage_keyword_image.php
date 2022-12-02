@@ -61,9 +61,9 @@ include_once ("../include/config.php");
     </div>
     <hr style="width: 90%; margin-left: 0" />
     <div style="height: 40px;line-height: 30px;">
-      Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" onchange="GetData(this.value.trim())" placeholder="Input Keyword" />
-      <button style="margin-right:10px" onclick="GetData(document.getElementById('tbKeyword').value.trim())">Get</button>
-      <button onclick="document.getElementById('tbKeyword').value='';GetData()">Clear</button>
+      Search&nbsp;&nbsp;<input id="tbKeyword" type="text" style="width: 150px; margin-right: 20px" onchange="GetData(1, this.value.trim())" placeholder="Input Keyword" />
+      <button style="margin-right:10px" onclick="GetData(1, document.getElementById('tbKeyword').value.trim())">Get</button>
+      <button onclick="document.getElementById('tbKeyword').value='';GetData(1)">Clear</button>
     </div>
     <table>
       <thead>
@@ -78,6 +78,11 @@ include_once ("../include/config.php");
       <tbody id="tblKeywordImage"></tbody>
     </table>
   </div>
+  <div style="padding-left: 10px; height: 25px">
+    <a id="lnkPrev" href="#" class="pager-link disabled" disabled="disabled" onclick="if (this.classList.contains('disabled')) return false; GetData(curPage-1, document.getElementById('tbKeyword').value.trim());return false">&lt; Prev</a>
+    &nbsp;&nbsp;<span id="spnPage" style="font-weight:bold">1</span>&nbsp;&nbsp;
+    <a id="lnkNext" href="#" class="pager-link" onclick="if (this.classList.contains('disabled')) return false; GetData(curPage+1, document.getElementById('tbKeyword').value.trim());return false">Next &gt;</a>
+  </div>
   <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
   <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>
   <button style="position: fixed; right: 20px; bottom: 60px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(100)" onmouseover="AutoScroll(12)" onmouseout="StopScroll()">▼</button>
@@ -86,9 +91,24 @@ include_once ("../include/config.php");
   <script>
       var keywordImageList = [];
       var curSortField = "";
+      var curPage = 1;
+      const pageSize = 50;
 
-      function GetData(keyword) {
-        var apiUrl = "../en/api/admin-listKeywordImage";
+      function GetData(page, keyword) {
+        if (page <= 0) return;
+
+        if (page == 1) {
+          document.getElementById("lnkPrev").setAttribute("disabled", "disabled");
+          document.getElementById("lnkPrev").classList.add("disabled");
+        } else {
+          document.getElementById("lnkPrev").removeAttribute("disabled");
+          document.getElementById("lnkPrev").classList.remove("disabled");
+        }
+
+        curPage = page;
+        document.getElementById("spnPage").innerHTML = curPage;
+
+        var apiUrl = "../en/api/admin-listKeywordImage-"+page;
         if (keyword) {
           apiUrl += "-" + encodeURIComponent(keyword);
         }
@@ -101,6 +121,14 @@ include_once ("../include/config.php");
               keywordImageList = JSON.parse(this.responseText);
               sortField = "id";
               BuildTable();
+
+              if (keywordImageList.length < pageSize) {
+                document.getElementById("lnkNext").setAttribute("disabled", "disabled");
+                document.getElementById("lnkNext").classList.add("disabled");
+              } else {
+                document.getElementById("lnkNext").removeAttribute("disabled");
+                document.getElementById("lnkNext").classList.remove("disabled");
+              }
             }
           }
         }
@@ -207,7 +235,7 @@ include_once ("../include/config.php");
 
               if (jsonData.status == "success") {
                 ResetData();
-                GetData();
+                GetData(curPage);
               } else {
                 alert("Create failed: " + jsonData.error);  
               }
@@ -246,7 +274,7 @@ include_once ("../include/config.php");
 
               if (jsonData.status == "success") {
                 ResetData(keywordEn, keywordTc, imageUrl, author, authorUrl);
-                GetData();
+                GetData(curPage);
                 document.getElementById("tbKeywordEn").focus();
               } else {
                 alert("Delete failed: " + jsonData.error);  
@@ -309,7 +337,7 @@ include_once ("../include/config.php");
         BuildTable();
       }
 
-      GetData();
+      GetData(curPage);
     </script>
 </body>
 </html>

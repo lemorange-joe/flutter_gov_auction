@@ -203,6 +203,16 @@ tr.red {
   background-color: #888;
 }
 
+a.pager-link {
+  color: #17d;
+  text-decoration: none;
+}
+
+a.pager-link.disabled {
+  color: #aaa;
+  cursor: default;
+}
+
 .highlight-text {
   animation: highlight-fade 5s 1;
 }

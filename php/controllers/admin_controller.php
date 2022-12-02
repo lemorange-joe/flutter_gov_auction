@@ -1304,15 +1304,26 @@ class AdminController {
   function listKeywordImage($param) {
     global $conn;
 
-    $keyword = isset($param) && is_array($param) && count($param) >= 1 ? trim($param[0]) : "";
+    $page = 1;
+    $pageSize = 50;
+    $keyword = "";
+    if (isset($param) && is_array($param)) {
+      if (count($param) >= 1) {
+        $page = intval($param[0]);
+      }
+      if (count($param) >= 2) {
+        $keyword = trim($param[1]);
+      }
+    }
 
     $selectSql = "SELECT
                     keyword_image_id, keyword_en, keyword_tc, image_url, author, author_url
                   FROM KeywordImage
-                  WHERE ? = '' OR keyword_en LIKE ? OR keyword_tc LIKE ?";
+                  WHERE ? = '' OR keyword_en LIKE ? OR keyword_tc LIKE ?
+                  LIMIT ?, ?";
 
     $result = $conn->Execute($selectSql, array(
-      $keyword, "%".$keyword."%", "%".$keyword."%"
+      $keyword, "%".$keyword."%", "%".$keyword."%", ($page - 1) * $pageSize, $pageSize
     ))->GetRows();
     $rowNum = count($result);
 

@@ -29,11 +29,6 @@ include_once ("../include/config.php");
     #tblLotIcon td.center {
       text-align: center;
     }
-    
-    a.pager-link {
-      color: #17d;
-      text-decoration: none;
-    }
   </style>
 </head>
 <body>
