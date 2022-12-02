@@ -280,6 +280,16 @@ class S {
     );
   }
 
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Collection Deadline`
   String get collectionDeadline {
     return Intl.message(
@@ -607,6 +617,27 @@ class S {
       name: 'hoursBefore',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Inspection may only be made between {start_time} hours and {end_time} hours on {day_of_week} of the week of the public auction. Should {day_of_week} be a public holiday, the inspection day shall be the first working day immediately before the public holiday between {start_time} hours and {end_time} hours.`
+  String insepctionArrangementDetails1(
+      Object start_time, Object end_time, Object day_of_week) {
+    return Intl.message(
+      'Inspection may only be made between $start_time hours and $end_time hours on $day_of_week of the week of the public auction. Should $day_of_week be a public holiday, the inspection day shall be the first working day immediately before the public holiday between $start_time hours and $end_time hours.',
+      name: 'insepctionArrangementDetails1',
+      desc: '',
+      args: [start_time, end_time, day_of_week],
+    );
+  }
+
+  /// `In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force for any duration between {start_time} hours and {end_time} hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.`
+  String insepctionArrangementDetails2(Object start_time, Object end_time) {
+    return Intl.message(
+      'In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force for any duration between $start_time hours and $end_time hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.',
+      name: 'insepctionArrangementDetails2',
+      desc: '',
+      args: [start_time, end_time],
     );
   }
 
@@ -1165,6 +1196,16 @@ class S {
     return Intl.message(
       'go back',
       name: 'semanticsGoBack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `more information`
+  String get semanticsMoreInfo {
+    return Intl.message(
+      'more information',
+      name: 'semanticsMoreInfo',
       desc: '',
       args: [],
     );

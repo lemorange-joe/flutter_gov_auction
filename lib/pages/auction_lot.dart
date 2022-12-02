@@ -14,6 +14,7 @@ import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../providers/auction_provider.dart';
 import '../widgets/auction_lot_card.dart';
+import '../widgets/info_button.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 
@@ -128,7 +129,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                   height: config.auctionLotCardHeight,
                   width: double.infinity,
                   child: Row(
-                    children: List<int>.generate(crossAxisCount, (int j) => j)  // for each row, get the required number of items from relatedLots
+                    children: List<int>.generate(crossAxisCount, (int j) => j) // for each row, get the required number of items from relatedLots
                         .map((int j) => Expanded(
                               child: i * crossAxisCount + j < totalLot
                                   ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix, showLotNum: true)
@@ -309,22 +310,35 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactNumber)),
+                              SizedBox(
+                                width: titleFieldWidth,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 2.0),
+                                  child: Text(S.of(context).fieldContactNumber),
+                                ),
+                              ),
                               Expanded(child: TelGroup(_auctionLot.contactNumber)),
                             ],
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldInspectionArrangement)),
+                              SizedBox(
+                                width: titleFieldWidth,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text(S.of(context).fieldInspectionArrangement),
+                                ),
+                              ),
                               Expanded(
                                 child: _auctionLot.inspectionDateList.isEmpty
                                     ? const Text('-')
                                     : Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: _auctionLot.inspectionDateList
-                                            .map((InspectionDate inspect) => Text(
-                                                '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}: ${inspect.startTime} - ${inspect.endTime}'))
+                                            .map(
+                                              (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
+                                            )
                                             .toList(),
                                       ),
                               ),
@@ -342,16 +356,37 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         child: _buildRelatedLotList(),
                       ),
                     Center(
-                        child: noMoreRelatedLots
-                            ? Text(
-                                S.of(context).relatedLotsEmpty,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              )
-                            : LemorangeLoading()),
+                      child: noMoreRelatedLots
+                          ? Text(
+                              S.of(context).relatedLotsEmpty,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            )
+                          : LemorangeLoading(),
+                    ),
                   ],
                 ),
               ),
       ),
+    );
+  }
+
+  Row _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {
+    final int temp = int.parse(inspect.startTime.substring(0, 2));
+    final String typhoonStartTime = temp.toString().padLeft(2, '0') + inspect.startTime.substring(2);
+
+    final String content = S.of(context).lang == 'en'
+        ? '${inspect.startTime} - ${inspect.endTime} ${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}'
+        : '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}  ${inspect.startTime} - ${inspect.endTime}';
+    final String moreInfoContent1 =
+        S.of(context).insepctionArrangementDetails1(inspect.startTime, inspect.endTime, utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang));
+    final String moreInfoContent2 = S.of(context).insepctionArrangementDetails2(typhoonStartTime, inspect.endTime);
+    final String moreInfoContent = '$moreInfoContent1\n\n$moreInfoContent2';
+
+    return Row(
+      children: <Widget>[
+        Text(content),
+        InfoButton(S.of(context).fieldInspectionArrangement, moreInfoContent),
+      ],
     );
   }
 }

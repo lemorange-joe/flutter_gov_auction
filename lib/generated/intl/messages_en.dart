@@ -23,6 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(collection_deadline) =>
       "A Buyer shall collect and remove the Lot purchased from the Location on or before ${collection_deadline} or as otherwise specified in the Special Conditions of Auction Sale.";
 
+  static String m1(start_time, end_time, day_of_week) =>
+      "Inspection may only be made between ${start_time} hours and ${end_time} hours on ${day_of_week} of the week of the public auction. Should ${day_of_week} be a public holiday, the inspection day shall be the first working day immediately before the public holiday between ${start_time} hours and ${end_time} hours.";
+
+  static String m2(start_time, end_time) =>
+      "In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force for any duration between ${start_time} hours and ${end_time} hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessibilityDesign":
@@ -64,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
+        "close": MessageLookupByLibrary.simpleMessage("Close"),
         "collectionDeadline":
             MessageLookupByLibrary.simpleMessage("Collection Deadline"),
         "collectionDeadlineStatement": m0,
@@ -108,6 +115,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "hotSearch": MessageLookupByLibrary.simpleMessage("Hot Search"),
         "hourBefore": MessageLookupByLibrary.simpleMessage(" hour before"),
         "hoursBefore": MessageLookupByLibrary.simpleMessage(" hours before"),
+        "insepctionArrangementDetails1": m1,
+        "insepctionArrangementDetails2": m2,
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
@@ -194,6 +203,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsFeaturedItems":
             MessageLookupByLibrary.simpleMessage("featured items"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
+        "semanticsMoreInfo":
+            MessageLookupByLibrary.simpleMessage("more information"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("open"),
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),

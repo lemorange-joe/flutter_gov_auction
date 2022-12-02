@@ -14,7 +14,7 @@ class CommonDialog {
           title: Text(
             title,
             style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  fontSize: 22.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -23,7 +23,7 @@ class CommonDialog {
               child: Text(
                 content,
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      fontSize: 20.0,
+                      fontSize: 16.0,
                     ),
               ),
             ),

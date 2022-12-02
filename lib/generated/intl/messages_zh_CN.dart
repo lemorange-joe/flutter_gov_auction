@@ -23,6 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(collection_deadline) =>
       "承购人须要在${collection_deadline}前或特别拍卖条款的指定时间从指定地点提取及运走所承购的拍卖品批次。";
 
+  static String m1(start_time, end_time, day_of_week) =>
+      "有意竞投的人士只可于拍卖周之${day_of_week}，${start_time}至${end_time}时期间到该地点查看物品。(如该${day_of_week}为公众假期，将改为公众假期前第一个工作日${start_time}至${end_time}时。";
+
+  static String m2(start_time, end_time) =>
+      "如看货当天${start_time}至${end_time}时期间八号或以上的热带气旋警告讯号或黑色暴雨警告讯号或政府公布的「超强台风后的极端情况」生效，该日的看货安排及此批货品的拍卖将会取消。";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessibilityDesign": MessageLookupByLibrary.simpleMessage("无障碍设计"),
@@ -58,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("清除拍卖提醒"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "collectionDeadline": MessageLookupByLibrary.simpleMessage("提货期限"),
         "collectionDeadlineStatement": m0,
         "comingAuction": MessageLookupByLibrary.simpleMessage("下次拍卖"),
@@ -95,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "hotSearch": MessageLookupByLibrary.simpleMessage("热门搜寻"),
         "hourBefore": MessageLookupByLibrary.simpleMessage("小时前"),
         "hoursBefore": MessageLookupByLibrary.simpleMessage("小时前"),
+        "insepctionArrangementDetails1": m1,
+        "insepctionArrangementDetails2": m2,
         "itemDetails": MessageLookupByLibrary.simpleMessage("项目详情"),
         "lang": MessageLookupByLibrary.simpleMessage("sc"),
         "loading": MessageLookupByLibrary.simpleMessage("载入中..."),
@@ -167,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("发送电邮至"),
         "semanticsFeaturedItems": MessageLookupByLibrary.simpleMessage("精选物品"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
+        "semanticsMoreInfo": MessageLookupByLibrary.simpleMessage("更多资讯"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("开启"),
         "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，点击在地图中打开"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),
