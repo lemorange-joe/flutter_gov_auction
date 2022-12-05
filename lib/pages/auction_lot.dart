@@ -304,7 +304,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContact)),
-                              Expanded(child: _buildContactItem()),
+                              Expanded(child: _buildContactPersonItem()),
                             ],
                           ),
                           Row(
@@ -371,11 +371,19 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   Widget _buildContactLocationItem() {
-    return Text(_auctionLot.contactLocation);
+    // for testing
+    // '項目1-2: 香港灣仔軍器廠街1號警察總部警政大樓26樓 項目3-5: 香港灣仔軍器廠街1號警察總部警政大樓西翼21樓 項目6: 香港灣仔軍器廠街1號警察總部警政大樓西翼9樓'
+    // 'Item(s) 1-2: 26/F, Arsenal House, Police Headquarters, 1 Arsenal Street, Wan Chai, Hong Kong Item(s) 3-5: 21/F, Arsenal House West Wing, Police Headquarters, 1 Arsenal Street, Wan Chai, Hong KongItem(s) 6: 9/F, Arsenal House West Wing, Police Headquarters'
+    final String itemSeparator = S.of(context).splitContactLocation;
+    return Text(_auctionLot.contactLocation.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''));
   }
 
-  Widget _buildContactItem() {
-    return Text(_auctionLot.contact);
+  Widget _buildContactPersonItem() {
+    // for testing
+    // '項目1-2: 黃女士 / 蘇先生 項目3-5: 方女士 / 吳先生 項目6: 何先生 / 尹小姐'
+    // 'Item(s) 1-2: Ms WONG / Mr SO, Item(s) 3-5: Ms FONG / Mr WU, Mr HO / Miss WAN'
+    final String itemSeparator = S.of(context).splitContactPerson;
+    return Text(_auctionLot.contact.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''));
   }
 
   Widget _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {

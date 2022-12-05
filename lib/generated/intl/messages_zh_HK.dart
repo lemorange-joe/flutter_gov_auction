@@ -186,6 +186,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("未閱讀"),
         "settings": MessageLookupByLibrary.simpleMessage("設定"),
         "skip": MessageLookupByLibrary.simpleMessage("略過"),
+        "splitContactLocation": MessageLookupByLibrary.simpleMessage("項目"),
+        "splitContactPerson": MessageLookupByLibrary.simpleMessage("項目"),
         "tabAll": MessageLookupByLibrary.simpleMessage("全部"),
         "tabItemTypeC": MessageLookupByLibrary.simpleMessage("充公物品"),
         "tabItemTypeM": MessageLookupByLibrary.simpleMessage("廢棄物品及剩餘物品"),

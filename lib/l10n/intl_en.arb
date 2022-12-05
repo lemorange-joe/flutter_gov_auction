@@ -124,6 +124,8 @@
     "semanticsUnread": "unread",
     "settings": "Settings",
     "skip": "Skip",
+    "splitContactLocation": "Item(s)",
+    "splitContactPerson": "Item",
     "tabAll": "All",
     "tabItemTypeC": "Confiscated Goods",
     "tabItemTypeM": "Unserviceable Stores",

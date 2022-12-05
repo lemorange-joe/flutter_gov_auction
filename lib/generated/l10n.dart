@@ -1301,6 +1301,26 @@ class S {
     );
   }
 
+  /// `Item(s)`
+  String get splitContactLocation {
+    return Intl.message(
+      'Item(s)',
+      name: 'splitContactLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item`
+  String get splitContactPerson {
+    return Intl.message(
+      'Item',
+      name: 'splitContactPerson',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All`
   String get tabAll {
     return Intl.message(

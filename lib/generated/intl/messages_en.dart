@@ -216,6 +216,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsUnread": MessageLookupByLibrary.simpleMessage("unread"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "splitContactLocation": MessageLookupByLibrary.simpleMessage("Item(s)"),
+        "splitContactPerson": MessageLookupByLibrary.simpleMessage("Item"),
         "tabAll": MessageLookupByLibrary.simpleMessage("All"),
         "tabItemTypeC":
             MessageLookupByLibrary.simpleMessage("Confiscated Goods"),
