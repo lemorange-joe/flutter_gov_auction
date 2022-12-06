@@ -132,7 +132,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     children: List<int>.generate(crossAxisCount, (int j) => j) // for each row, get the required number of items from relatedLots
                         .map((int j) => Expanded(
                               child: i * crossAxisCount + j < totalLot
-                                  ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix, showLotNum: true)
+                                  ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix)
                                   : Container(),
                             ))
                         .toList(),

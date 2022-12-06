@@ -31,7 +31,7 @@ const double iconTextSpacing = 4.0;
 const double lgBorderRadius = 20.0;
 const double mdBorderRadius = 10.0;
 const double smBorderRadius = 6.0;
-const double auctionLotCardHeight = 240.0;
+const double auctionLotCardHeight = 260.0;
 
 const String searchSeparatorChar = '|';
 

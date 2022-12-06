@@ -10,12 +10,11 @@ import '../includes/enums.dart';
 import '../widgets/ui/calendar.dart';
 
 class AuctionLotCard extends StatelessWidget {
-  const AuctionLotCard(this.auctionLot, this.auctionLotPageTitlePrefix, {super.key, this.showSoldIcon = true, this.showLotNum = false});
+  const AuctionLotCard(this.auctionLot, this.auctionLotPageTitlePrefix, {super.key, this.showSoldIcon = true});
 
   final RelatedAuctionLot auctionLot;
   final String auctionLotPageTitlePrefix;
   final bool showSoldIcon;
-  final bool showLotNum;
 
   @override
   Widget build(BuildContext context) {
@@ -62,22 +61,10 @@ class AuctionLotCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 4.0, top: 4.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(
-                            MdiIcons.checkDecagram,
-                            color: config.blue,
-                            size: 22.0 * MediaQuery.of(context).textScaleFactor,
-                          ),
-                          const SizedBox(width: 5.0),
-                          if (showSoldIcon && auctionLot.transactionStatus == TransactionStatus.Sold)
-                            FaIcon(
-                              FontAwesomeIcons.sackDollar,
-                              color: config.blue,
-                              size: 20.0 * MediaQuery.of(context).textScaleFactor,
-                            ),
-                        ],
+                      child: Icon(
+                        MdiIcons.checkDecagram,
+                        color: config.blue,
+                        size: 22.0 * MediaQuery.of(context).textScaleFactor,
                       ),
                     ),
                   ),
@@ -88,30 +75,44 @@ class AuctionLotCard extends StatelessWidget {
                       child: Calendar(auctionLot.startTime, showBorder: true),
                     ),
                   ),
-                  if (showLotNum || true)
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(4.0),
-                        color: isLotPhoto ? const Color.fromARGB(192, 255, 255, 255) : const Color.fromARGB(32, 0, 0, 0),
-                        child: Text(auctionLot.lotNum),
-                      ),
-                    ),
                 ],
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
+                child: Column(
                   children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        auctionLot.description,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
+                    const SizedBox(height: 2.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          auctionLot.lotNum,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        if (showSoldIcon && auctionLot.transactionStatus == TransactionStatus.Sold)
+                          FaIcon(
+                            FontAwesomeIcons.sackDollar,
+                            color: config.blue,
+                            size: 20.0 * MediaQuery.of(context).textScaleFactor,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4.0),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            auctionLot.description,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                  fontSize: 12.0,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
