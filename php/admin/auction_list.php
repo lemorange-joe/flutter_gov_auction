@@ -419,15 +419,17 @@ include_once ("../include/config.php");
 
                   var divCount = document.createElement("div");
                   divCount.style.lineHeight = "30px";
-                  divCount.appendChild(document.createTextNode("⭐ " + curAuction.featured_count));
-                  divCount.appendChild(spnSpacer.cloneNode());                  
                   divCount.appendChild(document.createTextNode("📊 " + curAuction.lot_count));
-                  divCount.appendChild(spnSpacer.cloneNode());                  
+                  divCount.appendChild(spnSpacer.cloneNode());
                   divCount.appendChild(document.createTextNode("📦 " + curAuction.item_count));
 
                   var divLastUpdate = document.createElement("div");
                   divLastUpdate.setAttribute("id", "divLastUpdate_"+i);
                   divLastUpdate.appendChild(document.createTextNode("🗓 " + curAuction.last_update));
+                  divLastUpdate.appendChild(spnSpacer.cloneNode());
+                  divLastUpdate.appendChild(document.createTextNode("⭐ " + curAuction.featured_count));
+                  divLastUpdate.appendChild(spnSpacer.cloneNode());
+                  divLastUpdate.appendChild(document.createTextNode("💰 " + curAuction.sold_count));
 
                   var importItemLink = document.createElement('a');
                   importItemLink.appendChild(document.createTextNode("Import Items"));

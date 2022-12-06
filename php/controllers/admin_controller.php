@@ -19,7 +19,12 @@ class AdminController {
                           FROM AuctionLot L1
                           WHERE A.auction_id = L1.auction_id AND L1.featured = 1
                         ) as featured_count,
-                        GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count
+                        GROUP_CONCAT(C.total ORDER BY C.seq SEPARATOR ', ') as lot_count,
+                        (
+                          SELECT COUNT(*)
+                          FROM AuctionLot L2
+                          WHERE A.auction_id = L2.auction_id AND L2.transaction_status = ?
+                        ) as sold_count
                       FROM Auction A
                       LEFT JOIN (
                         SELECT L.auction_id, I.seq, concat(I.code, ': ',  COUNT(*)) as 'total'
@@ -40,7 +45,7 @@ class AdminController {
                     GROUP BY T.auction_id
                     ORDER BY T.auction_id DESC";
 
-    $result = $conn->Execute($selectSql)->GetRows();
+    $result = $conn->Execute($selectSql, array(TransactionStatus::Sold))->GetRows();
     $rowNum = count($result);
 
     $output = array();
@@ -65,6 +70,7 @@ class AdminController {
       $auction->featured_count = $result[$i]["featured_count"];
       $auction->lot_count = $result[$i]["lot_count"];
       $auction->item_count = $result[$i]["item_count"];
+      $auction->sold_count = $result[$i]["sold_count"];
 
       $output[] = $auction;
     }
