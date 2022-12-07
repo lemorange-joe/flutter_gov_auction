@@ -232,8 +232,8 @@ if (!function_exists('mysqli_result')) {
 }
 
 function CommonGetSearchKeyword($description, $lang) {
-  $bracketPos = mb_strpos($description, "(");
-  $bracket2Pos = mb_strpos($description, "（");
+  $bracketPos = mb_strpos($description, "(", 1);	// special handle starting brackets:
+  $bracket2Pos = mb_strpos($description, "（", 1);	// e.g. "(中文書籍) 富爸爸, 窮爸爸", "(English Book) Brain-Based Learning"
   $commaPos = mb_strpos($description, ",");
   $pos = ($lang == "en" ? 255 : 60);
 
