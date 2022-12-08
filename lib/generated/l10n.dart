@@ -1281,11 +1281,101 @@ class S {
     );
   }
 
+  /// `Font Size`
+  String get settingFontSize {
+    return Intl.message(
+      'Font Size',
+      name: 'settingFontSize',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Large`
+  String get settingFontSizeLarge {
+    return Intl.message(
+      'Large',
+      name: 'settingFontSizeLarge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medium`
+  String get settingFontSizeMid {
+    return Intl.message(
+      'Medium',
+      name: 'settingFontSizeMid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Small`
+  String get settingFontSizeSmall {
+    return Intl.message(
+      'Small',
+      name: 'settingFontSizeSmall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get settingLanguage {
+    return Intl.message(
+      'Language',
+      name: 'settingLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receive notification`
+  String get settingReceiveNotification {
+    return Intl.message(
+      'Receive notification',
+      name: 'settingReceiveNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settings {
     return Intl.message(
       'Settings',
       name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get settingTheme {
+    return Intl.message(
+      'Theme',
+      name: 'settingTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark`
+  String get settingThemeDark {
+    return Intl.message(
+      'Dark',
+      name: 'settingThemeDark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light`
+  String get settingThemeLight {
+    return Intl.message(
+      'Light',
+      name: 'settingThemeLight',
       desc: '',
       args: [],
     );

@@ -1,17 +1,5 @@
 keyword_en	keyword_tc	image_url	author	author_url
-water heater	熱水爐	89982f21e735a701eb074b021eb77f6c.jpg	DryPot	https://commons.wikimedia.org/wiki/User:DryPot
-water heater	熱水爐	6d7022de549a9139a4f5b2e3da257e72.jpg	BOO109	https://commons.wikimedia.org/wiki/User:BOO109
-electric water heater	電熱水爐	70b750149e4f372c6947abe9508a85d0.jpg	DryPot	https://commons.wikimedia.org/wiki/User:DryPot
-electric water heater	電熱水爐	439e888018e012457b8992ec7f7f10bf.jpg	BOO109	https://commons.wikimedia.org/wiki/User:BOO109
-charger	充電器	7775bf05f1ce32ab4ed62944c928001b.jpg    Dinkun Chen https://commons.wikimedia.org/wiki/User:Dinkun_Chen
-charger	充電器	513e734ed204f5776d7b8ab45faecd74.jpg    Dinkun Chen https://commons.wikimedia.org/wiki/User:Dinkun_Chen
-charger	充電器	f9eb5800cc2b7ba5d4f433361e533991.jpg    Medvedev    https://commons.wikimedia.org/wiki/User:Medvedev
-charger	充電器	d5e2ad6773bd0e936c6280135f4997a1.jpg    Tinh tế Photo   https://www.flickr.com/people/131065080@N05
-charger	充電器	72e23c87ca14a2c38f335855f68a6225.jpg    Superusergeneric    https://commons.wikimedia.org/w/index.php?title=User:Superusergeneric&action=edit&redlink=1
-charger	充電器	66104676735573f4a45c59fd224b5967.jpg    Raimond Spekking    https://commons.wikimedia.org/wiki/User:Raymond
-charger	充電器	b8e827dcd1362cffb68d04927a6bb5e0.jpg    Raimond Spekking    https://commons.wikimedia.org/wiki/User:Raymond
-charger	充電器	eed0b5c914b7b5ec49067517cfe19a1b.jpg    Hans Haase  https://commons.wikimedia.org/wiki/User:Hans_Haase
-charger	充電器	b1bd7e1a0e0ffc42a9bd263878b78427.jpg    Simon Speed https://commons.wikimedia.org/wiki/User:Simonxag
+
 
 ---------
 
