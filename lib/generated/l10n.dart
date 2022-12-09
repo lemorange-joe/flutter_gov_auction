@@ -1471,6 +1471,26 @@ class S {
     );
   }
 
+  /// `{lot_count} auction lots`
+  String tooltipLotCount(Object lot_count) {
+    return Intl.message(
+      '$lot_count auction lots',
+      name: 'tooltipLotCount',
+      desc: '',
+      args: [lot_count],
+    );
+  }
+
+  /// `Total auction amount: ${total}`
+  String tooltipTotalTrasaction(Object total) {
+    return Intl.message(
+      'Total auction amount: \$$total',
+      name: 'tooltipTotalTrasaction',
+      desc: '',
+      args: [total],
+    );
+  }
+
   /// `Tour`
   String get tour {
     return Intl.message(

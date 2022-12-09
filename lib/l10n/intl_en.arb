@@ -141,6 +141,8 @@
     "tabItemTypeMS": "Surplus Serviceable Stores",
     "tabItemTypeUP": "Unclaimed Properties",
     "time": "Time: ",
+    "tooltipLotCount": "{lot_count} auction lots",
+    "tooltipTotalTrasaction": "Total auction amount: ${total}",
     "tour": "Tour",
     "tourTitle1": "Lorem ipsum",
     "tourTitle2": "Aliquam dictum",

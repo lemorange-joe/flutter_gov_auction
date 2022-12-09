@@ -29,6 +29,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(start_time, end_time) =>
       "In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force for any duration between ${start_time} hours and ${end_time} hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.";
 
+  static String m3(lot_count) => "${lot_count} auction lots";
+
+  static String m4(total) => "Total auction amount: \$${total}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessibilityDesign":
@@ -238,6 +242,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeUP":
             MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
         "time": MessageLookupByLibrary.simpleMessage("Time: "),
+        "tooltipLotCount": m3,
+        "tooltipTotalTrasaction": m4,
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),
         "tourContent1": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),

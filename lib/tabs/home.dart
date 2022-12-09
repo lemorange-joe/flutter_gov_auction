@@ -177,7 +177,7 @@ class _HomeTabState extends State<HomeTab> {
         // TODO(jkytse): for testing
         final List<Auction> testingAuctionList = <Auction>[];
         if (auctionProvider.loaded) {
-          for (int i = 0; i < 10; ++i) {
+          for (int i = 0; i < 5; ++i) {
             testingAuctionList.addAll(auctionProvider.auctionList);
           }
         }

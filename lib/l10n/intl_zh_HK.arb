@@ -141,6 +141,8 @@
     "tabItemTypeMS": "仍可使用之廢棄物品及剩餘物品",
     "tabItemTypeUP": "無人認領物品",
     "time": "時間: ",
+    "tooltipLotCount": "共有{lot_count}項拍賣品",
+    "tooltipTotalTrasaction": "拍賣總額: {total}元",
     "tour": "導覽",
     "tourTitle1": "開師麼受舉前",
     "tourTitle2": "一新是沒要人角命近因知提企",

@@ -141,6 +141,8 @@
     "tabItemTypeMS": "仍可使用之废弃物品及剩余物品",
     "tabItemTypeUP": "无人认领物品",
     "time": "时间: ",
+    "tooltipLotCount": "共有{lot_count}项拍卖品",
+    "tooltipTotalTrasaction": "拍卖总额: {total}元",
     "tour": "导览",
     "tourTitle1": "开师么受举前",
     "tourTitle2": "一新是没要人角命近因知提企",

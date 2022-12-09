@@ -103,3 +103,7 @@ double adjustedScale(double scale) {
 double adjustedPhotoScale(double scale) {
   return scale * 0.5 + 0.5;
 }
+
+String formatDigits(int num) {
+  return NumberFormat(',###').format(num);
+}

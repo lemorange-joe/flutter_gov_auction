@@ -21,6 +21,7 @@ const String timeFormatCh = 'aH時mm分';
 const String shortTimeFormat = 'HH:mm';
 
 const int snackbarDuration = 5000;  // in milliseconds
+const int tooltipDuration = 3000;  // in milliseconds
 const int transitionAnimationDuration = 250;  // in milliseconds
 
 // same as GLD website color

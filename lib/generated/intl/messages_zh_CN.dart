@@ -29,6 +29,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(start_time, end_time) =>
       "如看货当天${start_time}至${end_time}时期间八号或以上的热带气旋警告讯号或黑色暴雨警告讯号或政府公布的「超强台风后的极端情况」生效，该日的看货安排及此批货品的拍卖将会取消。";
 
+  static String m3(lot_count) => "共有${lot_count}项拍卖品";
+
+  static String m4(total) => "拍卖总额: ${total}元";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessibilityDesign": MessageLookupByLibrary.simpleMessage("无障碍设计"),
@@ -204,6 +208,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之废弃物品及剩余物品"),
         "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("无人认领物品"),
         "time": MessageLookupByLibrary.simpleMessage("时间: "),
+        "tooltipLotCount": m3,
+        "tooltipTotalTrasaction": m4,
         "tour": MessageLookupByLibrary.simpleMessage("导览"),
         "tourContent1":
             MessageLookupByLibrary.simpleMessage("湾在同分不活。角选和石车马人经。"),
