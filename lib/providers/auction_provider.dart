@@ -6,6 +6,7 @@ import '../class/auction.dart';
 import '../helpers/api_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/enums.dart';
+import '../includes/revelation.dart' as revelation;
 
 class AuctionProvider with ChangeNotifier {
   AuctionProvider();
@@ -99,6 +100,8 @@ class AuctionProvider with ChangeNotifier {
         json['rp'] as String,
         itemPdfList,
         json['r'] as String,
+        (json['lc'] == null) ? 0 : revelation.revealAuctionLotCount(json['lc'] as int, json['id'] as int), // TODO(joe): null check for testing
+        (json['tt'] == null) ? 0 : revelation.revealAuctionTransactionTotal(json['tt'] as int, json['id'] as int),
         lotList,
         getAuctionStatus(json['as'] as String),
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),

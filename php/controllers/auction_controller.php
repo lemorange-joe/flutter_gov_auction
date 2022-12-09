@@ -1,4 +1,6 @@
 <?php
+require_once ("../class/obfuscation.php");
+
 class AuctionController {
   function list($param) {
     // quick api to return the list of available auctions
@@ -9,13 +11,15 @@ class AuctionController {
 
     try {
       $selectSql = "SELECT
-                      auction_id, auction_num, start_time, collection_deadline, auction_pdf_$lang as 'auction_pdf',
-                      result_pdf_$lang as 'result_pdf', remarks_$lang as 'remarks', auction_status, status, last_update 
-                    FROM Auction
-                    WHERE (status = ? OR (1 = ? AND status = ?))
-                    ORDER BY start_time DESC";
+                      A.auction_id, A.auction_num, A.start_time, A.collection_deadline, A.auction_pdf_$lang as 'auction_pdf',
+                      A.result_pdf_$lang as 'result_pdf', A.remarks_$lang as 'remarks', A.auction_status, status, A.last_update,
+                      (SELECT COUNT(lot_id) FROM AuctionLot L WHERE L.auction_id = A.auction_id AND L.status = ?) as 'lot_count',
+                      (SELECT SUM(transaction_price) FROM AuctionLot L WHERE L.auction_id = A.auction_id AND L.status = ?) as 'transaction_total'
+                    FROM Auction A
+                    WHERE (A.status = ? OR (1 = ? AND A.status = ?))
+                    ORDER BY A.start_time DESC";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, $isDeveloper, Status::Pending))->GetRows();
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, Status::Active, $isDeveloper, Status::Pending))->GetRows();
       $rowNum = count($result);
 
       $data = array();
@@ -29,6 +33,8 @@ class AuctionController {
           $result[$i]["auction_pdf"],
           $result[$i]["result_pdf"],
           $result[$i]["remarks"],
+          Obfuscation::changeAuctionLotCount(intval($result[$i]["lot_count"]), intval($result[$i]["auction_id"])),
+          Obfuscation::changeAuctionTransactionTotal(intval($result[$i]["transaction_total"]), intval($result[$i]["auction_id"])),
           $result[$i]["auction_status"],
           $result[$i]["status"],
           $result[$i]["last_update"],
@@ -525,12 +531,14 @@ class AuctionController {
 
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, A.collection_deadline, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
-                    A.result_pdf_$lang as 'result_pdf', A.remarks_$lang as 'remarks', A.auction_status, status, last_update 
+                    A.result_pdf_$lang as 'result_pdf', A.remarks_$lang as 'remarks', A.auction_status, status, last_update,
+                    (SELECT COUNT(lot_id) FROM AuctionLot L WHERE L.auction_id = A.auction_id AND L.status = ?) as 'lot_count',
+                    (SELECT SUM(transaction_price) FROM AuctionLot L WHERE L.auction_id = A.auction_id AND L.status = ?) as 'transaction_total'
                   FROM Auction A
                   INNER JOIN Location L ON A.location_id = L.location_id
                   WHERE auction_id = ?";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $auctionId))->GetRows();
 
     $output = null;
     if (count($result) > 0) {
@@ -543,6 +551,8 @@ class AuctionController {
         $result[0]["auction_pdf"],
         $result[0]["result_pdf"],
         $result[0]["remarks"],
+        Obfuscation::changeAuctionLotCount(intval($result[0]["lot_count"]), intval($result[0]["auction_id"])),
+        Obfuscation::changeAuctionTransactionTotal(intval($result[0]["transaction_total"]), intval($result[0]["auction_id"])),
         $result[0]["auction_status"],
         $result[0]["status"],
         $result[0]["last_update"],

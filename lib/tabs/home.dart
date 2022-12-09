@@ -9,8 +9,8 @@ import '../helpers/api_helper.dart';
 import '../includes/config.dart' as config;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
-import '../widgets/auction_list_item.dart';
 import '../widgets/auction_lot_grid_view.dart';
+import '../widgets/auction_summary_card.dart';
 import '../widgets/featured_list_view.dart';
 import '../widgets/ui/animated_loading.dart';
 
@@ -174,24 +174,37 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildAuctionList(TextStyle titleStyle) {
     return Consumer<AuctionProvider>(
       builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+        // TODO(jkytse): for testing
+        final List<Auction> testingAuctionList = <Auction>[];
+        if (auctionProvider.loaded) {
+          for (int i = 0; i < 10; ++i) {
+            testingAuctionList.addAll(auctionProvider.auctionList);
+          }
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(S.of(context).pastAuctionList, style: titleStyle),
-            if (auctionProvider.loaded)
-              ...auctionProvider.auctionList
-                  .map(
-                    (Auction auction) => InkWell(
-                      onTap: () {
-                        Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
-                        widget.showAuction();
-                      },
-                      child: AuctionListItem(auction),
-                    ),
-                  )
-                  .toList()
-            else
-              LemorangeLoading(),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: (auctionProvider.loaded)
+                      ? SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            // ...auctionProvider.auctionList, for testing
+                            children: testingAuctionList
+                                .map(
+                                  (Auction auction) => AuctionSummaryCard(auction, widget.showAuction),
+                                )
+                                .toList(),
+                          ),
+                        )
+                      : LemorangeLoading(),
+                ),
+              ],
+            ),
           ],
         );
       },

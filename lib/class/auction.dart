@@ -1,13 +1,14 @@
 import 'package:intl/intl.dart';
 // import 'package:logger/logger.dart';
 import '../includes/enums.dart';
+import '../includes/revelation.dart' as revelation;
 
 class Auction {
   Auction(this.id, this.auctionNum, this.startTime, this.collectionDeadline, this.location, this.auctionPdfUrl, this.resultPdfUrl, this.itemPdfList,
-      this.remarks, this.lotList, this.status, this.lastUpdate);
+      this.remarks, this.lotCount, this.transactionTotal, this.lotList, this.status, this.lastUpdate);
 
   factory Auction.empty() {
-    return Auction(0, '', DateTime(1900), DateTime(1900), '', '', '', <AuctionItemPdf>[], '', <AuctionLot>[], AuctionStatus.None, DateTime(1900));
+    return Auction(0, '', DateTime(1900), DateTime(1900), '', '', '', <AuctionItemPdf>[], '', 0, 0, <AuctionLot>[], AuctionStatus.None, DateTime(1900));
   }
 
   factory Auction.fromJson(Map<String, dynamic> json) {
@@ -32,6 +33,8 @@ class Auction {
       }).toList()
         ..removeWhere((AuctionItemPdf a) => a.itemType == ''),
       json['r'] as String,
+      (json['lc'] == null) ? 0 : revelation.revealAuctionLotCount(json['lc'] as int, json['id'] as int), // TODO(joe): null check for testing
+      (json['tt'] == null) ? 0 : revelation.revealAuctionTransactionTotal(json['tt'] as int, json['id'] as int),
       <AuctionLot>[],
       getAuctionStatus(json['as'] as String),
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
@@ -46,6 +49,8 @@ class Auction {
   final String auctionPdfUrl;
   final String resultPdfUrl;
   final String remarks;
+  final int lotCount;
+  final int transactionTotal;
   final AuctionStatus status;
   final DateTime lastUpdate;
   final List<AuctionItemPdf> itemPdfList;
