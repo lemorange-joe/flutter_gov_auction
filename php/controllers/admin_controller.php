@@ -929,7 +929,8 @@ class AdminController {
                       push_id, title_en, title_tc, title_sc, body_en, body_tc, body_sc, push_date, 
                       result_en, status_en, last_sent_en, result_tc, status_tc, last_sent_tc, result_sc, status_sc, last_sent_sc,
                       status
-                    FROM PushHistory ORDER BY push_id DESC LIMIT ?, ?";
+                    FROM PushHistory
+                    ORDER BY push_id DESC LIMIT ?, ?";
 
       $result = $conn->Execute($selectSql, array($start, $size))->GetRows();
       $rowNum = count($result);

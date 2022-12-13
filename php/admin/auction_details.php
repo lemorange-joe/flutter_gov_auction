@@ -120,6 +120,14 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
     <script src="js/main.js?v=<?=$ADMIN_VERSION?>"></script>
     <script>
       var photoRootUrl = "<?=$GLOBALS["AUCTION_IMAGE_ROOT_URL"]?>";
+      const conditionMapping = [
+	      {	"en": "Serviceable But May Not Function Properly/May be Damaged", "tc": "仍可使用但或許不能正常操作或已有損壞", "sc": "仍可使用但或许不能正常操作或已有损坏" },
+	      { "en": "May be Unserviceable/May Not Function Properly/May be Damaged", "tc": "或不能再用/或不能正常操作/或已有損壞", "sc": "或不能再用/或不能正常操作/或已有损坏" },
+	      { "en": "Abandoned Regulated Electrical Equipment", "tc": "被棄置受管制電器", "sc": "被弃置受管制电器" },
+	      { "en": "Empty Toner/Ink Cartridges", "tc": "已用完的空碳粉匣", "sc": "已用完的空碳粉匣" },
+	      { "en": "May be Damaged", "tc": "或許已有損壞", "sc": "或许已有损坏" },
+	      { "en": "Unserviceable", "tc": "不能再用", "sc": "不能再用" },
+      ];
 
       function GetImageSrc(photoUrl) {
         if (!photoUrl.startsWith("http://") && !photoUrl.startsWith("https://") && photoUrl.trim() != "") {
@@ -668,9 +676,9 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           divHtml += "<div style='height:10px'></div>";
           divHtml += "<div style='display:flex'><div style='width:100px'>Conditions</div>";
           divHtml += "<textarea id='tbItemConditionEn_" + i + "' style='width:600px;height:48px'>" + itemConditionEn + "</textarea></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>狀態</div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'><a href='#' style='color: #000' onclick='CopyTxtConditions(" + i + ", \"tc\"); return false' title='Generate from conditions (EN)'>狀態</a></div>";
           divHtml += "<textarea id='tbItemConditionTc_" + i + "' style='width:600px;height:48px'>" + itemConditionTc + "</textarea></div>";
-          divHtml += "<div style='display:flex'><div style='width:100px'>状态</div>";
+          divHtml += "<div style='display:flex'><div style='width:100px'><a href='#' style='color: #000' onclick='CopyTxtConditions(" + i + ", \"sc\"); return false' title='Generate from conditions (EN)'>状态</a></div>";
           divHtml += "<textarea id='tbItemConditionSc_" + i + "' style='width:600px;height:48px'>" + itemConditionSc + "</textarea></div>";
         divHtml += "</div>";
         
@@ -859,6 +867,24 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
             document.getElementById(curFieldId).value = document.getElementById(prevFieldId).value;
           }
         }
+      }
+
+      function CopyTxtConditions(num, lang) {
+        if (document.getElementById("tbItemConditionEn_" + num).value.trim() == "") return;
+
+        var conditionListEn = document.getElementById("tbItemConditionEn_" + num).value.split("\n");
+        var conditionOutput = [];
+
+        for (var i = 0; i < conditionListEn.length; ++i) {
+          var conditionEn = conditionListEn[i].trim().replaceAll(" /", "/").replaceAll("/ ", "/");
+          for (var j = 0; j < conditionMapping.length; ++j) {
+            if (conditionMapping[j]["en"] == conditionEn) {
+              conditionOutput.push(conditionMapping[j][lang]);
+            }
+          }
+        }
+
+        document.getElementById("tbItemCondition" + (lang == "sc" ? "Sc" : "Tc") + "_" + num).value = conditionOutput.join("\n");
       }
 
       GetData(<?=$id?>, <?=$featuredOnly?"1":'0'?>, "<?=$type?>");
