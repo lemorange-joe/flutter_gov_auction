@@ -5,6 +5,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../class/auction.dart';
 import '../class/auction_reminder.dart';
 import '../class/saved_auction.dart';
@@ -21,6 +23,7 @@ import '../widgets/reminder_button.dart';
 import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/calendar.dart';
 import '../widgets/ui/image_loading_skeleton.dart';
+import '../widgets/ui/open_external_icon.dart';
 
 class AuctionTab extends StatefulWidget {
   const AuctionTab(this.auction, this.showHome, {Key? key}) : super(key: key);
@@ -34,7 +37,15 @@ class AuctionTab extends StatefulWidget {
 
 class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
   late TabController _tabController;
+  late PanelController _panelController;
   double _denseHeaderHeight = 56.0;
+  final double _auctionInfoPanelHeightRatio = 0.7;
+
+  @override
+  void initState() {
+    super.initState();
+    _panelController = PanelController();
+  }
 
   @override
   void dispose() {
@@ -117,14 +128,27 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
           ),
           SizedBox(
             height: 13.0,
-            child: ElevatedButton(
-              onPressed: () {
-                widget.showHome();
-              },
-              child: Text(
-                S.of(context).home,
-                style: const TextStyle(fontSize: 10.0),
-              ),
+            child: Row(
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    widget.showHome();
+                  },
+                  child: Text(
+                    S.of(context).home,
+                    style: const TextStyle(fontSize: 10.0),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _panelController.animatePanelToPosition(1.0);
+                  },
+                  child: const Text(
+                    'Show Panel',
+                    style: TextStyle(fontSize: 10.0),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -162,94 +186,214 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
 
           return !appInfoProvider.loaded
               ? LemorangeLoading()
-              : DefaultTabController(
-                  length: itemTypes.length + 3,
-                  child: NestedScrollView(
-                    headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        SliverAppBar(
-                          expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                          floating: true,
-                          pinned: true,
-                          snap: true,
-                          backgroundColor: config.blue,
-                          flexibleSpace: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-                            final double top = constraints.biggest.height * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor);
+              : SlidingUpPanel(
+                  panelBuilder: () => _buildAuctionInfoPanel(),
+                  controller: _panelController,
+                  minHeight: 0.0,
+                  maxHeight: MediaQuery.of(context).size.height * _auctionInfoPanelHeightRatio,
+                  isDraggable: false,
+                  backdropEnabled: true,
+                  body: DefaultTabController(
+                    length: itemTypes.length + 3,
+                    child: NestedScrollView(
+                      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverAppBar(
+                            expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                            floating: true,
+                            pinned: true,
+                            snap: true,
+                            backgroundColor: config.blue,
+                            flexibleSpace: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+                              final double top = constraints.biggest.height * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor);
 
-                            return FlexibleSpaceBar(
-                              centerTitle: true,
-                              title: widget.auction.id == 0
-                                  ? const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
-                                  : (top > _denseHeaderHeight + MediaQuery.of(context).padding.top ? _buildHeader() : _buildDenseHeader()),
-                            );
-                          }),
-                        ),
-                        SliverPersistentHeader(
-                          delegate: _SliverAppBarDelegate(
-                            TabBar(
-                              controller: _tabController,
-                              isScrollable: true,
-                              overlayColor: MaterialStateProperty.all(Colors.red),
-                              labelColor: Theme.of(context).textTheme.bodyText2!.color,
-                              indicatorColor: config.green,
-                              tabs: <Widget>[
-                                Tab(text: S.of(context).tabAll),
-                                Tab(
-                                  icon: Semantics(
-                                    label: S.of(context).semanticsFeaturedItems,
-                                    child: const Icon(MdiIcons.checkDecagramOutline),
-                                  ),
-                                ),
-                                Tab(
-                                  icon: Semantics(
-                                    label: S.of(context).semanticsSavedItems,
-                                    child: const Icon(MdiIcons.heartOutline),
-                                  ),
-                                ),
-                                ...itemTypes.entries.map((MapEntry<String, String> entry) => Tab(text: entry.value)).toList(),
-                              ],
-                            ),
+                              return FlexibleSpaceBar(
+                                centerTitle: true,
+                                title: widget.auction.id == 0
+                                    ? const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
+                                    : (top > _denseHeaderHeight + MediaQuery.of(context).padding.top ? _buildHeader() : _buildDenseHeader()),
+                              );
+                            }),
                           ),
-                          pinned: true,
-                        ),
-                      ];
-                    },
-                    body: TabBarView(
-                      key: Key(widget.auction.id.toString()),
-                      controller: _tabController,
-                      children: <Widget>[
-                        _buildLotList('1', widget.auction.lotList),
-                        _buildLotList('2', widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
-                        ValueListenableBuilder<Box<SavedAuction>>(
-                          valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
-                          builder: (BuildContext context, _, __) {
-                            final List<String> savedLotNums = HiveHelper()
-                                .getSavedAuctionList()
-                                .where((SavedAuction auction) => auction.auctionId == widget.auction.id)
-                                .map((SavedAuction auction) => auction.lotNum)
-                                .toList();
+                          SliverPersistentHeader(
+                            delegate: _SliverAppBarDelegate(
+                              TabBar(
+                                controller: _tabController,
+                                isScrollable: true,
+                                overlayColor: MaterialStateProperty.all(Colors.red),
+                                labelColor: Theme.of(context).textTheme.bodyText2!.color,
+                                indicatorColor: config.green,
+                                tabs: <Widget>[
+                                  Tab(text: S.of(context).tabAll),
+                                  Tab(
+                                    icon: Semantics(
+                                      label: S.of(context).semanticsFeaturedItems,
+                                      child: const Icon(MdiIcons.checkDecagramOutline),
+                                    ),
+                                  ),
+                                  Tab(
+                                    icon: Semantics(
+                                      label: S.of(context).semanticsSavedItems,
+                                      child: const Icon(MdiIcons.heartOutline),
+                                    ),
+                                  ),
+                                  ...itemTypes.entries.map((MapEntry<String, String> entry) => Tab(text: entry.value)).toList(),
+                                ],
+                              ),
+                            ),
+                            pinned: true,
+                          ),
+                        ];
+                      },
+                      body: TabBarView(
+                        key: Key(widget.auction.id.toString()),
+                        controller: _tabController,
+                        children: <Widget>[
+                          _buildLotList('1', widget.auction.lotList),
+                          _buildLotList('2', widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.featured).toList()),
+                          ValueListenableBuilder<Box<SavedAuction>>(
+                            valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                            builder: (BuildContext context, _, __) {
+                              final List<String> savedLotNums = HiveHelper()
+                                  .getSavedAuctionList()
+                                  .where((SavedAuction auction) => auction.auctionId == widget.auction.id)
+                                  .map((SavedAuction auction) => auction.lotNum)
+                                  .toList();
 
-                            final List<AuctionLot> savedAuctionLotList = widget.auction.lotList.where((AuctionLot auctionLot) {
-                              return savedLotNums.contains(auctionLot.lotNum);
-                            }).toList();
+                              final List<AuctionLot> savedAuctionLotList = widget.auction.lotList.where((AuctionLot auctionLot) {
+                                return savedLotNums.contains(auctionLot.lotNum);
+                              }).toList();
 
-                            return savedAuctionLotList.isEmpty
-                                ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1))
-                                : _buildLotList('3', savedAuctionLotList);
-                          },
-                        ),
-                        ...itemTypes.entries
-                            .map(
-                              (MapEntry<String, String> entry) =>
-                                  _buildLotList(entry.key, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == entry.key).toList()),
-                            )
-                            .toList(),
-                      ],
+                              return savedAuctionLotList.isEmpty
+                                  ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1))
+                                  : _buildLotList('3', savedAuctionLotList);
+                            },
+                          ),
+                          ...itemTypes.entries
+                              .map(
+                                (MapEntry<String, String> entry) => _buildLotList(
+                                    entry.key, widget.auction.lotList.where((AuctionLot auctionLot) => auctionLot.itemType == entry.key).toList()),
+                              )
+                              .toList(),
+                        ],
+                      ),
                     ),
                   ),
                 );
         },
       ),
+    );
+  }
+
+  Widget _buildAuctionInfoPanel() {
+    final Map<String, String> itemTypes = Provider.of<AppInfoProvider>(context, listen: false).appInfo.itemTypeList;
+
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * _auctionInfoPanelHeightRatio,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  S.of(context).auctionDetails,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _panelController.animatePanelToPosition(0.0);
+                  },
+                  child: const Icon(MdiIcons.close),
+                ),
+              ],
+            ),
+            const Divider(height: 2.0, thickness: 1.0),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Table(
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FractionColumnWidth(0.3),
+                    1: FractionColumnWidth(0.7),
+                  },
+                  children: <TableRow>[
+                    _getAuctionInfoPanelRow(
+                      S.of(context).auctionNumber,
+                      Text(widget.auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).auctionStartDate,
+                      Text(utilities.formatDate(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).auctionStartTime,
+                      Text(utilities.formatTime(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).location,
+                      Text(widget.auction.location, style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).collectionDeadline,
+                      Text(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).notesForBidders,
+                      (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text('-'),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).auctionResult,
+                      (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text('-'),
+                    ),
+                    _getAuctionInfoPanelRow(
+                      S.of(context).auctionList,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.auction.itemPdfList
+                            .map((AuctionItemPdf itemPdf) => _getPdfButton(itemTypes[itemPdf.itemType] ?? 'PDF', itemPdf.pdfUrl))
+                            .toList(),
+                      ),
+                    ),
+                    TableRow(children: <Widget>[
+                      const SizedBox(height: 200.0),
+                      Container(),
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TableRow _getAuctionInfoPanelRow(String fieldName, Widget childWidget) {
+    return TableRow(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: Text(fieldName, style: Theme.of(context).textTheme.bodyText2),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: childWidget,
+      ),
+    ]);
+  }
+
+  Widget _getPdfButton(String title, String pdfUrl) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ElevatedButton(
+          onPressed: () async {
+            await launchUrl(Uri.parse(pdfUrl), mode: LaunchMode.externalApplication);
+          },
+          child: Text(title),
+        ),
+        const OpenExternalIcon(),
+      ],
     );
   }
 }

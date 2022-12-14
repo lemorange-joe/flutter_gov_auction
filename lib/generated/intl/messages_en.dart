@@ -65,11 +65,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "allowAnalyticsDescription": MessageLookupByLibrary.simpleMessage(
             "(TBC) Allow data analytics description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum."),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name"),
+        "auctionDetails":
+            MessageLookupByLibrary.simpleMessage("Auction Details"),
         "auctionList": MessageLookupByLibrary.simpleMessage("Auction List"),
+        "auctionNumber": MessageLookupByLibrary.simpleMessage("Auction Number"),
         "auctionReminder":
             MessageLookupByLibrary.simpleMessage("Auction Reminder"),
         "auctionReminderEmpty":
             MessageLookupByLibrary.simpleMessage("No auction reminders"),
+        "auctionResult": MessageLookupByLibrary.simpleMessage("Auction Result"),
+        "auctionStartDate": MessageLookupByLibrary.simpleMessage("Date"),
+        "auctionStartTime": MessageLookupByLibrary.simpleMessage("Time"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("Clear reminder"),
         "clearSearchHistory":
@@ -139,6 +145,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
+        "notesForBidders":
+            MessageLookupByLibrary.simpleMessage("Notes for Bidders"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
         "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
             "Nullam vitae scelerisque est. Aenean placerat erat sed augue eleifend, vel faucibus elit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum in interdum diam."),

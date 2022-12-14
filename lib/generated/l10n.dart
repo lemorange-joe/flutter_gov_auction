@@ -220,11 +220,31 @@ class S {
     );
   }
 
+  /// `Auction Details`
+  String get auctionDetails {
+    return Intl.message(
+      'Auction Details',
+      name: 'auctionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Auction List`
   String get auctionList {
     return Intl.message(
       'Auction List',
       name: 'auctionList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auction Number`
+  String get auctionNumber {
+    return Intl.message(
+      'Auction Number',
+      name: 'auctionNumber',
       desc: '',
       args: [],
     );
@@ -245,6 +265,36 @@ class S {
     return Intl.message(
       'No auction reminders',
       name: 'auctionReminderEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auction Result`
+  String get auctionResult {
+    return Intl.message(
+      'Auction Result',
+      name: 'auctionResult',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get auctionStartDate {
+    return Intl.message(
+      'Date',
+      name: 'auctionStartDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time`
+  String get auctionStartTime {
+    return Intl.message(
+      'Time',
+      name: 'auctionStartTime',
       desc: '',
       args: [],
     );
@@ -776,6 +826,16 @@ class S {
     return Intl.message(
       'Decline',
       name: 'notAgree',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes for Bidders`
+  String get notesForBidders {
+    return Intl.message(
+      'Notes for Bidders',
+      name: 'notesForBidders',
       desc: '',
       args: [],
     );

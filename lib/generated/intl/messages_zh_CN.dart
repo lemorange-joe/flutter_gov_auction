@@ -62,9 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "allowAnalyticsDescription":
             MessageLookupByLibrary.simpleMessage("(TBC) 允許資料分析，于不元是还点作快告"),
         "appName": MessageLookupByLibrary.simpleMessage("APP Name (SC)"),
+        "auctionDetails": MessageLookupByLibrary.simpleMessage("拍卖详情"),
         "auctionList": MessageLookupByLibrary.simpleMessage("拍卖列表"),
+        "auctionNumber": MessageLookupByLibrary.simpleMessage("拍卖编号"),
         "auctionReminder": MessageLookupByLibrary.simpleMessage("拍卖提醒"),
         "auctionReminderEmpty": MessageLookupByLibrary.simpleMessage("沒有拍卖提醒"),
+        "auctionResult": MessageLookupByLibrary.simpleMessage("拍卖结果"),
+        "auctionStartDate": MessageLookupByLibrary.simpleMessage("拍卖日期"),
+        "auctionStartTime": MessageLookupByLibrary.simpleMessage("开始时间"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "clearReminder": MessageLookupByLibrary.simpleMessage("清除拍卖提醒"),
         "clearSearchHistory": MessageLookupByLibrary.simpleMessage("清除搜寻记录"),
@@ -123,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAuctionItem": MessageLookupByLibrary.simpleMessage("没有拍卖物品"),
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("没有搜寻记录"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
+        "notesForBidders": MessageLookupByLibrary.simpleMessage("竞投人须知"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("参与拍卖须知连结:"),
         "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
             "可人道斯心土书日妈走何……拿中失朋精还的务象规以……手是方造皮升病法自城甚品我总经基在看，险地历考生不别人方保的。问照毛见一能高今厂学人险作光这实格。破阳生是……林民布为：高心一来提更慢。"),
