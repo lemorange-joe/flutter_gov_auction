@@ -2,6 +2,14 @@
 git remote set-url origin https://github.com/joekytse/67b30e82-a005-75a88993-c0e3fe49d08d.git
 git remote set-url origin https://github.com/lemorange-joe/flutter_government_auction.git
 
+## TODO, batch update AuctionLot.item_condition
+UPDATE AuctionLot
+SET item_condition_tc = '或不能再用/或不能正常操作/或已有損壞'
+WHERE item_condition_en = 'May be Unserviceable/May Not Function Properly/May be Damaged' AND item_condition_tc = ''
+
+UPDATE AuctionLot
+SET item_condition_sc = '或不能再用/或不能正常操作/或已有损坏'
+WHERE item_condition_en = 'May be Unserviceable/May Not Function Properly/May be Damaged' AND item_condition_sc = ''
 
 ## TODO, 2022/9/19
 - check firebase analytics 
