@@ -4,5 +4,5 @@ int revealAuctionLotCount(int obfuscatedCount, int auctionId) {
 }
 
 int revealAuctionTransactionTotal(int obfuscatedTotal, int auctionId) {
-  return ((obfuscatedTotal - auctionId * 50000) / (auctionId - 5)).floor();
+  return ((obfuscatedTotal - auctionId * 50000) / (auctionId + 3)).floor();
 }

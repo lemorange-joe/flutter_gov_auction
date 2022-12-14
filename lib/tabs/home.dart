@@ -174,14 +174,6 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildAuctionList(TextStyle titleStyle) {
     return Consumer<AuctionProvider>(
       builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-        // TODO(jkytse): for testing
-        final List<Auction> testingAuctionList = <Auction>[];
-        if (auctionProvider.loaded) {
-          for (int i = 0; i < 5; ++i) {
-            testingAuctionList.addAll(auctionProvider.auctionList);
-          }
-        }
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -193,8 +185,7 @@ class _HomeTabState extends State<HomeTab> {
                       ? SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            // ...auctionProvider.auctionList, for testing
-                            children: testingAuctionList
+                            children: auctionProvider.auctionList
                                 .map(
                                   (Auction auction) => AuctionSummaryCard(auction, widget.showAuction),
                                 )

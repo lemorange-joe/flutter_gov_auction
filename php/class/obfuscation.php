@@ -6,7 +6,7 @@ class Obfuscation {
     }
 
     static function changeAuctionTransactionTotal($total, $auctionId) {
-        return $total * ($auctionId - 5) + $auctionId * 50000;
+        return $total * ($auctionId + 3) + $auctionId * 50000;
     }
 }
 ?>

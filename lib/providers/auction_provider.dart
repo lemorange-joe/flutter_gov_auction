@@ -100,8 +100,8 @@ class AuctionProvider with ChangeNotifier {
         json['rp'] as String,
         itemPdfList,
         json['r'] as String,
-        (json['lc'] == null) ? 0 : revelation.revealAuctionLotCount(json['lc'] as int, json['id'] as int), // TODO(joe): null check for testing
-        (json['tt'] == null) ? 0 : revelation.revealAuctionTransactionTotal(json['tt'] as int, json['id'] as int),
+        revelation.revealAuctionLotCount(json['lc'] as int, json['id'] as int),
+        revelation.revealAuctionTransactionTotal(json['tt'] as int, json['id'] as int),
         lotList,
         getAuctionStatus(json['as'] as String),
         DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
