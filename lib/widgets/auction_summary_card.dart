@@ -20,7 +20,7 @@ class AuctionSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 180.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
-      width: 250.0,
+      width: 250.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
       child: Card(
         color: Colors.blue,
         child: Padding(
@@ -56,9 +56,15 @@ class AuctionSummaryCard extends StatelessWidget {
                           showDuration: const Duration(milliseconds: config.tooltipDuration),
                           child: Row(
                             children: <Widget>[
-                              const FaIcon(FontAwesomeIcons.boxesStacked),
+                              FaIcon(
+                                FontAwesomeIcons.boxesStacked,
+                                size: 20.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                              ),
                               const SizedBox(width: 8.0),
-                              Text(utilities.formatDigits(auction.lotCount)),
+                              Text(
+                                utilities.formatDigits(auction.lotCount),
+                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
+                              ),
                             ],
                           ),
                         ),
@@ -69,9 +75,15 @@ class AuctionSummaryCard extends StatelessWidget {
                             showDuration: const Duration(milliseconds: config.tooltipDuration),
                             child: Row(
                               children: <Widget>[
-                                const FaIcon(FontAwesomeIcons.moneyCheckDollar),
+                                FaIcon(
+                                  FontAwesomeIcons.moneyCheckDollar,
+                                  size: 21.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                                ),
                                 const SizedBox(width: 8.0),
-                                Text(utilities.formatDigits(auction.transactionTotal)),
+                                Text(
+                                  '\$${utilities.formatDigits(auction.transactionTotal)}',
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
+                                ),
                               ],
                             ),
                           )
