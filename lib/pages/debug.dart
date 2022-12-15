@@ -18,6 +18,7 @@ import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../helpers/reminder_helper.dart';
+import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
@@ -551,7 +552,7 @@ class _DebugPageState extends State<DebugPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Text('Authorization Status: '),
-          Text(_notifiationAuthorized != null ? _notifiationAuthorized.toString() : '-'),
+          Text(_notifiationAuthorized != null ? _notifiationAuthorized.toString() : config.emptyCharacter),
         ],
       ),
       ElevatedButton(

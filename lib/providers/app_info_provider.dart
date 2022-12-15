@@ -41,6 +41,7 @@ class AppInfoProvider with ChangeNotifier {
   DateTime get lastUpdate => appInfo.lastUpdate;
   List<NoticeLink> get noticeLinkList => appInfo.noticeLinkList;
   List<PushMessage> get messageList => appInfo.messageList;
+  String getItemTypeName(String typeCode) => appInfo.getItemTypeName(typeCode);
   List<String> get hotSearchList => appInfo.hotSearchList;
   List<CatalogLocation> get catalogLocationList => appInfo.catalogLocationList;
   Map<String, String> get gridCategoryList => appInfo.gridCategoryList;

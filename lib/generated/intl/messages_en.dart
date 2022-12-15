@@ -101,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
+        "fieldAuctionStatus":
+            MessageLookupByLibrary.simpleMessage("Auction Status"),
         "fieldContact": MessageLookupByLibrary.simpleMessage("Contact Person"),
         "fieldContactLocation":
             MessageLookupByLibrary.simpleMessage("Location"),
@@ -109,7 +111,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD File Ref"),
         "fieldInspectionArrangement": MessageLookupByLibrary.simpleMessage(
             "Special Inspection Arrangement"),
+        "fieldItemConditions":
+            MessageLookupByLibrary.simpleMessage("Item Conditions"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("Item List"),
+        "fieldItemType": MessageLookupByLibrary.simpleMessage("Item Type"),
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("Lot Num"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("Reference"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("Remarks"),
@@ -145,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
+        "notSold": MessageLookupByLibrary.simpleMessage("Not Sold"),
         "notesForBidders":
             MessageLookupByLibrary.simpleMessage("Notes for Bidders"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
@@ -238,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingThemeLight": MessageLookupByLibrary.simpleMessage("Light"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+        "sold": MessageLookupByLibrary.simpleMessage("Sold"),
         "splitContactLocation": MessageLookupByLibrary.simpleMessage("Item(s)"),
         "splitContactPerson": MessageLookupByLibrary.simpleMessage("Item"),
         "tabAll": MessageLookupByLibrary.simpleMessage("All"),

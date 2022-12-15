@@ -90,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下載"),
         "faq": MessageLookupByLibrary.simpleMessage("常見問題"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("精選物品"),
+        "fieldAuctionStatus": MessageLookupByLibrary.simpleMessage("拍賣狀態"),
         "fieldContact": MessageLookupByLibrary.simpleMessage("聯絡人"),
         "fieldContactLocation": MessageLookupByLibrary.simpleMessage("地點"),
         "fieldContactNumber": MessageLookupByLibrary.simpleMessage("電話"),
@@ -97,7 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD 編號"),
         "fieldInspectionArrangement":
             MessageLookupByLibrary.simpleMessage("特別看貨安排"),
+        "fieldItemConditions": MessageLookupByLibrary.simpleMessage("物品狀態"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("物品清單"),
+        "fieldItemType": MessageLookupByLibrary.simpleMessage("物品類別"),
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("批號"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("編號"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("注意事項"),
@@ -128,6 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noAuctionItem": MessageLookupByLibrary.simpleMessage("沒有拍賣物品"),
         "noSearchHistory": MessageLookupByLibrary.simpleMessage("沒有搜尋記錄"),
         "notAgree": MessageLookupByLibrary.simpleMessage("不同意"),
+        "notSold": MessageLookupByLibrary.simpleMessage("未賣出"),
         "notesForBidders": MessageLookupByLibrary.simpleMessage("競投人須知"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("參與拍賣須知連結:"),
         "noticeParagraph1": MessageLookupByLibrary.simpleMessage(
@@ -206,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingThemeLight": MessageLookupByLibrary.simpleMessage("淺色"),
         "settings": MessageLookupByLibrary.simpleMessage("設定"),
         "skip": MessageLookupByLibrary.simpleMessage("略過"),
+        "sold": MessageLookupByLibrary.simpleMessage("已賣出"),
         "splitContactLocation": MessageLookupByLibrary.simpleMessage("項目"),
         "splitContactPerson": MessageLookupByLibrary.simpleMessage("項目"),
         "tabAll": MessageLookupByLibrary.simpleMessage("全部"),

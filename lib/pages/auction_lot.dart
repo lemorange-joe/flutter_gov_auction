@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import '../class/auction.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
@@ -11,7 +12,9 @@ import '../helpers/api_helper.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../helpers/hive_helper.dart';
 import '../includes/config.dart' as config;
+import '../includes/enums.dart';
 import '../includes/utilities.dart' as utilities;
+import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/auction_lot_card.dart';
 import '../widgets/info_button.dart';
@@ -145,7 +148,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
 
   @override
   Widget build(BuildContext context) {
-    const double titleFieldWidth = 100.0;
+    final AppInfoProvider appInfoProvider = Provider.of<AppInfoProvider>(context, listen: false);
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
     final bool isLotPhoto = _auctionLot.photoUrl.isNotEmpty && Uri.parse(_auctionLot.photoUrl).isAbsolute;
 
@@ -273,16 +276,18 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           1: FractionColumnWidth(0.8),
                         },
                         children: <TableRow>[
+                          _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType))),
                           _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),
                           _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department)),
                           _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference)),
                           _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
                           _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
                           _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
+                          _buildAuctionLotRow(S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
                           _buildAuctionLotRow(
                             S.of(context).fieldInspectionArrangement,
                             _auctionLot.inspectionDateList.isEmpty
-                                ? const Text('-')
+                                ? const Text(config.emptyCharacter)
                                 : Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: _auctionLot.inspectionDateList
@@ -292,6 +297,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                         .toList(),
                                   ),
                           ),
+                          _buildAuctionLotRow(S.of(context).fieldAuctionStatus, _buildAuctionStatus()),
                         ],
                       ),
                     ),
@@ -367,6 +373,24 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         Text(content),
         InfoButton(S.of(context).fieldInspectionArrangement, moreInfoContent),
       ],
+    );
+  }
+
+  Widget _buildAuctionStatus() {
+    if (_auctionLot.transactionStatus == TransactionStatus.NotSold) {
+      return Text(
+        S.of(context).notSold,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: Colors.red[700],
+            ),
+      );
+    }
+
+    return Text(
+      '\$${utilities.formatDigits(_auctionLot.transactionPrice.toInt())} (${S.of(context).sold})',
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            color: Colors.green[700],
+          ),
     );
   }
 }

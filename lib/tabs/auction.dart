@@ -336,11 +336,11 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).notesForBidders,
-                          (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text('-'),
+                          (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text(config.emptyCharacter),
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).auctionResult,
-                          (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text('-'),
+                          (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text(config.emptyCharacter),
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).auctionList,

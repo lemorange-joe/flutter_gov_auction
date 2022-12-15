@@ -480,6 +480,16 @@ class S {
     );
   }
 
+  /// `Auction Status`
+  String get fieldAuctionStatus {
+    return Intl.message(
+      'Auction Status',
+      name: 'fieldAuctionStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Contact Person`
   String get fieldContact {
     return Intl.message(
@@ -540,11 +550,31 @@ class S {
     );
   }
 
+  /// `Item Conditions`
+  String get fieldItemConditions {
+    return Intl.message(
+      'Item Conditions',
+      name: 'fieldItemConditions',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Item List`
   String get fieldItemList {
     return Intl.message(
       'Item List',
       name: 'fieldItemList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item Type`
+  String get fieldItemType {
+    return Intl.message(
+      'Item Type',
+      name: 'fieldItemType',
       desc: '',
       args: [],
     );
@@ -906,6 +936,16 @@ class S {
     return Intl.message(
       'Notice to Participants',
       name: 'noticeToParticipants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Sold`
+  String get notSold {
+    return Intl.message(
+      'Not Sold',
+      name: 'notSold',
       desc: '',
       args: [],
     );
@@ -1446,6 +1486,16 @@ class S {
     return Intl.message(
       'Skip',
       name: 'skip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sold`
+  String get sold {
+    return Intl.message(
+      'Sold',
+      name: 'sold',
       desc: '',
       args: [],
     );

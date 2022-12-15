@@ -68,6 +68,10 @@ class AppInfo {
     return AppInfo(true, '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{}, <String>[], <CatalogLocation>[], <String, String>{});
   }
 
+  String getItemTypeName(String typeCode) {
+    return itemTypeList.containsKey(typeCode) ? itemTypeList[typeCode]! : '';
+  }
+
   final bool forceUpgrade;
   final String dataVersion;
   final String news;
