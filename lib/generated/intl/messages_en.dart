@@ -264,6 +264,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tourTitle3": MessageLookupByLibrary.simpleMessage(
             "Pellentesque vestibulum risus"),
         "viewAll": MessageLookupByLibrary.simpleMessage("View all"),
+        "viewAuctionDetails":
+            MessageLookupByLibrary.simpleMessage("View Details"),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

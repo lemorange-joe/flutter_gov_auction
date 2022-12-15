@@ -1631,6 +1631,16 @@ class S {
     );
   }
 
+  /// `View Details`
+  String get viewAuctionDetails {
+    return Intl.message(
+      'View Details',
+      name: 'viewAuctionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `(last item)`
   String get zzzzzz {
     return Intl.message(

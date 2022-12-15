@@ -227,6 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tourTitle2": MessageLookupByLibrary.simpleMessage("一新是沒要人角命近因知提企"),
         "tourTitle3": MessageLookupByLibrary.simpleMessage("物絕這對當該"),
         "viewAll": MessageLookupByLibrary.simpleMessage("查看全部"),
+        "viewAuctionDetails": MessageLookupByLibrary.simpleMessage("查看拍賣詳情"),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

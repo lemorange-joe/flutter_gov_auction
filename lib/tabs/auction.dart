@@ -119,16 +119,10 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
               ),
             ],
           ),
-          Text(
-            S.of(context).collectionDeadlineStatement(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang)),
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Colors.white,
-                  fontSize: 8.0,
-                ),
-          ),
           SizedBox(
-            height: 13.0,
+            height: 20.0,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -136,16 +130,16 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                   },
                   child: Text(
                     S.of(context).home,
-                    style: const TextStyle(fontSize: 10.0),
+                    style: const TextStyle(fontSize: 12.0),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     _panelController.animatePanelToPosition(1.0);
                   },
-                  child: const Text(
-                    'Show Panel',
-                    style: TextStyle(fontSize: 10.0),
+                  child: Text(
+                    S.of(context).viewAuctionDetails,
+                    style: const TextStyle(fontSize: 12.0),
                   ),
                 ),
               ],
@@ -312,53 +306,61 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
             const Divider(height: 2.0, thickness: 1.0),
             Expanded(
               child: SingleChildScrollView(
-                child: Table(
-                  columnWidths: const <int, TableColumnWidth>{
-                    0: FractionColumnWidth(0.3),
-                    1: FractionColumnWidth(0.7),
-                  },
-                  children: <TableRow>[
-                    _getAuctionInfoPanelRow(
-                      S.of(context).auctionNumber,
-                      Text(widget.auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
+                child: Column(
+                  children: <Widget>[
+                    Table(
+                      columnWidths: const <int, TableColumnWidth>{
+                        0: FractionColumnWidth(0.3),
+                        1: FractionColumnWidth(0.7),
+                      },
+                      children: <TableRow>[
+                        _getAuctionInfoPanelRow(
+                          S.of(context).auctionNumber,
+                          Text(widget.auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).auctionStartDate,
+                          Text(utilities.formatDate(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).auctionStartTime,
+                          Text(utilities.formatTime(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).location,
+                          Text(widget.auction.location, style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          '${S.of(context).collectionDeadline}*',
+                          Text(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).notesForBidders,
+                          (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text('-'),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).auctionResult,
+                          (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text('-'),
+                        ),
+                        _getAuctionInfoPanelRow(
+                          S.of(context).auctionList,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: widget.auction.itemPdfList
+                                .map((AuctionItemPdf itemPdf) => _getPdfButton(itemTypes[itemPdf.itemType] ?? 'PDF', itemPdf.pdfUrl))
+                                .toList(),
+                          ),
+                        ),
+                      ],
                     ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).auctionStartDate,
-                      Text(utilities.formatDate(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
+                    const SizedBox(height: 10.0),
+                    Text(
+                      '* ${S.of(context).collectionDeadlineStatement(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang))}',
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontSize: 12.0,
+                          ),
                     ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).auctionStartTime,
-                      Text(utilities.formatTime(widget.auction.startTime, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
-                    ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).location,
-                      Text(widget.auction.location, style: Theme.of(context).textTheme.bodyText1),
-                    ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).collectionDeadline,
-                      Text(utilities.formatDateTime(widget.auction.collectionDeadline, S.of(context).lang), style: Theme.of(context).textTheme.bodyText1),
-                    ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).notesForBidders,
-                      (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text('-'),
-                    ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).auctionResult,
-                      (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text('-'),
-                    ),
-                    _getAuctionInfoPanelRow(
-                      S.of(context).auctionList,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: widget.auction.itemPdfList
-                            .map((AuctionItemPdf itemPdf) => _getPdfButton(itemTypes[itemPdf.itemType] ?? 'PDF', itemPdf.pdfUrl))
-                            .toList(),
-                      ),
-                    ),
-                    TableRow(children: <Widget>[
-                      const SizedBox(height: 200.0),
-                      Container(),
-                    ]),
+                    const SizedBox(height: 200.0),
                   ],
                 ),
               ),
