@@ -230,7 +230,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                       );
                                       final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
-                                      return TextButton(
+                                      return ElevatedButton(
                                         onPressed: () async {
                                           if (isSaved) {
                                             await HiveHelper().deleteSavedAuction(curAuction);
@@ -239,11 +239,12 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                             await HiveHelper().writeSavedAuction(curAuction);
                                           }
                                         },
-                                        style: TextButton.styleFrom(
+                                        style: ElevatedButton.styleFrom(
                                           fixedSize: const Size(50.0, 50.0),
                                           shape: const CircleBorder(),
                                           // backgroundColor: isSaved ? const Color.fromARGB(190, 255, 255, 255) : const Color.fromARGB(64, 0, 0, 0), // color TBC
-                                          backgroundColor: isLotPhoto ? const Color.fromARGB(64, 0, 0, 0) : const Color.fromARGB(190, 255, 255, 255),
+                                          backgroundColor: Colors.white,
+                                          elevation: 2.0,
                                         ),
                                         child: Semantics(
                                           label: isSaved ? S.of(context).semanticsSavedItems : S.of(context).semanticsAddToSavedItems,
@@ -266,87 +267,37 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(widget.heroTagPrefix),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldGldFileRef)),
-                              Expanded(
-                                child: Text(_auctionLot.gldFileRef),
-                              ),
-                            ],
+                      child: Table(
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: FractionColumnWidth(0.25),
+                          1: FractionColumnWidth(0.8),
+                        },
+                        children: <TableRow>[
+                          _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),
+                          _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department)),
+                          _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference)),
+                          _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
+                          _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
+                          _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
+                          _buildAuctionLotRow(
+                            S.of(context).fieldInspectionArrangement,
+                            _auctionLot.inspectionDateList.isEmpty
+                                ? const Text('-')
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: _auctionLot.inspectionDateList
+                                        .map(
+                                          (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
+                                        )
+                                        .toList(),
+                                  ),
                           ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldDeapartment)),
-                              Expanded(child: Text(_auctionLot.department)),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldReference)),
-                              Expanded(child: Text(_auctionLot.reference)),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContactLocation)),
-                              Expanded(child: _buildContactLocationItem()),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(width: titleFieldWidth, child: Text(S.of(context).fieldContact)),
-                              Expanded(child: _buildContactPersonItem()),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                width: titleFieldWidth,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 2.0),
-                                  child: Text(S.of(context).fieldContactNumber),
-                                ),
-                              ),
-                              Expanded(child: TelGroup(_auctionLot.contactNumber)),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                width: titleFieldWidth,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Text(S.of(context).fieldInspectionArrangement),
-                                ),
-                              ),
-                              Expanded(
-                                child: _auctionLot.inspectionDateList.isEmpty
-                                    ? const Text('-')
-                                    : Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: _auctionLot.inspectionDateList
-                                            .map(
-                                              (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
-                                            )
-                                            .toList(),
-                                      ),
-                              ),
-                            ],
-                          ),
-                          _buildItemList(context),
                         ],
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: _buildItemList(context),
                     ),
                     if (relatedPageNum == 0)
                       SizedBox(height: MediaQuery.of(context).size.height / 2)
@@ -368,6 +319,19 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
               ),
       ),
     );
+  }
+
+  TableRow _buildAuctionLotRow(String fieldName, Widget childWidget) {
+    return TableRow(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: Text(fieldName, style: Theme.of(context).textTheme.bodyText2),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: childWidget,
+      ),
+    ]);
   }
 
   Widget _buildContactLocationItem() {
