@@ -19,7 +19,7 @@ const String shortDateFormat = 'yyyy-M-d';
 const String timeFormatEn = 'H:mm a';
 const String timeFormatCh = 'aH時mm分';
 const String shortTimeFormat = 'HH:mm';
-const String emptyCharacter = '—';
+const String emptyCharacter = '-';
 
 const int snackbarDuration = 5000;  // in milliseconds
 const int tooltipDuration = 3000;  // in milliseconds

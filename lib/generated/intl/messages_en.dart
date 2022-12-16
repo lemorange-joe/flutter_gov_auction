@@ -122,6 +122,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please upgrade to latest version."),
         "forceUpgradeTitle":
             MessageLookupByLibrary.simpleMessage("Latest app available"),
+        "gldAuctionLists": MessageLookupByLibrary.simpleMessage(
+            "Government Logistics Department Auction Lists"),
         "gldWebsite": MessageLookupByLibrary.simpleMessage(
             "Government Logistics Department webpage"),
         "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("en"),
@@ -170,6 +172,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pastAuction": MessageLookupByLibrary.simpleMessage("Past Auction"),
         "pastAuctionList":
             MessageLookupByLibrary.simpleMessage("Past Auction Lists"),
+        "pdfSource": MessageLookupByLibrary.simpleMessage("Source: "),
         "photoCopyright":
             MessageLookupByLibrary.simpleMessage("Photo Copyright"),
         "photoDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -225,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
         "semanticsMoreInfo":
             MessageLookupByLibrary.simpleMessage("more information"),
-        "semanticsOpen": MessageLookupByLibrary.simpleMessage("open"),
+        "semanticsOpen": MessageLookupByLibrary.simpleMessage("open "),
         "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("open file "),
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),

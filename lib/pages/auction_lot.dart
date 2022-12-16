@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../class/auction.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
@@ -21,6 +23,7 @@ import '../widgets/auction_lot_card.dart';
 import '../widgets/info_button.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
+import '../widgets/ui/open_external_icon.dart';
 
 class AuctionLotPage extends StatefulWidget {
   const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, this.loadAuctionLotId, {super.key});
@@ -272,36 +275,41 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Table(
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: FractionColumnWidth(0.25),
-                          1: FractionColumnWidth(0.8),
-                        },
-                        children: <TableRow>[
-                          _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType))),
-                          _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),
-                          _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department)),
-                          _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference)),
-                          _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
-                          _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
-                          _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
-                          _buildAuctionLotRow(
-                              S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
-                          _buildAuctionLotRow(
-                            S.of(context).fieldInspectionArrangement,
-                            _auctionLot.inspectionDateList.isEmpty
-                                ? const Text(config.emptyCharacter)
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: _auctionLot.inspectionDateList
-                                        .map(
-                                          (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
-                                        )
-                                        .toList(),
-                                  ),
-                          ),
-                          _buildAuctionLotRow(S.of(context).fieldAuctionStatus, _buildAuctionStatus()),
-                        ],
+                      child: SelectableRegion(
+                        selectionControls: materialTextSelectionControls,
+                        focusNode: FocusNode(),
+                        child: Table(
+                          columnWidths: const <int, TableColumnWidth>{
+                            0: FractionColumnWidth(0.25),
+                            1: FractionColumnWidth(0.75),
+                          },
+                          children: <TableRow>[
+                            _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum)),
+                            _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType))),
+                            _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),
+                            _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department)),
+                            _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference)),
+                            _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
+                            _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
+                            _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
+                            _buildAuctionLotRow(
+                                S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
+                            _buildAuctionLotRow(
+                              S.of(context).fieldInspectionArrangement,
+                              _auctionLot.inspectionDateList.isEmpty
+                                  ? const Text(config.emptyCharacter)
+                                  : Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: _auctionLot.inspectionDateList
+                                          .map(
+                                            (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
+                                          )
+                                          .toList(),
+                                    ),
+                            ),
+                            _buildAuctionLotRow(S.of(context).fieldAuctionStatus, _buildAuctionStatus()),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -333,6 +341,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10.0),
+                    _buildPdfSource(),
                     const Divider(height: 30.0),
                     if (relatedPageNum == 0)
                       SizedBox(height: MediaQuery.of(context).size.height / 2)
@@ -362,7 +372,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   TableRow _buildAuctionLotRow(String fieldName, Widget childWidget) {
     return TableRow(children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(top: 4.0),
+        padding: const EdgeInsets.only(top: 4.0, right: 8.0),
         child: Text(fieldName, style: Theme.of(context).textTheme.bodyText2),
       ),
       Padding(
@@ -370,6 +380,36 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         child: childWidget,
       ),
     ]);
+  }
+
+  Widget _buildPdfSource() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.bodyText2,
+          children: <InlineSpan>[
+            TextSpan(text: S.of(context).pdfSource),
+            TextSpan(
+              text: S.of(context).gldAuctionLists,
+              style: const TextStyle(color: config.blue),
+              semanticsLabel: '${S.of(context).semanticsOpen}${S.of(context).gldAuctionLists}',
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  launchUrl(
+                    Uri.parse(FlutterConfig.get('GLD_WEBSITE').toString().replaceAll('{lang}', S.of(context).gldWebsiteLang)),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
+            ),
+            const WidgetSpan(
+              alignment: PlaceholderAlignment.top,
+              child: OpenExternalIcon(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildRemarks(TextStyle headerStyle) {

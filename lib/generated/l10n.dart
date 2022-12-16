@@ -640,6 +640,16 @@ class S {
     );
   }
 
+  /// `Government Logistics Department Auction Lists`
+  String get gldAuctionLists {
+    return Intl.message(
+      'Government Logistics Department Auction Lists',
+      name: 'gldAuctionLists',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `en`
   String get gldWebsiteLang {
     return Intl.message(
@@ -1001,6 +1011,16 @@ class S {
     );
   }
 
+  /// `Source: `
+  String get pdfSource {
+    return Intl.message(
+      'Source: ',
+      name: 'pdfSource',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Photo Copyright`
   String get photoCopyright {
     return Intl.message(
@@ -1351,10 +1371,10 @@ class S {
     );
   }
 
-  /// `open`
+  /// `open `
   String get semanticsOpen {
     return Intl.message(
-      'open',
+      'open ',
       name: 'semanticsOpen',
       desc: '',
       args: [],

@@ -107,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forceUpgradeContent":
             MessageLookupByLibrary.simpleMessage("请升级到最新版本。"),
         "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已经推出"),
+        "gldAuctionLists":
+            MessageLookupByLibrary.simpleMessage("政府物流服务署拍卖物品清单"),
         "gldWebsite": MessageLookupByLibrary.simpleMessage("政府物流服务署网页"),
         "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("zh-cn"),
         "help": MessageLookupByLibrary.simpleMessage("帮助"),
@@ -148,6 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("确定"),
         "pastAuction": MessageLookupByLibrary.simpleMessage("过往的拍卖"),
         "pastAuctionList": MessageLookupByLibrary.simpleMessage("过往的拍卖物品清单"),
+        "pdfSource": MessageLookupByLibrary.simpleMessage("资料来源: "),
         "photoCopyright": MessageLookupByLibrary.simpleMessage("相片著作权"),
         "photoDisclaimer": MessageLookupByLibrary.simpleMessage("并非实物，相片只供参考"),
         "previousAuction": MessageLookupByLibrary.simpleMessage("上次拍卖"),
