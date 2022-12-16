@@ -162,6 +162,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("包曾價共什飛區從檢也要的問，連該遊小形臺好自。"),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "了方奇風業這業，界成但際高案生政其的光來……一明發友病確日經力意不是該總年異天等不又。"),
+        "read": MessageLookupByLibrary.simpleMessage("閱讀"),
         "receiveNotification": MessageLookupByLibrary.simpleMessage("接收通知"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("最近搜尋"),
         "recentlySold": MessageLookupByLibrary.simpleMessage("最近售出"),
@@ -233,6 +234,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "tourTitle3": MessageLookupByLibrary.simpleMessage("物絕這對當該"),
         "viewAll": MessageLookupByLibrary.simpleMessage("查看全部"),
         "viewAuctionDetails": MessageLookupByLibrary.simpleMessage("查看拍賣詳情"),
+        "viewNoticeToParticipants1":
+            MessageLookupByLibrary.simpleMessage("如您對參與拍賣有任何問題，請參閱"),
+        "viewNoticeToParticipants2": MessageLookupByLibrary.simpleMessage("。"),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

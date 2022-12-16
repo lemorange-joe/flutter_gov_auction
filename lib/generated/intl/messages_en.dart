@@ -186,6 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "In nec sem nec ex dictum facilisis sit amet ac enim. Nunc commodo aliquam blandit. Proin quis ornare ipsum. Phasellus condimentum pulvinar dolor vel tristique. Aenean congue consectetur lorem non vehicula."),
         "privacyPolicyParagraph5": MessageLookupByLibrary.simpleMessage(
             "Nullam fringilla suscipit tellus, nec dapibus eros porttitor at. Quisque rutrum cursus ipsum nec dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris eros lorem, vulputate sit amet turpis sed, condimentum volutpat leo. Aenean sed libero id risus volutpat rutrum eget sit amet est. Sed non neque mollis, lacinia lacus id, scelerisque elit. Aliquam lacus diam, pellentesque eget diam vitae, cursus pulvinar justo."),
+        "read": MessageLookupByLibrary.simpleMessage("read"),
         "receiveNotification":
             MessageLookupByLibrary.simpleMessage("Receive notification"),
         "recentSearch": MessageLookupByLibrary.simpleMessage("Recent Search"),
@@ -273,6 +274,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewAll": MessageLookupByLibrary.simpleMessage("View all"),
         "viewAuctionDetails":
             MessageLookupByLibrary.simpleMessage("View Details"),
+        "viewNoticeToParticipants1": MessageLookupByLibrary.simpleMessage(
+            "Should you have any questions about participating in the auction, please refer to "),
+        "viewNoticeToParticipants2": MessageLookupByLibrary.simpleMessage("."),
         "zzzzzz": MessageLookupByLibrary.simpleMessage("(last item)")
       };
 }

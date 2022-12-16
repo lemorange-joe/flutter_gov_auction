@@ -941,6 +941,26 @@ class S {
     );
   }
 
+  /// `Should you have any questions about participating in the auction, please refer to `
+  String get viewNoticeToParticipants1 {
+    return Intl.message(
+      'Should you have any questions about participating in the auction, please refer to ',
+      name: 'viewNoticeToParticipants1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `.`
+  String get viewNoticeToParticipants2 {
+    return Intl.message(
+      '.',
+      name: 'viewNoticeToParticipants2',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not Sold`
   String get notSold {
     return Intl.message(
@@ -1066,6 +1086,16 @@ class S {
     return Intl.message(
       'Nullam fringilla suscipit tellus, nec dapibus eros porttitor at. Quisque rutrum cursus ipsum nec dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris eros lorem, vulputate sit amet turpis sed, condimentum volutpat leo. Aenean sed libero id risus volutpat rutrum eget sit amet est. Sed non neque mollis, lacinia lacus id, scelerisque elit. Aliquam lacus diam, pellentesque eget diam vitae, cursus pulvinar justo.',
       name: 'privacyPolicyParagraph5',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `read`
+  String get read {
+    return Intl.message(
+      'read',
+      name: 'read',
       desc: '',
       args: [],
     );

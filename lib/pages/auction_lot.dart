@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -93,15 +94,13 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     super.dispose();
   }
 
-  Widget _buildItemList(BuildContext context) {
+  Widget _buildItemList(BuildContext context, TextStyle headerStyle) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           S.of(context).fieldItemList,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: headerStyle,
         ),
         ..._auctionLot.itemList
             .asMap()
@@ -151,6 +150,9 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     final AppInfoProvider appInfoProvider = Provider.of<AppInfoProvider>(context, listen: false);
     final double titleImageHeight = MediaQuery.of(context).size.height / 2 * MediaQuery.of(context).textScaleFactor;
     final bool isLotPhoto = _auctionLot.photoUrl.isNotEmpty && Uri.parse(_auctionLot.photoUrl).isAbsolute;
+    final TextStyle headerStyle = Theme.of(context).textTheme.bodyText1!.copyWith(
+          fontWeight: FontWeight.bold,
+        );
 
     return Scaffold(
       appBar: AppBar(
@@ -283,7 +285,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                           _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
                           _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
                           _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
-                          _buildAuctionLotRow(S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
+                          _buildAuctionLotRow(
+                              S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
                           _buildAuctionLotRow(
                             S.of(context).fieldInspectionArrangement,
                             _auctionLot.inspectionDateList.isEmpty
@@ -301,24 +304,53 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 10.0),
+                    if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
+                    const SizedBox(height: 10.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: _buildItemList(context),
+                      child: _buildItemList(context, headerStyle),
                     ),
+                    const SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
+                          children: <InlineSpan>[
+                            TextSpan(text: S.of(context).viewNoticeToParticipants1),
+                            TextSpan(
+                              text: S.of(context).noticeToParticipants,
+                              style: const TextStyle(color: config.blue),
+                              semanticsLabel: '${S.of(context).read}${S.of(context).noticeToParticipants}',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(context, 'noticeToParticipants');
+                                },
+                            ),
+                            TextSpan(text: S.of(context).viewNoticeToParticipants2),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 30.0),
                     if (relatedPageNum == 0)
                       SizedBox(height: MediaQuery.of(context).size.height / 2)
                     else
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: _buildRelatedLotList(),
                       ),
                     Center(
-                      child: noMoreRelatedLots
-                          ? Text(
-                              S.of(context).relatedLotsEmpty,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            )
-                          : LemorangeLoading(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 50.0),
+                        child: noMoreRelatedLots
+                            ? Text(
+                                S.of(context).relatedLotsEmpty,
+                                style: Theme.of(context).textTheme.bodyText2,
+                              )
+                            : LemorangeLoading(),
+                      ),
                     ),
                   ],
                 ),
@@ -338,6 +370,22 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         child: childWidget,
       ),
     ]);
+  }
+
+  Widget _buildRemarks(TextStyle headerStyle) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(S.of(context).fieldRemarks, style: headerStyle),
+          Text(
+            _auctionLot.remarks,
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildContactLocationItem() {
