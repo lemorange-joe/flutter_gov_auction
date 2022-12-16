@@ -135,9 +135,23 @@ class NoticePage extends StatelessWidget {
                                   .map(
                                     (NoticeLink noticeLink) => Padding(
                                       padding: const EdgeInsets.only(top: 12.0),
-                                      child: InkWell(
-                                        child: Text(noticeLink.title),
-                                        onTap: () => launchUrl(Uri.parse(noticeLink.url), mode: LaunchMode.externalApplication),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: Semantics(
+                                              label: '${S.of(context).semanticsOpenFile}${noticeLink.title}',
+                                              child: InkWell(
+                                                child: Text(noticeLink.title),
+                                                onTap: () => launchUrl(Uri.parse(noticeLink.url), mode: LaunchMode.externalApplication),
+                                              ),
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 2.0, top: 2.0),
+                                            child: OpenExternalIcon(),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   )
@@ -147,11 +161,11 @@ class NoticePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 60.0),
+                    const SizedBox(height: 20.0),
                     Text(S.of(context).noticeParagraph3),
-                    const SizedBox(height: 60.0),
+                    const SizedBox(height: 20.0),
                     Text(S.of(context).noticeParagraph4),
-                    const SizedBox(height: 60.0),
+                    const SizedBox(height: 20.0),
                     Text(S.of(context).noticeParagraph5),
                   ],
                 );

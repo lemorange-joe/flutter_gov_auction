@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../generated/l10n.dart';
+import '../includes/config.dart' as config;
 
 class Tel extends StatelessWidget {
   const Tel(this.tel, {Key? key}) : super(key: key);
@@ -17,16 +20,22 @@ class Tel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String trimTel = tel.replaceAll(' ', '');
-    return SizedBox(
-      height: 28.0,
-      child: OutlinedButton(
-        onPressed: () {
-          _makePhoneCall(trimTel);
-        },
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        ),
-        child: Text(trimTel.length == 8 ? '${trimTel.substring(0, 4)} ${trimTel.substring(4, 8)}' : trimTel),
+    final String formattedTel = trimTel.length == 8 ? '${trimTel.substring(0, 4)} ${trimTel.substring(4, 8)}' : trimTel;
+
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
+        children: <InlineSpan>[
+          TextSpan(
+            text: formattedTel,
+            style: const TextStyle(color: config.blue),
+            semanticsLabel: '${S.of(context).semanticsDial}$formattedTel',
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                _makePhoneCall(trimTel);
+              },
+          ),
+        ],
       ),
     );
   }

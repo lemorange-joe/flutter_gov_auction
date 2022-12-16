@@ -1291,6 +1291,16 @@ class S {
     );
   }
 
+  /// `dial`
+  String get semanticsDial {
+    return Intl.message(
+      'dial',
+      name: 'semanticsDial',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `press and hold to view details`
   String get semanticsDoubleTapViewDetails {
     return Intl.message(
@@ -1346,6 +1356,16 @@ class S {
     return Intl.message(
       'open',
       name: 'semanticsOpen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `open file `
+  String get semanticsOpenFile {
+    return Intl.message(
+      'open file ',
+      name: 'semanticsOpenFile',
       desc: '',
       args: [],
     );

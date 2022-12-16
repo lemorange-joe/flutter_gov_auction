@@ -216,6 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("delete all reminders"),
         "semanticsDeleteAllSaved":
             MessageLookupByLibrary.simpleMessage("delete all saved items"),
+        "semanticsDial": MessageLookupByLibrary.simpleMessage("dial"),
         "semanticsDoubleTapViewDetails": MessageLookupByLibrary.simpleMessage(
             "press and hold to view details"),
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("email to "),
@@ -225,6 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsMoreInfo":
             MessageLookupByLibrary.simpleMessage("more information"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("open"),
+        "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("open file "),
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),

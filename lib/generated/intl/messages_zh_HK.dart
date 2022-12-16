@@ -186,6 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("刪除全部拍賣提醒"),
         "semanticsDeleteAllSaved":
             MessageLookupByLibrary.simpleMessage("刪除全部收藏項目"),
+        "semanticsDial": MessageLookupByLibrary.simpleMessage("撥打"),
         "semanticsDoubleTapViewDetails":
             MessageLookupByLibrary.simpleMessage("雙擊查看詳情"),
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("發送電郵至"),
@@ -193,6 +194,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("返回"),
         "semanticsMoreInfo": MessageLookupByLibrary.simpleMessage("更多資訊"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("開啟"),
+        "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("開啟檔案"),
         "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，點擊在地圖打開"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),
