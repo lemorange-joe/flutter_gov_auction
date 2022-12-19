@@ -114,9 +114,12 @@ class _HomePageState extends State<HomePage> {
                   HomeTab(showAuction, homeController),
                   Consumer<AuctionProvider>(
                     builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                      return AuctionTab(
-                        auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
-                        showHome,
+                      return Material(
+                        key: Key('auction_tab_${auctionProvider.curAuction.id}_${S.of(context).lang}'),
+                        child: AuctionTab(
+                          auctionProvider.loadedDetails ? auctionProvider.curAuction : Auction.empty(),
+                          showHome,
+                        ),
                       );
                     },
                   ),

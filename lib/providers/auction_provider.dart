@@ -40,6 +40,10 @@ class AuctionProvider with ChangeNotifier {
       HiveHelper().writeLog('[Auction] ${e.toString()}');
     }
 
+    if (curAuction.id > 0) {
+      curAuction = await getAuctionDetails(curAuction.id, lang);
+    }
+
     notifyListeners();
   }
 
