@@ -336,19 +336,28 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).notesForBidders,
-                          (widget.auction.auctionPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.auctionPdfUrl) : const Text(config.emptyCharacter),
+                          (widget.auction.auctionPdfUrl.startsWith('http'))
+                              ? _getPdfButtonColumn(_getPdfButton('PDF', widget.auction.auctionPdfUrl))
+                              : const Text(config.emptyCharacter),
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).auctionResult,
-                          (widget.auction.resultPdfUrl.startsWith('http')) ? _getPdfButton('PDF', widget.auction.resultPdfUrl) : const Text(config.emptyCharacter),
+                          (widget.auction.resultPdfUrl.startsWith('http'))
+                              ? _getPdfButtonColumn(_getPdfButton('PDF', widget.auction.resultPdfUrl))
+                              : const Text(config.emptyCharacter),
                         ),
                         _getAuctionInfoPanelRow(
                           S.of(context).auctionList,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.auction.itemPdfList
-                                .map((AuctionItemPdf itemPdf) => _getPdfButton(itemTypes[itemPdf.itemType] ?? 'PDF', itemPdf.pdfUrl))
-                                .toList(),
+                          _getPdfButtonColumn(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: widget.auction.itemPdfList
+                                  .map((AuctionItemPdf itemPdf) => Padding(
+                                        padding: const EdgeInsets.only(bottom: 4.0),
+                                        child: _getPdfButton(itemTypes[itemPdf.itemType] ?? 'PDF', itemPdf.pdfUrl),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ],
@@ -384,15 +393,36 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
     ]);
   }
 
+  Widget _getPdfButtonColumn(Widget pdfButton) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        pdfButton,
+        Text(
+          '(${S.of(context).gldSource})',
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+        ),
+      ],
+    );
+  }
+
   Widget _getPdfButton(String title, String pdfUrl) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ElevatedButton(
-          onPressed: () async {
-            await launchUrl(Uri.parse(pdfUrl), mode: LaunchMode.externalApplication);
-          },
-          child: Text(title),
+        Semantics(
+          label: S.of(context).semanticsOpenFileName(title),
+          excludeSemantics: true,
+          link: true,
+          child: GestureDetector(
+            onTap: () async {
+              await launchUrl(Uri.parse(pdfUrl), mode: LaunchMode.externalApplication);
+            },
+            child: Text(
+              title,
+              style: const TextStyle(color: config.blue),
+            ),
+          ),
         ),
         const OpenExternalIcon(),
       ],

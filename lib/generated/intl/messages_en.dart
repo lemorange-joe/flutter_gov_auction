@@ -29,9 +29,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(start_time, end_time) =>
       "In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force for any duration between ${start_time} hours and ${end_time} hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.";
 
-  static String m3(lot_count) => "${lot_count} auction lots";
+  static String m3(file_name) => "open ${file_name} file";
 
-  static String m4(total) => "Total auction amount: \$${total}";
+  static String m4(lot_count) => "${lot_count} auction lots";
+
+  static String m5(total) => "Total auction amount: \$${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -124,6 +126,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Latest app available"),
         "gldAuctionLists": MessageLookupByLibrary.simpleMessage(
             "Government Logistics Department Auction Lists"),
+        "gldSource": MessageLookupByLibrary.simpleMessage(
+            "Source: Government Logistics Department"),
         "gldWebsite": MessageLookupByLibrary.simpleMessage(
             "Government Logistics Department webpage"),
         "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("en"),
@@ -230,6 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("more information"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("open "),
         "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("open file "),
+        "semanticsOpenFileName": m3,
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),
@@ -263,8 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeUP":
             MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
         "time": MessageLookupByLibrary.simpleMessage("Time: "),
-        "tooltipLotCount": m3,
-        "tooltipTotalTrasaction": m4,
+        "tooltipLotCount": m4,
+        "tooltipTotalTrasaction": m5,
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),
         "tourContent1": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),

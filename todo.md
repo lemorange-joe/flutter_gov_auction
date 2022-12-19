@@ -21,6 +21,11 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 =================================================================
 
+## Before Launch ✓/✗:
+- test add and remove Item Type
+
+=================================================================
+
 ## Deliverables:
 software
 ├ app
@@ -36,14 +41,14 @@ software
     ├ manage topic groups in firebase console
     └ create test topic to test push before real publishing
 └ server
-  ├ hosting
-  ├ sub-domain
+  ├ ✓ hosting
+  ├ ✓ sub-domain
   ├ api
-    ├ url rewrite
-    └ config update
+    ├ ✓ url rewrite
+    └ ✓ config update
   └ DB
-    ├ import data
-    ├ select featured lots
+    ├ ✓ import data
+    ├ ✓ select featured lots
     ├ assign photos
     └ assign fontawesome icons
 assets

@@ -630,6 +630,16 @@ class S {
     );
   }
 
+  /// `Source: Government Logistics Department`
+  String get gldSource {
+    return Intl.message(
+      'Source: Government Logistics Department',
+      name: 'gldSource',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Government Logistics Department webpage`
   String get gldWebsite {
     return Intl.message(
@@ -1388,6 +1398,16 @@ class S {
       name: 'semanticsOpenFile',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `open {file_name} file`
+  String semanticsOpenFileName(Object file_name) {
+    return Intl.message(
+      'open $file_name file',
+      name: 'semanticsOpenFileName',
+      desc: '',
+      args: [file_name],
     );
   }
 

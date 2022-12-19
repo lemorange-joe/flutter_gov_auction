@@ -370,16 +370,18 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   TableRow _buildAuctionLotRow(String fieldName, Widget childWidget) {
-    return TableRow(children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(top: 4.0, right: 8.0),
-        child: Text(fieldName, style: Theme.of(context).textTheme.bodyText2),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 4.0),
-        child: childWidget,
-      ),
-    ]);
+    return TableRow(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0, right: 8.0),
+          child: Text(fieldName, style: Theme.of(context).textTheme.bodyText2),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: childWidget,
+        ),
+      ],
+    );
   }
 
   Widget _buildPdfSource() {

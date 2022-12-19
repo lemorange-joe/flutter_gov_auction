@@ -29,9 +29,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(start_time, end_time) =>
       "如看货当天${start_time}至${end_time}时期间八号或以上的热带气旋警告讯号或黑色暴雨警告讯号或政府公布的「超强台风后的极端情况」生效，该日的看货安排及此批货品的拍卖将会取消。";
 
-  static String m3(lot_count) => "共有${lot_count}项拍卖品";
+  static String m3(file_name) => "开启${file_name}档案";
 
-  static String m4(total) => "拍卖总额: ${total}元";
+  static String m4(lot_count) => "共有${lot_count}项拍卖品";
+
+  static String m5(total) => "拍卖总额: ${total}元";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -109,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已经推出"),
         "gldAuctionLists":
             MessageLookupByLibrary.simpleMessage("政府物流服务署拍卖物品清单"),
+        "gldSource": MessageLookupByLibrary.simpleMessage("资料来源: 政府物流服务署"),
         "gldWebsite": MessageLookupByLibrary.simpleMessage("政府物流服务署网页"),
         "gldWebsiteLang": MessageLookupByLibrary.simpleMessage("zh-cn"),
         "help": MessageLookupByLibrary.simpleMessage("帮助"),
@@ -198,6 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsMoreInfo": MessageLookupByLibrary.simpleMessage("更多资讯"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("开启"),
         "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("开启档案"),
+        "semanticsOpenFileName": m3,
         "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，点击在地图中打开"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("阅读最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已阅读"),
@@ -225,8 +229,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之废弃物品及剩余物品"),
         "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("无人认领物品"),
         "time": MessageLookupByLibrary.simpleMessage("时间: "),
-        "tooltipLotCount": m3,
-        "tooltipTotalTrasaction": m4,
+        "tooltipLotCount": m4,
+        "tooltipTotalTrasaction": m5,
         "tour": MessageLookupByLibrary.simpleMessage("导览"),
         "tourContent1":
             MessageLookupByLibrary.simpleMessage("湾在同分不活。角选和石车马人经。"),
