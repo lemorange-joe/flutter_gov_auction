@@ -108,9 +108,76 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         ..._auctionLot.itemList
             .asMap()
             .entries
-            .map((MapEntry<int, AuctionItem> entry) => Text('${entry.key + 1}. ${entry.value.description} ${entry.value.quantity} ${entry.value.unit}'))
+            .map((MapEntry<int, AuctionItem> entry) => _buildAuctionItem(entry.key + 1, entry.value.description, entry.value.quantity, entry.value.unit))
             .toList(),
       ],
+    );
+  }
+
+  Widget _buildAuctionItem(int i, String description, String quantity, String unit) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 32.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+            child: Text(
+              '$i.',
+              textAlign: TextAlign.end,
+            ),
+          ),
+          const SizedBox(width: 8.0),
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
+                children: <InlineSpan>[
+                  TextSpan(
+                      text: '$description ',
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
+                          )),
+                  TextSpan(
+                    text: ' $quantity ',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+                          fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  TextSpan(
+                    text: '$unit ', // TODO(joe): need to add the trailing space
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // old layout for reference
+          // Flexible(
+          //   child: Wrap(
+          //     children: <Widget>[
+          //       Text(description, style: Theme.of(context).textTheme.bodyText1),
+          //       // const SizedBox(width: 4.0),
+          //       ColoredBox(
+          //         color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+          //         child: Row(
+          //           mainAxisSize: MainAxisSize.min,
+          //           children: <Widget>[
+          //             Text(' $quantity ', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold)),
+          //             Text('$unit ', style: Theme.of(context).textTheme.bodyText1),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // )
+        ],
+      ),
     );
   }
 
@@ -280,8 +347,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         focusNode: FocusNode(),
                         child: Table(
                           columnWidths: const <int, TableColumnWidth>{
-                            0: FractionColumnWidth(0.25),
-                            1: FractionColumnWidth(0.75),
+                            0: FractionColumnWidth(0.28),
+                            1: FractionColumnWidth(0.72),
                           },
                           children: <TableRow>[
                             _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum)),
@@ -313,12 +380,12 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
-                    const SizedBox(height: 10.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: _buildItemList(context, headerStyle),
                     ),
+                    const SizedBox(height: 10.0),
+                    if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
                     const SizedBox(height: 10.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
