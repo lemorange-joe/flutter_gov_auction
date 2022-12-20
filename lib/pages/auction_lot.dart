@@ -134,48 +134,40 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
                 children: <InlineSpan>[
                   TextSpan(
-                      text: '$description ',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
-                          )),
-                  TextSpan(
-                    text: ' $quantity ',
+                    text: '$description ',
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
                           fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.bold,
                         ),
                   ),
-                  TextSpan(
-                    text: '$unit ', // TODO(joe): need to add the trailing space
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 14.0 * MediaQuery.of(context).textScaleFactor,
-                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+                  WidgetSpan(
+                    child: ColoredBox(
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              '$quantity ',
+                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            Text(
+                              unit,
+                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
+                                  ),
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          // old layout for reference
-          // Flexible(
-          //   child: Wrap(
-          //     children: <Widget>[
-          //       Text(description, style: Theme.of(context).textTheme.bodyText1),
-          //       // const SizedBox(width: 4.0),
-          //       ColoredBox(
-          //         color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[300]!,
-          //         child: Row(
-          //           mainAxisSize: MainAxisSize.min,
-          //           children: <Widget>[
-          //             Text(' $quantity ', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold)),
-          //             Text('$unit ', style: Theme.of(context).textTheme.bodyText1),
-          //           ],
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );
@@ -332,7 +324,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                       );
                                     },
                                   ),
-                                  const SizedBox(width: 10.0),
+                                  SizedBox(width: 10.0 * MediaQuery.of(context).textScaleFactor),
                                 ],
                               ),
                             )
@@ -379,21 +371,23 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: _buildItemList(context, headerStyle),
                     ),
-                    const SizedBox(height: 10.0),
+                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
-                    const SizedBox(height: 10.0),
+                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: RichText(
                         text: TextSpan(
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16.0),
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
                           children: <InlineSpan>[
-                            TextSpan(text: S.of(context).viewNoticeToParticipants1),
+                            TextSpan(
+                              text: S.of(context).viewNoticeToParticipants1,
+                            ),
                             TextSpan(
                               text: S.of(context).noticeToParticipants,
                               style: const TextStyle(color: config.blue),
@@ -408,7 +402,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     _buildPdfSource(),
                     const Divider(height: 30.0),
                     if (relatedPageNum == 0)
@@ -456,7 +450,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: RichText(
         text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
           children: <InlineSpan>[
             TextSpan(text: S.of(context).pdfSource),
             TextSpan(

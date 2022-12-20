@@ -28,7 +28,10 @@ class Tel extends StatelessWidget {
         children: <InlineSpan>[
           TextSpan(
             text: formattedTel,
-            style: const TextStyle(color: config.blue),
+            style: TextStyle(
+              color: config.blue,
+              fontSize: 16.0 * MediaQuery.of(context).textScaleFactor,
+            ),
             semanticsLabel: '${S.of(context).semanticsDial}$formattedTel',
             recognizer: TapGestureRecognizer()
               ..onTap = () {
