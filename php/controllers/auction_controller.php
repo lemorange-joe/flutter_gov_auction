@@ -494,7 +494,7 @@ class AuctionController {
   }
 
   function relatedItems($param) {
-    // pre: $itemId, $page (starting from 1)
+    // pre: $itemId, $page (starting from 1), $pageSize
     // use $itemId to search related items in other lots or auctions
     global $conn, $lang;
 
@@ -510,7 +510,7 @@ class AuctionController {
     try {
       $itemId = intval(array_shift($param));
       $page = intval(array_shift($param));
-      $pageSize = $GLOBALS["RELATED_RECORD_PAGE_SIZE"];
+      $pageSize = intval(array_shift($param));
       $start = ($page - 1) * $pageSize;
 
       $selectSql = "SELECT
