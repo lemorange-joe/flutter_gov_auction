@@ -23,7 +23,6 @@ $PUSH_PASSWORD_HASHED = "729780585edf5eb1d800fcb75f693296";
 
 $ENCRYPT_API_DATA = true;
 $AES_SECRET_LENGTH = 32;  // number of characters of the randomly generated secret
-$AES_KEY_POSITION = 1;    // either 1 or 2, 1: choose all characters of the specified secret in odd position as the key, 2: even position (must match with config.dat in flutter)
 $AES_IV_LENGTH = 16;      // use the last n characters of the specified secret as the IV (must match with config.dat in flutter)
 
 $ENABLE_DEVELOPER = true;

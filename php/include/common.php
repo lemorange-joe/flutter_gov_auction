@@ -226,7 +226,8 @@ function GenRandomString($length) {
 
 function Base64Aes256Encrypt($plainText, $secret) {
   preg_match_all('/(\w)(\w){0,1}/', $secret, $matches);
-  $secretKey = implode("", $matches[$GLOBALS["AES_KEY_POSITION"]]); // use characters in odd/even position as the key
+  $aesKeyPosition = ord($secret[0]) % 2 == 1 ? 1 : 2;
+  $secretKey = implode("", $matches[$aesKeyPosition]); // use characters in odd/even position as the key
   $secretIv = substr($secret, -$GLOBALS["AES_IV_LENGTH"]);   // use the last n characters as the IV
   $output = false;
   $key = hash("sha256", $secretKey);
@@ -238,7 +239,8 @@ function Base64Aes256Encrypt($plainText, $secret) {
 
 function Base64AES256Decrypt($encryptedText, $secret) {
 	preg_match_all('/(\w)(\w){0,1}/', $secret, $matches);
-  $secretKey = implode("", $matches[$GLOBALS["AES_KEY_POSITION"]]); // use characters in odd/even position as the key
+  $aesKeyPosition = ord($secret[0]) % 2 == 1 ? 1 : 2;
+  $secretKey = implode("", $matches[$aesKeyPosition]); // use characters in odd/even position as the key
   $secretIv = substr($secret, -$GLOBALS["AES_IV_LENGTH"]);   // use the last n characters as the IV
   $output = false;
   $key = hash("sha256", $secretKey);

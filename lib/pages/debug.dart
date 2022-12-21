@@ -230,11 +230,11 @@ class _DebugPageState extends State<DebugPage> {
                   child: const Text(encrypted),
                 ),
                 const SizedBox(height: 12.0),
+                const Text('Decrypted', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 24.0,
-                  child: const Text('Decrypted', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(decrypted),
                 ),
-                Text(decrypted),
               ],
             ),
           ],

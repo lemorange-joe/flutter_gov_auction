@@ -115,14 +115,15 @@ String formatDigits(int num) {
 
 String extractApiPayload(String encryptedText, String secret) {
   String decrypted = '';
-  
+  final int aesKeyPosition = secret.codeUnitAt(0).isOdd ? 1 : 0;
+
   try {
     final String strPwd = secret
         .split('')
         .asMap()
         .entries
         .map((MapEntry<int, String> entry) {
-          return entry.key % 2 == config.apiAesKeyPosition % 2 ? '' : entry.value;
+          return entry.key % 2 == aesKeyPosition ? '' : entry.value;
         })
         .toList()
         .join();
