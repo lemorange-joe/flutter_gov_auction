@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:http/http.dart' as http;
-// import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
 import '../helpers/hive_helper.dart';
 import '../includes/demo_data_en.dart';
 import '../includes/demo_data_sc.dart';
 import '../includes/demo_data_tc.dart';
+import '../includes/utilities.dart' as utilities;
 
 class ApiHelper {
   ApiHelper();
@@ -90,7 +91,13 @@ class ApiHelper {
         if (response.statusCode == 200) {
           final dynamic jsonResult = jsonDecode(response.body) as dynamic;
           if ((jsonResult as Map<String, dynamic>)['s'] == 'success') {
-            returnData = jsonResult['d'] as dynamic;
+            if (jsonResult['k'] != null) {
+              // secret key exists, the data is encrypted
+              Logger().w('key: ${jsonResult['k'].toString()}'); // TODO(joe): for debug, to be remove after tested encryption
+              returnData = jsonDecode(utilities.extractApiPayload(jsonResult['d'].toString(), jsonResult['k'].toString())) as dynamic;
+            } else {
+              returnData = jsonResult['d'] as dynamic;
+            }
           } else if (jsonResult['status'] == 'fail') {
             throw Exception('API fail!');
           } else {

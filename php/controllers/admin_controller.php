@@ -1673,6 +1673,10 @@ class AdminController {
     
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
+
+  function Decrypt() {
+    echo str_replace("\xEF\xBB\xBF",'', Base64Aes256Decrypt($_POST["encrypted_text"], $_POST["secret"]));
+  }
 }
 
 class KeywordPhotoAuthor {

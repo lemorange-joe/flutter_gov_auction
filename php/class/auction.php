@@ -4,6 +4,7 @@ $auctionJsonFieldMapping = array(
   "status" => "s",
   "data" => "d",
   "message" => "m",
+  "key" => "k",
   // Auction
   "num" => "n",
   "startTime" => "st",

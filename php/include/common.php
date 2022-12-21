@@ -1,5 +1,6 @@
 <?php
 include_once ('str_chinese.php');
+include_once ('config.php');
 
 function Debug_var_dump($var)
 {
@@ -164,50 +165,87 @@ function FormatMysqlDateTime($dt) {
 	return date_format($dt, "Y/m/d H:i:s");
 }
 
-function AES_128_Decrypt($encrypted_text, $password)
-{
-	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-	$iv   = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
+// temp disabled original AES function, use new encryption with base64 below
+// Error: Call to undefined function mcrypt_get_iv_size()
+// function AES_128_Decrypt($encrypted_text, $password)
+// {
+// 	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+// 	$iv   = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
 
-	preg_match('/([\x20-\x7E]*)/',mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $password, pack("H*", $encrypted_text), MCRYPT_MODE_ECB, $iv), $a);
-	return $a[0];
+// 	preg_match('/([\x20-\x7E]*)/',mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $password, pack("H*", $encrypted_text), MCRYPT_MODE_ECB, $iv), $a);
+// 	return $a[0];
+// }
+
+
+// function AES_128_Encrypt($text, $password)
+// {
+// 	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+// 	$iv = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
+
+// 	// The following line was needed because I didn't get the same hex value as expected by forwarding agency
+// 	// I think its their bug
+// 	// Try to remove the line. If it works, too - fine!
+// 	$text .= chr(3).chr(3).chr(3);
+
+// 	return bin2hex(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $password, $text, MCRYPT_MODE_ECB, $iv));
+// }
+
+// function AES_256_Decrypt($encrypted_text, $password)
+// {
+// 	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+// 	$iv   = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
+
+// 	preg_match('/([\x20-\x7E]*)/',mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $password, pack("H*", $encrypted_text), MCRYPT_MODE_ECB, $iv), $a);
+// 	return $a[0];
+// }
+
+
+// function AES_256_Encrypt($text, $password)
+// {
+
+// 	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+// 	$iv = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
+
+// 	// The following line was needed because I didn't get the same hex value as expected by forwarding agency
+// 	// I think its their bug
+// 	// Try to remove the line. If it works, too - fine!
+// 	$text .= chr(3).chr(3).chr(3);
+
+// 	return bin2hex(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $password, $text, MCRYPT_MODE_ECB, $iv));
+// }
+
+function GenRandomString($length) {
+  $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $charactersLength = strlen($characters);
+    $output = "";
+    for ($i = 0; $i < $length; $i++) {
+        $output .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $output;
 }
 
+function Base64Aes256Encrypt($plainText, $secret) {
+  preg_match_all('/(\w)(\w){0,1}/', $secret, $matches);
+  $secretKey = implode("", $matches[$GLOBALS["AES_KEY_POSITION"]]); // use characters in odd/even position as the key
+  $secretIv = substr($secret, -$GLOBALS["AES_IV_LENGTH"]);   // use the last n characters as the IV
+  $output = false;
+  $key = hash("sha256", $secretKey);
+  $iv = substr(hash("sha256", $secretIv ), 0, 16);
+  $output = base64_encode(openssl_encrypt($plainText, "AES-256-CBC", $key, 0, $iv));
 
-function AES_128_Encrypt($text, $password)
-{
-	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-	$iv = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
-
-	// The following line was needed because I didn't get the same hex value as expected by forwarding agency
-	// I think its their bug
-	// Try to remove the line. If it works, too - fine!
-	$text .= chr(3).chr(3).chr(3);
-
-	return bin2hex(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $password, $text, MCRYPT_MODE_ECB, $iv));
+  return $output;
 }
 
-function AES_256_Decrypt($encrypted_text, $password)
-{
-	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-	$iv   = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
+function Base64AES256Decrypt($encryptedText, $secret) {
+	preg_match_all('/(\w)(\w){0,1}/', $secret, $matches);
+  $secretKey = implode("", $matches[$GLOBALS["AES_KEY_POSITION"]]); // use characters in odd/even position as the key
+  $secretIv = substr($secret, -$GLOBALS["AES_IV_LENGTH"]);   // use the last n characters as the IV
+  $output = false;
+  $key = hash("sha256", $secretKey);
+  $iv = substr(hash("sha256", $secretIv ), 0, 16);
+  $output = openssl_decrypt(base64_decode($encryptedText), "AES-256-CBC", $key, 0, $iv);
 
-	preg_match('/([\x20-\x7E]*)/',mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $password, pack("H*", $encrypted_text), MCRYPT_MODE_ECB, $iv), $a);
-	return $a[0];
-}
-
-function AES_256_Encrypt($text, $password)
-{
-
-	$size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-	$iv = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
-
-	// The following line was needed because I didn't get the same hex value as expected by forwarding agency
-	// I think its their bug
-	// Try to remove the line. If it works, too - fine!
-	$text .= chr(3).chr(3).chr(3);
-
-	return bin2hex(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $password, $text, MCRYPT_MODE_ECB, $iv));
+  return $output;
 }
 
 function json_change_key($strJson, $mapping) {

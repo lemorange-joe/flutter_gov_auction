@@ -79,6 +79,8 @@ class _DebugPageState extends State<DebugPage> {
                 const Divider(),
                 ...buildAppInfoSection(context),
                 const Divider(),
+                ...buildCryptographySection(context),
+                const Divider(),
                 ...buildAuctionSection(context),
                 const Divider(),
                 ...buildHiveSection(context),
@@ -200,6 +202,42 @@ class _DebugPageState extends State<DebugPage> {
               )
             ],
           ),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> buildCryptographySection(BuildContext context) {
+    const String encrypted = 'NFpldEtCbStUdWlQWVR5Uk1laXR3ZzUrYzUrWFJYeFF4VlRUb0I1dGtvND0=';
+    const String secret = 'ow2YByrZPpIa9YnETS9gFT3eVNAqEAVB';
+    final String decrypted = utilities.extractApiPayload(encrypted, secret);
+    return <Widget>[
+      const Text(
+        'Cryptography',
+        style: TextStyle(decoration: TextDecoration.underline),
+      ),
+      const SizedBox(height: 10.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Row(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text('Encrypted', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 24.0,
+                  child: const Text(encrypted),
+                ),
+                const SizedBox(height: 12.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 24.0,
+                  child: const Text('Decrypted', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Text(decrypted),
+              ],
+            ),
+          ],
         ),
       ),
     ];

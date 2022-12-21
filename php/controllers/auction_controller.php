@@ -1,5 +1,7 @@
 <?php
 require_once ("../class/obfuscation.php");
+include_once ("../include/config.php");
+include_once ("../include/common.php");
 
 class AuctionController {
   function list($param) {
@@ -42,7 +44,15 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }      
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -74,7 +84,16 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $auction;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($auction, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $auction;
+      }  
+
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -144,7 +163,15 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -236,7 +263,15 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -441,7 +476,15 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -517,7 +560,15 @@ class AuctionController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();

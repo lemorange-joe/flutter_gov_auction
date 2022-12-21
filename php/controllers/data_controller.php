@@ -1,5 +1,7 @@
 <?php
 include_once ("../include/appdata.php");
+include_once ("../include/config.php");
+include_once ("../include/common.php");
 
 class DataController {
   public static $searchGridCategoryKeywords = array(
@@ -50,6 +52,17 @@ class DataController {
     ),
   );
 
+  // function testEncrypt() {
+  //   $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+  //   echo Base64Aes256Encrypt($_GET["text"], $secret);
+  //   echo "<br>";
+  //   echo $secret;
+  // }
+
+  // function testDecrypt() {
+  //   echo Base64Aes256Decrypt($_GET["text"], $_GET["secret"]);
+  // }
+  
   function appInfo() {
     global $conn, $lang;
     $_APP = AppData::getInstance();
@@ -151,7 +164,15 @@ class DataController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -190,7 +211,15 @@ class DataController {
       }
 
       $output->status = "success";
-      $output->data = $data;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }  
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();

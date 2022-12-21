@@ -30,7 +30,7 @@ include_once ("../include/config.php");
       <option value="auction-details" data-param="Auction ID, e.g. 1">Details</option>
       <option value="auction-search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
       <option value="auction-searchGrid" data-param="Category Keyword - total, e.g. sold-20, mobile-10">Search Grid</option>
-      <option value="auction-relatedLots" data-param="Lot ID - page, e.g. 13-1">Related Lots</option>
+      <option value="auction-relatedLots" data-param="Lot ID - page - pageSize, e.g. 13-1-12">Related Lots</option>
       <option value="auction-relatedItems" data-param="Item ID - page, e.g. 31-2">Related Items</option>
       <option value="data-appinfo" data-param="">App Info</option>
       <option value="data-messagelist" data-param="">Message List</option>
@@ -43,7 +43,12 @@ include_once ("../include/config.php");
     </div>
     &nbsp;&nbsp;&nbsp;&nbsp;URL: <a id="lnkApiUrl" href="#" target="_blank"></a>
     <br /><br />
-    <textarea id="txtResult" style="width: 1000px; height: 400px"></textarea>
+    <textarea id="txtResult" style="width: 1000px; height: 240px"></textarea>
+    <hr />
+    <button style="margin: 5px 0 5px 0" onclick="DecryptData()">Decrypt</button>
+    <br />
+    <textarea id="txtDecryptedResult" style="width: 1000px; height: 400px"></textarea>
+    
     <script>
       function ChangeParamHint() {
         var ddl = document.getElementById("ddlApi");
@@ -101,6 +106,38 @@ include_once ("../include/config.php");
           }
         }
         
+        xhr.send(formData);
+      }
+
+      function DecryptData() {
+        var jsonData = JSON.parse(document.getElementById("txtResult").value);
+        var jsonString = jsonData.d;
+        var secret = jsonData.k;
+
+        if (!jsonString) {
+          alert("Data not found!");
+          return;
+        }
+
+        if (!secret) {
+          alert("Key not found!");
+          return;
+        }
+
+        var url = "/en/api/admin-decrypt";;
+        var xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append("encrypted_text", jsonString);
+        formData.append("secret", secret);
+        
+        xhr.open("POST", url);
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("txtDecryptedResult").value = JSON.stringify(JSON.parse(this.responseText), null, "  ");
+          }
+        }
+        
+        document.getElementById("txtDecryptedResult").value = "decrypting...";
         xhr.send(formData);
       }
 

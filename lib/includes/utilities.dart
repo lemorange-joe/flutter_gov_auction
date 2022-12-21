@@ -1,4 +1,9 @@
+import 'dart:convert' as convert_pack;
+import 'package:crypto/crypto.dart' as crypto_pack;
+import 'package:encrypt/encrypt.dart' as encrypt_pack;
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+
 import 'config.dart' as config;
 
 String formatDate(DateTime dt, String lang) {
@@ -15,7 +20,7 @@ String formatTime(DateTime dt, String lang) {
 
 String formatTimeBefore(DateTime dt, String lang) {
   final DateTime now = DateTime.now();
-   const Map<String, Map<String, String>> langMapping = <String, Map<String, String>>{
+  const Map<String, Map<String, String>> langMapping = <String, Map<String, String>>{
     'en': <String, String>{
       'just': 'just added',
       'minute': ' minute before',
@@ -106,4 +111,32 @@ double adjustedPhotoScale(double scale) {
 
 String formatDigits(int num) {
   return NumberFormat(',###').format(num);
+}
+
+String extractApiPayload(String encryptedText, String secret) {
+  String decrypted = '';
+  
+  try {
+    final String strPwd = secret
+        .split('')
+        .asMap()
+        .entries
+        .map((MapEntry<int, String> entry) {
+          return entry.key % 2 == config.apiAesKeyPosition % 2 ? '' : entry.value;
+        })
+        .toList()
+        .join();
+    final String strIv = secret.substring(secret.length - config.apiAesIvLength);
+    final String iv = crypto_pack.sha256.convert(convert_pack.utf8.encode(strIv)).toString().substring(0, 16); // Consider the first 16 bytes of all 64 bytes
+    final String key = crypto_pack.sha256.convert(convert_pack.utf8.encode(strPwd)).toString().substring(0, 32); // Consider the first 32 bytes of all 64 bytes
+    final encrypt_pack.IV ivObj = encrypt_pack.IV.fromUtf8(iv);
+    final encrypt_pack.Key keyObj = encrypt_pack.Key.fromUtf8(key);
+    final encrypt_pack.Encrypter encrypter = encrypt_pack.Encrypter(encrypt_pack.AES(keyObj, mode: encrypt_pack.AESMode.cbc)); // Apply CBC mode
+    final String firstBase64Decoding = String.fromCharCodes(convert_pack.base64.decode(encryptedText)); // First Base64 decoding
+    decrypted = encrypter.decrypt(encrypt_pack.Encrypted.fromBase64(firstBase64Decoding), iv: ivObj); // Second Base64 decoding (during decryption)
+  } catch (e) {
+    Logger().e(e.toString());
+  }
+
+  return decrypted;
 }

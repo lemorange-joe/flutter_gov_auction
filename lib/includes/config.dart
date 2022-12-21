@@ -13,6 +13,10 @@ const int httpTimeout = 5; // in seconds
 const int gridItemCount = 20;
 const int relatedLotPageSize = 12;
 
+// must match with $AES entries in config.php
+const int apiAesKeyPosition = 1;  // either 1 or 2, 1: choose all characters of the specified secret in odd position as the key, 2: even position
+const int apiAesIvLength = 16;    // use the last n characters of the specified secret as the IV (must match with config.dat in flutter)
+
 const String dateFormatEn = 'd MMMM yyyy (EEEE)';
 const String dateFormatCh = 'yyyy年M月d日 (EEEE)';
 const String shortDateFormat = 'yyyy-M-d';

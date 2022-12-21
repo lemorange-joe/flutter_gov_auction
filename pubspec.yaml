@@ -38,7 +38,9 @@ dependencies:
   cached_network_image: ^3.2.1
   clear_all_notifications: ^0.0.3
   confetti: ^0.7.0
+  crypto: ^3.0.2
   cupertino_icons: ^1.0.2
+  encrypt: ^5.0.1
   expansion_tile_card: ^2.0.0
   firebase_analytics: ^9.3.5
   firebase_core: ^1.21.1
