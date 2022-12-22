@@ -41,13 +41,14 @@ include_once ("../include/config.php");
       Version: <input type="text" id="tbVersion" value="1.0.0">
       <button style="margin-left: 10px" onclick="PostData()">Post</button>
     </div>
-    &nbsp;&nbsp;&nbsp;&nbsp;URL: <a id="lnkApiUrl" href="#" target="_blank"></a>
-    <br /><br />
-    <textarea id="txtResult" style="width: 1000px; height: 240px"></textarea>
-    <hr />
-    <button style="margin: 5px 0 5px 0" onclick="DecryptData()">Decrypt</button>
+    &nbsp;
+    <input id="chkDebug" type="checkbox" style="width: 16px; height: 16px; vertical-align: middle"><label for="chkDebug" style="vertical-align: middle">Debug</label>
+    <br />URL: <a id="lnkApiUrl" href="#" target="_blank"></a>
     <br />
+    <textarea id="txtResult" style="width: 1000px; height: 240px; margin-top: 5px"></textarea>
+    <hr />
     <textarea id="txtDecryptedResult" style="width: 1000px; height: 400px"></textarea>
+    <button style="margin-left: 5px; vertical-align: top" onclick="DecryptData()">Decrypt</button>
     
     <script>
       function ChangeParamHint() {
@@ -62,6 +63,9 @@ include_once ("../include/config.php");
         url = url.replace("{0}", document.getElementById("ddlLang").value);
         url = url.replace("{1}", document.getElementById("ddlApi").value);
         url = url.replace("{2}", document.getElementById("tbParam").value == "" ? "" : "-" + document.getElementById("tbParam").value);
+        if (document.getElementById("chkDebug").checked) {
+          url += "?debug=1";
+        }
 
         return url;
       }

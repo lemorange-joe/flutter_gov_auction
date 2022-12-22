@@ -52,7 +52,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }      
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -92,8 +96,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $auction;
-      }  
+      }
 
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -171,7 +178,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -271,7 +282,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -484,7 +499,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -568,7 +587,11 @@ class AuctionController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -754,6 +777,14 @@ class AuctionController {
     }
 
     return $output;
+  }
+
+  private function appendDebugData(&$output) {
+    global $reqStartTime;
+
+    $reqEndTime = floor(microtime(true) * 1000);
+    $output->requestStart = date('Y/m/d H:i:s', floor($reqStartTime/1000));
+    $output->elapsed = $reqEndTime - $reqStartTime;
   }
 }
 ?>

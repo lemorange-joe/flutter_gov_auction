@@ -31,6 +31,7 @@ if (strtolower($_REQUEST['lang']) == "en") {
 } else if (strtolower($_REQUEST['lang']) == "sc") {
   $lang = "sc";
 }
+$reqStartTime = floor(microtime(true) * 1000);  // timestamp in milliseconds
 
 // $isDeveloper mainly use for previewing unpublished auctions, lots and items
 $isDeveloper = 0; // use int for easy mysql comparison

@@ -172,7 +172,11 @@ class DataController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -219,7 +223,11 @@ class DataController {
         $output->key = $secret;
       } else {
         $output->data = $data;
-      }  
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
@@ -248,6 +256,14 @@ class DataController {
     $output->s = "success";
     $output->d = $data;
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
+  private function appendDebugData(&$output) {
+    global $reqStartTime;
+
+    $reqEndTime = floor(microtime(true) * 1000);
+    $output->requestStart = date('Y/m/d H:i:s', floor($reqStartTime/1000));
+    $output->elapsed = $reqEndTime - $reqStartTime;
   }
 }
 ?>
