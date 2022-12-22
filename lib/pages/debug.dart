@@ -18,6 +18,7 @@ import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
 import '../helpers/reminder_helper.dart';
+import '../includes/benchmark_data.dart' as benchmark_data;
 import '../includes/config.dart' as config;
 import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
@@ -41,6 +42,7 @@ class _DebugPageState extends State<DebugPage> {
   bool? _notifiationAuthorized;
   String _easterEggResult = '';
   late TextEditingController _easterEggController;
+  List<String> benchmarkHistory = <String>[];
 
   @override
   void initState() {
@@ -235,6 +237,45 @@ class _DebugPageState extends State<DebugPage> {
                   width: MediaQuery.of(context).size.width - 24.0,
                   child: Text(decrypted),
                 ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 24.0,
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          benchmarkHistory.clear();
+
+                          for (int i = 0; i < benchmark_data.encryptedList.length; ++i) {
+                            final benchmark_data.AesBenchmarkData encryptedItem = benchmark_data.encryptedList[i];
+                            final DateTime startTime = DateTime.now();
+                            String result = 'Failed';
+                            String decrypted = '';
+                            try {
+                              decrypted = utilities.extractApiPayload(encryptedItem.encrypted, encryptedItem.key);
+                              result = 'Success';
+                            } catch (_) {}
+
+                            final DateTime endTime = DateTime.now();
+                            benchmarkHistory.add('${i+1}. $result, length: ${decrypted.length}, elapsed: ${endTime.difference(startTime).inMilliseconds}ms');
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.purple[900]),
+                      child: const Text('Start Benchmark'),
+                    ),
+                  ),
+                ),
+                if (benchmarkHistory.isNotEmpty)
+                  const Text(
+                    'Result',
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                ...benchmarkHistory
+                    .map((String history) => Text(
+                          history,
+                          style: const TextStyle(fontSize: 12.0),
+                        ))
+                    .toList(),
               ],
             ),
           ],
