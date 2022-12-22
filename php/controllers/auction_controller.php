@@ -164,8 +164,7 @@ class AuctionController {
           $result[$i]["icon"],
           $result[$i]["description"],
           $result[$i]["quantity"],
-          $result[$i]["unit"],
-          0
+          $result[$i]["unit"]
         );
       }
 
@@ -268,8 +267,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
-          0
+          $result[$i]["transaction_status"]
         );
       }
 
@@ -386,8 +384,7 @@ class AuctionController {
         $result[0]["transaction_price"],
         $result[0]["transaction_status"],
         $result[0]["status"],
-        $result[0]["last_update"],
-        0,
+        $result[0]["last_update"]
       );
 
       $rowNum = count($result);
@@ -398,8 +395,7 @@ class AuctionController {
           $result[$i]["item_icon"],
           $result[$i]["description"],
           $result[$i]["quantity"],
-          $result[$i]["unit"],
-          0,
+          $result[$i]["unit"]
         );
       }
 
@@ -485,8 +481,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
-          0
+          $result[$i]["transaction_status"]
         );
       }
 
@@ -573,8 +568,7 @@ class AuctionController {
           $result[$i]["icon"],
           $result[$i]["description"],
           $result[$i]["quantity"],
-          $result[$i]["unit"],
-          0
+          $result[$i]["unit"]
         );
       }
 
@@ -753,8 +747,7 @@ class AuctionController {
           $result[$i]["transaction_price"],
           $result[$i]["transaction_status"],
           $result[$i]["status"],
-          $result[$i]["last_update"],
-          0,
+          $result[$i]["last_update"]
         );
         $curItemList = array();
       }
@@ -764,8 +757,7 @@ class AuctionController {
         $result[$i]["item_icon"],
         $result[$i]["description"],
         $result[$i]["quantity"],
-        $result[$i]["unit"],
-        0,
+        $result[$i]["unit"]
       );
     }
 

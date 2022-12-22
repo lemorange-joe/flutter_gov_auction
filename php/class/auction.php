@@ -154,10 +154,9 @@ class AuctionLot implements JsonSerializable {
   private $tranStatus;
   private $status;
   private $lastUpdate;
-  private $v;
 
   public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, $featured, $icon, 
-                              $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $descriptionEn, $descriptionTc, $descriptionSc, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate, $v) {
+                              $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $descriptionEn, $descriptionTc, $descriptionSc, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate) {
     $this->id = $id;
     $this->type = $type;
     $this->lotNum = $lotNum;
@@ -187,7 +186,6 @@ class AuctionLot implements JsonSerializable {
     $this->tranStatus = $tranStatus;
     $this->status = $status;
     $this->lastUpdate = $lastUpdate;
-    $this->v = $v;
   }
 
   public function __get($property) {
@@ -216,15 +214,13 @@ class AuctionItem implements JsonSerializable {
   private $description;
   private $quantity;
   private $unit;
-  private $v;
 
-  public function __construct($id, $icon, $description, $quantity, $unit, $v) {
+  public function __construct($id, $icon, $description, $quantity, $unit) {
     $this->id = $id;
     $this->icon = $icon;
     $this->description = $description;
     $this->quantity = $quantity;
     $this->unit = $unit;
-    $this->v = $v;
   }
 
   public function __get($property) {
@@ -265,10 +261,9 @@ class AuctionLotSearch implements JsonSerializable {
   private $tranCurrency;
   private $tranPrice;
   private $tranStatus;
-  private $v;
 
   public function __construct($auction_id, $auction_num, $start_time, $auction_status, $lot_id, $lot_num, $type, $description, $featured, $icon, 
-                              $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus, $v) {
+                              $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus) {
     $this->auctionId = $auction_id;
     $this->auctionNum = $auction_num;
     $this->startTime = $start_time;
@@ -287,7 +282,6 @@ class AuctionLotSearch implements JsonSerializable {
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;
     $this->tranStatus = $tranStatus;
-    $this->v = $v;
   }
 
   public function __get($property) {
@@ -328,9 +322,8 @@ class AuctionItemSearch implements JsonSerializable {
   private $description;
   private $quantity;
   private $unit;
-  private $v;
 
-  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $featured, $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit, $v) {
+  public function __construct($auction_id, $start_time, $auction_status, $lot_id, $type, $featured, $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $tranCurrency, $tranPrice, $tranStatus, $icon, $description, $quantity, $unit) {
     $this->auctionId = $auction_id;
     $this->startTime = $start_time;
     $this->auctionStatus = $auction_status;
@@ -348,7 +341,6 @@ class AuctionItemSearch implements JsonSerializable {
     $this->description = $description;
     $this->quantity = $quantity;
     $this->unit = $unit;
-    $this->v = $v;
   }
 
   public function __get($property) {
