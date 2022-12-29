@@ -79,6 +79,7 @@ class AuctionLot {
       this.photoUrl,
       this.photoReal,
       this.itemList,
+      this.specialInspection,
       this.inspectionDateList,
       this.transactionCurrency,
       this.transactionPrice,
@@ -98,6 +99,11 @@ class AuctionLot {
     for (final dynamic jsonItem in jsonInspectionDateList) {
       inspectionDateList.add(InspectionDate.fromJson(jsonItem as Map<String, dynamic>));
     }
+    // TODO(joe): for testing
+    inspectionDateList.add(InspectionDate.fromJson(<String, dynamic>{'dow': 1, 'st': '09:00', 'et': '12:30'}));
+    inspectionDateList.add(InspectionDate.fromJson(<String, dynamic>{'dow': 1, 'st': '14:00', 'et': '16:00'}));
+    inspectionDateList.add(InspectionDate.fromJson(<String, dynamic>{'dow': 2, 'st': '09:00', 'et': '12:30'}));
+    inspectionDateList.add(InspectionDate.fromJson(<String, dynamic>{'dow': 2, 'st': '14:00', 'et': '16:00'}));
 
     return AuctionLot(
       json['id'] as int,
@@ -112,14 +118,15 @@ class AuctionLot {
       json['r'] as String,
       json['ic'] as String,
       lang == 'tc' ? json['dtc'] as String : (lang == 'sc' ? json['dsc'] as String : json['den'] as String),
-      json['den'] == null ? json['d'] as String : json['den'] as String, // temp solution for using demo data
-      json['dtc'] == null ? json['d'] as String : json['dtc'] as String, // remove null check after api is ready on server
+      json['den'] == null ? json['d'] as String : json['den'] as String, // TODO(joe): temp solution for using demo data
+      json['dtc'] == null ? json['d'] as String : json['dtc'] as String, // TODO(joe): remove null check after api is ready on server
       json['dsc'] == null ? json['d'] as String : json['dsc'] as String,
       json['f'] as int == 1,
       json['i'] as String,
       json['pu'] as String,
       json['pr'] as int == 1,
       itemList,
+      json['si'] != null && json['si'] as int == 1, // TODO(joe): remove null check after api is ready on server
       inspectionDateList,
       json['tc'] as String,
       jsonToDouble(json['tp']),
@@ -129,8 +136,8 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(
-        0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], <InspectionDate>[], '', 0.0, '', DateTime(1900));
+    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], false, <InspectionDate>[], '', 0.0, '',
+        DateTime(1900));
   }
 
   final int id;
@@ -153,6 +160,7 @@ class AuctionLot {
   final String photoUrl;
   final bool photoReal;
   final List<AuctionItem> itemList;
+  final bool specialInspection;
   final List<InspectionDate> inspectionDateList;
   final String transactionCurrency;
   final double transactionPrice;

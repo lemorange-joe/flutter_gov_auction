@@ -354,7 +354,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                             _buildAuctionLotRow(
                                 S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
                             _buildAuctionLotRow(
-                              S.of(context).fieldInspectionArrangement,
+                              _auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement,
                               _auctionLot.inspectionDateList.isEmpty
                                   ? const Text(config.emptyCharacter)
                                   : Column(
@@ -514,15 +514,21 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     final String content = S.of(context).lang == 'en'
         ? '${inspect.startTime} - ${inspect.endTime} ${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}'
         : '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}  ${inspect.startTime} - ${inspect.endTime}';
-    final String moreInfoContent1 =
-        S.of(context).insepctionArrangementDetails1(inspect.startTime, inspect.endTime, utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang));
-    final String moreInfoContent2 = S.of(context).insepctionArrangementDetails2(typhoonStartTime, inspect.endTime);
-    final String moreInfoContent = '$moreInfoContent1\n\n$moreInfoContent2';
+
+    String moreInfoContent = '';
+    if (_auctionLot.specialInspection) {
+      final String moreInfoContent1 =
+          S.of(context).insepctionArrangementDetails1(inspect.startTime, inspect.endTime, utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang));
+      final String moreInfoContent2 = S.of(context).insepctionArrangementDetails2(typhoonStartTime, inspect.endTime);
+      moreInfoContent = '$moreInfoContent1\n\n$moreInfoContent2';
+    } else {
+      moreInfoContent = '${S.of(context).insepctionArrangementDefaultDetails}\n\n${S.of(context).insepctionArrangementDefaultDetailsA}\n\n${S.of(context).insepctionArrangementDefaultDetailsB}\n\n${S.of(context).insepctionArrangementDefaultDetailsC}';
+    }
 
     return Row(
       children: <Widget>[
         Text(content),
-        InfoButton(S.of(context).fieldInspectionArrangement, moreInfoContent),
+        InfoButton(_auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement, moreInfoContent),
       ],
     );
   }

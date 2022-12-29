@@ -188,6 +188,7 @@ class AdminController {
           // add existing to the current lot first
           $curLotOutput->item_list = $curItemList;
           $curLotOutput->inspection_date_list = $this->getInspectionDateList($curLotOutput->lot_id, $inspectionDateResult);
+          // no need check whether it is special inspection date for admin
           $output->lot_list[] = $curLotOutput;
         }
 

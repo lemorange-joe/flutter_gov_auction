@@ -540,10 +540,10 @@ class S {
     );
   }
 
-  /// `Special Inspection Arrangement`
+  /// `Inspection Arrangement`
   String get fieldInspectionArrangement {
     return Intl.message(
-      'Special Inspection Arrangement',
+      'Inspection Arrangement',
       name: 'fieldInspectionArrangement',
       desc: '',
       args: [],
@@ -605,6 +605,16 @@ class S {
     return Intl.message(
       'Remarks',
       name: 'fieldRemarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Special Inspection Arrangement`
+  String get fieldSpecialInspectionArrangement {
+    return Intl.message(
+      'Special Inspection Arrangement',
+      name: 'fieldSpecialInspectionArrangement',
       desc: '',
       args: [],
     );
@@ -715,6 +725,46 @@ class S {
     return Intl.message(
       ' hours before',
       name: 'hoursBefore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The Lot shall be available for inspection at the Location at the following times:`
+  String get insepctionArrangementDefaultDetails {
+    return Intl.message(
+      'The Lot shall be available for inspection at the Location at the following times:',
+      name: 'insepctionArrangementDefaultDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(a) any time between the above specified periods of the week in which the Auction Date falls;`
+  String get insepctionArrangementDefaultDetailsA {
+    return Intl.message(
+      '(a) any time between the above specified periods of the week in which the Auction Date falls;',
+      name: 'insepctionArrangementDefaultDetailsA',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or`
+  String get insepctionArrangementDefaultDetailsB {
+    return Intl.message(
+      '(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or',
+      name: 'insepctionArrangementDefaultDetailsB',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date.`
+  String get insepctionArrangementDefaultDetailsC {
+    return Intl.message(
+      '(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date.',
+      name: 'insepctionArrangementDefaultDetailsC',
       desc: '',
       args: [],
     );

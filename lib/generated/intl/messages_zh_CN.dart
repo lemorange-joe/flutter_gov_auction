@@ -99,13 +99,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldDeapartment": MessageLookupByLibrary.simpleMessage("部门"),
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD 编号"),
         "fieldInspectionArrangement":
-            MessageLookupByLibrary.simpleMessage("特别看货安排"),
+            MessageLookupByLibrary.simpleMessage("看货安排"),
         "fieldItemConditions": MessageLookupByLibrary.simpleMessage("物品状态"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("物品清单"),
         "fieldItemType": MessageLookupByLibrary.simpleMessage("物品类别"),
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("批号"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("编号"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("注意事项"),
+        "fieldSpecialInspectionArrangement":
+            MessageLookupByLibrary.simpleMessage("特别看货安排"),
         "forceUpgradeContent":
             MessageLookupByLibrary.simpleMessage("请升级到最新版本。"),
         "forceUpgradeTitle": MessageLookupByLibrary.simpleMessage("新版本已经推出"),
@@ -119,6 +121,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "hotSearch": MessageLookupByLibrary.simpleMessage("热门搜寻"),
         "hourBefore": MessageLookupByLibrary.simpleMessage("小时前"),
         "hoursBefore": MessageLookupByLibrary.simpleMessage("小时前"),
+        "insepctionArrangementDefaultDetails":
+            MessageLookupByLibrary.simpleMessage("拍卖品批次于下列时段在指定地点可供查看："),
+        "insepctionArrangementDefaultDetailsA":
+            MessageLookupByLibrary.simpleMessage("(a) 于拍卖日当周之以上任何时间；"),
+        "insepctionArrangementDefaultDetailsB":
+            MessageLookupByLibrary.simpleMessage(
+                "(b) 如拍卖日当周之以上日期为公众假期，则为拍卖日当周前之星期五的相同时段；或"),
+        "insepctionArrangementDefaultDetailsC":
+            MessageLookupByLibrary.simpleMessage(
+                "(c) 如八号或以上的热带气旋警告讯号悬挂，或黑色暴雨警告讯号或政府公布的「超强台风后的极端情况」于上文所指明之看货日期任何一天生效，则为拍卖日前之星期三的相同时段。"),
         "insepctionArrangementDetails1": m1,
         "insepctionArrangementDetails2": m2,
         "itemDetails": MessageLookupByLibrary.simpleMessage("项目详情"),

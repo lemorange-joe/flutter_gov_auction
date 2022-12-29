@@ -311,22 +311,30 @@ class AuctionController {
       // select inspection dates first
       $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
                     FROM InspectionDate I
-                    INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
-                    WHERE L.lot_id = ?
-                    ORDER BY CASE
+                    LEFT JOIN AuctionLot L ON I.lot_id = L.lot_id
+                    WHERE L.lot_id = ? OR I.lot_id = 0
+                    ORDER BY I.lot_id DESC, CASE
                       WHEN I.inspection_day = 7 THEN 0
                       ELSE I.inspection_day
-                    END";
+                    END, I.inspection_start_time";
       $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId))->GetRows();
       $rowNum = count($inspectionDateResult);
 
+      if ($rowNum > 0) {
+        $specialInspection = $inspectionDateResult[0]["lot_id"] == $lotId;
+      } else {
+        $specialInspection = false;
+      }
+
       $inspectionDateList = array();
       for($i = 0; $i < $rowNum; ++$i) {
-        $inspectionDateList[] = new InspectionDate(
-          $inspectionDateResult[$i]["inspection_day"],
-          $inspectionDateResult[$i]["inspection_start_time"],
-          $inspectionDateResult[$i]["inspection_end_time"],
-        );
+        if ($inspectionDateResult[$i]["lot_id"] == $lotId || !$specialInspection) {
+          $inspectionDateList[] = new InspectionDate(
+            $inspectionDateResult[$i]["inspection_day"],
+            $inspectionDateResult[$i]["inspection_start_time"],
+            $inspectionDateResult[$i]["inspection_end_time"],
+          );
+        }
       }
 
       // select the auction lot and items
@@ -399,6 +407,7 @@ class AuctionController {
         );
       }
 
+      $auctionLot->specialInspection = intval($specialInspection);
       $auctionLot->inspectionDateList = $inspectionDateList;
       $auctionLot->itemList = $itemList;
       
@@ -675,15 +684,23 @@ class AuctionController {
 
     // select all inspection dates of the auction id first
     // then assign back to the lot programatically
-    $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
-                  FROM InspectionDate I
-                  INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
-                  WHERE L.auction_id = ?
-                  ORDER BY L.lot_id, CASE
-                    WHEN I.inspection_day = 7 THEN 0
-                    ELSE I.inspection_day
-                  END";
+    $selectSql = "SELECT T.lot_id, T.inspection_day, T.inspection_start_time, T.inspection_end_time
+                  FROM (
+                    SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+                      FROM InspectionDate I
+                      INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
+                    WHERE L.auction_id = ?
+                      UNION 
+                    SELECT I0.lot_id, I0.inspection_day, I0.inspection_start_time, I0.inspection_end_time
+                    FROM InspectionDate I0
+                    WHERE I0.lot_id = 0
+                  ) as T
+                  ORDER BY T.lot_id, CASE
+                    WHEN T.inspection_day = 7 THEN 0
+                    ELSE T.inspection_day
+                  END, T.inspection_start_time";
     $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    $defaultInspectionDateList = $this->getInspectionDateList(0, $inspectionDateResult);
 
     $selectSql = "SELECT
                     L.lot_id, T.code, L.lot_num, 
@@ -710,7 +727,15 @@ class AuctionController {
         if ($i > 0) {
           // add existing to the current lot first
           $curLot->itemList = $curItemList;
-          $curLot->inspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
+          $curInspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
+          if (count($curInspectionDateList) == 0) {
+            $curLot->specialInspection = 0;
+            $curLot->inspectionDateList = $defaultInspectionDateList;
+          } else {
+            $curLot->specialInspection = 1;
+            $curLot->inspectionDateList = $curInspectionDateList;
+          }
+          
           $output[] = $curLot;
         }
 
@@ -764,7 +789,14 @@ class AuctionController {
     // add the last item
     if ($curLotNum != "") {
       $curLot->itemList = $curItemList;
-      $curLot->inspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
+      $curInspectionDateList = $this->getInspectionDateList($curLot->id, $inspectionDateResult);
+      if (count($curInspectionDateList) == 0) {
+        $curLot->specialInspection = 0;
+        $curLot->inspectionDateList = $defaultInspectionDateList;
+      } else {
+        $curLot->specialInspection = 1;
+        $curLot->inspectionDateList = $curInspectionDateList;
+      }
       $output[] = $curLot;
     }
 

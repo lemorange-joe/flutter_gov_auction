@@ -44,6 +44,7 @@ $auctionJsonFieldMapping = array(
   "descriptionTc" => "dtc",
   "descriptionSc" => "dsc",
   "itemList" => "il",
+  "specialInspection" => "si",
   "inspectionDateList" => "idl",
   "tranCurrency" => "tc",
   "tranPrice" => "tp",
@@ -148,6 +149,7 @@ class AuctionLot implements JsonSerializable {
   private $photoAuthor;
   private $photoAuthorUrl;
   private $itemList;
+  private $specialInspection;
   private $inspectionDateList;
   private $tranCurrency;
   private $tranPrice;
@@ -180,6 +182,7 @@ class AuctionLot implements JsonSerializable {
     $this->descriptionSc = $descriptionSc;
 
     $this->itemList = array();
+    $this->specialInspection = false;
     $this->inspectionDateList = array();
     $this->tranCurrency = $tranCurrency;
     $this->tranPrice = $tranPrice;

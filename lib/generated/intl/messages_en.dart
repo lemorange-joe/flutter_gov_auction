@@ -111,8 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldContactNumber": MessageLookupByLibrary.simpleMessage("Tel"),
         "fieldDeapartment": MessageLookupByLibrary.simpleMessage("Department"),
         "fieldGldFileRef": MessageLookupByLibrary.simpleMessage("GLD File Ref"),
-        "fieldInspectionArrangement": MessageLookupByLibrary.simpleMessage(
-            "Special Inspection Arrangement"),
+        "fieldInspectionArrangement":
+            MessageLookupByLibrary.simpleMessage("Inspection Arrangement"),
         "fieldItemConditions":
             MessageLookupByLibrary.simpleMessage("Item Conditions"),
         "fieldItemList": MessageLookupByLibrary.simpleMessage("Item List"),
@@ -120,6 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldLotNum": MessageLookupByLibrary.simpleMessage("Lot Num"),
         "fieldReference": MessageLookupByLibrary.simpleMessage("Reference"),
         "fieldRemarks": MessageLookupByLibrary.simpleMessage("Remarks"),
+        "fieldSpecialInspectionArrangement":
+            MessageLookupByLibrary.simpleMessage(
+                "Special Inspection Arrangement"),
         "forceUpgradeContent": MessageLookupByLibrary.simpleMessage(
             "Please upgrade to latest version."),
         "forceUpgradeTitle":
@@ -136,6 +139,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "hotSearch": MessageLookupByLibrary.simpleMessage("Hot Search"),
         "hourBefore": MessageLookupByLibrary.simpleMessage(" hour before"),
         "hoursBefore": MessageLookupByLibrary.simpleMessage(" hours before"),
+        "insepctionArrangementDefaultDetails": MessageLookupByLibrary.simpleMessage(
+            "The Lot shall be available for inspection at the Location at the following times:"),
+        "insepctionArrangementDefaultDetailsA":
+            MessageLookupByLibrary.simpleMessage(
+                "(a) any time between the above specified periods of the week in which the Auction Date falls;"),
+        "insepctionArrangementDefaultDetailsB":
+            MessageLookupByLibrary.simpleMessage(
+                "(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or"),
+        "insepctionArrangementDefaultDetailsC":
+            MessageLookupByLibrary.simpleMessage(
+                "(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date."),
         "insepctionArrangementDetails1": m1,
         "insepctionArrangementDetails2": m2,
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
