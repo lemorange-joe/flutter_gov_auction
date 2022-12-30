@@ -14,7 +14,7 @@ ALTER TABLE InspectionDate ADD typhoon_end_time CHAR(5) NOT NULL AFTER typhoon_s
 UPDATE InspectionDate SET typhoon_start_time = '--:--', typhoon_end_time = '--:--';
 
 ## TODO:
-- confirm the format of the inspection dates field
+- replace LemorangeLoading widget with GLD's loading style
 - reminders:
   - test local notification reminder in ios
   - decide reminder message in ReminderHelper

@@ -60,7 +60,7 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.only(top: 80.0),
-              child: Text(S.of(context).noAuctionItem),
+              child: LemorangeLoading(),
             ),
           )
         : GetListView(listIndex, widget.auction, lotList);
@@ -259,7 +259,10 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                               }).toList();
 
                               return savedAuctionLotList.isEmpty
-                                  ? Center(child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1))
+                                  ? Center(child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 150.0),
+                                    child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1),
+                                  ))
                                   : _buildLotList('3', savedAuctionLotList);
                             },
                           ),
@@ -477,72 +480,79 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
         final String heroTagPrefix = 'lot_photo_${widget.listIndex}';
 
         return SizedBox(
-          height: 150.0 * MediaQuery.of(context).textScaleFactor,
-          child: ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
-                'heroTagPrefix': heroTagPrefix,
-                'auctionId': widget.auction.id,
-                'auctionStartTime': widget.auction.startTime,
-                'auctionLot': curLot,
-              });
-            },
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  width: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                  height: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                  child: Hero(
-                    tag: '${heroTagPrefix}_${curLot.id}',
-                    child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(config.smBorderRadius),
-                            child: CachedNetworkImage(
-                              width: 100.0,
-                              height: 100.0,
-                              imageUrl: curLot.photoUrl,
-                              placeholder: (_, __) => const ImageLoadingSkeleton(),
-                              errorWidget: (_, __, ___) => const Image(image: AssetImage('assets/images/app_logo.png')),
-                              fit: BoxFit.cover,
+          height: 120.0 * MediaQuery.of(context).textScaleFactor,
+          child: Card(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
+                  'heroTagPrefix': heroTagPrefix,
+                  'auctionId': widget.auction.id,
+                  'auctionStartTime': widget.auction.startTime,
+                  'auctionLot': curLot,
+                });
+              },
+              borderRadius: BorderRadius.circular(8.0),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                    height: 100.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                    child: Hero(
+                      tag: '${heroTagPrefix}_${curLot.id}',
+                      child: (curLot.photoUrl.isNotEmpty && Uri.parse(curLot.photoUrl).isAbsolute)
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(config.smBorderRadius),
+                              child: CachedNetworkImage(
+                                width: 100.0,
+                                height: 100.0,
+                                imageUrl: curLot.photoUrl,
+                                placeholder: (_, __) => const ImageLoadingSkeleton(),
+                                errorWidget: (_, __, ___) => const Image(image: AssetImage('assets/images/app_logo.png')),
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : FractionallySizedBox(
+                              widthFactor: 0.618,
+                              heightFactor: 0.618,
+                              child: FittedBox(
+                                child: FaIcon(dynamic_icon_helper.getIcon(curLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
+                              ),
                             ),
-                          )
-                        : FractionallySizedBox(
-                            widthFactor: 0.618,
-                            heightFactor: 0.618,
-                            child: FittedBox(
-                              child: FaIcon(dynamic_icon_helper.getIcon(curLot.icon.toLowerCase()) ?? FontAwesomeIcons.box),
-                            ),
-                          ),
-                  ),
-                ),
-                const SizedBox(width: 10.0),
-                DefaultTextStyle(
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontSize: 14.0,
-                      ),
-                  child: Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(curLot.lotNum),
-                        Text(curLot.gldFileRef),
-                        Text(curLot.department),
-                        // Text(curLot.contact),
-                        // TelGroup(curLot.contactNumber),
-                        // Text(curLot.contactLocation),
-                        Flexible(
-                          child: Text(
-                            curLot.description,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 10.0),
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 14.0,
+                        ),
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(curLot.lotNum),
+                          Text(curLot.gldFileRef),
+                          Text(curLot.department),
+                          // Text(curLot.contact),
+                          // TelGroup(curLot.contactNumber),
+                          // Text(curLot.contactLocation),
+                          Flexible(
+                            child: Text(
+                              curLot.description,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
