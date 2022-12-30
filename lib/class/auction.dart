@@ -280,17 +280,21 @@ class RelatedAuctionLot {
 }
 
 class InspectionDate {
-  InspectionDate(this.dayOfWeek, this.startTime, this.endTime);
+  InspectionDate(this.dayOfWeek, this.startTime, this.endTime, this.typhoonStartTime, this.typhoonEndTime);
 
   factory InspectionDate.fromJson(Map<String, dynamic> json) {
     return InspectionDate(
       json['dow'] as int,
       json['st'] as String,
       json['et'] as String,
+      json['tst'] == null ? 'XX:XX' : json['tst'] as String, // TODO(joe): to be removed after updated server
+      json['tet'] == null ? 'XX:XX' : json['tet'] as String, 
     );
   }
 
   final int dayOfWeek;
   final String startTime;
   final String endTime;
+  final String typhoonStartTime;
+  final String typhoonEndTime;
 }

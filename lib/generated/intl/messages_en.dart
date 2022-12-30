@@ -24,16 +24,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "A Buyer shall collect and remove the Lot purchased from the Location on or before ${collection_deadline} or as otherwise specified in the Special Conditions of Auction Sale.";
 
   static String m1(start_time, end_time, day_of_week) =>
-      "Inspection may only be made between ${start_time} hours and ${end_time} hours on ${day_of_week} of the week of the public auction. Should ${day_of_week} be a public holiday, the inspection day shall be the first working day immediately before the public holiday between ${start_time} hours and ${end_time} hours.";
+      "(a) any time between ${start_time} to ${end_time} hours on the ${day_of_week} of the week in which the Auction Date falls;";
 
-  static String m2(start_time, end_time) =>
+  static String m2(day_of_week, start_time, end_time) =>
+      "(b) in the event either the ${day_of_week} of the week in which the Auction Date falls is a public holiday, between ${start_time} to ${end_time} hours on the Friday preceding the week in which the Auction Date falls; or";
+
+  static String m3(start_time, end_time) =>
+      "(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force, on the inspection day specified above, between ${start_time} to ${end_time} hours on the Wednesday preceding the Auction Date.";
+
+  static String m4(start_time, end_time, day_of_week) =>
+      "Inspection may only be made between ${start_time} hours and ${end_time} hours on ${day_of_week} of the week of the public auction.";
+
+  static String m5(start_time, end_time) =>
       "In case Tropical Cyclone Warning Signal No.8 or above is hoisted or Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force for any duration between ${start_time} hours and ${end_time} hours on the scheduled inspection day, the inspection arrangement on that day and the auction of the relevant lots will be cancelled.";
 
-  static String m3(file_name) => "open ${file_name} file";
+  static String m6(file_name) => "open ${file_name} file";
 
-  static String m4(lot_count) => "${lot_count} auction lots";
+  static String m7(lot_count) => "${lot_count} auction lots";
 
-  static String m5(total) => "Total auction amount: \$${total}";
+  static String m8(total) => "Total auction amount: \$${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -143,17 +152,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "hoursBefore": MessageLookupByLibrary.simpleMessage(" hours before"),
         "insepctionArrangementDefaultDetails": MessageLookupByLibrary.simpleMessage(
             "The Lot shall be available for inspection at the Location at the following times:"),
-        "insepctionArrangementDefaultDetailsA":
-            MessageLookupByLibrary.simpleMessage(
-                "(a) any time between the above specified periods of the week in which the Auction Date falls;"),
-        "insepctionArrangementDefaultDetailsB":
-            MessageLookupByLibrary.simpleMessage(
-                "(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or"),
-        "insepctionArrangementDefaultDetailsC":
-            MessageLookupByLibrary.simpleMessage(
-                "(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or \"extreme conditions after super typhoons\" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date."),
-        "insepctionArrangementDetails1": m1,
-        "insepctionArrangementDetails2": m2,
+        "insepctionArrangementDefaultDetailsA": m1,
+        "insepctionArrangementDefaultDetailsB": m2,
+        "insepctionArrangementDefaultDetailsC": m3,
+        "insepctionArrangementDetails1": m4,
+        "insepctionArrangementDetails2": m5,
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
@@ -250,7 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("more information"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("open "),
         "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("open file "),
-        "semanticsOpenFileName": m3,
+        "semanticsOpenFileName": m6,
         "semanticsOpenInMap":
             MessageLookupByLibrary.simpleMessage(", click to open in map "),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("read news"),
@@ -284,8 +287,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeUP":
             MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
         "time": MessageLookupByLibrary.simpleMessage("Time: "),
-        "tooltipLotCount": m4,
-        "tooltipTotalTrasaction": m5,
+        "tooltipLotCount": m7,
+        "tooltipTotalTrasaction": m8,
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),
         "tourContent1": MessageLookupByLibrary.simpleMessage(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id ex a massa porttitor pharetra vitae fringilla quam."),

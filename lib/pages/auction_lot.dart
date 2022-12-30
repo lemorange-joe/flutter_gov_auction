@@ -508,9 +508,6 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   Widget _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {
-    final int temp = int.parse(inspect.startTime.substring(0, 2));
-    final String typhoonStartTime = temp.toString().padLeft(2, '0') + inspect.startTime.substring(2);
-
     final String content = S.of(context).lang == 'en'
         ? '${inspect.startTime} - ${inspect.endTime} ${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}'
         : '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}  ${inspect.startTime} - ${inspect.endTime}';
@@ -519,10 +516,15 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     if (_auctionLot.specialInspection) {
       final String moreInfoContent1 =
           S.of(context).insepctionArrangementDetails1(inspect.startTime, inspect.endTime, utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang));
-      final String moreInfoContent2 = S.of(context).insepctionArrangementDetails2(typhoonStartTime, inspect.endTime);
+      final String moreInfoContent2 = S.of(context).insepctionArrangementDetails2(inspect.typhoonStartTime, inspect.typhoonEndTime);
       moreInfoContent = '$moreInfoContent1\n\n$moreInfoContent2';
     } else {
-      moreInfoContent = '${S.of(context).insepctionArrangementDefaultDetails}\n\n${S.of(context).insepctionArrangementDefaultDetailsA}\n\n${S.of(context).insepctionArrangementDefaultDetailsB}\n\n${S.of(context).insepctionArrangementDefaultDetailsC}';
+      moreInfoContent = '''
+${S.of(context).insepctionArrangementDefaultDetails}\n
+${S.of(context).insepctionArrangementDefaultDetailsA(inspect.startTime, inspect.endTime, utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang))}\n
+${S.of(context).insepctionArrangementDefaultDetailsB(utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang), inspect.startTime, inspect.endTime)}\n
+${S.of(context).insepctionArrangementDefaultDetailsC(inspect.startTime, inspect.endTime)}
+      ''';
     }
 
     return Row(

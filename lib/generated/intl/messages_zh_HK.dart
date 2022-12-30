@@ -24,16 +24,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "承購人須要在${collection_deadline}前或特別拍賣條款的指定時間從指定地點提取及運走所承購的拍賣品批次。";
 
   static String m1(start_time, end_time, day_of_week) =>
-      "有意競投的人士只可於拍賣週之${day_of_week}，${start_time}至${end_time}時期間到該地點查看物品。(如該${day_of_week}為公眾假期，將改為公眾假期前第一個工作日${start_time}至${end_time}時。";
+      "(a) 於拍賣日當週之${day_of_week} ${start_time} 時至 ${end_time} 時任何時間；";
 
-  static String m2(start_time, end_time) =>
+  static String m2(day_of_week, start_time, end_time) =>
+      "(b) 如拍賣日當週之${day_of_week}為公眾假期，則為拍賣日當週前之星期五 ${start_time} 時至 ${end_time} 時；或";
+
+  static String m3(start_time, end_time) =>
+      "(c) 如八號或以上的熱帶氣旋警告訊號懸掛，或黑色暴雨警告訊號或政府公布的「超強颱風後的極端情況」於上文所指明之看貨日期生效，則為拍賣日前之星期三 ${start_time} 時至 ${end_time} 時。";
+
+  static String m4(start_time, end_time, day_of_week) =>
+      "有意競投的人士只可於拍賣週之${day_of_week}，${start_time}至${end_time}時期間到該地點查看物品。";
+
+  static String m5(start_time, end_time) =>
       "如看貨當天${start_time}至${end_time}時期間八號或以上的熱帶氣旋警告訊號或黑色暴雨警告訊號或政府公布的「超強颱風後的極端情況」生效，該日的看貨安排及此批貨品的拍賣將會取消。";
 
-  static String m3(file_name) => "開啟${file_name}檔案";
+  static String m6(file_name) => "開啟${file_name}檔案";
 
-  static String m4(lot_count) => "共有${lot_count}項拍賣品";
+  static String m7(lot_count) => "共有${lot_count}項拍賣品";
 
-  static String m5(total) => "拍賣總額: ${total}元";
+  static String m8(total) => "拍賣總額: ${total}元";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -124,16 +133,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "hoursBefore": MessageLookupByLibrary.simpleMessage("小時前"),
         "insepctionArrangementDefaultDetails":
             MessageLookupByLibrary.simpleMessage("拍賣品批次於下列時段在指定地點可供查看："),
-        "insepctionArrangementDefaultDetailsA":
-            MessageLookupByLibrary.simpleMessage("(a) 於拍賣日當週之以上任何時間；"),
-        "insepctionArrangementDefaultDetailsB":
-            MessageLookupByLibrary.simpleMessage(
-                "(b) 如拍賣日當週之以上日期為公眾假期，則為拍賣日當週前之星期五的相同時段；或"),
-        "insepctionArrangementDefaultDetailsC":
-            MessageLookupByLibrary.simpleMessage(
-                "(c) 如八號或以上的熱帶氣旋警告訊號懸掛，或黑色暴雨警告訊號或政府公布的「超強颱風後的極端情況」於上文所指明之看貨日期任何一天生效，則為拍賣日前之星期三的相同時段。"),
-        "insepctionArrangementDetails1": m1,
-        "insepctionArrangementDetails2": m2,
+        "insepctionArrangementDefaultDetailsA": m1,
+        "insepctionArrangementDefaultDetailsB": m2,
+        "insepctionArrangementDefaultDetailsC": m3,
+        "insepctionArrangementDetails1": m4,
+        "insepctionArrangementDetails2": m5,
         "itemDetails": MessageLookupByLibrary.simpleMessage("項目詳情"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
         "loading": MessageLookupByLibrary.simpleMessage("載入中..."),
@@ -214,7 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "semanticsMoreInfo": MessageLookupByLibrary.simpleMessage("更多資訊"),
         "semanticsOpen": MessageLookupByLibrary.simpleMessage("開啟"),
         "semanticsOpenFile": MessageLookupByLibrary.simpleMessage("開啟檔案"),
-        "semanticsOpenFileName": m3,
+        "semanticsOpenFileName": m6,
         "semanticsOpenInMap": MessageLookupByLibrary.simpleMessage("，點擊在地圖打開"),
         "semanticsOpenNews": MessageLookupByLibrary.simpleMessage("閱讀最新消息"),
         "semanticsRead": MessageLookupByLibrary.simpleMessage("已閱讀"),
@@ -242,8 +246,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之廢棄物品及剩餘物品"),
         "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("無人認領物品"),
         "time": MessageLookupByLibrary.simpleMessage("時間: "),
-        "tooltipLotCount": m4,
-        "tooltipTotalTrasaction": m5,
+        "tooltipLotCount": m7,
+        "tooltipTotalTrasaction": m8,
         "tour": MessageLookupByLibrary.simpleMessage("導覽"),
         "tourContent1":
             MessageLookupByLibrary.simpleMessage("灣在同分不活。角選和石車馬人經。"),

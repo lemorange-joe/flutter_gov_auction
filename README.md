@@ -56,7 +56,8 @@ Run the following commands:
   > flutter pub run build_runner build
 
 
-# Auction History
+## Auction History
+### 2022
 1. 2022-06-16 10:30:00
 2. 2022-07-14 10:30:00
 3. 2022-08-11 10:30:00
@@ -69,3 +70,11 @@ Run the following commands:
 10. 2022-11-17 10:30:00
 11. 2022-12-01 10:30:00
 12. 2022-12-15 10:30:00
+
+## Inspection Date Wordings Update
+> Should {day_of_week} be a public holiday, the inspection day shall be the first working day immediately before the public holiday between {start_time} hours and {end_time} hours.
+
+> (如該{day_of_week}為公眾假期，將改為公眾假期前第一個工作日{start_time}至{end_time}時。
+
+is removed since 8/2022
+https://www.gld.gov.hk/assets/gld/download-files/auction/Auction-List-8-2022-en-zh-hk.pdf

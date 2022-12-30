@@ -750,41 +750,44 @@ class S {
     );
   }
 
-  /// `(a) any time between the above specified periods of the week in which the Auction Date falls;`
-  String get insepctionArrangementDefaultDetailsA {
+  /// `(a) any time between {start_time} to {end_time} hours on the {day_of_week} of the week in which the Auction Date falls;`
+  String insepctionArrangementDefaultDetailsA(
+      Object start_time, Object end_time, Object day_of_week) {
     return Intl.message(
-      '(a) any time between the above specified periods of the week in which the Auction Date falls;',
+      '(a) any time between $start_time to $end_time hours on the $day_of_week of the week in which the Auction Date falls;',
       name: 'insepctionArrangementDefaultDetailsA',
       desc: '',
-      args: [],
+      args: [start_time, end_time, day_of_week],
     );
   }
 
-  /// `(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or`
-  String get insepctionArrangementDefaultDetailsB {
+  /// `(b) in the event either the {day_of_week} of the week in which the Auction Date falls is a public holiday, between {start_time} to {end_time} hours on the Friday preceding the week in which the Auction Date falls; or`
+  String insepctionArrangementDefaultDetailsB(
+      Object day_of_week, Object start_time, Object end_time) {
     return Intl.message(
-      '(b) in the event either of the above specified periods in which the Auction Date falls is a public holiday, between the above same hours on the Friday preceding the week in which the Auction Date falls; or',
+      '(b) in the event either the $day_of_week of the week in which the Auction Date falls is a public holiday, between $start_time to $end_time hours on the Friday preceding the week in which the Auction Date falls; or',
       name: 'insepctionArrangementDefaultDetailsB',
       desc: '',
-      args: [],
+      args: [day_of_week, start_time, end_time],
     );
   }
 
-  /// `(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date.`
-  String get insepctionArrangementDefaultDetailsC {
+  /// `(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on the inspection day specified above, between {start_time} to {end_time} hours on the Wednesday preceding the Auction Date.`
+  String insepctionArrangementDefaultDetailsC(
+      Object start_time, Object end_time) {
     return Intl.message(
-      '(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on any of the inspection day(s) specified above, between the above same hours on the Wednesday preceding the Auction Date.',
+      '(c) in the event Tropical Cyclone Warning Signal No. 8 or above is hoisted, or a Black Rainstorm Warning Signal or "extreme conditions after super typhoons" announced by the Government is/are in force, on the inspection day specified above, between $start_time to $end_time hours on the Wednesday preceding the Auction Date.',
       name: 'insepctionArrangementDefaultDetailsC',
       desc: '',
-      args: [],
+      args: [start_time, end_time],
     );
   }
 
-  /// `Inspection may only be made between {start_time} hours and {end_time} hours on {day_of_week} of the week of the public auction. Should {day_of_week} be a public holiday, the inspection day shall be the first working day immediately before the public holiday between {start_time} hours and {end_time} hours.`
+  /// `Inspection may only be made between {start_time} hours and {end_time} hours on {day_of_week} of the week of the public auction.`
   String insepctionArrangementDetails1(
       Object start_time, Object end_time, Object day_of_week) {
     return Intl.message(
-      'Inspection may only be made between $start_time hours and $end_time hours on $day_of_week of the week of the public auction. Should $day_of_week be a public holiday, the inspection day shall be the first working day immediately before the public holiday between $start_time hours and $end_time hours.',
+      'Inspection may only be made between $start_time hours and $end_time hours on $day_of_week of the week of the public auction.',
       name: 'insepctionArrangementDetails1',
       desc: '',
       args: [start_time, end_time, day_of_week],
