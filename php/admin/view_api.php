@@ -28,6 +28,7 @@ include_once ("../include/config.php");
     <select id="ddlApi" onchange="ChangeParamHint()">
       <option value="auction-list" data-param="" selected>List</option>
       <option value="auction-details" data-param="Auction ID, e.g. 1">Details</option>
+      <option value="auction-getLot" data-param="Lot ID, e.g. 10">Get Lot</option>
       <option value="auction-search" data-param="Auction ID - Keyword - [Type], e.g. 1-jewellery-c, 2-car">Search</option>
       <option value="auction-searchGrid" data-param="Category Keyword - total, e.g. sold-20, mobile-10">Search Grid</option>
       <option value="auction-relatedLots" data-param="Lot ID - page - pageSize, e.g. 13-1-12">Related Lots</option>

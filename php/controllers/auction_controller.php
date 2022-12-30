@@ -413,7 +413,19 @@ class AuctionController {
       $auctionLot->itemList = $itemList;
       
       $output->status = "success";
-      $output->data = $auctionLot;
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($auctionLot, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
     } catch (Exception $e) {
       $output->status = "error";
       // $output->message = $e->getMessage();
