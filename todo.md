@@ -2,17 +2,6 @@
 git remote set-url origin https://github.com/joekytse/67b30e82-a005-75a88993-c0e3fe49d08d.git
 git remote set-url origin https://github.com/lemorange-joe/flutter_government_auction.git
 
-## TODO, 2022/12/29
-INSERT INTO `InspectionDate`(`lot_id`, `inspection_day`, `inspection_start_time`, `inspection_end_time`) VALUES (0,1,'09:00','12:30');
-INSERT INTO `InspectionDate`(`lot_id`, `inspection_day`, `inspection_start_time`, `inspection_end_time`) VALUES (0,1,'14:00','16:00');
-INSERT INTO `InspectionDate`(`lot_id`, `inspection_day`, `inspection_start_time`, `inspection_end_time`) VALUES (0,2,'09:00','12:30');
-INSERT INTO `InspectionDate`(`lot_id`, `inspection_day`, `inspection_start_time`, `inspection_end_time`) VALUES (0,2,'14:00','16:00');
-
-## TODO, 2022/12/29
-! Verify inspection date list is empty !
-https://gauc.lemorange.studio/en/api/admin-getAuction-12-0-C
-inspection_date_list
-
 ## TODO, 2022/9/19
 - check firebase analytics 
 ## TODO, 2022/9/6
@@ -34,7 +23,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 =================================================================
 
 ## Before Launch ✓/✗:
-- test add and remove Item Type
+- test add and remove Auction Item Type
 
 =================================================================
 

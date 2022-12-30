@@ -117,7 +117,7 @@ include_once ("../class/admin_import.php");
         }
 
         function AutoFormatInspectionDate(el) {
-          el.value = el.value.replaceAll("and", ",").replaceAll("及", ",").replaceAll(/[^a-z\d\,]/ig, "");
+          el.value = el.value.replaceAll("and", ",").replaceAll("及", ",").replaceAll(/[^a-z\d\,\-]/ig, "");
         }
 
         function AutoFormatInspectionTime(el) {

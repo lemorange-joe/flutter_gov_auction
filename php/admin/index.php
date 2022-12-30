@@ -76,6 +76,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <a href="import_auction_list.php">Import Auction List</a>
         <br /><br />
         <a href="import_auction_result.php">Import Auction Result</a>
+        <br /><br />
+        <a href="import_inspection_date.php">Import Inspection Dates</a>
         <div class="remarks">
           <ol>
             <li>Create "Auction" in <u>Auction List</u></li>

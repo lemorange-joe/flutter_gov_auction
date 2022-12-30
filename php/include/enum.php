@@ -42,5 +42,4 @@ abstract class TransactionStatus
     const Sold = "S";
     const NotSold = "N";
 }
-
 ?>

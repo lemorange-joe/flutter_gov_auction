@@ -522,6 +522,45 @@ class AdminController {
     echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
+  function submitInspectionDate() {
+    global $conn;
+
+    $output = new stdClass();
+    $output->status = "fail";
+
+    try {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      if (!isset($data["auction_num"]) || empty($data["auction_num"])) {
+        throw new Exception("Auction no. missing!");  
+      }
+
+      $auctionId = 0;
+      $auctionNum = trim($data["auction_num"]);
+      
+      $selectSql = "SELECT auction_id FROM Auction WHERE auction_num = ?";
+      $result = $conn->Execute($selectSql, array($auctionNum))->GetRows();
+      if (count($result)) {
+        $auctionId = intval($result[0]["auction_id"]);
+      }
+
+      if ($auctionId == 0) {
+        throw new Exception("Auction no.: $auctionNum not exists!");
+      }
+
+      $this->importInspectionDate($auctionId, $data["inspection_list"]);
+
+      $output->data = new StdClass();
+      $output->data->id = $auctionId;
+      $output->status = "success";
+    } catch (Exception $e) {
+      $output->status = "error";
+      $output->error = $e->getMessage();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+
   function updateAuctionItemPdf() {
     global $conn;
 
