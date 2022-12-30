@@ -382,8 +382,8 @@ class InspectionDate implements JsonSerializable {
     $this->dayOfWeek = $day;
     $this->startTime = $start_time;
     $this->endTime = $end_time;
-    $this->typhoon_start_time = $typhoon_start_time;
-    $this->typhoon_end_time = $typhoon_end_time;
+    $this->typhoonStartTime = $typhoon_start_time;
+    $this->typhoonEndTime = $typhoon_end_time;
   }
 
   public function __get($property) {

@@ -704,14 +704,14 @@ class AuctionController {
 
     // select all inspection dates of the auction id first
     // then assign back to the lot programatically
-    $selectSql = "SELECT T.lot_id, T.inspection_day, T.inspection_start_time, T.inspection_end_time
+    $selectSql = "SELECT T.lot_id, T.inspection_day, T.inspection_start_time, T.inspection_end_time, T.typhoon_start_time, T.typhoon_end_time
                   FROM (
-                    SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+                    SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time, I.typhoon_start_time, I.typhoon_end_time
                       FROM InspectionDate I
                       INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
                     WHERE L.auction_id = ?
                       UNION 
-                    SELECT I0.lot_id, I0.inspection_day, I0.inspection_start_time, I0.inspection_end_time
+                    SELECT I0.lot_id, I0.inspection_day, I0.inspection_start_time, I0.inspection_end_time, I0.typhoon_start_time, I0.typhoon_end_time
                     FROM InspectionDate I0
                     WHERE I0.lot_id = 0
                   ) as T
