@@ -44,7 +44,6 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   List<RelatedAuctionLot> relatedLots = <RelatedAuctionLot>[];
   int relatedPageNum = 0;
   bool noMoreRelatedLots = false;
-  String moreText = 'xxx';
   late AuctionLot _auctionLot;
 
   @override
@@ -343,6 +342,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                             1: FractionColumnWidth(0.72),
                           },
                           children: <TableRow>[
+                            _buildAuctionLotRow(S.of(context).fieldAuctionDate, Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang))),
                             _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum)),
                             _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType))),
                             _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),

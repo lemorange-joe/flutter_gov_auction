@@ -92,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadNow": MessageLookupByLibrary.simpleMessage("立即下載"),
         "faq": MessageLookupByLibrary.simpleMessage("常見問題"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("精選物品"),
+        "fieldAuctionDate": MessageLookupByLibrary.simpleMessage("拍賣日期"),
         "fieldAuctionStatus": MessageLookupByLibrary.simpleMessage("拍賣狀態"),
         "fieldContact": MessageLookupByLibrary.simpleMessage("聯絡人"),
         "fieldContactLocation": MessageLookupByLibrary.simpleMessage("地點"),

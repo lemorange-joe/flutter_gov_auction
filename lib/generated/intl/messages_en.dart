@@ -103,6 +103,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
         "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
+        "fieldAuctionDate":
+            MessageLookupByLibrary.simpleMessage("Auction Date"),
         "fieldAuctionStatus":
             MessageLookupByLibrary.simpleMessage("Auction Status"),
         "fieldContact": MessageLookupByLibrary.simpleMessage("Contact Person"),

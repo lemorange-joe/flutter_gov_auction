@@ -480,6 +480,16 @@ class S {
     );
   }
 
+  /// `Auction Date`
+  String get fieldAuctionDate {
+    return Intl.message(
+      'Auction Date',
+      name: 'fieldAuctionDate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Auction Status`
   String get fieldAuctionStatus {
     return Intl.message(

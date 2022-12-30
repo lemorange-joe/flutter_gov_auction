@@ -24,6 +24,7 @@ $auctionJsonFieldMapping = array(
   "lastUpdate" => "lu",
   // ------
   // AuctionLot
+  "auctionDate" => "ad",
   "type" => "t",
   "lotNum" => "ln",
   "gldFileRef" => "gr",
@@ -128,6 +129,7 @@ class Auction implements JsonSerializable {
 
 class AuctionLot implements JsonSerializable {
   private $id;
+  private $auctionDate;
   private $type;
   private $lotNum;
   private $gldFileRef;
@@ -157,9 +159,10 @@ class AuctionLot implements JsonSerializable {
   private $status;
   private $lastUpdate;
 
-  public function __construct($id, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, $featured, $icon, 
+  public function __construct($id, $auctionDate, $type, $lotNum, $gldFileRef, $reference, $department, $contact, $number, $location, $remarks, $itemCondition, $featured, $icon, 
                               $photoUrl, $photoReal, $photoAuthor, $photoAuthorUrl, $descriptionEn, $descriptionTc, $descriptionSc, $tranCurrency, $tranPrice, $tranStatus, $status, $lastUpdate) {
     $this->id = $id;
+    $this->auctionDate = $auctionDate;
     $this->type = $type;
     $this->lotNum = $lotNum;
     $this->gldFileRef = $gldFileRef;

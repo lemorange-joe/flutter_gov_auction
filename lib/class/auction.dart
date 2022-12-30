@@ -60,6 +60,7 @@ class Auction {
 class AuctionLot {
   AuctionLot(
       this.id,
+      this.auctionDate,
       this.itemType,
       this.lotNum,
       this.gldFileRef,
@@ -102,6 +103,7 @@ class AuctionLot {
 
     return AuctionLot(
       json['id'] as int,
+      json['ad'] == null ? DateTime(1900) : DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['ad'] as String),
       json['t'] as String,
       json['ln'] as String,
       json['gr'] as String,
@@ -131,11 +133,12 @@ class AuctionLot {
   }
 
   factory AuctionLot.empty() {
-    return AuctionLot(0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], false, <InspectionDate>[], '', 0.0, '',
+    return AuctionLot(0, DateTime(1900), '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, '', '', false, <AuctionItem>[], false, <InspectionDate>[], '', 0.0, '',
         DateTime(1900));
   }
 
   final int id;
+  final DateTime auctionDate;
   final String itemType;
   final String lotNum;
   final String gldFileRef;

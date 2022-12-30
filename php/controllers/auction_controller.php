@@ -339,7 +339,7 @@ class AuctionController {
 
       // select the auction lot and items
       $selectSql = "SELECT
-                      L.lot_id, T.code, L.lot_num, 
+                      L.lot_id, A.start_time, T.code, L.lot_num, 
                       L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
                       L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
                       L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
@@ -369,6 +369,7 @@ class AuctionController {
 
       $auctionLot = new AuctionLot(
         intval($result[0]["lot_id"]),
+        $result[0]["start_time"],
         $result[0]["code"],
         $result[0]["lot_num"],
         $result[0]["gld_file_ref"],
@@ -703,13 +704,14 @@ class AuctionController {
     $defaultInspectionDateList = $this->getInspectionDateList(0, $inspectionDateResult);
 
     $selectSql = "SELECT
-                    L.lot_id, T.code, L.lot_num, 
+                    L.lot_id, A.start_time, T.code, L.lot_num, 
                     L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
                     L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
                     L.transaction_currency, L.transaction_price, L.transaction_status, L.status, L.last_update,
                     I.item_id, I.icon as 'item_icon', I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
                   FROM AuctionLot L
+                  INNER JOIN Auction A on L.auction_id = A.auction_id
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
                   WHERE L.auction_id = ? AND (L.status = ? OR (1 = ? AND L.status = ?))
@@ -749,6 +751,7 @@ class AuctionController {
 
         $curLot = new AuctionLot(
           intval($result[$i]["lot_id"]),
+          $result[$i]["start_time"],
           $result[$i]["code"],
           $result[$i]["lot_num"],
           $result[$i]["gld_file_ref"],
