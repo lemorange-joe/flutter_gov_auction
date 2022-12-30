@@ -309,7 +309,7 @@ class AuctionController {
       }
 
       // select inspection dates first
-      $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+      $selectSql = "SELECT I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time, I.typhoon_start_time, I.typhoon_end_time
                     FROM InspectionDate I
                     LEFT JOIN AuctionLot L ON I.lot_id = L.lot_id
                     WHERE L.lot_id = ? OR I.lot_id = 0
@@ -333,6 +333,8 @@ class AuctionController {
             $inspectionDateResult[$i]["inspection_day"],
             $inspectionDateResult[$i]["inspection_start_time"],
             $inspectionDateResult[$i]["inspection_end_time"],
+            $inspectionDateResult[$i]["typhoon_start_time"],
+            $inspectionDateResult[$i]["typhoon_end_time"],
           );
         }
       }
@@ -685,7 +687,12 @@ class AuctionController {
       $curInspectionDate = $inspectionDateList[$i];
 
       if ($curInspectionDate["lot_id"] == $lotId) {
-        $output[] = new InspectionDate($curInspectionDate["inspection_day"], $curInspectionDate["inspection_start_time"], $curInspectionDate["inspection_end_time"]);
+        $output[] = new InspectionDate(
+          $curInspectionDate["inspection_day"],
+          $curInspectionDate["inspection_start_time"],
+          $curInspectionDate["inspection_end_time"],
+          $curInspectionDate["typhoon_start_time"],
+          $curInspectionDate["typhoon_end_time"]);
       }
     }
 

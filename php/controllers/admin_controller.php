@@ -169,7 +169,7 @@ class AdminController {
 
     // 4. select all inspection dates of the auction id
     // then assign back to the lot programatically
-    $selectSql = "SELECT I.inspection_id, I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time
+    $selectSql = "SELECT I.inspection_id, I.lot_id, I.inspection_day, I.inspection_start_time, I.inspection_end_time, I.typhoon_start_time, I.typhoon_end_time
                   FROM InspectionDate I
                   INNER JOIN AuctionLot L ON I.lot_id = L.lot_id
                   WHERE L.auction_id = ?
@@ -177,7 +177,7 @@ class AdminController {
                     WHEN I.inspection_day = 7 THEN 0
                     ELSE I.inspection_day
                   END";
-    $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    $inspectionDateResult = $conn->Execute($selectSql, array($auctionId))->GetRows();
 
     $curLotNum = "";
     $curLotOutput = new stdClass();
@@ -935,14 +935,16 @@ class AdminController {
       $day = intval($curInspection["day"]);
       $startTime = trim($curInspection["start_time"]);
       $endTime = trim($curInspection["end_time"]);
+      $typhoonStartTime = trim($curInspection["typhoon_start_time"]);
+      $typhoonEndTime = trim($curInspection["typhoon_end_time"]);
 
       $lotNumList = explode(",", $lotNums);
       foreach($lotNumList as &$lotNum) {
         $lotNum = "'" . trim($lotNum) ."'";
       }
 
-      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time)
-                    SELECT L.lot_id, ?, ?, ?
+      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time, typhoon_start_time, typhoon_end_time)
+                    SELECT L.lot_id, ?, ?, ?, ?, ?
                     FROM AuctionLot L
                     WHERE L.auction_id = ? AND L.lot_num IN (" . implode(",", $lotNumList) . ") AND NOT EXISTS (
                       SELECT 1
@@ -951,7 +953,7 @@ class AdminController {
                     )";
 
       $result = $conn->Execute($insertSql, array(
-        $day, substr($startTime, 0, 5), substr($endTime, 0, 5), $auctionId, $day
+        $day, substr($startTime, 0, 5), substr($endTime, 0, 5), substr($typhoonStartTime, 0, 5), substr($typhoonEndTime, 0, 5), $auctionId, $day
       ));
     }
   }
@@ -1320,6 +1322,8 @@ class AdminController {
         $inspectionDate->day = $curInspectionDate["inspection_day"];
         $inspectionDate->start_time = $curInspectionDate["inspection_start_time"];
         $inspectionDate->end_time = $curInspectionDate["inspection_end_time"];
+        $inspectionDate->typhoon_start_time = $curInspectionDate["typhoon_start_time"];
+        $inspectionDate->typhoon_end_time = $curInspectionDate["typhoon_end_time"];
 
         $output[] = $inspectionDate;
       }
@@ -1701,9 +1705,11 @@ class AdminController {
       $day = intval($data["day"]);
       $startTime = substr(trim($data["start_time"]), 0, 5);
       $endTime = substr(trim($data["end_time"]), 0, 5);
+      $typhoonStartTime = substr(trim($data["typhoon_start_time"]), 0, 5);
+      $typhoonEndTime = substr(trim($data["typhoon_end_time"]), 0, 5);
 
-      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time) VALUES (?, ?, ?, ?)";
-      $conn->Execute($insertSql, array($lotId, $day, $startTime, $endTime));
+      $insertSql = "INSERT INTO InspectionDate (lot_id, inspection_day, inspection_start_time, inspection_end_time, typhoon_start_time, typhoon_end_time) VALUES (?, ?, ?, ?, ?, ?)";
+      $conn->Execute($insertSql, array($lotId, $day, $startTime, $endTime, $typhoonStartTime, $typhoonEndTime));
   
       $output->status = "success";
     } catch (Exception $e) {

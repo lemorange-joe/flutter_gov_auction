@@ -341,9 +341,10 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         output = '<div id="divNewInspectionDateField">';
         output += '<input type="hidden" id="tbNewInspectionLotId" value="' + lotId + '">';
-        output += '<input type="radio" id="rdbNewInspectionDay_0" name="rdbNewInspectionDay" value="0">';
-        output += '<label for="rdbNewInspectionDay_0">沒有註明</label>';
-        output += '<input type="radio" id="rdbNewInspectionDay_7" name="rdbNewInspectionDay" value="7" style="margin-left: 10px">';
+        // must have day of week
+        // output += '<input type="radio" id="rdbNewInspectionDay_0" name="rdbNewInspectionDay" value="0">';
+        // output += '<label for="rdbNewInspectionDay_0">沒有註明</label>';
+        output += '<input type="radio" id="rdbNewInspectionDay_7" name="rdbNewInspectionDay" value="7" style="margin-left: 0px">';
         output += '<label for="rdbNewInspectionDay_7">日</label>';
         output += '<input type="radio" id="rdbNewInspectionDay_1" name="rdbNewInspectionDay" value="1" style="margin-left: 10px">';
         output += '<label for="rdbNewInspectionDay_1">一</label>';
@@ -358,10 +359,15 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         output += '<input type="radio" id="rdbNewInspectionDay_6" name="rdbNewInspectionDay" value="6" style="margin-left: 10px">';
         output += '<label for="rdbNewInspectionDay_6">六</label>';
         output += "&nbsp;&nbsp;";
-        output += '<input id="tbNewInspectionStartTime" type="text" placeholder="09:30" maxlength="5" style="width: 60px">';
+        output += '<input id="tbNewInspectionStartTime" type="text" placeholder="09:30" maxlength="5" style="width: 40px">';
         output += " - ";
-        output += '<input id="tbNewInspectionEndTime" type="text" placeholder="12:30" maxlength="5" style="width: 60px">';
-        output += '<button style="margin-left: 20px" onclick="AddInspectionDate()">Save</button>'
+        output += '<input id="tbNewInspectionEndTime" type="text" placeholder="12:30" maxlength="5" style="width: 40px">';
+        output += '&nbsp;（ ';
+            output += '<input id="tbNewTyphoonStartTime" type="text" placeholder="--:--" maxlength="5" style="width: 40px">';
+            output += " - ";
+            output += '<input id="tbNewTyphoonEndTime" type="text" placeholder="--:--" maxlength="5" style="width: 40px">';
+          output += ' ）';
+        output += '<button style="margin-left: 10px" onclick="AddInspectionDate()">Save</button>'
         output += "</div>";
 
         document.getElementById("divNewInspectionRow_" + i).innerHTML = output;
@@ -378,12 +384,16 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
         var day = selectedRdbDay.value;
         var startTime = document.getElementById("tbNewInspectionStartTime").value;
         var endTime = document.getElementById("tbNewInspectionEndTime").value;
+        var typhoonStartTime = document.getElementById("tbNewTyphoonStartTime").value;
+        var typhoonEndTime = document.getElementById("tbNewTyphoonEndTime").value;
 
         var inspectionData = {
           lot_id: lotId,
           day: day,
           start_time: startTime,
           end_time: endTime,
+          typhoon_start_time: typhoonStartTime,
+          typhoon_end_time: typhoonEndTime,
         };
 
         var url = "../en/api/admin-addInspectionDate";
@@ -794,7 +804,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
           var curDate = inspectionDateList[i];
 
           output += "<div>";
-          output += (1 <= curDate["day"] && curDate["day"] <= 7 ? dayOfWeek[curDate["day"]] : dayOfWeek[0]) + " " + curDate["start_time"] + " - " + curDate["end_time"];
+          output += (1 <= curDate["day"] && curDate["day"] <= 7 ? dayOfWeek[curDate["day"]] : dayOfWeek[0]) + " " + curDate["start_time"] + " - " + curDate["end_time"] + "&nbsp;&nbsp;(" + curDate["typhoon_start_time"] + " - " + curDate["typhoon_end_time"] + ")";
           output += "<a href='#' style='text-decoration: none; margin-left: 6px; font-size: 12px'; onclick='DeleteInspectionDate(" + curDate["inspection_id"] + ");return false;'>❌</a>";
           output += "</div>";
         }
