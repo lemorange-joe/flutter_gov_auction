@@ -508,8 +508,6 @@ class AdminController {
         $this->importLotItems($lastId, $items);
       }
 
-      $this->importInspectionDate($auctionId, $data["inspection_list"]);
-
       $output->data = new StdClass();
       $output->data->id = $auctionId;
       $output->data->type = $type;
