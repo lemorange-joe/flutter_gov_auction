@@ -132,7 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hourBefore": MessageLookupByLibrary.simpleMessage("小时前"),
         "hoursBefore": MessageLookupByLibrary.simpleMessage("小时前"),
         "insepctionArrangementDefaultDetails":
-            MessageLookupByLibrary.simpleMessage("拍卖品批次于下列时段在指定地点可供查看："),
+            MessageLookupByLibrary.simpleMessage("本拍卖品批次于下列时段在指定地点可供查看："),
         "insepctionArrangementDefaultDetailsA": m1,
         "insepctionArrangementDefaultDetailsB": m2,
         "insepctionArrangementDefaultDetailsC": m3,

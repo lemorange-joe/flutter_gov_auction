@@ -68,7 +68,7 @@
     "hotSearch": "热门搜寻",
     "hourBefore": "小时前",
     "hoursBefore": "小时前",
-    "insepctionArrangementDefaultDetails": "拍卖品批次于下列时段在指定地点可供查看：",
+    "insepctionArrangementDefaultDetails": "本拍卖品批次于下列时段在指定地点可供查看：",
     "insepctionArrangementDefaultDetailsA": "(a) 于拍卖日当周之{day_of_week} {start_time} 时至 {end_time} 时任何时间；",
     "insepctionArrangementDefaultDetailsB": "(b) 如拍卖日当周之{day_of_week}为公众假期，则为拍卖日当周前之星期五 {start_time} 时至 {end_time} 时；或",
     "insepctionArrangementDefaultDetailsC": "(c) 如八号或以上的热带气旋警告讯号悬挂，或黑色暴雨警告讯号或政府公布的「超强台风后的极端情况」于上文所指明之看货日期生效，则为拍卖日前之星期三 {start_time} 时至 {end_time} 时。",

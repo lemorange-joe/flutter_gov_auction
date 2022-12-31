@@ -14,6 +14,12 @@ ALTER TABLE InspectionDate ADD typhoon_end_time CHAR(5) NOT NULL AFTER typhoon_s
 UPDATE InspectionDate SET typhoon_start_time = '--:--', typhoon_end_time = '--:--';
 
 ## TODO:
+- auction lot disclaimer
+  - Special Conditions of Auction Sale
+  - description maybe updated
+  - GLD pdf link
+  - show reminder when add to favourite
+    - checkbox to skip remind -> hive
 - replace LemorangeLoading widget with GLD's loading style
 - reminders:
   - test local notification reminder in ios

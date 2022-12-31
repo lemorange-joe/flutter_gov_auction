@@ -287,8 +287,8 @@ class InspectionDate {
       json['dow'] as int,
       json['st'] as String,
       json['et'] as String,
-      json['tst'] == null ? 'XX:XX' : json['tst'] as String, // TODO(joe): to be removed after updated server
-      json['tet'] == null ? 'XX:XX' : json['tet'] as String, 
+      json['tst'] as String,
+      json['tet'] as String, 
     );
   }
 

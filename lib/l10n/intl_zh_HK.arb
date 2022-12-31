@@ -68,7 +68,7 @@
     "hotSearch": "熱門搜尋",
     "hourBefore": "小時前",
     "hoursBefore": "小時前",
-    "insepctionArrangementDefaultDetails": "拍賣品批次於下列時段在指定地點可供查看：",
+    "insepctionArrangementDefaultDetails": "本拍賣品批次於下列時段在指定地點可供查看：",
     "insepctionArrangementDefaultDetailsA": "(a) 於拍賣日當週之{day_of_week} {start_time} 時至 {end_time} 時任何時間；",
     "insepctionArrangementDefaultDetailsB": "(b) 如拍賣日當週之{day_of_week}為公眾假期，則為拍賣日當週前之星期五 {start_time} 時至 {end_time} 時；或",
     "insepctionArrangementDefaultDetailsC": "(c) 如八號或以上的熱帶氣旋警告訊號懸掛，或黑色暴雨警告訊號或政府公布的「超強颱風後的極端情況」於上文所指明之看貨日期生效，則為拍賣日前之星期三 {start_time} 時至 {end_time} 時。",
