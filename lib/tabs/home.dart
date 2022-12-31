@@ -85,7 +85,7 @@ class _HomeTabState extends State<HomeTab> {
     final String auctionLotPageTitlePrefix = gridCategoryTitle.isEmpty ? '${S.of(context).recentlySold}: ' : '$gridCategoryTitle: ';
 
     ApiHelper()
-        .get(S.of(context).lang, 'auction', 'searchGrid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]).then((dynamic result) {
+        .get(S.of(context).lang, 'auction', 'grid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]).then((dynamic result) {
       if (!mounted) {
         return;
       }

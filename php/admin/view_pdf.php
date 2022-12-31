@@ -135,7 +135,7 @@ foreach($lotData as $key => $auctionLot) {
       </div>
       <button style="margin-top: 20px" onclick="showJsonTextArea()">Update Stat File</button>
     </div>
-    <iframe id="ifrmPdf" style="width: 1200px; height: 500px" src=""></iframe>
+    <iframe id="ifrmPdf" style="width: 1200px; height: 560px" src=""></iframe>
   </div>
   <button style="position: fixed; right: 20px; bottom: 140px; width:36px; height: 36px; font-size: 20px" onclick="document.body.scrollTop=document.documentElement.scrollTop=0">🔝</button>
   <button style="position: fixed; right: 20px; bottom: 100px; width:36px; height: 36px; font-size: 20px" onclick="JumpScroll(-100)" onmouseover="AutoScroll(-12)" onmouseout="StopScroll()">▲</button>

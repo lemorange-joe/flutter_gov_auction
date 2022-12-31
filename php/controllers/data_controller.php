@@ -63,6 +63,7 @@ class DataController {
   //   echo Base64Aes256Decrypt($_GET["text"], $_GET["secret"]);
   // }
   
+  /*** Public API ***/
   function appInfo() {
     global $conn, $lang;
     $_APP = AppData::getInstance();
@@ -185,6 +186,7 @@ class DataController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  /*** Public API ***/
   function messageList() {
     // quick api to return the list of available auctions
     global $conn, $lang;

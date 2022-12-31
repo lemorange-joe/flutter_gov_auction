@@ -129,7 +129,7 @@ class AuctionProvider with ChangeNotifier {
     final ApiHelper apiHelper = ApiHelper();
 
     try {
-      final Map<String, dynamic> json = await apiHelper.get(lang, 'auction', 'getLot', urlParameters: <String>[lotId.toString()]) as Map<String, dynamic>;
+      final Map<String, dynamic> json = await apiHelper.get(lang, 'auction', 'lot', urlParameters: <String>[lotId.toString()]) as Map<String, dynamic>;
       return AuctionLot.fromJson(json, lang);
     } catch (e) {
       Logger().e(e.toString());

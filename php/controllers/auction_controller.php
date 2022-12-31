@@ -4,6 +4,7 @@ include_once ("../include/config.php");
 include_once ("../include/common.php");
 
 class AuctionController {
+  /*** Public API ***/
   function list($param) {
     // quick api to return the list of available auctions
     global $conn, $lang, $isDeveloper;
@@ -65,6 +66,7 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  /*** Public API ***/
   function details($param) {
     // get the auction details and items by joining related tables
     global $conn, $lang;
@@ -109,191 +111,8 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
-  function search($param) {
-    // pre: $auctionId, $keyword, $type
-    // use $keyword to search the auction lot and items within the auction id
-    global $conn, $lang;
-
-    $output = new StdClass();
-    $output->status = "fail";
-
-    if (count($param) < 2 || empty($param[1])) {
-      $output->message = "Invalid parameters!";
-      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-      return;
-    }
-
-    try {
-      // TODO(joe): review the SQL after searchGrid is done
-      list($auctionId, $keyword, $type) = array_pad($param, 3, "");
-      $selectSql = "SELECT
-                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, 
-                      L.photo_author, L.photo_author_url, L.transaction_currency, L.transaction_price, L.transaction_status,
-                      I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
-                    FROM Auction A
-                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
-                    INNER JOIN ItemType T ON L.type_id = T.type_id
-                    WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
-                    ORDER BY L.lot_num, I.seq";
-
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
-      $rowNum = count($result);
-
-      $data = array();
-      for($i = 0; $i < $rowNum; ++$i) {
-        $photoUrl = $result[$i]["photo_url"];
-        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
-          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
-        }
-
-        $data[] = new AuctionItemSearch(
-          intval($result[$i]["auction_id"]),
-          $result[$i]["start_time"],
-          $result[$i]["auction_status"],
-          intval($result[$i]["lot_id"]),
-          $result[$i]["code"],
-          $result[$i]["featured"],
-          $photoUrl,
-          $result[$i]["photo_real"],
-          $result[$i]["photo_author"],
-          $result[$i]["photo_author_url"],
-          $result[$i]["transaction_currency"],
-          $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
-          $result[$i]["icon"],
-          $result[$i]["description"],
-          $result[$i]["quantity"],
-          $result[$i]["unit"]
-        );
-      }
-
-      $output->status = "success";
-      if ($GLOBALS["ENCRYPT_API_DATA"]) {
-        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
-        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-        
-        $output->data = Base64Aes256Encrypt($strData, $secret);
-        $output->key = $secret;
-      } else {
-        $output->data = $data;
-      }
-
-      if (isset($_GET["debug"])) {
-        $this->appendDebugData($output);
-      }
-    } catch (Exception $e) {
-      $output->status = "error";
-      // $output->message = $e->getMessage();
-    }
-
-    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-  }
-
-  function searchGrid($param) {
-    // pre: $type, $count
-    global $conn, $lang;
-
-    $output = new StdClass();
-    $output->status = "fail";
-
-    if (count($param) < 2) {
-      $output->message = "Invalid parameters!";
-      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-      return;
-    }
-
-    try {
-      include_once ("data_controller.php");
-      $categoryKeywordList = DataController::$searchGridCategoryKeywords;
-
-      $tranStatus = "";
-      $searchKeywordList = array();
-      $searchDescriptionTc = "";
-      if (array_key_exists($param[0], $categoryKeywordList)) {
-        $searchKeywordList = $categoryKeywordList[$param[0]]["query"];
-      }
-
-      if (empty($searchKeywordList)) {
-        $tranStatus = TransactionStatus::Sold;
-      } else {
-        $keywordCount = count($searchKeywordList);
-
-        $searchDescriptionTc = "AND (";
-        for ($i = 0; $i < $keywordCount; ++$i) {
-          $searchDescriptionTc .= "L.description_tc LIKE '" . $searchKeywordList[$i] . "'" . ($i < $keywordCount - 1 ? " OR " : "");
-        }
-        $searchDescriptionTc .= ")";
-      }
-
-      $count = intval($param[1]);
-
-      $selectSql = "SELECT
-                      A.auction_id, A.auction_num, A.start_time, A.auction_status, L.lot_id, L.lot_num, T.code, 
-                      L.description_$lang as 'description', L.featured, L.icon, 
-                      L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
-                      L.transaction_currency, L.transaction_price, L.transaction_status
-                    FROM Auction A
-                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
-                    INNER JOIN ItemType T ON L.type_id = T.type_id
-                    WHERE A.status = ? AND L.status = ? AND (? = '' OR L.transaction_status = ?) ". $searchDescriptionTc . "
-                    ORDER BY A.start_time DESC, T.seq, L.lot_num
-                    LIMIT 0, ?";
-
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
-      $rowNum = count($result);
-
-      $data = array();
-      for($i = 0; $i < $rowNum; ++$i) {
-        $photoUrl = $result[$i]["photo_url"];
-        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
-          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
-        }
-
-        $data[] = new AuctionLotSearch(
-          intval($result[$i]["auction_id"]),
-          $result[$i]["auction_num"],
-          $result[$i]["start_time"],
-          $result[$i]["auction_status"],
-          intval($result[$i]["lot_id"]),
-          $result[$i]["lot_num"],
-          $result[$i]["code"],
-          $result[$i]["description"],
-          $result[$i]["featured"],
-          $result[$i]["icon"],
-          $photoUrl,
-          $result[$i]["photo_real"],
-          $result[$i]["photo_author"],
-          $result[$i]["photo_author_url"],
-          $result[$i]["transaction_currency"],
-          $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"]
-        );
-      }
-
-      $output->status = "success";
-      if ($GLOBALS["ENCRYPT_API_DATA"]) {
-        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
-        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-        
-        $output->data = Base64Aes256Encrypt($strData, $secret);
-        $output->key = $secret;
-      } else {
-        $output->data = $data;
-      }
-
-      if (isset($_GET["debug"])) {
-        $this->appendDebugData($output);
-      }
-    } catch (Exception $e) {
-      $output->status = "error";
-      // $output->message = $e->getMessage();
-    }
-
-    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
-  }
-
-  function getLot($param) {
+  /*** Public API ***/
+  function lot($param) {
     global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
@@ -436,6 +255,193 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  /*** Public API ***/
+  function search($param) {
+    // pre: $auctionId, $keyword, $type
+    // use $keyword to search the auction lot and items within the auction id
+    global $conn, $lang;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    if (count($param) < 2 || empty($param[1])) {
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      return;
+    }
+
+    try {
+      // TODO(joe): review the SQL after searchGrid is done
+      list($auctionId, $keyword, $type) = array_pad($param, 3, "");
+      $selectSql = "SELECT
+                      A.auction_id, A.start_time, A.auction_status, L.lot_id, T.code, L.featured, L.photo_url, L.photo_real, 
+                      L.photo_author, L.photo_author_url, L.transaction_currency, L.transaction_price, L.transaction_status,
+                      I.icon, I.description_$lang as 'description', I.quantity, I.unit_$lang as 'unit'
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
+                    ORDER BY L.lot_num, I.seq";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
+
+        $data[] = new AuctionItemSearch(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["code"],
+          $result[$i]["featured"],
+          $photoUrl,
+          $result[$i]["photo_real"],
+          $result[$i]["photo_author"],
+          $result[$i]["photo_author_url"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"],
+          $result[$i]["icon"],
+          $result[$i]["description"],
+          $result[$i]["quantity"],
+          $result[$i]["unit"]
+        );
+      }
+
+      $output->status = "success";
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
+
+  /*** Public API ***/
+  function grid($param) {
+    // pre: $type, $count
+    global $conn, $lang;
+
+    $output = new StdClass();
+    $output->status = "fail";
+
+    if (count($param) < 2) {
+      $output->message = "Invalid parameters!";
+      echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+      return;
+    }
+
+    try {
+      include_once ("data_controller.php");
+      $categoryKeywordList = DataController::$searchGridCategoryKeywords;
+
+      $tranStatus = "";
+      $searchKeywordList = array();
+      $searchDescriptionTc = "";
+      if (array_key_exists($param[0], $categoryKeywordList)) {
+        $searchKeywordList = $categoryKeywordList[$param[0]]["query"];
+      }
+
+      if (empty($searchKeywordList)) {
+        $tranStatus = TransactionStatus::Sold;
+      } else {
+        $keywordCount = count($searchKeywordList);
+
+        $searchDescriptionTc = "AND (";
+        for ($i = 0; $i < $keywordCount; ++$i) {
+          $searchDescriptionTc .= "L.description_tc LIKE '" . $searchKeywordList[$i] . "'" . ($i < $keywordCount - 1 ? " OR " : "");
+        }
+        $searchDescriptionTc .= ")";
+      }
+
+      $count = intval($param[1]);
+
+      $selectSql = "SELECT
+                      A.auction_id, A.auction_num, A.start_time, A.auction_status, L.lot_id, L.lot_num, T.code, 
+                      L.description_$lang as 'description', L.featured, L.icon, 
+                      L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
+                      L.transaction_currency, L.transaction_price, L.transaction_status
+                    FROM Auction A
+                    INNER JOIN AuctionLot L ON A.auction_id = L.auction_id
+                    INNER JOIN ItemType T ON L.type_id = T.type_id
+                    WHERE A.status = ? AND L.status = ? AND (? = '' OR L.transaction_status = ?) ". $searchDescriptionTc . "
+                    ORDER BY A.start_time DESC, T.seq, L.lot_num
+                    LIMIT 0, ?";
+
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
+      $rowNum = count($result);
+
+      $data = array();
+      for($i = 0; $i < $rowNum; ++$i) {
+        $photoUrl = $result[$i]["photo_url"];
+        if (!empty(trim($photoUrl)) && strpos($photoUrl, "http://") === false && strpos($photoUrl, "https://") === false) {
+          $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
+        }
+
+        $data[] = new AuctionLotSearch(
+          intval($result[$i]["auction_id"]),
+          $result[$i]["auction_num"],
+          $result[$i]["start_time"],
+          $result[$i]["auction_status"],
+          intval($result[$i]["lot_id"]),
+          $result[$i]["lot_num"],
+          $result[$i]["code"],
+          $result[$i]["description"],
+          $result[$i]["featured"],
+          $result[$i]["icon"],
+          $photoUrl,
+          $result[$i]["photo_real"],
+          $result[$i]["photo_author"],
+          $result[$i]["photo_author_url"],
+          $result[$i]["transaction_currency"],
+          $result[$i]["transaction_price"],
+          $result[$i]["transaction_status"]
+        );
+      }
+
+      $output->status = "success";
+      if ($GLOBALS["ENCRYPT_API_DATA"]) {
+        $secret = GenRandomString($GLOBALS["AES_SECRET_LENGTH"]);
+        $strData = json_change_key(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+        
+        $output->data = Base64Aes256Encrypt($strData, $secret);
+        $output->key = $secret;
+      } else {
+        $output->data = $data;
+      }
+
+      if (isset($_GET["debug"])) {
+        $this->appendDebugData($output);
+      }
+    } catch (Exception $e) {
+      $output->status = "error";
+      // $output->message = $e->getMessage();
+    }
+
+    echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
+  }
+
+  /*** Public API ***/
   function relatedLots($param) {
     // pre: $lotId, $page (starting from 1), $pageSize
     // use $logId to search lots in other auctions that have any same auction items
@@ -531,6 +537,7 @@ class AuctionController {
     echo json_change_key(json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $GLOBALS['auctionJsonFieldMapping']);
   }
 
+  /*** Public API ***/
   function relatedItems($param) {
     // pre: $itemId, $page (starting from 1), $pageSize
     // use $itemId to search related items in other lots or auctions
