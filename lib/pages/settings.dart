@@ -8,9 +8,11 @@ import '../generated/l10n.dart';
 import '../helpers/firebase_analytics_helper.dart';
 import '../helpers/hive_helper.dart';
 import '../helpers/notification_helper.dart';
+import '../helpers/reminder_helper.dart';
 import '../includes/config.dart' as config;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
+import '../widgets/common/dialog.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage(this.changeLangCallback, {Key? key}) : super(key: key);
@@ -358,17 +360,43 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Card(
                       elevation: 0.3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                        child: Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              // TODO(joe): reset all preferences and clear all tips
-                              Text(
-                                'Reset Data',
-                                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
-                              ),
-                            ],
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(4.0),
+                        onTap: () async {
+                          await CommonDialog.show2(
+                            context,
+                            S.of(context).resetAllData,
+                            S.of(context).resetAllDataContent,
+                            S.of(context).ok,
+                            () {
+                              final HiveHelper hiveHelper = HiveHelper();
+                              hiveHelper.clearAllSavedAuction();
+                              hiveHelper.clearAllTips();
+                              hiveHelper.clearAllAuctionReminder();
+                              ReminderHelper().removeAllNotification();
+
+                              Navigator.of(context).pop();
+                            },
+                            S.of(context).cancel,
+                            () {
+                              Navigator.of(context).pop();
+                            },
+                            button1TextColor: Colors.red,
+                            button2TextColor: Colors.white,
+                            button2BackgroundColor: config.blue,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                          child: Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  S.of(context).resetAllData,
+                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

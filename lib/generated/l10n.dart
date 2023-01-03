@@ -1284,6 +1284,26 @@ class S {
     );
   }
 
+  /// `Reset All Data`
+  String get resetAllData {
+    return Intl.message(
+      'Reset All Data',
+      name: 'resetAllData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All saved items, reminders and preference settings will be reset. Are you sure to continue?`
+  String get resetAllDataContent {
+    return Intl.message(
+      'All saved items, reminders and preference settings will be reset. Are you sure to continue?',
+      name: 'resetAllDataContent',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Saved`
   String get saved {
     return Intl.message(

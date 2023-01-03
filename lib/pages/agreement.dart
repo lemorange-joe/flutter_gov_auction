@@ -212,7 +212,7 @@ class _AgreementPageState extends State<AgreementPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const SizedBox(height: 12.0),
+                            SizedBox(height: 12.0 / MediaQuery.of(context).textScaleFactor),
                             GestureDetector(
                               onTap: () {
                                 setState(() {

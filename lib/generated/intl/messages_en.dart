@@ -226,6 +226,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Related items: "),
         "reload": MessageLookupByLibrary.simpleMessage("Reload"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
+        "resetAllData": MessageLookupByLibrary.simpleMessage("Reset All Data"),
+        "resetAllDataContent": MessageLookupByLibrary.simpleMessage(
+            "All saved items, reminders and preference settings will be reset. Are you sure to continue?"),
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "savedAuctionEmpty":
             MessageLookupByLibrary.simpleMessage("No saved items"),

@@ -8,7 +8,7 @@ class CommonDialog {
   static const double _dialogContentHeightFactor = 0.333;
 
   static Future<void> show(BuildContext context, String title, String content, String buttonText, Function() onButtonPressed,
-      {bool isModal = false, Color barrierColor = Colors.black54}) async {
+      {bool isModal = false, Color barrierColor = Colors.black54, Color buttonTextColor = Colors.blue, Color? buttonBackgroundColor}) async {
     return showDialog<void>(
       context: context,
       barrierColor: barrierColor,
@@ -39,10 +39,11 @@ class CommonDialog {
           ),
           actions: <Widget>[
             TextButton(
+              style: TextButton.styleFrom(backgroundColor: buttonBackgroundColor),
               child: Text(
                 buttonText,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: buttonTextColor,
                   fontSize: 18.0,
                 ),
               ),
@@ -58,7 +59,12 @@ class CommonDialog {
 
   static Future<void> show2(
       BuildContext context, String title, String content, String buttonText1, Function() onButtonPressed1, String buttonText2, Function() onButtonPressed2,
-      {bool isModal = false, Color barrierColor = Colors.black54}) async {
+      {bool isModal = false,
+      Color barrierColor = Colors.black54,
+      Color button1TextColor = Colors.blue,
+      Color button2TextColor = Colors.blue,
+      Color? button1BackgroundColor,
+      Color? button2BackgroundColor}) async {
     return showDialog<void>(
       context: context,
       barrierColor: barrierColor,
@@ -89,10 +95,11 @@ class CommonDialog {
           ),
           actions: <Widget>[
             TextButton(
+              style: TextButton.styleFrom(backgroundColor: button1BackgroundColor),
               child: Text(
                 buttonText1,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: button1TextColor,
                   fontSize: 18.0,
                 ),
               ),
@@ -101,10 +108,11 @@ class CommonDialog {
               },
             ),
             TextButton(
+              style: TextButton.styleFrom(backgroundColor: button2BackgroundColor),
               child: Text(
                 buttonText2,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: button2TextColor,
                   fontSize: 18.0,
                 ),
               ),
@@ -120,7 +128,7 @@ class CommonDialog {
 
   static Future<void> showWithTips(
       BuildContext context, String title, String content, String tipsKey, String checkboxContent, String buttonText, Function() onButtonPressed,
-      {bool isModal = false, Color barrierColor = Colors.black54}) async {
+      {bool isModal = false, Color barrierColor = Colors.black54, Color buttonTextColor = Colors.blue, Color? buttonBackgroundColor}) async {
     return showDialog<void>(
       context: context,
       barrierColor: barrierColor,
@@ -169,19 +177,21 @@ class CommonDialog {
                     builder: (BuildContext context, _, __) {
                       final HiveHelper hiveHelper = HiveHelper();
                       final bool checked = hiveHelper.getTips(tipsKey);
-                      return Checkbox(
-                        value: checked,
-                        onChanged: (bool? value) {
-                          if (value!) {
-                            hiveHelper.writeTips(tipsKey);
-                          } else {
-                            hiveHelper.deleteTips(tipsKey);
-                          }
-                        },
+                      return Transform.scale(
+                        scale: MediaQuery.of(context).textScaleFactor,
+                        child: Checkbox(
+                          value: checked,
+                          onChanged: (bool? value) {
+                            if (value!) {
+                              hiveHelper.writeTips(tipsKey);
+                            } else {
+                              hiveHelper.deleteTips(tipsKey);
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
-                  // TODO(joe): apply remarks style to the checkbox row
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -196,8 +206,11 @@ class CommonDialog {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const SizedBox(height: 10.0),
-                          Text(checkboxContent),
+                          SizedBox(height: 12.0 / MediaQuery.of(context).textScaleFactor),
+                          Text(
+                            checkboxContent,
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0),
+                          ),
                         ],
                       ),
                     ),
@@ -208,10 +221,11 @@ class CommonDialog {
           ),
           actions: <Widget>[
             TextButton(
+              style: TextButton.styleFrom(backgroundColor: buttonBackgroundColor),
               child: Text(
                 buttonText,
-                style: const TextStyle(
-                  color: Colors.blue,
+                style: TextStyle(
+                  color: buttonTextColor,
                   fontSize: 18.0,
                 ),
               ),

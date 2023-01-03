@@ -86,6 +86,9 @@ class SavedPage extends StatelessWidget {
                               () {
                                 Navigator.of(context).pop();
                               },
+                              button1TextColor: Colors.red,
+                              button2TextColor: Colors.white,
+                              button2BackgroundColor: config.blue,
                             );
                           },
                           icon: Semantics(

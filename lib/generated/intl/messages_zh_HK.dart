@@ -196,6 +196,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "relatedLotsPrefix": MessageLookupByLibrary.simpleMessage("相關項目: "),
         "reload": MessageLookupByLibrary.simpleMessage("重新載入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
+        "resetAllData": MessageLookupByLibrary.simpleMessage("重設所有資料"),
+        "resetAllDataContent": MessageLookupByLibrary.simpleMessage(
+            "所有已收藏的拍賣項目、拍賣提醒及偏好設定均會被重設。確定要繼續？"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "savedAuctionEmpty": MessageLookupByLibrary.simpleMessage("沒有已收藏項目"),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜尋項目"),

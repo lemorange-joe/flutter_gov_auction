@@ -122,6 +122,8 @@
     "relatedLotsPrefix": "相關項目: ",
     "reload": "重新載入",
     "reminder": "提醒",
+    "resetAllData": "重設所有資料",
+    "resetAllDataContent": "所有已收藏的拍賣項目、拍賣提醒及偏好設定均會被重設。確定要繼續？",
     "saved": "已收藏",
     "savedAuctionEmpty": "沒有已收藏項目",
     "searchAuction": "(TBC)搜尋項目",

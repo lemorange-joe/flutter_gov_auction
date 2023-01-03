@@ -122,6 +122,8 @@
     "relatedLotsPrefix": "Related items: ",
     "reload": "Reload",
     "reminder": "Reminder",
+    "resetAllData": "Reset All Data",
+    "resetAllDataContent": "All saved items, reminders and preference settings will be reset. Are you sure to continue?",
     "saved": "Saved",
     "savedAuctionEmpty": "No saved items",
     "searchAuction": "(TBC)Search items",
