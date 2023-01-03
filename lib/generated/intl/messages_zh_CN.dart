@@ -246,6 +246,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeMS": MessageLookupByLibrary.simpleMessage("仍可使用之废弃物品及剩余物品"),
         "tabItemTypeUP": MessageLookupByLibrary.simpleMessage("无人认领物品"),
         "time": MessageLookupByLibrary.simpleMessage("时间: "),
+        "tipsCheckAuctionOnGldWebsiteCheckbox":
+            MessageLookupByLibrary.simpleMessage("(TBC) 明白了，不要再显示此提示"),
+        "tipsCheckAuctionOnGldWebsiteContent":
+            MessageLookupByLibrary.simpleMessage(
+                "(TBC) 此拍卖批号的资讯可能在您保存到「我的最爱」后更新。请谨记到「政府物流服务署」网站上查看最新的拍卖资讯。"),
+        "tipsCheckAuctionOnGldWebsiteTitle":
+            MessageLookupByLibrary.simpleMessage("(TBC) 检查政府物流服务署网站"),
         "tooltipLotCount": m7,
         "tooltipTotalTrasaction": m8,
         "tour": MessageLookupByLibrary.simpleMessage("导览"),

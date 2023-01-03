@@ -8,18 +8,11 @@ git remote set-url origin https://github.com/lemorange-joe/flutter_government_au
 - continue setup push in iOS
 https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with-fcm
 
-## TODO, 2022/12/30
-ALTER TABLE InspectionDate ADD typhoon_start_time CHAR(5) NOT NULL AFTER inspection_end_time;
-ALTER TABLE InspectionDate ADD typhoon_end_time CHAR(5) NOT NULL AFTER typhoon_start_time;
-UPDATE InspectionDate SET typhoon_start_time = '--:--', typhoon_end_time = '--:--';
-
 ## TODO:
 - auction lot disclaimer
   - Special Conditions of Auction Sale
   - description maybe updated
   - GLD pdf link
-  - show reminder when add to favourite
-    - checkbox to skip remind -> hive
 - replace LemorangeLoading widget with GLD's loading style
 - reminders:
   - test local notification reminder in ios

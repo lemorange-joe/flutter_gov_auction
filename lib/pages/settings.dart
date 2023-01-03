@@ -356,6 +356,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
+                    Card(
+                      elevation: 0.3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                        child: Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              // TODO(joe): reset all preferences and clear all tips
+                              Text(
+                                'Reset Data',
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     const Divider(),
                     const SizedBox(height: 15.0),
                     ElevatedButton(

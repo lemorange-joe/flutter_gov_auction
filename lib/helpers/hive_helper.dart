@@ -18,6 +18,7 @@ class HiveHelper {
   static final Box<String> _searchHistoryBox = Hive.box<String>('search_history');
   static final Box<SavedAuction> _savedAuctionBox = Hive.box<SavedAuction>('saved_auction');
   static final Box<AuctionReminder> _reminderBox = Hive.box<AuctionReminder>('reminder');
+  static final Box<bool> _tipsBox = Hive.box<bool>('tips'); // keys: check_auction_details_on_gld_website
   static final Box<String> _logBox = Hive.box<String>('log');
 
   static bool _enableLog = false;
@@ -36,6 +37,7 @@ class HiveHelper {
     await Hive.openBox<String>('search_history');
     await Hive.openBox<SavedAuction>('saved_auction');
     await Hive.openBox<AuctionReminder>('reminder');
+    await Hive.openBox<bool>('tips');
     if (_enableLog) {
       await Hive.openBox<String>('log');
     }
@@ -213,6 +215,30 @@ class HiveHelper {
     _reminderBox.clear();
   }
   // reminder box
+  // --------------------------------------------
+
+  // --------------------------------------------
+  // tips box:
+  Future<void> writeTips(String tipsKey) async {
+    await _tipsBox.put(tipsKey, true);
+  }
+
+  bool getTips(String tipsKey) {
+    return _tipsBox.containsKey(tipsKey) && _tipsBox.get(tipsKey)!;
+  }
+
+  List<String> getAllTips() {
+    return _tipsBox.keys.map((dynamic key) => key.toString()).toList();
+  }
+
+  Future<void> deleteTips(String tipsKey) async {
+    _tipsBox.delete(tipsKey);
+  }
+
+  Future<void> clearAllTips() async {
+    _tipsBox.clear();
+  }
+  // tips box
   // --------------------------------------------
 
   // --------------------------------------------

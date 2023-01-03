@@ -287,6 +287,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "tabItemTypeUP":
             MessageLookupByLibrary.simpleMessage("Unclaimed Properties"),
         "time": MessageLookupByLibrary.simpleMessage("Time: "),
+        "tipsCheckAuctionOnGldWebsiteCheckbox":
+            MessageLookupByLibrary.simpleMessage(
+                "(TBC) I understand, do not show again"),
+        "tipsCheckAuctionOnGldWebsiteContent": MessageLookupByLibrary.simpleMessage(
+            "(TBC) The information of this auction lot maybe changed after saving to your favourite. Please check the latest auction information on GLD website."),
+        "tipsCheckAuctionOnGldWebsiteTitle":
+            MessageLookupByLibrary.simpleMessage("(TBC) Check GLD website"),
         "tooltipLotCount": m7,
         "tooltipTotalTrasaction": m8,
         "tour": MessageLookupByLibrary.simpleMessage("Tour"),

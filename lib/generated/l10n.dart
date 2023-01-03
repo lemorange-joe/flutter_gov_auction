@@ -1734,6 +1734,36 @@ class S {
     );
   }
 
+  /// `(TBC) I understand, do not show again`
+  String get tipsCheckAuctionOnGldWebsiteCheckbox {
+    return Intl.message(
+      '(TBC) I understand, do not show again',
+      name: 'tipsCheckAuctionOnGldWebsiteCheckbox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC) The information of this auction lot maybe changed after saving to your favourite. Please check the latest auction information on GLD website.`
+  String get tipsCheckAuctionOnGldWebsiteContent {
+    return Intl.message(
+      '(TBC) The information of this auction lot maybe changed after saving to your favourite. Please check the latest auction information on GLD website.',
+      name: 'tipsCheckAuctionOnGldWebsiteContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(TBC) Check GLD website`
+  String get tipsCheckAuctionOnGldWebsiteTitle {
+    return Intl.message(
+      '(TBC) Check GLD website',
+      name: 'tipsCheckAuctionOnGldWebsiteTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{lot_count} auction lots`
   String tooltipLotCount(Object lot_count) {
     return Intl.message(

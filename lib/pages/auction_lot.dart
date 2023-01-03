@@ -20,6 +20,7 @@ import '../includes/utilities.dart' as utilities;
 import '../providers/app_info_provider.dart';
 import '../providers/auction_provider.dart';
 import '../widgets/auction_lot_card.dart';
+import '../widgets/common/dialog.dart';
 import '../widgets/info_button.dart';
 import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
@@ -294,15 +295,31 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                         _auctionLot.descriptionTc,
                                         _auctionLot.descriptionSc,
                                       );
-                                      final bool isSaved = HiveHelper().getSavedAuctionKeyList().contains(curAuction.hiveKey);
+                                      final HiveHelper hiveHelper = HiveHelper();
+                                      final bool isSaved = hiveHelper.getSavedAuctionKeyList().contains(curAuction.hiveKey);
 
                                       return ElevatedButton(
                                         onPressed: () async {
                                           if (isSaved) {
-                                            await HiveHelper().deleteSavedAuction(curAuction);
+                                            await hiveHelper.deleteSavedAuction(curAuction);
                                           } else {
+                                            const String tipsKey = 'check_auction_details_on_gld_website';
+                                            if (!hiveHelper.getTips(tipsKey)) {
+                                              CommonDialog.showWithTips(
+                                                context,
+                                                S.of(context).tipsCheckAuctionOnGldWebsiteTitle,
+                                                S.of(context).tipsCheckAuctionOnGldWebsiteContent,
+                                                tipsKey,
+                                                S.of(context).tipsCheckAuctionOnGldWebsiteCheckbox,
+                                                S.of(context).ok,
+                                                () {
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            }
+
                                             curAuction.savedDate = DateTime.now();
-                                            await HiveHelper().writeSavedAuction(curAuction);
+                                            await hiveHelper.writeSavedAuction(curAuction);
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(

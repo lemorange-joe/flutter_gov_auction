@@ -256,7 +256,7 @@ class _DebugPageState extends State<DebugPage> {
                             } catch (_) {}
 
                             final DateTime endTime = DateTime.now();
-                            benchmarkHistory.add('${i+1}. $result, length: ${decrypted.length}, elapsed: ${endTime.difference(startTime).inMilliseconds}ms');
+                            benchmarkHistory.add('${i + 1}. $result, length: ${decrypted.length}, elapsed: ${endTime.difference(startTime).inMilliseconds}ms');
                           }
                         });
                       },
@@ -400,6 +400,26 @@ class _DebugPageState extends State<DebugPage> {
         },
         style: ElevatedButton.styleFrom(backgroundColor: Colors.purple[300]),
         child: const Text('Clear saved auction'),
+      ),
+      const SizedBox(height: 10.0),
+      const Text('Finished Tips'),
+      const SizedBox(height: 5.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: ValueListenableBuilder<Box<bool>>(
+          valueListenable: Hive.box<bool>('tips').listenable(),
+          builder: (BuildContext context, _, __) {
+            return Text(HiveHelper().getAllTips().join(', '));
+          },
+        ),
+      ),
+      const SizedBox(height: 5.0),
+      ElevatedButton(
+        onPressed: () async {
+          await HiveHelper().clearAllTips();
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 93, 49, 101)),
+        child: const Text('Clear all tips'),
       ),
     ];
   }
