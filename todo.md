@@ -11,7 +11,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 ## TODO:
 - auction lot disclaimer
   - Special Conditions of Auction Sale
-  - description maybe updated
   - GLD pdf link
 - replace LemorangeLoading widget with GLD's loading style
 - reminders:

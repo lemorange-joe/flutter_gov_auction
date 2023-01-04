@@ -412,7 +412,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               TextSpan(
                                 text: standardTandCLink.title,
                                 style: const TextStyle(color: config.blue),
-                                semanticsLabel: '${S.of(context).read}${S.of(context).noticeToParticipants}',
+                                semanticsLabel: '${S.of(context).semanticsOpenFile}${standardTandCLink.title}',
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     launchUrl(
@@ -423,7 +423,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               ),
                               const WidgetSpan(
                                 alignment: PlaceholderAlignment.top,
-                                child: OpenExternalIcon(),
+                                child: OpenExternalIcon(size: 13.0),
                               ),
                               TextSpan(text: S.of(context).licenseRemarks2),
                             ],
@@ -503,7 +503,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: RichText(
         text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
           children: <InlineSpan>[
             TextSpan(text: S.of(context).pdfSource),
             TextSpan(
@@ -520,7 +520,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
             ),
             const WidgetSpan(
               alignment: PlaceholderAlignment.top,
-              child: OpenExternalIcon(),
+              child: OpenExternalIcon(size: 13.0),
             ),
           ],
         ),
