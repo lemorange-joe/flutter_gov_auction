@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../class/app_info.dart';
 import '../class/auction.dart';
 import '../class/saved_auction.dart';
 import '../generated/l10n.dart';
@@ -396,6 +397,41 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
                     SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
+                    Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+                      final NoticeLink standardTandCLink =
+                          appInfo.getAuctionStandardTandCLink(S.of(context).auctionStandardTandC, S.of(context).gldWebsiteLang);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: S.of(context).licenseRemarks1,
+                              ),
+                              TextSpan(
+                                text: standardTandCLink.title,
+                                style: const TextStyle(color: config.blue),
+                                semanticsLabel: '${S.of(context).read}${S.of(context).noticeToParticipants}',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchUrl(
+                                      Uri.parse(standardTandCLink.url),
+                                      mode: LaunchMode.externalApplication,
+                                    );
+                                  },
+                              ),
+                              const WidgetSpan(
+                                alignment: PlaceholderAlignment.top,
+                                child: OpenExternalIcon(),
+                              ),
+                              TextSpan(text: S.of(context).licenseRemarks2),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: RichText(
@@ -501,7 +537,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
           Text(S.of(context).fieldRemarks, style: headerStyle),
           Text(
             _auctionLot.remarks,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),

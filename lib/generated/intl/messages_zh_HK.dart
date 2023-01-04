@@ -79,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "auctionReminder": MessageLookupByLibrary.simpleMessage("拍賣提醒"),
         "auctionReminderEmpty": MessageLookupByLibrary.simpleMessage("沒有拍賣提醒"),
         "auctionResult": MessageLookupByLibrary.simpleMessage("拍賣結果"),
+        "auctionStandardTandC":
+            MessageLookupByLibrary.simpleMessage("拍賣標準條款及條件"),
         "auctionStartDate": MessageLookupByLibrary.simpleMessage("拍賣日期"),
         "auctionStartTime": MessageLookupByLibrary.simpleMessage("開始時間"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
@@ -140,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "insepctionArrangementDetails2": m5,
         "itemDetails": MessageLookupByLibrary.simpleMessage("項目詳情"),
         "lang": MessageLookupByLibrary.simpleMessage("tc"),
+        "licenseRemarks1": MessageLookupByLibrary.simpleMessage(
+            "如有任何拍賣品批次項目的出售受香港法例下任何領牌條件規管，該拍賣品批次則只可售予持有進行該項目貿易所需的有效牌照的競投人。詳情請參閱政府物流署的"),
+        "licenseRemarks2": MessageLookupByLibrary.simpleMessage("。"),
         "loading": MessageLookupByLibrary.simpleMessage("載入中..."),
         "location": MessageLookupByLibrary.simpleMessage("地點: "),
         "minutesBefore": MessageLookupByLibrary.simpleMessage("分鐘前"),

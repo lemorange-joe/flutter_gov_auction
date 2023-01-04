@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "auctionReminderEmpty":
             MessageLookupByLibrary.simpleMessage("No auction reminders"),
         "auctionResult": MessageLookupByLibrary.simpleMessage("Auction Result"),
+        "auctionStandardTandC": MessageLookupByLibrary.simpleMessage(
+            "Standard Terms and Conditions of Auction Sale"),
         "auctionStartDate": MessageLookupByLibrary.simpleMessage("Date"),
         "auctionStartTime": MessageLookupByLibrary.simpleMessage("Time"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -159,6 +161,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "insepctionArrangementDetails2": m5,
         "itemDetails": MessageLookupByLibrary.simpleMessage("Item Details"),
         "lang": MessageLookupByLibrary.simpleMessage("en"),
+        "licenseRemarks1": MessageLookupByLibrary.simpleMessage(
+            "For the sale of any Lot with Item(s) which is/are subject to any licensing requirements under the Laws of Hong Kong, such Lot will only be sold to a Bidder who is the holder of a valid licence relevant to the trade in the Item. Please refer to the "),
+        "licenseRemarks2": MessageLookupByLibrary.simpleMessage(
+            " of the Government Logistics Department for details."),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "location": MessageLookupByLibrary.simpleMessage("Location: "),
         "minutesBefore":

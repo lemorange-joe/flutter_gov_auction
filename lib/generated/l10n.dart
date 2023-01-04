@@ -280,6 +280,16 @@ class S {
     );
   }
 
+  /// `Standard Terms and Conditions of Auction Sale`
+  String get auctionStandardTandC {
+    return Intl.message(
+      'Standard Terms and Conditions of Auction Sale',
+      name: 'auctionStandardTandC',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Date`
   String get auctionStartDate {
     return Intl.message(
@@ -809,6 +819,26 @@ class S {
     return Intl.message(
       'Item Details',
       name: 'itemDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For the sale of any Lot with Item(s) which is/are subject to any licensing requirements under the Laws of Hong Kong, such Lot will only be sold to a Bidder who is the holder of a valid licence relevant to the trade in the Item. Please refer to the `
+  String get licenseRemarks1 {
+    return Intl.message(
+      'For the sale of any Lot with Item(s) which is/are subject to any licensing requirements under the Laws of Hong Kong, such Lot will only be sold to a Bidder who is the holder of a valid licence relevant to the trade in the Item. Please refer to the ',
+      name: 'licenseRemarks1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` of the Government Logistics Department for details.`
+  String get licenseRemarks2 {
+    return Intl.message(
+      ' of the Government Logistics Department for details.',
+      name: 'licenseRemarks2',
       desc: '',
       args: [],
     );

@@ -45,4 +45,13 @@ class AppInfoProvider with ChangeNotifier {
   List<String> get hotSearchList => appInfo.hotSearchList;
   List<CatalogLocation> get catalogLocationList => appInfo.catalogLocationList;
   Map<String, String> get gridCategoryList => appInfo.gridCategoryList;
+
+  NoticeLink getAuctionStandardTandCLink(String defaultName, String lang)  {
+    for(final NoticeLink noticeLink in appInfo.noticeLinkList) {
+      if (noticeLink.url.contains('terms-and-conditions')) {
+        return noticeLink;
+      }
+    }
+    return NoticeLink(defaultName, FlutterConfig.get('GLD_WEBSITE').toString().replaceAll('{lang}', lang));
+  }
 }

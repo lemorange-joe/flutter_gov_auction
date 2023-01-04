@@ -342,7 +342,7 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             content,
             style: TextStyle(
-              color: isCurrentRoute && isCurrentTab ? Colors.white : Theme.of(context).textTheme.bodyText2!.color,
+              color: isCurrentRoute && isCurrentTab ? Colors.white : Theme.of(context).textTheme.bodyText1!.color,
               fontSize: 15.0,
               fontWeight: isCurrentRoute && isCurrentTab ? FontWeight.w600 : FontWeight.normal,
             ),
