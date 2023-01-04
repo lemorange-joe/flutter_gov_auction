@@ -30,7 +30,7 @@ class CommonDialog {
               child: SingleChildScrollView(
                 child: Text(
                   content,
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 16.0,
                       ),
                 ),
@@ -86,7 +86,7 @@ class CommonDialog {
               child: SingleChildScrollView(
                 child: Text(
                   content,
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 20.0,
                       ),
                 ),
@@ -158,7 +158,7 @@ class CommonDialog {
                       child: Expanded(
                         child: Text(
                           content,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                 fontSize: 16.0,
                               ),
                         ),
