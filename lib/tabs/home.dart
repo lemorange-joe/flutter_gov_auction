@@ -186,8 +186,10 @@ class _HomeTabState extends State<HomeTab> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: auctionProvider.auctionList
+                                .asMap()
+                                .entries
                                 .map(
-                                  (Auction auction) => AuctionSummaryCard(auction, widget.showAuction),
+                                  (MapEntry<int, Auction> entry) => AuctionSummaryCard(entry.key, entry.value, widget.showAuction),
                                 )
                                 .toList(),
                           ),
