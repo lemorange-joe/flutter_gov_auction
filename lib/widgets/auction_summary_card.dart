@@ -38,7 +38,9 @@ class AuctionSummaryCard extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Calendar(auction.startTime, showBorder: true, size: 60.0, color: HSLColor.fromAHSL(1, (index * 5) % 360, 1, 0.333).toColor()),
+                    // gradient color change, for reference
+                    // Calendar(auction.startTime, showBorder: true, size: 60.0, color: HSLColor.fromAHSL(1, (index * 5) % 360, 1, 0.333).toColor()),
+                    Calendar(auction.startTime, showBorder: true, size: 60.0, color: auction.startTime.month.isOdd ? config.green : config.blue),
                     const SizedBox(height: 5.0),
                     Text(auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
                   ],
