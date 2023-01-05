@@ -78,6 +78,7 @@ include_once ("../class/admin_import.php");
           var total = 0;
           var firstEmptyId = "";
           var checkFieldList = ["tbGldRef", "tbRef", "tbDeptEn", "tbDeptTc", "tbContactEn", "tbContactTc", "tbNumberEn", "tbNumberTc", "tbLocationEn", "tbLocationTc"];
+          var checkFieldPairList = ["tbRemarks", "tbItemCondition"];
 
           while (document.getElementById(checkFieldList[0]+"_"+i)) {  // if there is lot i, check its fields
             for (var j = 0; j < checkFieldList.length; ++j) {
@@ -88,6 +89,20 @@ include_once ("../class/admin_import.php");
               }
             }
 
+            ++i;
+          }
+
+          i = 0;
+          while (document.getElementById(checkFieldPairList[0]+"En_"+i)) {
+            var enFieldId = checkFieldPairList[0]+"En_"+i;
+            var tcFieldId = checkFieldPairList[0]+"Tc_"+i;
+            if (document.getElementById(enFieldId).value.trim() != "" && document.getElementById(tcFieldId).value.trim() == "") {
+              firstEmptyId = firstEmptyId == "" ? tcFieldId : firstEmptyId;
+              ++total;
+            } else if (document.getElementById(enFieldId).value.trim() == "" && document.getElementById(tcFieldId).value.trim() != "") {
+              firstEmptyId = firstEmptyId == "" ? enFieldId : firstEmptyId;
+              ++total;
+            }
             ++i;
           }
 

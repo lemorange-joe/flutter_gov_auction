@@ -6,6 +6,8 @@ if (!isset($_SESSION["admin_user"])) {
 }
 
 include_once ("../include/config.php");
+
+$auctionNum = isset($_GET["auction_num"]) ? trim($_GET["auction_num"]) : "";
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +23,7 @@ include_once ("../include/config.php");
   </div>
   <div class="body">
     <div>
-      Auction Num: <input id="tbAuctionNum" style="width: 100px" placeholder="1/2023"/>
+      Auction Num: <input id="tbAuctionNum" style="width: 100px" placeholder="1/2023" value="<?=$auctionNum?>"/>
     </div>
     <div style="margin-top: 10px; text-decoration: underline">Dates</div>
     <div id="divInspectionDateForm"></div>

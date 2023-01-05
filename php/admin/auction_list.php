@@ -432,18 +432,28 @@ include_once ("../include/config.php");
                   divLastUpdate.appendChild(document.createTextNode("💰 " + curAuction.sold_count));
 
                   var importItemLink = document.createElement('a');
-                  importItemLink.appendChild(document.createTextNode("Import Items"));
+                  importItemLink.appendChild(document.createTextNode("Items"));
                   importItemLink.href = "import_auction_list.php?auction_num=" + encodeURIComponent(curAuction.num);
+                  importItemLink.classList.add("pager-link");
 
                   var importResultLink = document.createElement('a');
-                  importResultLink.appendChild(document.createTextNode("Import Result"));
+                  importResultLink.appendChild(document.createTextNode("Result"));
                   importResultLink.href = "import_auction_result.php?auction_num=" + encodeURIComponent(curAuction.num);
+                  importResultLink.classList.add("pager-link");
+
+                  var importInspectionDate = document.createElement('a');
+                  importInspectionDate.appendChild(document.createTextNode("Inspection Date"));
+                  importInspectionDate.href = "import_inspection_date.php?auction_num=" + encodeURIComponent(curAuction.num);
+                  importInspectionDate.classList.add("pager-link");
 
                   var divLinks = document.createElement("div");
                   divLinks.style.lineHeight = "40px";
+                  divLinks.appendChild(document.createTextNode("Import:\u00A0\u00A0"));
                   divLinks.appendChild(importItemLink);
-                  divLinks.appendChild(document.createTextNode("\u00A0\u00A0\u00A0\u00A0"));
+                  divLinks.appendChild(document.createTextNode("\u00A0\u00A0|\u00A0\u00A0"));
                   divLinks.appendChild(importResultLink);
+                  divLinks.appendChild(document.createTextNode("\u00A0\u00A0|\u00A0\u00A0"));
+                  divLinks.appendChild(importInspectionDate);
                 
                 cell.appendChild(divTextBox);
                 cell.appendChild(divCount);
