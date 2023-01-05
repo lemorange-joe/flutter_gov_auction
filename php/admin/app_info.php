@@ -33,18 +33,34 @@ include_once ("../include/config.php");
       <span>Data Version</span>
       <input id="tbDataVersion" style="width: 100px" placeholder="2201001" data-reset-value=""/>
     </div>
-    <div style="display: flex; width: 1200px; margin: 10px 0 5px 0">
+    <div style="margin-top: 10px">News <span class="remarks">(top of home page)</span></div>
+    <div style="display: flex; width: 1200px">
       <div>
-        News (EN)<br />
+        EN<br />
         <textarea id="txtNewsEn" style="width: 400px; height: 100px" data-reset-value=""></textarea>
       </div>
       <div style="margin: 0 10px">
-        News (TC)<br />
+        TC<br />
         <textarea id="txtNewsTc" style="width: 400px; height: 100px" data-reset-value=""></textarea>
       </div>
       <div>
-        News (SC)<br />
+        SC<br />
         <textarea id="txtNewsSc" style="width: 400px; height: 100px" data-reset-value=""></textarea>
+      </div>
+    </div>
+    <div style="margin-top: 10px">Remarks <span class="remarks">(bottom of home page)</span></div>
+    <div style="display: flex; width: 1200px">
+      <div>
+        EN<br />
+        <textarea id="txtRemarksEn" style="width: 400px; height: 100px" data-reset-value=""></textarea>
+      </div>
+      <div style="margin: 0 10px">
+      TC<br />
+        <textarea id="txtRemarksTc" style="width: 400px; height: 100px" data-reset-value=""></textarea>
+      </div>
+      <div>
+      SC<br />
+        <textarea id="txtRemarksSc" style="width: 400px; height: 100px" data-reset-value=""></textarea>
       </div>
     </div>
     <div style="margin-bottom: 20px">
@@ -74,6 +90,13 @@ include_once ("../include/config.php");
             document.getElementById("txtNewsTc").setAttribute("data-reset-value", jsonData["news_tc"]);
             document.getElementById("txtNewsSc").value = jsonData["news_sc"];
             document.getElementById("txtNewsSc").setAttribute("data-reset-value", jsonData["news_sc"]);
+            
+            document.getElementById("txtRemarksEn").value = jsonData["remarks_en"];
+            document.getElementById("txtRemarksEn").setAttribute("data-reset-value", jsonData["remarks_en"]);
+            document.getElementById("txtRemarksTc").value = jsonData["remarks_tc"];
+            document.getElementById("txtRemarksTc").setAttribute("data-reset-value", jsonData["remarks_tc"]);
+            document.getElementById("txtRemarksSc").value = jsonData["remarks_sc"];
+            document.getElementById("txtRemarksSc").setAttribute("data-reset-value", jsonData["remarks_sc"]);
 
             var highlightText = document.getElementById("spnLastUpdate").innerHTML != "";
             document.getElementById("spnLastUpdate").innerHTML = jsonData["last_update"];
@@ -93,7 +116,10 @@ include_once ("../include/config.php");
         data_version: document.getElementById("tbDataVersion").value,
         news_en: document.getElementById("txtNewsEn").value,
         news_tc: document.getElementById("txtNewsTc").value,
-        news_sc: document.getElementById("txtNewsSc").value
+        news_sc: document.getElementById("txtNewsSc").value,
+        remarks_en: document.getElementById("txtRemarksEn").value,
+        remarks_tc: document.getElementById("txtRemarksTc").value,
+        remarks_sc: document.getElementById("txtRemarksSc").value
       }
 
       var xhr = new XMLHttpRequest();
@@ -119,7 +145,7 @@ include_once ("../include/config.php");
     }
 
     function ResetForm() {
-      var inputList = ["tbMinAppVersion", "tbDataVersion", "txtNewsEn", "txtNewsTc", "txtNewsSc"];
+      var inputList = ["tbMinAppVersion", "tbDataVersion", "txtNewsEn", "txtNewsTc", "txtNewsSc", "txtRemarksEn", "txtRemarksTc", "txtRemarksSc"];
 
       inputList.forEach(function (id, i) {
         var input = document.getElementById(id);

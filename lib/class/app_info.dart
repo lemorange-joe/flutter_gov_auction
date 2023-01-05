@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 // import 'package:logger/logger.dart';
 
 class AppInfo {
-  AppInfo(this.forceUpgrade, this.dataVersion, this.news, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList, this.hotSearchList,
+  AppInfo(this.forceUpgrade, this.dataVersion, this.news, this.remarks, this.lastUpdate, this.noticeLinkList, this.messageList, this.itemTypeList, this.hotSearchList,
       this.catalogLocationList, this.gridCategoryList);
 
   factory AppInfo.fromJson(Map<String, dynamic> json) {
@@ -54,6 +54,7 @@ class AppInfo {
       false,
       json['dv'] as String,
       json['n'] as String,
+      json['r'] == null ? '' : json['r'] as String, // TODO(joe): null check to be removed after updated server
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
       noticeLinkList,
       messageList,
@@ -65,7 +66,7 @@ class AppInfo {
   }
 
   factory AppInfo.empty() {
-    return AppInfo(true, '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{}, <String>[], <CatalogLocation>[], <String, String>{});
+    return AppInfo(true, '', '', '', DateTime.now(), <NoticeLink>[], <PushMessage>[], <String, String>{}, <String>[], <CatalogLocation>[], <String, String>{});
   }
 
   String getItemTypeName(String typeCode) {
@@ -75,6 +76,7 @@ class AppInfo {
   final bool forceUpgrade;
   final String dataVersion;
   final String news;
+  final String remarks;
   final DateTime lastUpdate;
   final List<NoticeLink> noticeLinkList;
   final List<PushMessage> messageList;

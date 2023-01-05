@@ -80,7 +80,7 @@ class DataController {
 
     try {
       $data = new StdClass();
-      $selectSql = "SELECT min_app_version, data_version, news_$lang as news, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
+      $selectSql = "SELECT min_app_version, data_version, news_$lang as news, remarks_$lang as remarks, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
 
       $result = $conn->Execute($selectSql)->GetRows();  // simple query, no need to cache
       $rowNum = count($result);
@@ -91,6 +91,7 @@ class DataController {
         if (count($result) > 0) {
           $data->dv = $result[0]["data_version"];
           $data->n = $result[0]["news"];
+          $data->r = $result[0]["remarks"];
           $data->lu = date("Y-m-d H:i:s", strtotime($result[0]["last_update"]));
         }
 

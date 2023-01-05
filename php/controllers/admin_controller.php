@@ -1599,7 +1599,7 @@ class AdminController {
     global $conn;
 
     $output = new stdClass();
-    $selectSql = "SELECT min_app_version, data_version, news_en, news_tc, news_sc, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
+    $selectSql = "SELECT min_app_version, data_version, news_en, news_tc, news_sc, remarks_en, remarks_tc, remarks_sc, last_update FROM AppInfo ORDER BY id DESC LIMIT 1";
 
     $result = $conn->Execute($selectSql)->GetRows();
     $rowNum = count($result);
@@ -1610,6 +1610,9 @@ class AdminController {
       $output->news_en = $result[0]["news_en"];
       $output->news_tc = $result[0]["news_tc"];
       $output->news_sc = $result[0]["news_sc"];
+      $output->remarks_en = $result[0]["remarks_en"];
+      $output->remarks_tc = $result[0]["remarks_tc"];
+      $output->remarks_sc = $result[0]["remarks_sc"];
       $output->last_update = $result[0]["last_update"];
     }
 
@@ -1638,13 +1641,17 @@ class AdminController {
       $newsEn = $data["news_en"];
       $newsTc = $data["news_tc"];
       $newsSc = $data["news_sc"];
+      $remarksEn = $data["remarks_en"];
+      $remarksTc = $data["remarks_tc"];
+      $remarksSc = $data["remarks_sc"];
 
       $updateSql = "UPDATE AppInfo SET 
-                      min_app_version = ?,  data_version = ?, news_en = ?, news_tc = ?, news_sc = ?, last_update = now()
+                      min_app_version = ?,  data_version = ?, news_en = ?, news_tc = ?, news_sc = ?, 
+                      remarks_en = ?, remarks_tc = ?, remarks_sc = ?, last_update = now()
                     WHERE id = 1";
 
       $result = $conn->Execute($updateSql, array(
-        $minAppVersion, $dataVersion, $newsEn, $newsTc, $newsSc
+        $minAppVersion, $dataVersion, $newsEn, $newsTc, $newsSc, $remarksEn, $remarksTc, $remarksSc
       ));
   
         $output->status = "success";

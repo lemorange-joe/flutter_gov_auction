@@ -84,8 +84,7 @@ class _HomeTabState extends State<HomeTab> {
         gridCategoryTitle.isEmpty ? S.of(context).recentlySold : '${S.of(context).searchGridBefore}$gridCategoryTitle${S.of(context).searchGridAfter}';
     final String auctionLotPageTitlePrefix = gridCategoryTitle.isEmpty ? '${S.of(context).recentlySold}: ' : '$gridCategoryTitle: ';
 
-    ApiHelper()
-        .get(S.of(context).lang, 'auction', 'grid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]).then((dynamic result) {
+    ApiHelper().get(S.of(context).lang, 'auction', 'grid', urlParameters: <String>[gridCategoryKey, config.gridItemCount.toString()]).then((dynamic result) {
       if (!mounted) {
         return;
       }
@@ -162,9 +161,9 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
+            _buildRemarks(),
             ..._hotCategoryGridList,
             if (_loadingHotCategory) Center(child: LemorangeLoading()),
-            ..._buildOtherSection1(),
           ],
         ),
       ),
@@ -204,17 +203,28 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  List<Widget> _buildOtherSection1() {
-    return <Widget>[
-      const Text(
-        'Remarks',
-        style: TextStyle(fontSize: 20.0),
-      ),
-      const Text('Item 1'),
-      const Text('Item 2'),
-      const Text('Item 3'),
-      const Text('Item 4'),
-      const Text('Item 5'),
-    ];
+  Widget _buildRemarks() {
+    return Consumer<AppInfoProvider>(
+      builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+        return appInfo.remarks.isEmpty
+            ? Container()
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Card(
+                    elevation: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        appInfo.remarks,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+      },
+    );
   }
 }

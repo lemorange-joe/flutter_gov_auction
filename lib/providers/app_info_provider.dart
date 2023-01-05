@@ -38,6 +38,7 @@ class AppInfoProvider with ChangeNotifier {
   bool get forceUpgrade => appInfo.forceUpgrade;
   String get dataVersion => appInfo.dataVersion;
   String get news => appInfo.news;
+  String get remarks => appInfo.remarks;
   DateTime get lastUpdate => appInfo.lastUpdate;
   List<NoticeLink> get noticeLinkList => appInfo.noticeLinkList;
   List<PushMessage> get messageList => appInfo.messageList;

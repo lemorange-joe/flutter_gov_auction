@@ -8,6 +8,11 @@ git remote set-url origin https://github.com/lemorange-joe/flutter_government_au
 - continue setup push in iOS
 https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with-fcm
 
+## TODO, 2023/1/5
+ALTER TABLE AppInfo ADD remarks_en TEXT NOT NULL AFTER news_sc;
+ALTER TABLE AppInfo ADD remarks_tc TEXT NOT NULL AFTER remarks_en;
+ALTER TABLE AppInfo ADD remarks_sc TEXT NOT NULL AFTER remarks_tc;
+
 ## TODO:
 - auction lot disclaimer
   - Special Conditions of Auction Sale
