@@ -20,75 +20,80 @@ class AuctionSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 160.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-      width: 110.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-      child: Card(
-        color: Colors.blue,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 6.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              // upper half of the auction card
-              GestureDetector(
-                onTap: () {
-                  Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
-                  showAuction();
-                },
-                child: Column(
+      height: 170.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+      width: 115.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+      child: GestureDetector(
+        onTap: () {
+          Provider.of<AuctionProvider>(context, listen: false).setCurAuction(auction.id, S.of(context).lang);
+          showAuction();
+        },
+        child: Card(
+          color: Theme.of(context).backgroundColor,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // upper half of the auction card
+                Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Calendar(auction.startTime, size: 60.0, color: HSLColor.fromAHSL(1, (index * 2) % 360, 1, 0.333).toColor()),
-                    Text(auction.auctionNum),
+                    Calendar(auction.startTime, showBorder: true, size: 60.0, color: HSLColor.fromAHSL(1, (index * 5) % 360, 1, 0.333).toColor()),
+                    const SizedBox(height: 5.0),
+                    Text(auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
                   ],
                 ),
-              ),
-              // lower half of the auction card
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  if (auction.status == AuctionStatus.Finished)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Tooltip(
-                        message: S.of(context).tooltipTotalTrasaction(utilities.formatDigits(auction.transactionTotal)),
-                        showDuration: const Duration(milliseconds: config.tooltipDuration),
-                        child: Row(
-                          children: <Widget>[
-                            FaIcon(
-                              FontAwesomeIcons.moneyCheckDollar,
-                              size: 17.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                            ),
-                            const SizedBox(width: 8.0),
-                            Text(
-                              '\$${utilities.formatDigits(auction.transactionTotal)}',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
-                            ),
-                          ],
+                // lower half of the auction card
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    if (auction.status == AuctionStatus.Finished)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: Tooltip(
+                          message: S.of(context).tooltipTotalTrasaction(utilities.formatDigits(auction.transactionTotal)),
+                          showDuration: const Duration(milliseconds: config.tooltipDuration),
+                          child: Row(
+                            children: <Widget>[
+                              FaIcon(
+                                FontAwesomeIcons.moneyCheckDollar,
+                                size: 16.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                                color: Theme.of(context).textTheme.bodyText2!.color,
+                              ),
+                              const SizedBox(width: 4.0),
+                              Text(
+                                '\$${utilities.formatDigits(auction.transactionTotal)}',
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+                                overflow: TextOverflow.fade,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                    Tooltip(
+                      message: S.of(context).tooltipLotCount(utilities.formatDigits(auction.lotCount)),
+                      showDuration: const Duration(milliseconds: config.tooltipDuration),
+                      child: Row(
+                        children: <Widget>[
+                          FaIcon(
+                            FontAwesomeIcons.boxesStacked,
+                            color: Theme.of(context).textTheme.bodyText2!.color,
+                            size: 15.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            utilities.formatDigits(auction.lotCount),
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+                          ),
+                        ],
+                      ),
                     ),
-                  Tooltip(
-                    message: S.of(context).tooltipLotCount(utilities.formatDigits(auction.lotCount)),
-                    showDuration: const Duration(milliseconds: config.tooltipDuration),
-                    child: Row(
-                      children: <Widget>[
-                        FaIcon(
-                          FontAwesomeIcons.boxesStacked,
-                          size: 16.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
-                        ),
-                        const SizedBox(width: 8.0),
-                        Text(
-                          utilities.formatDigits(auction.lotCount),
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 13.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
