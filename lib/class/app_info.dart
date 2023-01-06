@@ -55,7 +55,7 @@ class AppInfo {
       json['dv'] as String,
       json['n'] as String,
       json['r'] as String,
-      json['ua'] == null ? 0 : json['na'] as int, // TODO(joe): check null, to be remove after updated api
+      json['ua'] as int,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
       noticeLinkList,
       messageList,
