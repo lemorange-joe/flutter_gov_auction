@@ -19,6 +19,11 @@ class AuctionSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? calendarColor;
+    if (auction.status == AuctionStatus.Finished) {
+      calendarColor = auction.startTime.month.isOdd ? config.green : config.blue;
+    }
+
     return SizedBox(
       height: 170.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
       width: 115.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
@@ -40,7 +45,7 @@ class AuctionSummaryCard extends StatelessWidget {
                   children: <Widget>[
                     // gradient color change, for reference
                     // Calendar(auction.startTime, showBorder: true, size: 60.0, color: HSLColor.fromAHSL(1, (index * 5) % 360, 1, 0.333).toColor()),
-                    Calendar(auction.startTime, showBorder: true, size: 60.0, color: auction.startTime.month.isOdd ? config.green : config.blue),
+                    Calendar(auction.startTime, showBorder: true, size: 60.0, color: calendarColor),
                     const SizedBox(height: 5.0),
                     Text(auction.auctionNum, style: Theme.of(context).textTheme.bodyText1),
                   ],

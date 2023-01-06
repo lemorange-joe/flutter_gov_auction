@@ -39,6 +39,7 @@ class AppInfoProvider with ChangeNotifier {
   String get dataVersion => appInfo.dataVersion;
   String get news => appInfo.news;
   String get remarks => appInfo.remarks;
+  int get upcomingAuctionId => appInfo.upcomingAuctionId;
   DateTime get lastUpdate => appInfo.lastUpdate;
   List<NoticeLink> get noticeLinkList => appInfo.noticeLinkList;
   List<PushMessage> get messageList => appInfo.messageList;

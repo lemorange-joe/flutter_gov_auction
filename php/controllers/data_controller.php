@@ -2,6 +2,7 @@
 include_once ("../include/appdata.php");
 include_once ("../include/config.php");
 include_once ("../include/common.php");
+include_once ('../include/enum.php');
 
 class DataController {
   public static $searchGridCategoryKeywords = array(
@@ -93,6 +94,14 @@ class DataController {
           $data->n = $result[0]["news"];
           $data->r = $result[0]["remarks"];
           $data->lu = date("Y-m-d H:i:s", strtotime($result[0]["last_update"]));
+        }
+
+        $selectSql = "SELECT auction_id, auction_status FROM Auction WHERE status = ? ORDER BY start_time DESC LIMIT 1";
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+        if (count($result) > 0) {
+          $data->ua = ($result[0]["auction_status"] == AuctionStatus::Finished) ? 0 : intval($result[0]["auction_id"]);
+        } else {
+          $data->ua = 0;
         }
 
         $selectSql = "SELECT title_$lang as 'title', url_$lang as 'url' FROM NoticeLink WHERE status = ? ORDER BY seq";
