@@ -176,7 +176,7 @@ class _HomeTabState extends State<HomeTab> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).pastAuctionList, style: titleStyle),
+            Text(S.of(context).allAuctionLists, style: titleStyle),
             Row(
               children: <Widget>[
                 Expanded(
@@ -184,13 +184,14 @@ class _HomeTabState extends State<HomeTab> {
                       ? SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: auctionProvider.auctionList
-                                .asMap()
-                                .entries
-                                .map(
-                                  (MapEntry<int, Auction> entry) => AuctionSummaryCard(entry.key, entry.value, widget.showAuction),
-                                )
-                                .toList(),
+                            children: auctionProvider.auctionList.asMap().entries.map(
+                              (MapEntry<int, Auction> entry) {
+                                final int index = entry.key;
+                                final bool showSeparator =
+                                    index > 0 && auctionProvider.auctionList[index - 1].startTime.year != auctionProvider.auctionList[index].startTime.year;
+                                return AuctionSummaryCard(entry.value, showSeparator, widget.showAuction);
+                              },
+                            ).toList(),
                           ),
                         )
                       : LemorangeLoading(),

@@ -200,6 +200,16 @@ class S {
     );
   }
 
+  /// `Auction Lists`
+  String get allAuctionLists {
+    return Intl.message(
+      'Auction Lists',
+      name: 'allAuctionLists',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `(TBC) Allow data analytics`
   String get allowAnalytics {
     return Intl.message(

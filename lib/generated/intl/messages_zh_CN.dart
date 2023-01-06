@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "于不元是还点作快告，记场已美没竟一的增农的对请制的来本石是往因接即心须起需。湾四没动……场只业现学……比球西水口得……们音育是什人、印也功转从关外算，话有回子台要脑关样出是，样为失望路光已理活乡关时是上，量书得方此，易很后球国此收，因发明马着及然有界、他如手府年上们么统完？"),
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "孩论脚定，脑告便过面了面乐的子地园响注。多界停看国题的史急文么密李严来传期入也开喜足饭也，很命的重和我么养画，天特务中到更西动金制就将方年人运朋计！"),
+        "allAuctionLists": MessageLookupByLibrary.simpleMessage("拍卖物品清单"),
         "allowAnalytics": MessageLookupByLibrary.simpleMessage("(TBC) 允許資料分析"),
         "allowAnalyticsDescription":
             MessageLookupByLibrary.simpleMessage("(TBC) 允許資料分析，于不元是还点作快告"),

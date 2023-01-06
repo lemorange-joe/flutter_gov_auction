@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nullam pharetra, nibh et vehicula eleifend, dui justo ornare odio, vitae varius turpis diam at urna. Ut at dolor vulputate, molestie lectus nec, aliquam sapien. In vestibulum tristique augue non placerat. Pellentesque a libero magna. Cras sed tortor in leo commodo maximus id sagittis nulla."),
         "agreementParagraph5": MessageLookupByLibrary.simpleMessage(
             "Maecenas metus sapien, pretium at libero ac, porttitor tincidunt elit. Vestibulum elementum eros et enim pharetra gravida. Donec pulvinar nisi massa, sit amet feugiat dui egestas dictum."),
+        "allAuctionLists":
+            MessageLookupByLibrary.simpleMessage("Auction Lists"),
         "allowAnalytics":
             MessageLookupByLibrary.simpleMessage("(TBC) Allow data analytics"),
         "allowAnalyticsDescription": MessageLookupByLibrary.simpleMessage(
