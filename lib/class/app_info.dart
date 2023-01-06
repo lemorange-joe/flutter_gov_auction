@@ -54,7 +54,7 @@ class AppInfo {
       false,
       json['dv'] as String,
       json['n'] as String,
-      json['r'] == null ? '' : json['r'] as String, // TODO(joe): null check to be removed after updated server
+      json['r'] as String,
       DateFormat('yyyy-MM-dd HH:mm:ss').parse(json['lu'] as String),
       noticeLinkList,
       messageList,

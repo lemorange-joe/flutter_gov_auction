@@ -388,15 +388,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                          child: Expanded(
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  S.of(context).resetAllData,
-                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
-                                ),
-                              ],
-                            ),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                S.of(context).resetAllData,
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
+                              ),
+                            ],
                           ),
                         ),
                       ),
