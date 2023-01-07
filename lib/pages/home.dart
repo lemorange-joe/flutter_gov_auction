@@ -135,6 +135,7 @@ class _HomePageState extends State<HomePage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
+      elevation: 1.0,
       titleSpacing: 0.0,
       toolbarHeight: 56.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -222,7 +223,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer buildDrawer(BuildContext context) {
-    final Color listItemColor = Theme.of(context).textTheme.bodyText2!.color!;
+    final Color listItemColor = Theme.of(context).textTheme.bodyText1!.color!;
 
     return Drawer(
       child: DefaultTextStyle(

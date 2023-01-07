@@ -116,34 +116,37 @@ class _HomeTabState extends State<HomeTab> {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10.0),
-            SizedBox(
-              height: 40.0 * MediaQuery.of(context).textScaleFactor,
-              child: OutlinedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'search');
-                },
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                  foregroundColor: Theme.of(context).textTheme.bodyText1!.color,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      MdiIcons.magnify,
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                      size: 24.0 * MediaQuery.of(context).textScaleFactor,
-                    ),
-                    const SizedBox(width: 8.0),
-                    Text(S.of(context).searchAuction, style: Theme.of(context).textTheme.bodyText2),
-                  ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: SizedBox(
+                height: 40.0 * MediaQuery.of(context).textScaleFactor,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'search');
+                  },
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                    foregroundColor: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        MdiIcons.magnify,
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        size: 24.0 * MediaQuery.of(context).textScaleFactor,
+                      ),
+                      const SizedBox(width: 8.0),
+                      Text(S.of(context).searchAuction, style: Theme.of(context).textTheme.bodyText2),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -176,24 +179,30 @@ class _HomeTabState extends State<HomeTab> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).allAuctionLists, style: titleStyle),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0),
+              child: Text(S.of(context).allAuctionLists, style: titleStyle),
+            ),
             Row(
               children: <Widget>[
                 Expanded(
                   child: (auctionProvider.loaded)
-                      ? SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: auctionProvider.auctionList.asMap().entries.map(
-                              (MapEntry<int, Auction> entry) {
-                                final int index = entry.key;
-                                final bool showSeparator =
-                                    index > 0 && auctionProvider.auctionList[index - 1].startTime.year != auctionProvider.auctionList[index].startTime.year;
-                                return AuctionSummaryCard(entry.value, showSeparator, widget.showAuction);
-                              },
-                            ).toList(),
+                      ? Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: auctionProvider.auctionList.asMap().entries.map(
+                                (MapEntry<int, Auction> entry) {
+                                  final int index = entry.key;
+                                  final bool showSeparator =
+                                      index > 0 && auctionProvider.auctionList[index - 1].startTime.year != auctionProvider.auctionList[index].startTime.year;
+                                  return AuctionSummaryCard(entry.value, showSeparator, widget.showAuction);
+                                },
+                              ).toList(),
+                            ),
                           ),
-                        )
+                      )
                       : LemorangeLoading(),
                 ),
               ],

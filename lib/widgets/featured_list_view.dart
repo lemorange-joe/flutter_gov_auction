@@ -35,23 +35,26 @@ class FeaturedListView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Icon(
-                  MdiIcons.checkDecagram,
-                  color: titleColor,
-                  size: 22.0 * MediaQuery.of(context).textScaleFactor,
-                ),
-                const SizedBox(width: config.iconTextSpacing),
-                Text(
-                  '${auction.status == AuctionStatus.Finished ? S.of(context).previousAuction : S.of(context).nextAuction} - ${S.of(context).featuredItems}',
-                  style: TextStyle(
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    MdiIcons.checkDecagram,
                     color: titleColor,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                    size: 22.0 * MediaQuery.of(context).textScaleFactor,
                   ),
-                ),
-              ],
+                  const SizedBox(width: config.iconTextSpacing),
+                  Text(
+                    '${auction.status == AuctionStatus.Finished ? S.of(context).previousAuction : S.of(context).nextAuction} - ${S.of(context).featuredItems}',
+                    style: TextStyle(
+                      color: titleColor,
+                      fontSize: config.titleFontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -66,23 +69,26 @@ class FeaturedListView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 250.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
-          child: Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-            return auctionProvider.loaded
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: auction.lotList
-                          .where((AuctionLot auctionLot) => auctionLot.featured)
-                          .map((AuctionLot auctionLot) => FeaturedCard(auctionLot, showFeaturedLot))
-                          .toList(),
-                    ),
-                  )
-                : Center(
-                    child: LemorangeLoading(size: 60.0),
-                  );
-          }),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: SizedBox(
+            height: 250.0 * utilities.adjustedPhotoScale(MediaQuery.of(context).textScaleFactor),
+            child: Consumer<AuctionProvider>(builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+              return auctionProvider.loaded
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: auction.lotList
+                            .where((AuctionLot auctionLot) => auctionLot.featured)
+                            .map((AuctionLot auctionLot) => FeaturedCard(auctionLot, showFeaturedLot))
+                            .toList(),
+                      ),
+                    )
+                  : Center(
+                      child: LemorangeLoading(size: 60.0),
+                    );
+            }),
+          ),
         ),
       ],
     );
