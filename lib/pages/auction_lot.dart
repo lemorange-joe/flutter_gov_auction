@@ -216,6 +216,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
     final TextStyle headerStyle = Theme.of(context).textTheme.bodyText1!.copyWith(
           fontWeight: FontWeight.bold,
         );
+    final TextStyle fieldStyle = Theme.of(context).textTheme.bodyText1!;
 
     return Scaffold(
       appBar: AppBar(
@@ -349,50 +350,57 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SelectableRegion(
-                        selectionControls: materialTextSelectionControls,
-                        focusNode: FocusNode(),
-                        child: Table(
-                          columnWidths: const <int, TableColumnWidth>{
-                            0: FractionColumnWidth(0.28),
-                            1: FractionColumnWidth(0.72),
-                          },
-                          children: <TableRow>[
-                            _buildAuctionLotRow(S.of(context).fieldAuctionDate, Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang))),
-                            _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum)),
-                            _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType))),
-                            _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef)),
-                            _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department)),
-                            _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference)),
-                            _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem()),
-                            _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem()),
-                            _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
-                            _buildAuctionLotRow(
-                                S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition)),
-                            _buildAuctionLotRow(
-                              _auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement,
-                              _auctionLot.inspectionDateList.isEmpty
-                                  ? const Text(config.emptyCharacter)
-                                  : Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: _auctionLot.inspectionDateList
-                                          .map(
-                                            (InspectionDate inspect) => _buildInspectionDateItem(context, inspect),
-                                          )
-                                          .toList(),
-                                    ),
-                            ),
-                            _buildAuctionLotRow(S.of(context).fieldAuctionStatus, _buildAuctionStatus()),
-                          ],
+                    Card(
+                      elevation: 1.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SelectableRegion(
+                          selectionControls: materialTextSelectionControls,
+                          focusNode: FocusNode(),
+                          child: Table(
+                            columnWidths: const <int, TableColumnWidth>{
+                              0: FractionColumnWidth(0.28),
+                              1: FractionColumnWidth(0.72),
+                            },
+                            children: <TableRow>[
+                              _buildAuctionLotRow(S.of(context).fieldAuctionDate,
+                                  Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang), style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum, style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType), style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef, style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department, style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference, style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem(fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem(fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
+                              _buildAuctionLotRow(
+                                  S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition, style: fieldStyle)),
+                              _buildAuctionLotRow(
+                                _auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement,
+                                _auctionLot.inspectionDateList.isEmpty
+                                    ? const Text(config.emptyCharacter)
+                                    : Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: _auctionLot.inspectionDateList
+                                            .map(
+                                              (InspectionDate inspect) => _buildInspectionDateItem(context, inspect, fieldStyle),
+                                            )
+                                            .toList(),
+                                      ),
+                              ),
+                              _buildAuctionLotRow(S.of(context).fieldAuctionStatus, _buildAuctionStatus()),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: _buildItemList(context, headerStyle),
+                    Card(
+                      elevation: 1.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: _buildItemList(context, headerStyle),
+                      ),
                     ),
                     SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
                     if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
@@ -529,38 +537,44 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   Widget _buildRemarks(TextStyle headerStyle) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(S.of(context).fieldRemarks, style: headerStyle),
-          Text(
-            _auctionLot.remarks,
-            style: Theme.of(context).textTheme.bodyText1,
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        elevation: 1.0,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(S.of(context).fieldRemarks, style: headerStyle),
+              Text(
+                _auctionLot.remarks,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildContactLocationItem() {
+  Widget _buildContactLocationItem(TextStyle fieldStyle) {
     // for testing
     // '項目1-2: 香港灣仔軍器廠街1號警察總部警政大樓26樓 項目3-5: 香港灣仔軍器廠街1號警察總部警政大樓西翼21樓 項目6: 香港灣仔軍器廠街1號警察總部警政大樓西翼9樓'
     // 'Item(s) 1-2: 26/F, Arsenal House, Police Headquarters, 1 Arsenal Street, Wan Chai, Hong Kong Item(s) 3-5: 21/F, Arsenal House West Wing, Police Headquarters, 1 Arsenal Street, Wan Chai, Hong KongItem(s) 6: 9/F, Arsenal House West Wing, Police Headquarters'
     final String itemSeparator = S.of(context).splitContactLocation;
-    return Text(_auctionLot.contactLocation.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''));
+    return Text(_auctionLot.contactLocation.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''), style: fieldStyle);
   }
 
-  Widget _buildContactPersonItem() {
+  Widget _buildContactPersonItem(TextStyle fieldStyle) {
     // for testing
     // '項目1-2: 黃女士 / 蘇先生 項目3-5: 方女士 / 吳先生 項目6: 何先生 / 尹小姐'
     // 'Item(s) 1-2: Ms WONG / Mr SO, Item(s) 3-5: Ms FONG / Mr WU, Mr HO / Miss WAN'
     final String itemSeparator = S.of(context).splitContactPerson;
-    return Text(_auctionLot.contact.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''));
+    return Text(_auctionLot.contact.trim().replaceAll(itemSeparator, '\n$itemSeparator').replaceFirst('\n', ''), style: fieldStyle);
   }
 
-  Widget _buildInspectionDateItem(BuildContext context, InspectionDate inspect) {
+  Widget _buildInspectionDateItem(BuildContext context, InspectionDate inspect, TextStyle fieldStyle) {
     final String content = S.of(context).lang == 'en'
         ? '${inspect.startTime} - ${inspect.endTime} ${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}'
         : '${utilities.formatDayOfWeek(inspect.dayOfWeek, S.of(context).lang)}  ${inspect.startTime} - ${inspect.endTime}';
@@ -582,7 +596,7 @@ ${S.of(context).insepctionArrangementDefaultDetailsC(inspect.startTime, inspect.
 
     return Row(
       children: <Widget>[
-        Text(content),
+        Text(content, style: fieldStyle),
         InfoButton(_auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement, moreInfoContent),
       ],
     );

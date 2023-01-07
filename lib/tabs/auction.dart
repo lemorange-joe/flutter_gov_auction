@@ -259,10 +259,11 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                               }).toList();
 
                               return savedAuctionLotList.isEmpty
-                                  ? Center(child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 150.0),
-                                    child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1),
-                                  ))
+                                  ? Center(
+                                      child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 150.0),
+                                      child: Text(S.of(context).savedAuctionEmpty, style: Theme.of(context).textTheme.bodyText1),
+                                    ))
                                   : _buildLotList('3', savedAuctionLotList);
                             },
                           ),
@@ -472,10 +473,20 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     super.build(context);
 
+    final int itemCount = widget.lotList.isEmpty ? 0 : widget.lotList.length + 1;
+
     return ListView.builder(
-      itemCount: widget.lotList.length,
+      itemCount: itemCount,
       itemExtent: 150.0 * MediaQuery.of(context).textScaleFactor,
       itemBuilder: (BuildContext context, int i) {
+        if (i == itemCount - 1) {
+          // pad the bottom of the list
+          return SizedBox(
+            height: 120.0 * MediaQuery.of(context).textScaleFactor,
+            child: Container(),
+          );
+        }
+
         final AuctionLot curLot = widget.lotList[i];
         final String heroTagPrefix = 'lot_photo_${widget.listIndex}';
 
