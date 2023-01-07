@@ -27,6 +27,17 @@ import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
 import '../widgets/ui/open_external_icon.dart';
 
+class Spacer extends StatelessWidget {
+  const Spacer({super.key, this.height = 10.0});
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: height * MediaQuery.of(context).textScaleFactor);
+  }
+}
+
 class AuctionLotPage extends StatefulWidget {
   const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, this.loadAuctionLotId, {super.key});
 
@@ -185,7 +196,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         Text(
           S.of(context).relatedLotsOfThisAuction,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontSize: 16.0,
+                fontSize: config.titleFontSize,
+                color: config.blue,
                 fontWeight: FontWeight.bold,
               ),
         ),
@@ -342,7 +354,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                       );
                                     },
                                   ),
-                                  SizedBox(width: 10.0 * MediaQuery.of(context).textScaleFactor),
+                                  const Spacer(),
                                 ],
                               ),
                             )
@@ -363,8 +375,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               1: FractionColumnWidth(0.72),
                             },
                             children: <TableRow>[
-                              _buildAuctionLotRow(S.of(context).fieldAuctionDate,
-                                  Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang), style: fieldStyle)),
+                              _buildAuctionLotRow(
+                                  S.of(context).fieldAuctionDate, Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang), style: fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum, style: fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType), style: fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef, style: fieldStyle)),
@@ -373,8 +385,8 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                               _buildAuctionLotRow(S.of(context).fieldContactLocation, _buildContactLocationItem(fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldContact, _buildContactPersonItem(fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldContactNumber, TelGroup(_auctionLot.contactNumber)),
-                              _buildAuctionLotRow(
-                                  S.of(context).fieldItemConditions, Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition, style: fieldStyle)),
+                              _buildAuctionLotRow(S.of(context).fieldItemConditions,
+                                  Text(_auctionLot.itemCondition.isEmpty ? config.emptyCharacter : _auctionLot.itemCondition, style: fieldStyle)),
                               _buildAuctionLotRow(
                                 _auctionLot.specialInspection ? S.of(context).fieldSpecialInspectionArrangement : S.of(context).fieldInspectionArrangement,
                                 _auctionLot.inspectionDateList.isEmpty
@@ -394,7 +406,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
+                    const Spacer(height: 5.0),
                     Card(
                       elevation: 1.0,
                       child: Padding(
@@ -402,70 +414,9 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                         child: _buildItemList(context, headerStyle),
                       ),
                     ),
-                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
-                    if (_auctionLot.remarks.isNotEmpty) _buildRemarks(headerStyle),
-                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
-                    Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
-                      final NoticeLink standardTandCLink =
-                          appInfo.getAuctionStandardTandCLink(S.of(context).auctionStandardTandC, S.of(context).gldWebsiteLang);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
-                            children: <InlineSpan>[
-                              TextSpan(
-                                text: S.of(context).licenseRemarks1,
-                              ),
-                              TextSpan(
-                                text: standardTandCLink.title,
-                                style: const TextStyle(color: config.blue),
-                                semanticsLabel: '${S.of(context).semanticsOpenFile}${standardTandCLink.title}',
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    launchUrl(
-                                      Uri.parse(standardTandCLink.url),
-                                      mode: LaunchMode.externalApplication,
-                                    );
-                                  },
-                              ),
-                              const WidgetSpan(
-                                alignment: PlaceholderAlignment.top,
-                                child: OpenExternalIcon(size: 13.0),
-                              ),
-                              TextSpan(text: S.of(context).licenseRemarks2),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: RichText(
-                        text: TextSpan(
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
-                          children: <InlineSpan>[
-                            TextSpan(
-                              text: S.of(context).viewNoticeToParticipants1,
-                            ),
-                            TextSpan(
-                              text: S.of(context).noticeToParticipants,
-                              style: const TextStyle(color: config.blue),
-                              semanticsLabel: '${S.of(context).read}${S.of(context).noticeToParticipants}',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.pushNamed(context, 'noticeToParticipants');
-                                },
-                            ),
-                            TextSpan(text: S.of(context).viewNoticeToParticipants2),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.0 * MediaQuery.of(context).textScaleFactor),
-                    _buildPdfSource(),
-                    const Divider(height: 30.0),
+                    const Spacer(height: 5.0),
+                    _buildRemarks(headerStyle),
+                    const Spacer(height: 20.0),
                     if (relatedPageNum == 0)
                       SizedBox(height: MediaQuery.of(context).size.height / 2)
                     else
@@ -507,31 +458,28 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
   }
 
   Widget _buildPdfSource() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
-          children: <InlineSpan>[
-            TextSpan(text: S.of(context).pdfSource),
-            TextSpan(
-              text: S.of(context).gldAuctionLists,
-              style: const TextStyle(color: config.blue),
-              semanticsLabel: '${S.of(context).semanticsOpen}${S.of(context).gldAuctionLists}',
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  launchUrl(
-                    Uri.parse(FlutterConfig.get('GLD_WEBSITE').toString().replaceAll('{lang}', S.of(context).gldWebsiteLang)),
-                    mode: LaunchMode.externalApplication,
-                  );
-                },
-            ),
-            const WidgetSpan(
-              alignment: PlaceholderAlignment.top,
-              child: OpenExternalIcon(size: 13.0),
-            ),
-          ],
-        ),
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
+        children: <InlineSpan>[
+          TextSpan(text: S.of(context).pdfSource),
+          TextSpan(
+            text: S.of(context).gldAuctionLists,
+            style: const TextStyle(color: config.blue),
+            semanticsLabel: '${S.of(context).semanticsOpen}${S.of(context).gldAuctionLists}',
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                launchUrl(
+                  Uri.parse(FlutterConfig.get('GLD_WEBSITE').toString().replaceAll('{lang}', S.of(context).gldWebsiteLang)),
+                  mode: LaunchMode.externalApplication,
+                );
+              },
+          ),
+          const WidgetSpan(
+            alignment: PlaceholderAlignment.top,
+            child: OpenExternalIcon(size: 13.0),
+          ),
+        ],
       ),
     );
   }
@@ -547,10 +495,65 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(S.of(context).fieldRemarks, style: headerStyle),
-              Text(
-                _auctionLot.remarks,
-                style: Theme.of(context).textTheme.bodyText1,
+              if (_auctionLot.remarks.isNotEmpty)
+                Text(
+                  _auctionLot.remarks,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              if (_auctionLot.remarks.isNotEmpty) const Spacer(),
+              Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? _) {
+                final NoticeLink standardTandCLink = appInfo.getAuctionStandardTandCLink(S.of(context).auctionStandardTandC, S.of(context).gldWebsiteLang);
+                return RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text: S.of(context).licenseRemarks1,
+                      ),
+                      TextSpan(
+                        text: standardTandCLink.title,
+                        style: const TextStyle(color: config.blue),
+                        semanticsLabel: '${S.of(context).semanticsOpenFile}${standardTandCLink.title}',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrl(
+                              Uri.parse(standardTandCLink.url),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                      ),
+                      const WidgetSpan(
+                        alignment: PlaceholderAlignment.top,
+                        child: OpenExternalIcon(size: 13.0),
+                      ),
+                      TextSpan(text: S.of(context).licenseRemarks2),
+                    ],
+                  ),
+                );
+              }),
+              const Spacer(),
+              RichText(
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14.0 * MediaQuery.of(context).textScaleFactor),
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: S.of(context).viewNoticeToParticipants1,
+                    ),
+                    TextSpan(
+                      text: S.of(context).noticeToParticipants,
+                      style: const TextStyle(color: config.blue),
+                      semanticsLabel: '${S.of(context).read}${S.of(context).noticeToParticipants}',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(context, 'noticeToParticipants');
+                        },
+                    ),
+                    TextSpan(text: S.of(context).viewNoticeToParticipants2),
+                  ],
+                ),
               ),
+              const Spacer(),
+              _buildPdfSource(),
             ],
           ),
         ),

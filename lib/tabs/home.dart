@@ -65,7 +65,7 @@ class _HomeTabState extends State<HomeTab> {
   void _loadHotCategoryGrid(int i) {
     final TextStyle titleStyle = TextStyle(
       color: Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue,
-      fontSize: 16.0,
+      fontSize: config.titleFontSize,
       fontWeight: FontWeight.bold,
     );
 
@@ -111,7 +111,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     final TextStyle titleStyle = TextStyle(
       color: Theme.of(context).brightness == Brightness.dark ? Colors.white : config.blue,
-      fontSize: 16.0,
+      fontSize: config.titleFontSize,
       fontWeight: FontWeight.bold,
     );
 
