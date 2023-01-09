@@ -167,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "For the sale of any Lot with Item(s) which is/are subject to any licensing requirements under the Laws of Hong Kong, such Lot will only be sold to a Bidder who is the holder of a valid licence relevant to the trade in the Item. Please refer to the "),
         "licenseRemarks2": MessageLookupByLibrary.simpleMessage(
             " of the Government Logistics Department for details."),
+        "loadMore": MessageLookupByLibrary.simpleMessage("-- More --"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "location": MessageLookupByLibrary.simpleMessage("Location: "),
         "minutesBefore":

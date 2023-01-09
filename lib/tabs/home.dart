@@ -166,6 +166,18 @@ class _HomeTabState extends State<HomeTab> {
             _buildAuctionList(titleStyle),
             _buildRemarks(),
             ..._hotCategoryGridList,
+            if (_hotCategoryGridList.isEmpty && !_loadingHotCategory && !_noMoreHotCategory)
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height / 2,
+                padding: const EdgeInsets.only(top: 50.0),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: Text(
+                  S.of(context).loadMore,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             if (_loadingHotCategory) Center(child: LemorangeLoading()),
           ],
         ),
@@ -188,8 +200,8 @@ class _HomeTabState extends State<HomeTab> {
                 Expanded(
                   child: (auctionProvider.loaded)
                       ? Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: auctionProvider.auctionList.asMap().entries.map(
@@ -202,7 +214,7 @@ class _HomeTabState extends State<HomeTab> {
                               ).toList(),
                             ),
                           ),
-                      )
+                        )
                       : LemorangeLoading(),
                 ),
               ],

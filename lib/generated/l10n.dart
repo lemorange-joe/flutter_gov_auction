@@ -864,6 +864,16 @@ class S {
     );
   }
 
+  /// `-- More --`
+  String get loadMore {
+    return Intl.message(
+      '-- More --',
+      name: 'loadMore',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Location: `
   String get location {
     return Intl.message(

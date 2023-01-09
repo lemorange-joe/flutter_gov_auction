@@ -145,6 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "licenseRemarks1": MessageLookupByLibrary.simpleMessage(
             "如有任何拍卖品批次项目的出售受香港法例下任何领牌条件规管，该拍卖品批次则只可售予持有进行该项目贸易所需的有效牌照的竞投人。详情请参阅政府物流署的"),
         "licenseRemarks2": MessageLookupByLibrary.simpleMessage("。"),
+        "loadMore": MessageLookupByLibrary.simpleMessage("-- 更多 --"),
         "loading": MessageLookupByLibrary.simpleMessage("载入中..."),
         "location": MessageLookupByLibrary.simpleMessage("地点: "),
         "minutesBefore": MessageLookupByLibrary.simpleMessage("分钟前"),

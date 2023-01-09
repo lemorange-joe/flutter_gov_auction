@@ -10,7 +10,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- fix back to home tab cannot load hot category, maybe save HomeTab state
 - auction lot disclaimer
   - Special Conditions of Auction Sale
   - GLD pdf link
