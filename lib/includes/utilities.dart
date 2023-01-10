@@ -83,8 +83,8 @@ String formatDateTime(DateTime dt, String lang) {
   return '${formatDate(dt, lang)} ${formatTime(dt, lang)}';
 }
 
-String formatShortDateTime(DateTime dt, String lang) {
-  return DateFormat('${config.shortDateFormat} ${config.shortTimeFormat}', lang).format(dt);
+String formatShortDateTime(DateTime dt) {
+  return DateFormat('${config.shortDateFormat} ${config.shortTimeFormat}').format(dt);
 }
 
 String formatSimpleDateTime(DateTime dt) {

@@ -21,7 +21,6 @@ import '../providers/auction_provider.dart';
 import '../widgets/reminder_button.dart';
 // import '../widgets/tel_group.dart';
 import '../widgets/ui/animated_loading.dart';
-import '../widgets/ui/calendar.dart';
 import '../widgets/ui/image_loading_skeleton.dart';
 import '../widgets/ui/open_external_icon.dart';
 
@@ -67,62 +66,21 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
   }
 
   Widget _buildHeader() {
-    final double appBarHeight = AppBar().preferredSize.height + 10.0;
+    // final double appBarHeight = AppBar().preferredSize.height + 10.0;
     return DefaultTextStyle(
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 12.0,
-      ),
-      child: Column(
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(height: appBarHeight),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Calendar(widget.auction.startTime),
-                  ),
-                  ValueListenableBuilder<Box<AuctionReminder>>(
-                    valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
-                    builder: (BuildContext context, _, __) {
-                      // no need to set the reminder time here, even the reminder was set in hive
-                      // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
-                      final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
-                      // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
-
-                      return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
-                    },
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  SizedBox(height: appBarHeight),
-                  Text(S.of(context).time),
-                  Text(S.of(context).location),
-                ],
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: appBarHeight),
-                    Text(utilities.formatTime(widget.auction.startTime, S.of(context).lang)),
-                    Text(widget.auction.location),
-                  ],
-                ),
-              ),
-            ],
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            fontSize: 16.0,
           ),
-          SizedBox(
-            height: 20.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0.0),
+        child: Column(
+          // mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(utilities.formatDateTime(widget.auction.startTime, S.of(context).lang)),
+            Text(widget.auction.location),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -142,26 +100,53 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                     style: const TextStyle(fontSize: 12.0),
                   ),
                 ),
+                ValueListenableBuilder<Box<AuctionReminder>>(
+                  valueListenable: Hive.box<AuctionReminder>('reminder').listenable(),
+                  builder: (BuildContext context, _, __) {
+                    // no need to set the reminder time here, even the reminder was set in hive
+                    // the PopupMenuButton onSelected event will override the remind time, just set DateTime(1900) is ok
+                    final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), widget.auction.startTime);
+                    // final AuctionReminder reminder = AuctionReminder(widget.auction.id, DateTime(1900), DateTime.now().add(const Duration(days: 3)));  // for testing reminder
+
+                    return ReminderButton(reminder, HiveHelper().getAuctionReminderIdList().contains(widget.auction.id));
+                  },
+                ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildDenseHeader() {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      width: double.infinity,
-      height: _denseHeaderHeight,
-      child: Center(
-        child: Text(
-          utilities.formatDateTime(widget.auction.startTime, S.of(context).lang),
-          style: const TextStyle(
-            fontSize: 18.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: <Widget>[
+          IconButton(
+            onPressed: () {
+              widget.showHome();
+            },
+            iconSize: 24.0 * MediaQuery.of(context).textScaleFactor,
+            splashRadius: 24.0 * MediaQuery.of(context).textScaleFactor,
+            icon: const Icon(
+              MdiIcons.arrowLeft,
+              color: Colors.white,
+            ),
           ),
-        ),
+          Text(
+            utilities.formatShortDateTime(widget.auction.startTime),
+            style: const TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: 36.0 * MediaQuery.of(context).textScaleFactor),
+        ],
       ),
     );
   }
@@ -193,19 +178,22 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
                           SliverAppBar(
-                            expandedHeight: 200.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                            expandedHeight: 180.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
                             floating: true,
                             pinned: true,
                             snap: true,
-                            backgroundColor: config.blue,
+                            titleSpacing: 0.0,
                             flexibleSpace: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
                               final double top = constraints.biggest.height * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor);
+                              final bool showNormalHeader = top > _denseHeaderHeight + MediaQuery.of(context).padding.top;
 
                               return FlexibleSpaceBar(
+                                background: ColoredBox(color: showNormalHeader ? Theme.of(context).scaffoldBackgroundColor : config.blue),
                                 centerTitle: true,
+                                expandedTitleScale: 1.0,
                                 title: widget.auction.id == 0
                                     ? const SizedBox(width: 30.0, height: 30.0, child: CircularProgressIndicator())
-                                    : (top > _denseHeaderHeight + MediaQuery.of(context).padding.top ? _buildHeader() : _buildDenseHeader()),
+                                    : (showNormalHeader ? _buildHeader() : _buildDenseHeader()),
                               );
                             }),
                           ),
