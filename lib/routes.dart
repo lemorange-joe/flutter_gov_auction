@@ -26,10 +26,11 @@ class Routes {
         final String title = (args as Map<String, dynamic>)['title'] == null ? '' : args['title'] as String;
         final String heroTagPrefix = args['heroTagPrefix'] as String;
         final int auctionId = args['auctionId'] as int;
+        final String auctionNum = args['auctionNum'] == null ? '' : args['auctionNum'] as String;
         final DateTime auctionStartTime = args['auctionStartTime'] as DateTime;
         final AuctionLot auctionLot = args['auctionLot'] == null ? AuctionLot.empty() : args['auctionLot'] as AuctionLot;
         final int loadAuctionLotId = args['loadAuctionLotId'] == null ? 0 : args['loadAuctionLotId'] as int;
-        return _buildRoute(settings, AuctionLotPage(title, heroTagPrefix, auctionId, auctionStartTime, auctionLot, loadAuctionLotId));
+        return _buildRoute(settings, AuctionLotPage(title, heroTagPrefix, auctionId, auctionNum, auctionStartTime, auctionLot, loadAuctionLotId));
       case 'agreement':
         final dynamic args = settings.arguments;
         final String exitPage = (args == null || (args as Map<String, dynamic>)['exitPage'] == null) ? '' : args['exitPage'] as String;

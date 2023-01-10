@@ -189,6 +189,7 @@ class SavedPage extends StatelessWidget {
               'title': '${S.of(context).itemDetails}: ',
               'heroTagPrefix': heroTagPrefix,
               'auctionId': savedAuction.auctionId,
+              'auctionNum': savedAuction.auctionNum,
               'auctionStartTime': savedAuction.auctionStartTime,
               'auctionLot': curLot,
             });

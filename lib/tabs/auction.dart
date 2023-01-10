@@ -502,6 +502,7 @@ class _GetListViewState extends State<GetListView> with AutomaticKeepAliveClient
                 Navigator.pushNamed(context, 'auction_lot', arguments: <String, dynamic>{
                   'heroTagPrefix': heroTagPrefix,
                   'auctionId': widget.auction.id,
+                  'auctionNum': widget.auction.auctionNum,
                   'auctionStartTime': widget.auction.startTime,
                   'auctionLot': curLot,
                 });

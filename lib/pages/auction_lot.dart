@@ -39,11 +39,13 @@ class Spacer extends StatelessWidget {
 }
 
 class AuctionLotPage extends StatefulWidget {
-  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionStartTime, this.auctionLot, this.loadAuctionLotId, {super.key});
+  const AuctionLotPage(this.title, this.heroTagPrefix, this.auctionId, this.auctionNum, this.auctionStartTime, this.auctionLot, this.loadAuctionLotId,
+      {super.key});
 
   final String title;
   final String heroTagPrefix;
   final int auctionId;
+  final String auctionNum;
   final DateTime auctionStartTime;
   final AuctionLot auctionLot;
   final int loadAuctionLotId;
@@ -202,18 +204,14 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
               ),
         ),
         ...List<int>.generate((totalLot / crossAxisCount).ceil(), (int i) => i) // count how many number of rows needed first
-            .map((int i) => SizedBox(
-                  height: config.auctionLotCardHeight,
-                  width: double.infinity,
-                  child: Row(
-                    children: List<int>.generate(crossAxisCount, (int j) => j) // for each row, get the required number of items from relatedLots
-                        .map((int j) => Expanded(
-                              child: i * crossAxisCount + j < totalLot
-                                  ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix)
-                                  : Container(),
-                            ))
-                        .toList(),
-                  ),
+            .map((int i) => Row(
+                  children: List<int>.generate(crossAxisCount, (int j) => j) // for each row, get the required number of items from relatedLots
+                      .map((int j) => Expanded(
+                            child: i * crossAxisCount + j < totalLot
+                                ? AuctionLotCard(relatedLots[i * crossAxisCount + j], S.of(context).relatedLotsPrefix)
+                                : Container(),
+                          ))
+                      .toList(),
                 ))
             .toList()
       ],
@@ -229,6 +227,10 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
           fontWeight: FontWeight.bold,
         );
     final TextStyle fieldStyle = Theme.of(context).textTheme.bodyText1!;
+    String appBarTitle = '${widget.title}${S.of(context).fieldLotNum} ${_auctionLot.lotNum}';
+    if (widget.auctionNum.isNotEmpty) {
+      appBarTitle += ' (${widget.auctionNum})';
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -246,8 +248,11 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
         title: _auctionLot.id == 0
             ? Text(S.of(context).loading)
             : Text(
-                '${widget.title}${S.of(context).fieldLotNum} ${_auctionLot.lotNum}',
-                style: const TextStyle(color: Colors.white),
+                appBarTitle,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
               ),
         centerTitle: true,
       ),
@@ -300,6 +305,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                                     builder: (BuildContext context, _, __) {
                                       final SavedAuction curAuction = SavedAuction(
                                         widget.auctionId,
+                                        widget.auctionNum,
                                         _auctionLot.id,
                                         widget.auctionStartTime,
                                         _auctionLot.lotNum,
@@ -376,9 +382,18 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                             },
                             children: <TableRow>[
                               _buildAuctionLotRow(
-                                  S.of(context).fieldAuctionDate, Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang), style: fieldStyle)),
-                              _buildAuctionLotRow(S.of(context).fieldLotNum, Text(_auctionLot.lotNum, style: fieldStyle)),
-                              _buildAuctionLotRow(S.of(context).fieldItemType, Text(appInfoProvider.getItemTypeName(_auctionLot.itemType), style: fieldStyle)),
+                                S.of(context).fieldAuctionDate,
+                                Text(utilities.formatDate(_auctionLot.auctionDate, S.of(context).lang),
+                                    style: fieldStyle.copyWith(fontWeight: FontWeight.bold)),
+                              ),
+                              _buildAuctionLotRow(
+                                S.of(context).fieldLotNum,
+                                Text(_auctionLot.lotNum, style: fieldStyle.copyWith(fontWeight: FontWeight.bold)),
+                              ),
+                              _buildAuctionLotRow(
+                                S.of(context).fieldItemType,
+                                Text(appInfoProvider.getItemTypeName(_auctionLot.itemType), style: fieldStyle),
+                              ),
                               _buildAuctionLotRow(S.of(context).fieldGldFileRef, Text(_auctionLot.gldFileRef, style: fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldDeapartment, Text(_auctionLot.department, style: fieldStyle)),
                               _buildAuctionLotRow(S.of(context).fieldReference, Text(_auctionLot.reference, style: fieldStyle)),
@@ -418,7 +433,7 @@ class _AuctionLotPageState extends State<AuctionLotPage> {
                     _buildRemarks(headerStyle),
                     const Spacer(height: 20.0),
                     if (relatedPageNum == 0)
-                      SizedBox(height: MediaQuery.of(context).size.height / 2)
+                      const SizedBox(height: 100.0)
                     else
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),

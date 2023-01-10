@@ -27,6 +27,7 @@ class AuctionLotCard extends StatelessWidget {
           'title': auctionLotPageTitlePrefix,
           'heroTagPrefix': heroTagPrefix,
           'auctionId': auctionLot.auctionId,
+          'auctionNum': auctionLot.auctionNum,
           'auctionStartTime': auctionLot.startTime,
           'loadAuctionLotId': auctionLot.lotId,
         });
@@ -78,44 +79,42 @@ class AuctionLotCard extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 2.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          auctionLot.lotNum,
-                          style: Theme.of(context).textTheme.bodyText1,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(height: 2.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        auctionLot.lotNum,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      if (showSoldIcon && auctionLot.transactionStatus == TransactionStatus.Sold)
+                        FaIcon(
+                          FontAwesomeIcons.sackDollar,
+                          color: config.blue,
+                          size: 20.0 * MediaQuery.of(context).textScaleFactor,
                         ),
-                        if (showSoldIcon && auctionLot.transactionStatus == TransactionStatus.Sold)
-                          FaIcon(
-                            FontAwesomeIcons.sackDollar,
-                            color: config.blue,
-                            size: 20.0 * MediaQuery.of(context).textScaleFactor,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 4.0),
-                    Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            auctionLot.description,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                  fontSize: 12.0,
-                                ),
-                          ),
+                    ],
+                  ),
+                  const SizedBox(height: 4.0),
+                  Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          auctionLot.description,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 22.0,
+                              ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
