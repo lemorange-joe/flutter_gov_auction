@@ -34,6 +34,7 @@ if (strtolower($_REQUEST['lang']) == "en") {
 $reqStartTime = floor(microtime(true) * 1000);  // timestamp in milliseconds
 
 // $isDeveloper mainly use for previewing unpublished auctions, lots and items
+// $isDeveloper use adodb Execute instead of CacheExecute
 $isDeveloper = 0; // use int for easy mysql comparison
 $headers = getallheaders();
 if (isset($headers["gauc-id"])) {
@@ -41,7 +42,6 @@ if (isset($headers["gauc-id"])) {
   $isDeveloper = $headers["gauc-id"] == $GLOBALS["DEVELOPER_GAUC_ID"] ? 1 : 0;
 }
 // echo "gaucId: $gaucId, lang: $lang <hr>";
-
 
 // ========================================================================
 // main flow

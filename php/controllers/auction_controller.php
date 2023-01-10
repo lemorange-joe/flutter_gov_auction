@@ -22,7 +22,12 @@ class AuctionController {
                     WHERE (A.status = ? OR (1 = ? AND A.status = ?))
                     ORDER BY A.start_time DESC";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array(Status::Active, Status::Active, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+      }
       $rowNum = count($result);
 
       $data = array();
@@ -136,7 +141,13 @@ class AuctionController {
                       WHEN I.inspection_day = 7 THEN 0
                       ELSE I.inspection_day
                     END, I.inspection_start_time";
-      $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId))->GetRows();
+      
+      $inspectionDateResult = array();
+      if ($isDeveloper) {
+        $inspectionDateResult = $conn->Execute($selectSql, array($lotId))->GetRows();
+      } else {
+        $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId))->GetRows();
+      }
       $rowNum = count($inspectionDateResult);
 
       if ($rowNum > 0) {
@@ -173,9 +184,16 @@ class AuctionController {
                     WHERE L.lot_id = ? AND (A.status = ? OR (1 = ? AND A.status = ?)) AND (L.status = ? OR (1 = ? AND L.status = ?))
                     ORDER BY I.seq";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(
-        $lotId, Status::Active, $isDeveloper, Status::Pending, Status::Active, $isDeveloper, Status::Pending
-      ))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array(
+          $lotId, Status::Active, $isDeveloper, Status::Pending, Status::Active, $isDeveloper, Status::Pending
+        ))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(
+          $lotId, Status::Active, $isDeveloper, Status::Pending, Status::Active, $isDeveloper, Status::Pending
+        ))->GetRows();
+      }
       
       if (count($result) == 0) {
         $output->message = "Lot ID not found!";
@@ -259,7 +277,7 @@ class AuctionController {
   function search($param) {
     // pre: $auctionId, $keyword, $type
     // use $keyword to search the auction lot and items within the auction id
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -284,7 +302,12 @@ class AuctionController {
                     WHERE L.auction_id = ? AND L.status = ? AND (T.code = ? OR ? = '') AND (I.description_en LIKE ? OR I.description_tc LIKE ? OR I.description_sc LIKE ?)
                     ORDER BY L.lot_num, I.seq";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $type, $type, "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%", "%".GetSafeMySqlString($keyword)."%"))->GetRows();
+      }
       $rowNum = count($result);
 
       $data = array();
@@ -340,7 +363,7 @@ class AuctionController {
   /*** Public API ***/
   function grid($param) {
     // pre: $type, $count
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -388,7 +411,12 @@ class AuctionController {
                     ORDER BY A.start_time DESC, T.seq, L.lot_num
                     LIMIT 0, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $tranStatus, $tranStatus, $count))->GetRows();
+      }
       $rowNum = count($result);
 
       $data = array();
@@ -445,7 +473,7 @@ class AuctionController {
   function relatedLots($param) {
     // pre: $lotId, $page (starting from 1), $pageSize
     // use $logId to search lots in other auctions that have any same auction items
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -484,7 +512,12 @@ class AuctionController {
                     ORDER BY A.start_time, T.seq, L.lot_num DESC
                     LIMIT ?, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId, $lotId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array($lotId, $lotId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($lotId, $lotId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      }
       $rowNum = count($result);
 
       $data = array();
@@ -541,7 +574,7 @@ class AuctionController {
   function relatedItems($param) {
     // pre: $itemId, $page (starting from 1), $pageSize
     // use $itemId to search related items in other lots or auctions
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -572,7 +605,12 @@ class AuctionController {
                     ORDER BY A.start_time DESC, L.lot_num, I.seq
                     LIMIT ?, ?";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, $itemId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array($itemId, $itemId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($itemId, $itemId, Status::Active, Status::Active, $start, $pageSize))->GetRows();
+      }
       $rowNum = count($result);
 
       $data = array();
@@ -626,7 +664,7 @@ class AuctionController {
   }
 
   private function getAuction($auctionId) {
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $selectSql = "SELECT
                     A.auction_id, A.auction_num, A.start_time, A.collection_deadline, L.address_$lang as 'address', A.auction_pdf_$lang as 'auction_pdf',
@@ -637,7 +675,12 @@ class AuctionController {
                   INNER JOIN Location L ON A.location_id = L.location_id
                   WHERE auction_id = ?";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $auctionId))->GetRows();
+    $result = array();
+    if ($isDeveloper) {
+      $result = $conn->Execute($selectSql, array(Status::Active, Status::Active, $auctionId))->GetRows();
+    } else {
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active, Status::Active, $auctionId))->GetRows();
+    }
 
     $output = null;
     if (count($result) > 0) {
@@ -662,7 +705,7 @@ class AuctionController {
   }
 
   private function getAuctionPdfList($auctionId) {
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $selectSql = "SELECT I.code, L.url_$lang as 'url'
                   FROM Auction A
@@ -671,7 +714,12 @@ class AuctionController {
                   WHERE A.auction_id = ?
                   ORDER BY I.seq";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    $result = array();
+    if ($isDeveloper) {
+      $result = $conn->Execute($selectSql, array($auctionId))->GetRows();
+    } else {
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    }
     $rowNum = count($result);
 
     $output = array();
@@ -726,7 +774,13 @@ class AuctionController {
                     WHEN T.inspection_day = 7 THEN 0
                     ELSE T.inspection_day
                   END, T.inspection_start_time";
-    $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    
+    $inspectionDateResult = array();
+    if ($isDeveloper) {
+      $inspectionDateResult = $conn->Execute($selectSql, array($auctionId))->GetRows();
+    } else {
+      $inspectionDateResult = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId))->GetRows();
+    }
     $defaultInspectionDateList = $this->getInspectionDateList(0, $inspectionDateResult);
 
     $selectSql = "SELECT
@@ -743,7 +797,12 @@ class AuctionController {
                   WHERE L.auction_id = ? AND (L.status = ? OR (1 = ? AND L.status = ?))
                   ORDER BY L.lot_num, I.seq";
 
-    $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+    $result = array();
+    if ($isDeveloper) {
+      $result = $conn->Execute($selectSql, array($auctionId, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+    } else {
+      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array($auctionId, Status::Active, $isDeveloper, Status::Pending))->GetRows();
+    }
     $rowNum = count($result);
 
     $output = array();

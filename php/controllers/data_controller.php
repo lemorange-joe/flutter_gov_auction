@@ -66,7 +66,7 @@ class DataController {
   
   /*** Public API ***/
   function appInfo() {
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
     $_APP = AppData::getInstance();
 
     $output = new StdClass();
@@ -97,7 +97,12 @@ class DataController {
         }
 
         $selectSql = "SELECT auction_id, auction_status FROM Auction WHERE status = ? ORDER BY start_time DESC LIMIT 1";
-        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+        if ($isDeveloper) {
+          $result = $conn->Execute($selectSql, array(Status::Active))->GetRows();
+        } else {
+          $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+        }
+        
         if (count($result) > 0) {
           $data->ua = ($result[0]["auction_status"] == AuctionStatus::Finished) ? 0 : intval($result[0]["auction_id"]);
         } else {
@@ -105,7 +110,11 @@ class DataController {
         }
 
         $selectSql = "SELECT title_$lang as 'title', url_$lang as 'url' FROM NoticeLink WHERE status = ? ORDER BY seq";
-        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+        if ($isDeveloper) {
+          $result = $conn->Execute($selectSql, array(Status::Active))->GetRows();
+        } else {
+          $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(Status::Active))->GetRows();
+        }
         $rowNum = count($result);
 
         $data->nll = array(); // notice links list
@@ -123,7 +132,11 @@ class DataController {
                       ORDER BY push_date DESC";
         $startDate = FormatMysqlDateTime(date_sub(GetCurrentLocalTime(), new DateInterval("P".$GLOBALS["PUSH_MESSAGE_DAYS"]."D")));
 
-        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();
+        if ($isDeveloper) {
+          $result = $conn->Execute($selectSql, array(PushStatus::Sent, $startDate))->GetRows();
+        } else {
+          $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();
+        }
         $rowNum = count($result);
 
         $data->ml = array();  // push message list
@@ -139,7 +152,11 @@ class DataController {
 
         // include hot search keywords
         $selectSql = "SELECT keyword_$lang as 'keyword' FROM HotSearch";
-        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        if ($isDeveloper) {
+          $result = $conn->Execute($selectSql)->GetRows();
+        } else {
+          $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        }
         $rowNum = count($result);
 
         $data->hsl = array(); // hot search list
@@ -149,7 +166,11 @@ class DataController {
 
         // get catalog locations
         $selectSql = "SELECT address_$lang as 'address', map_address FROM Location WHERE is_catalog = 1 ORDER BY seq";
-        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        if ($isDeveloper) {
+          $result = $conn->Execute($selectSql)->GetRows();
+        } else {
+          $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql)->GetRows();
+        }
         $rowNum = count($result);
 
         $data->cll = array(); // catalog location list
@@ -199,7 +220,7 @@ class DataController {
   /*** Public API ***/
   function messageList() {
     // quick api to return the list of available auctions
-    global $conn, $lang;
+    global $conn, $lang, $isDeveloper;
 
     $output = new StdClass();
     $output->status = "fail";
@@ -212,7 +233,12 @@ class DataController {
                     WHERE status = ? AND push_date > ?
                     ORDER BY push_date DESC";
 
-      $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();
+      $result = array();
+      if ($isDeveloper) {
+        $result = $conn->Execute($selectSql, array(PushStatus::Sent, $startDate))->GetRows();  
+      } else {
+        $result = $conn->CacheExecute($GLOBALS["CACHE_PERIOD"], $selectSql, array(PushStatus::Sent, $startDate))->GetRows();  
+      }
       $rowNum = count($result);
 
       $data = array();
