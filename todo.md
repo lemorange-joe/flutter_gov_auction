@@ -10,6 +10,7 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
+- standardize naming for SavedAuction, SavedAuctionLot
 - auction lot disclaimer
   - Special Conditions of Auction Sale
   - GLD pdf link

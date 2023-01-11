@@ -38,29 +38,35 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final AppInfoProvider appInfoProvider = Provider.of<AppInfoProvider>(context, listen: false);
-      appInfoProvider.refresh(lang: S.of(context).lang).then((_) {
-        if (appInfoProvider.forceUpgrade) {
-          CommonDialog.show(
-            context,
-            S.of(context).forceUpgradeTitle,
-            S.of(context).forceUpgradeContent,
-            S.of(context).ok,
-            () async {
-              await launchUrl(Uri.parse(Platform.isIOS ? config.appStoreUrl : config.googlePlayUrl));
-              exit(0);
-            },
-            isModal: true,
-          );
-        } else {
-          Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang).then((_) {
-            Future<void>.delayed(const Duration(seconds: 1), () {
-              homeController.clearHotCategoryList();
-            });
-          });
-        }
-      });
+      await refreshData();
     });
+  }
+
+  Future<void> refreshData() async {
+    final AppInfoProvider appInfoProvider = Provider.of<AppInfoProvider>(context, listen: false);
+    await appInfoProvider.refresh(lang: S.of(context).lang);
+    if (!mounted) {
+      return ;
+    }
+
+    if (appInfoProvider.forceUpgrade) {
+      await CommonDialog.show(
+        context,
+        S.of(context).forceUpgradeTitle,
+        S.of(context).forceUpgradeContent,
+        S.of(context).ok,
+        () async {
+          await launchUrl(Uri.parse(Platform.isIOS ? config.appStoreUrl : config.googlePlayUrl));
+          exit(0);
+        },
+        isModal: true,
+      );
+    } else {
+      await Provider.of<AuctionProvider>(context, listen: false).refresh(lang: S.of(context).lang);
+      Future<void>.delayed(const Duration(seconds: 1), () {
+        homeController.clearHotCategoryList();
+      });
+    }
   }
 
   void showHome() {
@@ -112,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 index: _tabIndex,
                 key: ValueKey<int>(_tabIndex),
                 children: <Widget>[
-                  HomeTab(showAuction, homeController),
+                  HomeTab(showAuction, refreshData, homeController),
                   Consumer<AuctionProvider>(
                     builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
                       return Material(

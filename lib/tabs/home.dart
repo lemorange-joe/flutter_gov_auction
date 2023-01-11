@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../class/auction.dart';
 import '../class/home_controller.dart';
 import '../generated/l10n.dart';
@@ -16,9 +17,10 @@ import '../widgets/saved_auction_lot_list_view.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab(this.showAuction, this.homeController, {Key? key}) : super(key: key);
+  const HomeTab(this.showAuction, this.refreshData, this.homeController, {Key? key}) : super(key: key);
 
   final void Function() showAuction;
+  final Future<void> Function() refreshData;
   final HomeController homeController;
 
   @override
@@ -27,6 +29,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   late ScrollController _scrollController;
+  late RefreshController _refreshController;
   final List<Widget> _hotCategoryGridList = <Widget>[]; // store the list of hot category auction grid, append items during onScroll event
   int _hotCategoryIndex = -1;
   bool _loadingHotCategory = false;
@@ -36,12 +39,14 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(onScroll);
+    _refreshController = RefreshController();
     widget.homeController.clearHotCategoryList = clearHotCategoryList;
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
   }
 
@@ -52,6 +57,12 @@ class _HomeTabState extends State<HomeTab> {
       _hotCategoryGridList.clear();
     });
     _loadHotCategoryGrid(0);
+  }
+
+  Future<void> _onRefreshHome() async {
+    await widget.refreshData();
+
+    _refreshController.refreshCompleted();
   }
 
   void onScroll() {
@@ -116,73 +127,77 @@ class _HomeTabState extends State<HomeTab> {
       fontWeight: FontWeight.bold,
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: SizedBox(
-                height: 40.0 * MediaQuery.of(context).textScaleFactor,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'search');
-                  },
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                    foregroundColor: Theme.of(context).textTheme.bodyText1!.color,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        MdiIcons.magnify,
-                        color: Theme.of(context).textTheme.bodyText1!.color,
-                        size: 24.0 * MediaQuery.of(context).textScaleFactor,
-                      ),
-                      const SizedBox(width: 8.0),
-                      Text(S.of(context).searchAuction, style: Theme.of(context).textTheme.bodyText2),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Consumer<AuctionProvider>(
-                    builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
-                      return FeaturedListView(auctionProvider.latestAuction, widget.showAuction);
+    return SmartRefresher(
+      onRefresh: _onRefreshHome,
+      controller: _refreshController,
+      scrollController: _scrollController,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: SizedBox(
+                  height: 40.0 * MediaQuery.of(context).textScaleFactor,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'search');
                     },
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                      foregroundColor: Theme.of(context).textTheme.bodyText1!.color,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          MdiIcons.magnify,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          size: 24.0 * MediaQuery.of(context).textScaleFactor,
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(S.of(context).searchAuction, style: Theme.of(context).textTheme.bodyText2),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            _buildAuctionList(titleStyle),
-            const SizedBox(height: 10.0),
-            const SavedAuctionLotListView(),
-            _buildRemarks(),
-            ..._hotCategoryGridList,
-            if (_hotCategoryGridList.isEmpty && !_loadingHotCategory && !_noMoreHotCategory)
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2,
-                padding: const EdgeInsets.only(top: 50.0),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Text(
-                  S.of(context).loadMore,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.center,
-                ),
               ),
-            if (_loadingHotCategory) Center(child: LemorangeLoading()),
-          ],
+              const SizedBox(height: 10.0),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Consumer<AuctionProvider>(
+                      builder: (BuildContext context, AuctionProvider auctionProvider, Widget? _) {
+                        return FeaturedListView(auctionProvider.latestAuction, widget.showAuction);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              _buildAuctionList(titleStyle),
+              const SizedBox(height: 10.0),
+              const SavedAuctionLotListView(),
+              _buildRemarks(),
+              ..._hotCategoryGridList,
+              if (_hotCategoryGridList.isEmpty && !_loadingHotCategory && !_noMoreHotCategory)
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 2,
+                  padding: const EdgeInsets.only(top: 50.0),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Text(
+                    S.of(context).loadMore,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              if (_loadingHotCategory) Center(child: LemorangeLoading()),
+            ],
+          ),
         ),
       ),
     );
