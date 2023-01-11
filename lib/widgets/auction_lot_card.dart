@@ -8,6 +8,7 @@ import '../generated/l10n.dart';
 import '../helpers/dynamic_icon_helper.dart' as dynamic_icon_helper;
 import '../includes/config.dart' as config;
 import '../includes/enums.dart';
+import '../includes/utilities.dart' as utilities;
 import '../widgets/ui/calendar.dart';
 
 class AuctionLotCardData {
@@ -124,17 +125,20 @@ class AuctionLotCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4.0),
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          '${auctionLotData.description}\n',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+                  SizedBox(
+                    height: 40.0 * utilities.adjustedScale(MediaQuery.of(context).textScaleFactor),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            auctionLotData.description,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.0),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

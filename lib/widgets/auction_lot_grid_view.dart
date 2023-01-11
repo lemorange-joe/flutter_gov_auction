@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // import 'package:logger/logger.dart';
 import './auction_lot_card.dart';
 import '../class/auction.dart';
-import '../includes/config.dart' as config;
 
 class AuctionLotGridView extends StatelessWidget {
   const AuctionLotGridView(this.title, this.auctionLotList, this.titleStyle, this.auctionLotPageTitlePrefix, {super.key, this.showSoldIcon = false});
@@ -33,24 +32,20 @@ class AuctionLotGridView extends StatelessWidget {
 
     for (int i = 0; i < totalLot / crossAxisCount; ++i) {
       rowList.add(
-        SizedBox(
-          height: config.auctionLotCardHeight,
-          width: double.infinity,
-          child: Row(
-            children: List<int>.generate(crossAxisCount, (int j) => j)
-                .map(
-                  (int j) => Expanded(
-                    child: i * crossAxisCount + j < totalLot
-                        ? AuctionLotCard(
-                            AuctionLotCardData.fromRelatedAuctionLot(auctionLotList[i * crossAxisCount + j]),
-                            auctionLotPageTitlePrefix,
-                            showSoldIcon: showSoldIcon,
-                          )
-                        : Container(),
-                  ),
-                )
-                .toList(),
-          ),
+        Row(
+          children: List<int>.generate(crossAxisCount, (int j) => j)
+              .map(
+                (int j) => Expanded(
+                  child: i * crossAxisCount + j < totalLot
+                      ? AuctionLotCard(
+                          AuctionLotCardData.fromRelatedAuctionLot(auctionLotList[i * crossAxisCount + j]),
+                          auctionLotPageTitlePrefix,
+                          showSoldIcon: showSoldIcon,
+                        )
+                      : Container(),
+                ),
+              )
+              .toList(),
         ),
       );
     }
