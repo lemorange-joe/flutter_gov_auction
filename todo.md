@@ -11,6 +11,17 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 ## TODO:
 - standardize naming for SavedAuction, SavedAuctionLot
+- auction lot tab:
+  - hide app bar
+  - show filled heart is saved is not empty
+  - change dense header color (ios issue?)
+- Auction lot card:
+  -  add inkwell on pressed
+  -  show year for prev years
+  -  fix featured icon and calendar min size
+- fix link color for dark theme
+- cannot show saved favourite reminder dialog in ios
+  
 - auction lot disclaimer
   - Special Conditions of Auction Sale
   - GLD pdf link
