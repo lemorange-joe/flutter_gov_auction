@@ -12,6 +12,7 @@ import '../providers/auction_provider.dart';
 import '../widgets/auction_lot_grid_view.dart';
 import '../widgets/auction_summary_card.dart';
 import '../widgets/featured_list_view.dart';
+import '../widgets/saved_auction_lot_list_view.dart';
 import '../widgets/ui/animated_loading.dart';
 
 class HomeTab extends StatefulWidget {
@@ -164,6 +165,8 @@ class _HomeTabState extends State<HomeTab> {
             ),
             const SizedBox(height: 10.0),
             _buildAuctionList(titleStyle),
+            const SizedBox(height: 10.0),
+            const SavedAuctionLotListView(),
             _buildRemarks(),
             ..._hotCategoryGridList,
             if (_hotCategoryGridList.isEmpty && !_loadingHotCategory && !_noMoreHotCategory)

@@ -42,7 +42,7 @@ class AuctionLotGridView extends StatelessWidget {
                   (int j) => Expanded(
                     child: i * crossAxisCount + j < totalLot
                         ? AuctionLotCard(
-                            auctionLotList[i * crossAxisCount + j],
+                            AuctionLotCardData.fromRelatedAuctionLot(auctionLotList[i * crossAxisCount + j]),
                             auctionLotPageTitlePrefix,
                             showSoldIcon: showSoldIcon,
                           )

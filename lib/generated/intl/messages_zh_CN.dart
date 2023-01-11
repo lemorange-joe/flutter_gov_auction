@@ -199,7 +199,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "relatedLotsEmpty": MessageLookupByLibrary.simpleMessage("没有更多相关项目"),
         "relatedLotsOfThisAuction":
             MessageLookupByLibrary.simpleMessage("本次拍卖的相关项目"),
-        "relatedLotsPrefix": MessageLookupByLibrary.simpleMessage("相关项目: "),
+        "relatedLotsPrefix": MessageLookupByLibrary.simpleMessage("相关项目："),
         "reload": MessageLookupByLibrary.simpleMessage("重新载入"),
         "reminder": MessageLookupByLibrary.simpleMessage("提醒"),
         "resetAllData": MessageLookupByLibrary.simpleMessage("重设所有资料"),
@@ -207,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "所有已收藏的拍卖项目、拍卖提醒及偏好设定均会被重设。确定要继续？"),
         "saved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "savedAuctionEmpty": MessageLookupByLibrary.simpleMessage("没有已收藏项目"),
+        "savedPrefix": MessageLookupByLibrary.simpleMessage("已收藏："),
         "searchAuction": MessageLookupByLibrary.simpleMessage("(TBC)搜寻项目"),
         "searchGridAfter": MessageLookupByLibrary.simpleMessage("」的项目"),
         "searchGridBefore": MessageLookupByLibrary.simpleMessage("有关「"),

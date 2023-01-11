@@ -1374,6 +1374,16 @@ class S {
     );
   }
 
+  /// `Saved: `
+  String get savedPrefix {
+    return Intl.message(
+      'Saved: ',
+      name: 'savedPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `(TBC)Search items`
   String get searchAuction {
     return Intl.message(

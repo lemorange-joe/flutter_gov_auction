@@ -10,7 +10,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
 
 
 ## TODO:
-- home tab: add saved auction list view 
 - auction lot disclaimer
   - Special Conditions of Auction Sale
   - GLD pdf link

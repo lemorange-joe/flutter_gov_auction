@@ -241,6 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "saved": MessageLookupByLibrary.simpleMessage("Saved"),
         "savedAuctionEmpty":
             MessageLookupByLibrary.simpleMessage("No saved items"),
+        "savedPrefix": MessageLookupByLibrary.simpleMessage("Saved: "),
         "searchAuction":
             MessageLookupByLibrary.simpleMessage("(TBC)Search items"),
         "searchGridAfter": MessageLookupByLibrary.simpleMessage("\""),
