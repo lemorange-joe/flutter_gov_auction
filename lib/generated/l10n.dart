@@ -490,10 +490,10 @@ class S {
     );
   }
 
-  /// `featured items`
+  /// `Featured`
   String get featuredItems {
     return Intl.message(
-      'featured items',
+      'Featured',
       name: 'featuredItems',
       desc: '',
       args: [],
@@ -1094,10 +1094,10 @@ class S {
     );
   }
 
-  /// `Not Sold`
+  /// `Not sold`
   String get notSold {
     return Intl.message(
-      'Not Sold',
+      'Not sold',
       name: 'notSold',
       desc: '',
       args: [],
@@ -1129,6 +1129,16 @@ class S {
     return Intl.message(
       'Past Auction Lists',
       name: 'pastAuctionList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending`
+  String get pendingAuction {
+    return Intl.message(
+      'Pending',
+      name: 'pendingAuction',
       desc: '',
       args: [],
     );
@@ -1494,10 +1504,10 @@ class S {
     );
   }
 
-  /// `featured items`
+  /// `featured`
   String get semanticsFeaturedItems {
     return Intl.message(
-      'featured items',
+      'featured',
       name: 'semanticsFeaturedItems',
       desc: '',
       args: [],

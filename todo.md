@@ -16,7 +16,6 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
   - show filled heart is saved is not empty
   - change dense header color (ios issue?)
   - remove LOT from app bar
-  - add "Not started" for transaction status
   - switch back to app, keep showing last viewed tab
   - click currently viewing tab bar item, scroll to list top
   - all list: sort by item type
@@ -26,9 +25,9 @@ https://firebase.flutter.dev/docs/messaging/apple-integration/#linking-apns-with
   -  fix featured icon and calendar min size
 - auction list:
   - group auction by year
+- click featured lot card open auction lot page directly
 - auction lot page: item list change to selectable text
 - saved page default show past saved auction if no upcoming saved
-- wordings "Featured Items" > "Featured"
 - fix link color for dark theme
 - cannot show saved favourite reminder dialog in ios
   

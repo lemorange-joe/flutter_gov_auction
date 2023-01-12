@@ -630,6 +630,15 @@ ${S.of(context).insepctionArrangementDefaultDetailsC(inspect.startTime, inspect.
       );
     }
 
+    if (_auctionLot.transactionStatus == TransactionStatus.Pending) {
+      return Text(
+        S.of(context).pendingAuction,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              color: config.blue,
+            ),
+      );
+    }
+
     return Text(
       '\$${utilities.formatDigits(_auctionLot.transactionPrice.toInt())} (${S.of(context).sold})',
       style: Theme.of(context).textTheme.bodyText1!.copyWith(

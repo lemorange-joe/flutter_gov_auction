@@ -144,6 +144,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "";
 
         if (type == "TransactionStatus") {
           values = {
+            // derived status: "P" (pending) is not available
             "N": "Not Sold",
             "S": "Sold",
           };

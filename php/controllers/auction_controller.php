@@ -171,7 +171,7 @@ class AuctionController {
 
       // select the auction lot and items
       $selectSql = "SELECT
-                      L.lot_id, A.start_time, T.code, L.lot_num, 
+                      L.lot_id, A.start_time, A.auction_status, T.code, L.lot_num, 
                       L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
                       L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
                       L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
@@ -206,6 +206,8 @@ class AuctionController {
         $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
       }
 
+      $tranStatus = $result[0]["auction_status"] == AuctionStatus::Finished ? $result[0]["transaction_status"] : TransactionStatus::Pending;
+
       $auctionLot = new AuctionLot(
         intval($result[0]["lot_id"]),
         $result[0]["start_time"],
@@ -230,7 +232,7 @@ class AuctionController {
         $result[0]["description_sc"],
         $result[0]["transaction_currency"],
         $result[0]["transaction_price"],
-        $result[0]["transaction_status"],
+        $tranStatus,
         $result[0]["status"],
         $result[0]["last_update"]
       );
@@ -317,6 +319,8 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
+        $tranStatus = $result[$i]["auction_status"] == AuctionStatus::Finished ? $result[$i]["transaction_status"] : TransactionStatus::Pending;
+
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
@@ -330,7 +334,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
+          $tranStatus,
           $result[$i]["icon"],
           $result[$i]["description"],
           $result[$i]["quantity"],
@@ -426,6 +430,8 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
+        $tranStatus = $result[$i]["auction_status"] == AuctionStatus::Finished ? $result[$i]["transaction_status"] : TransactionStatus::Pending;
+
         $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["auction_num"],
@@ -443,7 +449,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"]
+          $tranStatus
         );
       }
 
@@ -527,6 +533,8 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
+        $tranStatus = $result[$i]["auction_status"] == AuctionStatus::Finished ? $result[$i]["transaction_status"] : TransactionStatus::Pending;
+
         $data[] = new AuctionLotSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["auction_num"],
@@ -544,7 +552,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"]
+          $tranStatus
         );
       }
 
@@ -620,6 +628,8 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
+        $tranStatus = $result[$i]["auction_status"] == AuctionStatus::Finished ? $result[$i]["transaction_status"] : TransactionStatus::Pending;
+
         $data[] = new AuctionItemSearch(
           intval($result[$i]["auction_id"]),
           $result[$i]["start_time"],
@@ -633,7 +643,7 @@ class AuctionController {
           $result[$i]["photo_author_url"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
+          $tranStatus,
           $result[$i]["icon"],
           $result[$i]["description"],
           $result[$i]["quantity"],
@@ -784,7 +794,7 @@ class AuctionController {
     $defaultInspectionDateList = $this->getInspectionDateList(0, $inspectionDateResult);
 
     $selectSql = "SELECT
-                    L.lot_id, A.start_time, T.code, L.lot_num, 
+                    L.lot_id, A.start_time, A.auction_status, T.code, L.lot_num, 
                     L.gld_file_ref, L.reference, L.department_$lang as 'department', L.contact_$lang as 'contact', L.number_$lang as 'number', 
                     L.location_$lang as 'location', L.remarks_$lang as 'remarks', L.item_condition_$lang as 'item_condition', L.description_en, L.description_tc, L.description_sc,
                     L.featured, L.icon as 'lot_icon', L.photo_url, L.photo_real, L.photo_author, L.photo_author_url,
@@ -834,6 +844,8 @@ class AuctionController {
           $photoUrl = $GLOBALS["AUCTION_IMAGE_ROOT_URL"] . $photoUrl;
         }
 
+        $tranStatus = $result[$i]["auction_status"] == AuctionStatus::Finished ? $result[$i]["transaction_status"] : TransactionStatus::Pending;
+
         $curLot = new AuctionLot(
           intval($result[$i]["lot_id"]),
           $result[$i]["start_time"],
@@ -858,7 +870,7 @@ class AuctionController {
           $result[$i]["description_sc"],
           $result[$i]["transaction_currency"],
           $result[$i]["transaction_price"],
-          $result[$i]["transaction_status"],
+          $tranStatus,
           $result[$i]["status"],
           $result[$i]["last_update"]
         );

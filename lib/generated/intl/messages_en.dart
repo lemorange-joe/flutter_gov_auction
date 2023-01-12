@@ -115,7 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View details"),
         "downloadNow": MessageLookupByLibrary.simpleMessage("Download Now"),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
-        "featuredItems": MessageLookupByLibrary.simpleMessage("featured items"),
+        "featuredItems": MessageLookupByLibrary.simpleMessage("Featured"),
         "fieldAuctionDate":
             MessageLookupByLibrary.simpleMessage("Auction Date"),
         "fieldAuctionStatus":
@@ -184,7 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSearchHistory":
             MessageLookupByLibrary.simpleMessage("No search history"),
         "notAgree": MessageLookupByLibrary.simpleMessage("Decline"),
-        "notSold": MessageLookupByLibrary.simpleMessage("Not Sold"),
+        "notSold": MessageLookupByLibrary.simpleMessage("Not sold"),
         "notesForBidders":
             MessageLookupByLibrary.simpleMessage("Notes for Bidders"),
         "noticeLinks": MessageLookupByLibrary.simpleMessage("Notice links:"),
@@ -205,6 +205,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pastAuctionList":
             MessageLookupByLibrary.simpleMessage("Past Auction Lists"),
         "pdfSource": MessageLookupByLibrary.simpleMessage("Source: "),
+        "pendingAuction": MessageLookupByLibrary.simpleMessage("Pending"),
         "photoCopyright":
             MessageLookupByLibrary.simpleMessage("Photo Copyright"),
         "photoDisclaimer": MessageLookupByLibrary.simpleMessage(
@@ -260,7 +261,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "press and hold to view details"),
         "semanticsEmailTo": MessageLookupByLibrary.simpleMessage("email to "),
         "semanticsFeaturedItems":
-            MessageLookupByLibrary.simpleMessage("featured items"),
+            MessageLookupByLibrary.simpleMessage("featured"),
         "semanticsGoBack": MessageLookupByLibrary.simpleMessage("go back"),
         "semanticsMoreInfo":
             MessageLookupByLibrary.simpleMessage("more information"),

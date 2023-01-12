@@ -41,5 +41,6 @@ abstract class TransactionStatus
 {
     const Sold = "S";
     const NotSold = "N";
+    const Pending = 'P';  // derived status: if Auction.AuctionStatus != Finished
 }
 ?>

@@ -41,4 +41,5 @@ AuctionStatus getAuctionStatus(String code) {
 class TransactionStatus {
   static String Sold = 'S';
   static String NotSold = 'N';
+  static String Pending = 'P';  // derived status: if Auction.AuctionStatus != Finished
 }
