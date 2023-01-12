@@ -805,7 +805,7 @@ class AuctionController {
                   INNER JOIN AuctionItem I ON L.lot_id = I.lot_id
                   INNER JOIN ItemType T ON L.type_id = T.type_id
                   WHERE L.auction_id = ? AND (L.status = ? OR (1 = ? AND L.status = ?))
-                  ORDER BY L.lot_num, I.seq";
+                  ORDER BY T.seq, L.lot_num, I.seq";
 
     $result = array();
     if ($isDeveloper) {

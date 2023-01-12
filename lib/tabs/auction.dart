@@ -216,7 +216,17 @@ class _AuctionTabState extends State<AuctionTab> with TickerProviderStateMixin {
                                   Tab(
                                     icon: Semantics(
                                       label: S.of(context).semanticsSavedItems,
-                                      child: const Icon(MdiIcons.heartOutline),
+                                      child: ValueListenableBuilder<Box<SavedAuction>>(
+                                        valueListenable: Hive.box<SavedAuction>('saved_auction').listenable(),
+                                        builder: (BuildContext context, _, __) {
+                                          return HiveHelper()
+                                                  .getSavedAuctionList()
+                                                  .where((SavedAuction auction) => auction.auctionId == widget.auction.id)
+                                                  .isEmpty
+                                              ? const Icon(MdiIcons.heartOutline)
+                                              : const Icon(MdiIcons.heart);
+                                        },
+                                      ),
                                     ),
                                   ),
                                   ...itemTypes.entries.map((MapEntry<String, String> entry) => Tab(text: entry.value)).toList(),
